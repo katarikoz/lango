@@ -10,6 +10,9 @@
 .vscode/
 .idea/
 
+# Claude Code local settings (per-machine, не для git)
+.claude/
+
 # OS
 Thumbs.db
 desktop.ini

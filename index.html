@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Lango">
 <title>Lango — Build Better English</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%98%9B%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23f6f4ee'/%3E%3Ctext x='50%25' y='62%25' font-size='130' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%98%9B%3C/text%3E%3C/svg%3E">
 <script>
   /* Синхронная проверка перед рендером — чтобы не было вспышки контента,
      если семья ещё не ввела пароль. */
@@ -528,7 +531,7 @@
     line-height: 1.5;
   }
   .sp-card.tricky-flag::before {
-    content: "коварное слово";
+    content: "tricky word";
     display: inline-block;
     background: #fce9eb;
     color: #c44758;
@@ -810,15 +813,12 @@
 <body>
 <div class="lock-screen" id="lockScreen">
   <div class="lock-card">
-    <div class="lock-logo">Lango</div>
-    <div class="lock-tag">Build Better English</div>
-    <div class="lock-msg">Введите семейный пароль</div>
+    <div class="lock-logo">😛 Lango</div>
     <input id="lockInput" type="text" autocomplete="off" autocorrect="off"
            autocapitalize="off" spellcheck="false" inputmode="text"
-           placeholder="пароль" onkeydown="if(event.key==='Enter') tryUnlock()">
+           placeholder="password" onkeydown="if(event.key==='Enter') tryUnlock()">
     <div class="lock-err" id="lockErr"></div>
-    <button onclick="tryUnlock()">Войти</button>
-    <div class="lock-hint">Пароль вводится один раз на каждом iPad — потом запоминается.</div>
+    <button onclick="tryUnlock()">Enter</button>
   </div>
 </div>
 <script>
@@ -837,7 +837,7 @@
       if (typeof refreshWelcomeMeta === 'function') refreshWelcomeMeta();
     } else {
       inp.classList.remove('wrong'); void inp.offsetWidth; inp.classList.add('wrong');
-      err.textContent = 'Неверный пароль';
+      err.textContent = 'Wrong password';
       inp.focus(); inp.select();
     }
   }
@@ -853,7 +853,7 @@
 <div class="app">
   <div class="topbar">
     <div class="brand">
-      <div class="logo">Lango</div>
+      <div class="logo">😛 Lango</div>
       <div class="tag">Build Better English</div>
     </div>
     <div class="top-right">
@@ -866,57 +866,57 @@
   <!-- WELCOME / PROFILE PICKER -->
   <section class="screen active" id="welcomeScreen">
     <div class="hero">
-      <h1>Кто учится сегодня?</h1>
-      <p>Семь минут в день — и английский становится сильнее, чем в школе.</p>
+      <h1>Who's learning today?</h1>
+      <p>Seven minutes a day — and your English grows stronger than school can teach.</p>
     </div>
     <div class="profile-row">
       <div class="profile-card" data-profile="max" onclick="pickProfile('max')">
         <div class="avatar">M</div>
         <div class="name">Max</div>
-        <div class="meta" id="metaMax">Готов начать</div>
+        <div class="meta" id="metaMax">Ready to start</div>
       </div>
       <div class="profile-card" data-profile="aleks" onclick="pickProfile('aleks')">
         <div class="avatar">A</div>
         <div class="name">Alex</div>
-        <div class="meta" id="metaAleks">Готов начать</div>
+        <div class="meta" id="metaAleks">Ready to start</div>
       </div>
     </div>
   </section>
 
   <!-- HOME -->
   <section class="screen" id="homeScreen">
-    <h2 class="greeting" id="greeting">Привет!</h2>
-    <p class="sub">Сегодня прокачиваем речь. Не просто учим слова — учимся говорить сильнее.</p>
+    <h2 class="greeting" id="greeting">Hi!</h2>
+    <p class="sub">Today we're upgrading speech. Not just learning words — learning to say them stronger.</p>
 
     <div class="stats">
-      <div class="stat"><div class="n" id="statKnown">0</div><div class="l">🌳 выучено</div></div>
-      <div class="stat"><div class="n" id="statSpell">0</div><div class="l">🔴 ошибочных</div></div>
-      <div class="stat"><div class="n" id="statStreak">0</div><div class="l">дней подряд</div></div>
+      <div class="stat"><div class="n" id="statKnown">0</div><div class="l">🌳 mastered</div></div>
+      <div class="stat"><div class="n" id="statSpell">0</div><div class="l">🔴 to fix</div></div>
+      <div class="stat"><div class="n" id="statStreak">0</div><div class="l">day streak</div></div>
     </div>
 
-    <div class="section-title">Режимы</div>
+    <div class="section-title">Modes</div>
     <div class="modes">
       <div class="mode m-school" onclick="openSchoolWords()">
         <div>
           <div class="icon">A</div>
           <div class="ttl">School Words</div>
-          <div class="desc">Слова из учебника. Чтобы быть впереди класса.</div>
+          <div class="desc">Words from your textbook. Stay ahead in class.</div>
         </div>
       </div>
       <div class="mode m-power" onclick="openPowerWords()">
         <div>
           <div class="icon">★</div>
           <div class="ttl">Power Words</div>
-          <div class="desc">Меняем cool / good / bad на сильные слова.</div>
+          <div class="desc">Swap cool / good / bad for stronger words.</div>
         </div>
       </div>
       <div class="mode m-better locked">
         <div>
           <div class="icon">✎</div>
           <div class="ttl">Better Answers</div>
-          <div class="desc">Короткий ответ → полный, красивый ответ.</div>
+          <div class="desc">Short reply → full, beautiful answer.</div>
         </div>
-        <div class="ribbon">Скоро</div>
+        <div class="ribbon">Soon</div>
       </div>
       <div class="mode m-connect locked">
         <div>
@@ -924,13 +924,13 @@
           <div class="ttl">Connectors</div>
           <div class="desc">because, however, for example, therefore.</div>
         </div>
-        <div class="ribbon">Скоро</div>
+        <div class="ribbon">Soon</div>
       </div>
       <div class="mode m-spell" onclick="openSpelling()">
         <div>
           <div class="icon">✓</div>
           <div class="ttl">Spelling Trainer</div>
-          <div class="desc">Сложные слова и личные ошибки.</div>
+          <div class="desc">Tricky words and your own mistakes.</div>
         </div>
       </div>
       <div class="mode m-speak locked">
@@ -939,12 +939,12 @@
           <div class="ttl">Speaking Builder</div>
           <div class="desc">Opinion → Reason → Example → Conclusion.</div>
         </div>
-        <div class="ribbon">Скоро</div>
+        <div class="ribbon">Soon</div>
       </div>
     </div>
 
     <div class="session-strip">
-      <strong>7 минут в день:</strong>&nbsp;2 мин слова · 2 мин spelling · 2 мин better answers · 1 мин speaking.
+      <strong>7 minutes a day:</strong>&nbsp;2 min words · 2 min spelling · 2 min better answers · 1 min speaking.
     </div>
   </section>
 
@@ -954,7 +954,7 @@
       <button class="back-btn" onclick="goHome()">←</button>
       <h2>School Words</h2>
     </div>
-    <p class="sub">Выбери тему из учебника. Слова и переводы — как в книге.</p>
+    <p class="sub">Pick a textbook theme. Words and translations are exactly as in your book.</p>
     <div class="topic-grid" id="topicGrid"></div>
   </section>
 
@@ -962,28 +962,28 @@
   <section class="screen" id="schoolCardsScreen">
     <div class="mode-head">
       <button class="back-btn" onclick="showScreen('schoolTopicsScreen')">←</button>
-      <h2 id="schoolTopicTitle">Тема</h2>
+      <h2 id="schoolTopicTitle">Theme</h2>
     </div>
-    <p class="sub" id="schoolSessionMeta">Сессия из 12 слов. Печатай по-английски.</p>
+    <p class="sub" id="schoolSessionMeta">12-word session. Type in English.</p>
     <div class="progress-bar"><div id="schoolProgress" style="width:0"></div></div>
 
     <div class="tp-card" id="tpCard">
       <div class="tp-status-row">
         <span id="tpDots"></span>
-        <span class="stage-pill" id="tpPill">новое</span>
+        <span class="stage-pill" id="tpPill">new</span>
       </div>
-      <div class="tp-label">Как написать по-английски</div>
+      <div class="tp-label">How to write in English</div>
       <div class="tp-de" id="tpDe">—</div>
       <div class="tp-skel" id="tpSkel">_ _ _ _</div>
       <input class="tp-input" id="tpInput" type="text" autocomplete="off" autocorrect="off"
-             autocapitalize="off" spellcheck="false" inputmode="text" placeholder="напиши здесь">
+             autocapitalize="off" spellcheck="false" inputmode="text" placeholder="type here">
       <div class="tp-feedback" id="tpFeedback"></div>
       <div class="tp-ex" id="tpEx"></div>
     </div>
 
     <div class="row-actions">
-      <button class="btn ghost" id="tpDontKnowBtn" onclick="dontKnowSchool()">Не знаю — показать</button>
-      <button class="btn primary" id="tpCheckBtn" onclick="checkSchoolAnswer()">Проверить</button>
+      <button class="btn ghost" id="tpDontKnowBtn" onclick="dontKnowSchool()">Don't know — show me</button>
+      <button class="btn primary" id="tpCheckBtn" onclick="checkSchoolAnswer()">Check</button>
     </div>
   </section>
 
@@ -991,19 +991,19 @@
   <section class="screen" id="schoolSummaryScreen">
     <div class="mode-head">
       <button class="back-btn" onclick="showScreen('schoolTopicsScreen')">←</button>
-      <h2>Сессия закончена</h2>
+      <h2>Session done</h2>
     </div>
     <div class="summary">
-      <h3 id="sumTitle">Молодец!</h3>
+      <h3 id="sumTitle">Nice work!</h3>
       <div class="sub-line" id="sumSub">—</div>
       <div class="summary-row">
-        <div class="cell"><div class="n" id="sumMastered">0</div><div class="l">🌳 выучено</div></div>
-        <div class="cell"><div class="n" id="sumProgress">0</div><div class="l">🌿 в процессе</div></div>
-        <div class="cell"><div class="n" id="sumRed">0</div><div class="l">🔴 ошибки</div></div>
+        <div class="cell"><div class="n" id="sumMastered">0</div><div class="l">🌳 mastered</div></div>
+        <div class="cell"><div class="n" id="sumProgress">0</div><div class="l">🌿 in progress</div></div>
+        <div class="cell"><div class="n" id="sumRed">0</div><div class="l">🔴 mistakes</div></div>
       </div>
       <div class="row-actions" style="grid-template-columns: 1fr 1fr;">
-        <button class="btn ghost" onclick="showScreen('schoolTopicsScreen')">К темам</button>
-        <button class="btn primary" id="sumNextBtn" onclick="startNextSchoolSession()">Ещё 12 слов</button>
+        <button class="btn ghost" onclick="showScreen('schoolTopicsScreen')">Back to themes</button>
+        <button class="btn primary" id="sumNextBtn" onclick="startNextSchoolSession()">Another 12 words</button>
       </div>
     </div>
   </section>
@@ -1014,22 +1014,22 @@
       <button class="back-btn" onclick="goHome()">←</button>
       <h2>Spelling Trainer</h2>
     </div>
-    <p class="sub">Печатай слово по-английски — точно, как в учебнике. Свои ошибки запоминаются и возвращаются чаще.</p>
+    <p class="sub">Type the word in English — exactly as in your book. Your own mistakes are remembered and come back more often.</p>
     <div class="progress-bar"><div id="spellingProgress" style="width:0"></div></div>
 
     <div class="sp-card" id="spCard">
-      <div class="sp-label">Как написать по-английски</div>
+      <div class="sp-label">How to write in English</div>
       <div class="sp-de" id="spDe">—</div>
       <div class="sp-skel" id="spSkel">_ _ _ _</div>
       <input class="sp-input" id="spInput" type="text" autocomplete="off" autocorrect="off"
-             autocapitalize="off" spellcheck="false" inputmode="text" placeholder="напиши здесь">
+             autocapitalize="off" spellcheck="false" inputmode="text" placeholder="type here">
       <div class="sp-feedback" id="spFeedback"></div>
       <div class="sp-ex" id="spEx"></div>
     </div>
 
     <div class="row-actions">
-      <button class="btn ghost" id="spSkipBtn" onclick="skipSpelling()">Пропустить</button>
-      <button class="btn primary" id="spCheckBtn" onclick="checkSpelling()">Проверить</button>
+      <button class="btn ghost" id="spSkipBtn" onclick="skipSpelling()">Skip</button>
+      <button class="btn primary" id="spCheckBtn" onclick="checkSpelling()">Check</button>
     </div>
   </section>
 
@@ -1039,21 +1039,21 @@
       <button class="back-btn" onclick="goHome()">←</button>
       <h2>Power Words</h2>
     </div>
-    <p class="sub">Слабое слово зачёркнуто. Выбери сильную замену — увидишь её в красивом предложении.</p>
+    <p class="sub">The weak word is crossed out. Pick a stronger one — see it inside a beautiful sentence.</p>
     <div class="progress-bar"><div id="powerProgress" style="width:0"></div></div>
 
     <div class="pw-card">
       <div class="pw-weak">
-        <div class="label">слабое слово</div>
+        <div class="label">weak word</div>
         <div class="word" id="powerWeak">cool</div>
       </div>
-      <div class="pw-arrow">↓ выбери замену ↓</div>
+      <div class="pw-arrow">↓ pick a stronger word ↓</div>
       <div class="pw-strong-grid" id="powerOptions"></div>
-      <div class="pw-example empty" id="powerExample">Выбери одно из слов сверху, чтобы увидеть пример.</div>
+      <div class="pw-example empty" id="powerExample">Tap a word above to see it in a sentence.</div>
     </div>
 
     <div class="better-preview" id="betterPreview">
-      <div class="h">Так это работает в речи</div>
+      <div class="h">How this lands in real speech</div>
       <div class="weak-line" id="bpWeak">"I like football. It is cool."</div>
       <div class="strong-line" id="bpStrong">
         <span class="tag">Strong</span>
@@ -1062,8 +1062,8 @@
     </div>
 
     <div class="row-actions">
-      <button class="btn ghost" onclick="prevPower()">Назад</button>
-      <button class="btn primary" onclick="nextPower()">Дальше</button>
+      <button class="btn ghost" onclick="prevPower()">Back</button>
+      <button class="btn primary" onclick="nextPower()">Next</button>
     </div>
   </section>
 
@@ -1551,7 +1551,7 @@ function statusStage(s) {
 }
 
 const STAGE_EMOJI = { new: '🌱', red: '🔴', s1: '🌱', s2: '🌿', mastered: '🌳' };
-const STAGE_LABEL = { new: 'новое', red: 'ошибка', s1: '1 из 3', s2: '2 из 3', mastered: 'выучено' };
+const STAGE_LABEL = { new: 'new', red: 'mistake', s1: '1 of 3', s2: '2 of 3', mastered: 'mastered' };
 
 function dotsHTML(stage) {
   const filled = stage === 'mastered' ? 3 : stage === 's2' ? 2 : stage === 's1' ? 1 : 0;
@@ -1602,7 +1602,7 @@ function pickProfile(id) {
   document.getElementById('profilePill').style.display = 'inline-flex';
   document.getElementById('profilePill').dataset.profile = id;
   document.getElementById('profilePillName').textContent = PROFILES[id].name;
-  document.getElementById('greeting').textContent = `Привет, ${PROFILES[id].name}!`;
+  document.getElementById('greeting').textContent = `Hi, ${PROFILES[id].name}!`;
   refreshHomeStats();
   renderTopics();
   showScreen('homeScreen');
@@ -1642,8 +1642,8 @@ function refreshWelcomeMeta() {
     let mastered = 0;
     for (const en in ws) if (statusStage(ws[en]) === 'mastered') mastered++;
     const meta = document.getElementById(id === 'max' ? 'metaMax' : 'metaAleks');
-    if (mastered === 0 && !p.streak) meta.textContent = 'Готов начать';
-    else meta.textContent = `🌳 ${mastered} выучено · ${p.streak || 0} дней подряд`;
+    if (mastered === 0 && !p.streak) meta.textContent = 'Ready to start';
+    else meta.textContent = `🌳 ${mastered} mastered · ${p.streak || 0} day streak`;
   }
 }
 
@@ -1668,8 +1668,8 @@ function renderTopics() {
     const c = themeStatusCounts(t);
     const pct = Math.round((c.mastered / total) * 100);
     const badge = t.status === 'current'
-      ? '<span class="t-badge t-badge-now">Сейчас учим</span>'
-      : '<span class="t-badge t-badge-rev">Повторение</span>';
+      ? '<span class="t-badge t-badge-now">Now learning</span>'
+      : '<span class="t-badge t-badge-rev">Review</span>';
     const card = document.createElement('div');
     card.className = 'topic-card';
     card.onclick = () => openTopic(t.id);
@@ -1678,7 +1678,7 @@ function renderTopics() {
         <div class="t-name">${t.title}</div>
         ${badge}
       </div>
-      <div class="t-meta">${c.mastered} из ${total} выучено (${pct}%)</div>
+      <div class="t-meta">${c.mastered} of ${total} mastered (${pct}%)</div>
       <div class="topic-stats">
         <span>🌳 ${c.mastered}</span>
         <span>🌿 ${c.s2}</span>
@@ -1727,9 +1727,8 @@ function startNextSchoolSession() {
   if (!t) { showScreen('schoolTopicsScreen'); return; }
   const session = buildSchoolSession(t);
   if (!session.length) {
-    // всё выучено — отдельный экран
-    document.getElementById('sumTitle').textContent = 'Тема выучена! 🌳';
-    document.getElementById('sumSub').textContent = 'Все слова в зелёной зоне.';
+    document.getElementById('sumTitle').textContent = 'Theme mastered! 🌳';
+    document.getElementById('sumSub').textContent = 'Every word is in the green zone.';
     document.getElementById('sumMastered').textContent = t.words.length;
     document.getElementById('sumProgress').textContent = 0;
     document.getElementById('sumRed').textContent = 0;
@@ -1743,7 +1742,7 @@ function startNextSchoolSession() {
   state.schoolChecked = false;
   state.schoolSessionStats = { mastered: 0, progressed: 0, red: 0, total: session.length };
   document.getElementById('schoolTopicTitle').textContent = t.title;
-  document.getElementById('schoolSessionMeta').textContent = `Сессия из ${session.length} слов. Печатай по-английски.`;
+  document.getElementById('schoolSessionMeta').textContent = `${session.length}-word session. Type in English.`;
   showScreen('schoolCardsScreen');
   renderSchoolCard();
   setTimeout(() => document.getElementById('tpInput').focus(), 250);
@@ -1769,7 +1768,7 @@ function renderSchoolCard() {
   document.getElementById('tpFeedback').textContent = '';
   document.getElementById('tpFeedback').className = 'tp-feedback';
   document.getElementById('tpEx').textContent = '';
-  document.getElementById('tpCheckBtn').textContent = 'Проверить';
+  document.getElementById('tpCheckBtn').textContent = 'Check';
   document.getElementById('tpCheckBtn').onclick = checkSchoolAnswer;
   document.getElementById('tpDontKnowBtn').disabled = false;
   state.schoolChecked = false;
@@ -1796,11 +1795,11 @@ function checkSchoolAnswer() {
     const sAfter = bumpCorrect(w.en, w.themeId);
     const stage = statusStage(sAfter);
     if (stage === 'mastered' && (sBefore.streak || 0) < 3) {
-      fb.innerHTML = '🌳 Выучено!';
+      fb.innerHTML = '🌳 Mastered!';
       state.schoolSessionStats.mastered++;
       card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
     } else {
-      fb.innerHTML = '✓ Правильно! ' + (stage === 's1' ? '🌱' : stage === 's2' ? '🌿' : '🌳');
+      fb.innerHTML = '✓ Right! ' + (stage === 's1' ? '🌱' : stage === 's2' ? '🌿' : '🌳');
       state.schoolSessionStats.progressed++;
     }
     document.getElementById('tpDots').innerHTML = dotsHTML(stage);
@@ -1810,7 +1809,7 @@ function checkSchoolAnswer() {
   } else {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'tp-feedback wrong';
-    fb.innerHTML = 'Почти. Правильно: <span class="correct">' + escapeHtml(w.en) + '</span>';
+    fb.innerHTML = 'Almost. Right answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
     bumpWrong(w.en, w.themeId);
     state.schoolSessionStats.red++;
     document.getElementById('tpDots').innerHTML = dotsHTML('red');
@@ -1820,7 +1819,7 @@ function checkSchoolAnswer() {
   }
   if (w.ex) ex.textContent = '«' + w.ex + '»';
   state.schoolChecked = true;
-  document.getElementById('tpCheckBtn').textContent = 'Дальше';
+  document.getElementById('tpCheckBtn').textContent = 'Next';
   refreshHomeStats();
 }
 
@@ -1833,12 +1832,12 @@ function dontKnowSchool() {
   inp.value = w.en;
   inp.disabled = true;
   document.getElementById('tpFeedback').className = 'tp-feedback';
-  document.getElementById('tpFeedback').innerHTML = 'Запомни это слово. Оно вернётся в этой сессии.';
+  document.getElementById('tpFeedback').innerHTML = 'Remember this word. It will come back later in the session.';
   if (w.ex) document.getElementById('tpEx').textContent = '«' + w.ex + '»';
   // вернуть слово в конец очереди
   state.schoolSession.push({ ...w });
   state.schoolChecked = true;
-  document.getElementById('tpCheckBtn').textContent = 'Дальше';
+  document.getElementById('tpCheckBtn').textContent = 'Next';
   document.getElementById('tpDontKnowBtn').disabled = true;
 }
 
@@ -1854,13 +1853,13 @@ function nextSchoolWord() {
 function showSchoolSummary() {
   const t = THEMES_BY_ID[state.schoolTopic];
   const c = themeStatusCounts(t);
-  document.getElementById('sumTitle').textContent = state.schoolSessionStats.red === 0 ? 'Без ошибок! 🌟' : 'Молодец, движемся вперёд!';
-  document.getElementById('sumSub').textContent = `${t.title}: ${c.mastered} из ${t.words.length} выучено`;
+  document.getElementById('sumTitle').textContent = state.schoolSessionStats.red === 0 ? 'No mistakes! 🌟' : 'Nice — moving forward!';
+  document.getElementById('sumSub').textContent = `${t.title}: ${c.mastered} of ${t.words.length} mastered`;
   document.getElementById('sumMastered').textContent = state.schoolSessionStats.mastered;
   document.getElementById('sumProgress').textContent = state.schoolSessionStats.progressed;
   document.getElementById('sumRed').textContent = state.schoolSessionStats.red;
   document.getElementById('sumNextBtn').style.display = '';
-  document.getElementById('sumNextBtn').textContent = `Ещё ${SESSION_SIZE} слов`;
+  document.getElementById('sumNextBtn').textContent = `Another ${SESSION_SIZE} words`;
   document.getElementById('schoolProgress').style.width = '100%';
   showScreen('schoolSummaryScreen');
   refreshHomeStats();
@@ -1931,13 +1930,13 @@ function openSpelling() {
 function renderSpelling() {
   const q = state.spellingQueue;
   if (!q.length || state.spellingIndex >= q.length) {
-    document.getElementById('spDe').textContent = 'Готово!';
+    document.getElementById('spDe').textContent = 'Done!';
     document.getElementById('spSkel').textContent = '';
     document.getElementById('spInput').value = '';
     document.getElementById('spInput').disabled = true;
-    document.getElementById('spFeedback').textContent = 'Все коварные слова на сегодня — пройдены.';
+    document.getElementById('spFeedback').textContent = 'All tricky words for today are done.';
     document.getElementById('spEx').textContent = '';
-    document.getElementById('spCheckBtn').textContent = 'На главную';
+    document.getElementById('spCheckBtn').textContent = 'Home';
     document.getElementById('spCheckBtn').onclick = goHome;
     document.getElementById('spellingProgress').style.width = '100%';
     return;
@@ -1954,7 +1953,7 @@ function renderSpelling() {
   document.getElementById('spFeedback').textContent = '';
   document.getElementById('spFeedback').className = 'sp-feedback';
   document.getElementById('spEx').textContent = '';
-  document.getElementById('spCheckBtn').textContent = 'Проверить';
+  document.getElementById('spCheckBtn').textContent = 'Check';
   document.getElementById('spCheckBtn').onclick = checkSpelling;
   state.spellingChecked = false;
   const pct = (state.spellingIndex / q.length) * 100;
@@ -1982,16 +1981,16 @@ function checkSpelling() {
     fb.className = 'sp-feedback right';
     const sAfter = bumpCorrect(w.en, w.themeId);
     const stage = statusStage(sAfter);
-    fb.innerHTML = stage === 'mastered' ? '🌳 Выучено!' : '✓ Правильно! ' + (stage === 's2' ? '🌿' : '🌱');
+    fb.innerHTML = stage === 'mastered' ? '🌳 Mastered!' : '✓ Right! ' + (stage === 's2' ? '🌿' : '🌱');
   } else {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'sp-feedback wrong';
-    fb.innerHTML = 'Почти. Правильно: <span class="correct">' + escapeHtml(w.en) + '</span>';
+    fb.innerHTML = 'Almost. Right answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
     bumpWrong(w.en, w.themeId);
   }
   if (w.ex) ex.textContent = '«' + w.ex + '»';
   state.spellingChecked = true;
-  document.getElementById('spCheckBtn').textContent = 'Дальше';
+  document.getElementById('spCheckBtn').textContent = 'Next';
   refreshHomeStats();
 }
 
@@ -2047,7 +2046,7 @@ function renderPower() {
   state.powerSelected = null;
   const ex = document.getElementById('powerExample');
   ex.classList.add('empty');
-  ex.innerHTML = 'Выбери одно из слов сверху, чтобы увидеть пример.';
+  ex.innerHTML = 'Tap a word above to see it in a sentence.';
 
   const pct = (state.powerIndex / POWER_WORDS.length) * 100;
   document.getElementById('powerProgress').style.width = pct + '%';
@@ -2082,7 +2081,7 @@ function nextPower() {
     state.powerIndex++;
     renderPower();
   } else {
-    toast('Все Power Words пройдены!');
+    toast('All Power Words done!');
     goHome();
   }
 }
