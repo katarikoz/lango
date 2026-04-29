@@ -269,12 +269,16 @@
     border-radius: 999px;
     overflow: hidden;
     margin-bottom: 22px;
+    display: flex;
   }
   .progress-bar > div {
     height: 100%;
     background: var(--accent);
     transition: width .3s ease;
   }
+  .seg-red { background: #c44758 !important; }
+  .seg-orange { background: #f0a868 !important; }
+  .seg-green { background: var(--good) !important; }
   body[data-profile="aleks"] .progress-bar > div { background: var(--aleks); }
 
   /* SCHOOL WORDS */
@@ -318,7 +322,7 @@
   .dots.s2 .dot.filled { background: #e07a3b; }
   .dots.mastered .dot { background: var(--good); }
   .dots.red .dot { background: #c44758; }
-  .dots.red .dot:nth-child(2), .dots.red .dot:nth-child(3) { opacity: 0.4; }
+  .dots.red .dot:not(:first-child) { opacity: 0.4; }
 
   .stage-pill {
     display: inline-flex; align-items: center; gap: 6px;
@@ -343,18 +347,7 @@
     color: var(--ink-soft);
   }
   .topic-stats span { display: inline-flex; align-items: center; gap: 4px; }
-  .topic-progress {
-    height: 6px;
-    background: var(--line);
-    border-radius: 999px;
-    overflow: hidden;
-    margin-top: 10px;
-  }
-  .topic-progress > div {
-    height: 100%;
-    background: var(--good);
-    transition: width .3s ease;
-  }
+  /* topic progress bars use .progress-bar with .seg-* segments */
 
   /* TYPING PRACTICE CARD (used by School Words) */
   .tp-card {
@@ -964,8 +957,8 @@
       <button class="back-btn" onclick="showScreen('schoolTopicsScreen')">←</button>
       <h2 id="schoolTopicTitle">Theme</h2>
     </div>
-    <p class="sub" id="schoolSessionMeta">12-word session. Type in English.</p>
-    <div class="progress-bar"><div id="schoolProgress" style="width:0"></div></div>
+    <p class="sub" id="schoolSessionMeta">Type in English.</p>
+    <div class="progress-bar"><div class="seg-red" id="schoolSegRed" style="width:0"></div><div class="seg-orange" id="schoolSegOrange" style="width:0"></div><div class="seg-green" id="schoolSegGreen" style="width:0"></div></div>
 
     <div class="tp-card" id="tpCard">
       <div class="tp-status-row">
@@ -1003,7 +996,7 @@
       </div>
       <div class="row-actions" style="grid-template-columns: 1fr 1fr;">
         <button class="btn ghost" onclick="showScreen('schoolTopicsScreen')">Back to themes</button>
-        <button class="btn primary" id="sumNextBtn" onclick="startNextSchoolSession()">Another 12 words</button>
+        <button class="btn primary" id="sumNextBtn" onclick="openTopicContinuous()">Continue</button>
       </div>
     </div>
   </section>
@@ -1474,18 +1467,15 @@ const BETTER_PAIRS = [
 let state = {
   profile: null,                // 'max' | 'aleks'
   schoolTopic: null,            // выбранная тема
-  schoolSession: [],            // массив { en, de, ex, tricky, themeId } для текущей сессии
-  schoolIndex: 0,
+  schoolStep: 0,                // global step counter for spaced repetition
+  schoolCurrentWord: null,      // { en, de, ex, tricky, themeId }
   schoolChecked: false,
-  schoolSessionStats: { mastered: 0, progressed: 0, red: 0, total: 0 },
   powerIndex: 0,
   powerSelected: null,
   spellingQueue: [],
   spellingIndex: 0,
   spellingChecked: false
 };
-
-const SESSION_SIZE = 12;
 
 const STORAGE_KEY = (p) => `lango.profile.${p}`;
 
@@ -1494,10 +1484,21 @@ function loadProgress(profileId) {
     const raw = localStorage.getItem(STORAGE_KEY(profileId));
     if (raw) {
       const d = JSON.parse(raw);
-      d.wordStatus = d.wordStatus || {}; // { en: { streak, red, themeId, hits, misses } }
+      d.wordStatus = d.wordStatus || {};
       d.learnedPowerWords = d.learnedPowerWords || [];
       d.streak = d.streak || 0;
-      // миграция со старого формата (knownSchoolWords / spellingMastered) — пропускаем
+      // Migration: add adaptive difficulty fields to old word records
+      for (const en in d.wordStatus) {
+        const s = d.wordStatus[en];
+        if (s.difficulty === undefined) {
+          s.difficulty = 0;
+          s.history = '';
+          s.totalHits = s.hits || 0;
+          s.totalMisses = s.misses || 0;
+          s.lastShownStep = 0;
+          s.nextShowStep = 0;
+        }
+      }
       return d;
     }
   } catch (e) { /* ignore */ }
@@ -1511,66 +1512,136 @@ function loadProgress(profileId) {
 
 /* === Универсальные хелперы статуса слова === */
 
-function getStatus(en) {
-  const p = progress();
-  return p.wordStatus[en] || { streak: 0, red: false, themeId: null, hits: 0, misses: 0 };
+function defaultWordStatus(themeId) {
+  return { streak: 0, red: false, themeId: themeId || null, hits: 0, misses: 0, difficulty: 0, history: '', totalHits: 0, totalMisses: 0, lastShownStep: 0, nextShowStep: 0 };
 }
 
-function bumpCorrect(en, themeId) {
+function getStatus(en) {
   const p = progress();
-  const s = p.wordStatus[en] || { streak: 0, red: false, themeId, hits: 0, misses: 0 };
-  s.streak = Math.min(3, (s.streak || 0) + 1);
+  return p.wordStatus[en] || defaultWordStatus(null);
+}
+
+function getIntervals(difficulty) {
+  if (difficulty < 1) return [5, 12, 30];
+  if (difficulty <= 2.5) return [4, 8, 20, 40];
+  return [3, 6, 12, 25, 40];
+}
+
+function masteryThreshold(difficulty) {
+  if (difficulty < 1) return 3;
+  if (difficulty <= 2.5) return 4;
+  return 5;
+}
+
+function bumpCorrect(en, themeId, globalStep) {
+  const p = progress();
+  const s = p.wordStatus[en] || defaultWordStatus(themeId);
+  s.difficulty = Math.max(0, (s.difficulty || 0) - 0.3);
+  s.streak = (s.streak || 0) + 1;
   s.red = false;
   s.hits = (s.hits || 0) + 1;
+  s.totalHits = (s.totalHits || 0) + 1;
   s.themeId = themeId || s.themeId;
+  s.history = ((s.history || '') + '1').slice(-20);
+  if (globalStep != null) {
+    const intervals = getIntervals(s.difficulty);
+    const idx = Math.min(s.streak - 1, intervals.length - 1);
+    s.lastShownStep = globalStep;
+    s.nextShowStep = globalStep + intervals[idx];
+  }
   p.wordStatus[en] = s;
   saveProgress(state.profile, p);
   return s;
 }
 
-function bumpWrong(en, themeId) {
+function bumpWrong(en, themeId, globalStep) {
   const p = progress();
-  const s = p.wordStatus[en] || { streak: 0, red: false, themeId, hits: 0, misses: 0 };
+  const s = p.wordStatus[en] || defaultWordStatus(themeId);
+  s.difficulty = Math.min(5, (s.difficulty || 0) + 1.0);
+  const hist = s.history || '';
+  // consecutive errors: extra penalty
+  if (hist.endsWith('0')) s.difficulty = Math.min(5, s.difficulty + 0.5);
+  // "false knowledge": two correct then wrong → extra penalty
+  else if (hist.endsWith('11')) s.difficulty = Math.min(5, s.difficulty + 0.5);
   s.streak = 0;
   s.red = true;
   s.misses = (s.misses || 0) + 1;
+  s.totalMisses = (s.totalMisses || 0) + 1;
   s.themeId = themeId || s.themeId;
+  s.history = ((s.history || '') + '0').slice(-20);
+  if (globalStep != null) {
+    s.lastShownStep = globalStep;
+    s.nextShowStep = globalStep + 5;
+  }
   p.wordStatus[en] = s;
   saveProgress(state.profile, p);
   return s;
 }
 
-/* стадия для UI: 'new' | 'red' | 's1' | 's2' | 'mastered' */
+/* stage for UI: 'new' | 'red' | 's1' | 's2' | 'mastered' */
 function statusStage(s) {
   if (!s || (!s.streak && !s.red && !s.hits && !s.misses)) return 'new';
   if (s.red) return 'red';
-  if (s.streak >= 3) return 'mastered';
-  if (s.streak === 2) return 's2';
-  if (s.streak === 1) return 's1';
+  const threshold = masteryThreshold(s.difficulty || 0);
+  if (s.streak >= threshold) return 'mastered';
+  if (s.streak >= Math.ceil(threshold / 2)) return 's2';
+  if (s.streak >= 1) return 's1';
   return 'new';
 }
 
 const STAGE_EMOJI = { new: '🌱', red: '🔴', s1: '🌱', s2: '🌿', mastered: '🌳' };
-const STAGE_LABEL = { new: 'new', red: 'mistake', s1: '1 of 3', s2: '2 of 3', mastered: 'mastered' };
 
-function dotsHTML(stage) {
-  const filled = stage === 'mastered' ? 3 : stage === 's2' ? 2 : stage === 's1' ? 1 : 0;
+function stageLabel(s) {
+  const stage = statusStage(s);
+  if (stage === 'new') return 'new';
+  if (stage === 'red') return 'mistake';
+  if (stage === 'mastered') return 'mastered';
+  const threshold = masteryThreshold(s.difficulty || 0);
+  return (s.streak || 0) + ' of ' + threshold;
+}
+
+function dotsHTML(stage, status) {
+  const threshold = (status && status.difficulty !== undefined) ? masteryThreshold(status.difficulty) : 3;
+  const filled = stage === 'mastered' ? threshold : (status ? status.streak || 0 : 0);
   let cls = 'dots ' + stage;
   let html = '<span class="' + cls + '">';
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < threshold; i++) {
     html += '<i class="dot' + (i < filled ? ' filled' : '') + '"></i>';
   }
   html += '</span>';
   return html;
 }
 
+function saveSchoolSession() {
+  try {
+    const key = 'lango.session.' + state.profile + '.' + state.schoolTopic;
+    localStorage.setItem(key, JSON.stringify({ step: state.schoolStep }));
+  } catch(e) {}
+}
+
+function loadSchoolSession() {
+  try {
+    const key = 'lango.session.' + state.profile + '.' + state.schoolTopic;
+    const raw = localStorage.getItem(key);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { step: 0 };
+}
+
+let _progressCache = null;
+
 function saveProgress(profileId, data) {
+  _progressCache = null;
   try {
     localStorage.setItem(STORAGE_KEY(profileId), JSON.stringify(data));
   } catch (e) { /* iPad sometimes blocks in private mode — silently degrade */ }
 }
 
-function progress() { return loadProgress(state.profile); }
+function progress() {
+  if (_progressCache) return _progressCache;
+  _progressCache = loadProgress(state.profile);
+  return _progressCache;
+}
 
 function updateStreak() {
   const p = progress();
@@ -1597,6 +1668,7 @@ function showScreen(id) {
 
 function pickProfile(id) {
   state.profile = id;
+  _progressCache = null;
   document.body.dataset.profile = id;
   const p = updateStreak();
   document.getElementById('profilePill').style.display = 'inline-flex';
@@ -1667,6 +1739,9 @@ function renderTopics() {
     const total = t.words.length;
     const c = themeStatusCounts(t);
     const pct = Math.round((c.mastered / total) * 100);
+    const redPct = (c.red / total * 100);
+    const orangePct = ((c.s1 + c.s2) / total * 100);
+    const greenPct = (c.mastered / total * 100);
     const badge = t.status === 'current'
       ? '<span class="t-badge t-badge-now">Now learning</span>'
       : '<span class="t-badge t-badge-rev">Review</span>';
@@ -1686,7 +1761,11 @@ function renderTopics() {
         <span>🔴 ${c.red}</span>
         <span>⚪ ${c.new}</span>
       </div>
-      <div class="topic-progress"><div style="width:${pct}%"></div></div>
+      <div class="progress-bar" style="margin-bottom:0;margin-top:10px">
+        <div class="seg-red" style="width:${redPct}%"></div>
+        <div class="seg-orange" style="width:${orangePct}%"></div>
+        <div class="seg-green" style="width:${greenPct}%"></div>
+      </div>
     `;
     grid.appendChild(card);
   }
@@ -1699,66 +1778,75 @@ function openSchoolWords() {
 
 function openTopic(themeId) {
   state.schoolTopic = themeId;
-  startNextSchoolSession();
+  openTopicContinuous();
 }
 
-/* Собираем сессию по приоритету:
-   красные → s1/s2 (в процессе) → новые.
-   Чтобы не было однообразия, чуть-чуть мешаем порядок внутри одной группы. */
-function buildSchoolSession(theme) {
-  const buckets = { red: [], inprog: [], fresh: [] };
+/* Smart queue: pick next word based on spaced repetition */
+function pickNextWord(theme) {
+  const step = state.schoolStep;
+  const dueWords = [];
+  const newWords = [];
   for (const w of theme.words) {
     const s = getStatus(w.en);
     const stage = statusStage(s);
-    if (stage === 'mastered') continue; // выученные пока не трогаем
-    const item = { ...w, themeId: theme.id };
-    if (stage === 'red') buckets.red.push(item);
-    else if (stage === 's1' || stage === 's2') buckets.inprog.push(item);
-    else buckets.fresh.push(item);
+    if (stage === 'mastered') continue;
+    if (stage === 'new') {
+      newWords.push({ word: w, status: s });
+    } else if ((s.nextShowStep || 0) <= step) {
+      dueWords.push({ word: w, status: s });
+    }
   }
-  // лёгкая случайность внутри ведра
-  const mix = arr => shuffle(arr);
-  const queue = [...mix(buckets.red), ...mix(buckets.inprog), ...mix(buckets.fresh)];
-  return queue.slice(0, SESSION_SIZE);
+  dueWords.sort((a, b) => {
+    const ar = a.status.red ? 1 : 0, br = b.status.red ? 1 : 0;
+    if (ar !== br) return br - ar;
+    return (b.status.difficulty || 0) - (a.status.difficulty || 0);
+  });
+  if (dueWords.length > 0) return dueWords[0].word;
+  if (newWords.length > 0) return newWords[0].word;
+  return null;
 }
 
-function startNextSchoolSession() {
+function handleNoWords(theme) {
+  const c = themeStatusCounts(theme);
+  if (c.mastered === theme.words.length) showThemeComplete(theme);
+  else showSessionPause(theme);
+}
+
+function openTopicContinuous() {
   const t = THEMES_BY_ID[state.schoolTopic];
   if (!t) { showScreen('schoolTopicsScreen'); return; }
-  const session = buildSchoolSession(t);
-  if (!session.length) {
-    document.getElementById('sumTitle').textContent = 'Theme mastered! 🌳';
-    document.getElementById('sumSub').textContent = 'Every word is in the green zone.';
-    document.getElementById('sumMastered').textContent = t.words.length;
-    document.getElementById('sumProgress').textContent = 0;
-    document.getElementById('sumRed').textContent = 0;
-    document.getElementById('sumNextBtn').style.display = 'none';
-    showScreen('schoolSummaryScreen');
-    return;
-  }
-  document.getElementById('sumNextBtn').style.display = '';
-  state.schoolSession = session;
-  state.schoolIndex = 0;
-  state.schoolChecked = false;
-  state.schoolSessionStats = { mastered: 0, progressed: 0, red: 0, total: session.length };
+  const session = loadSchoolSession();
+  state.schoolStep = session.step;
   document.getElementById('schoolTopicTitle').textContent = t.title;
-  document.getElementById('schoolSessionMeta').textContent = `${session.length}-word session. Type in English.`;
+  const word = pickNextWord(t);
+  if (!word) { handleNoWords(t); return; }
+  state.schoolCurrentWord = { ...word, themeId: t.id };
+  state.schoolChecked = false;
   showScreen('schoolCardsScreen');
+  updateSchoolUI();
   renderSchoolCard();
   setTimeout(() => document.getElementById('tpInput').focus(), 250);
 }
 
-function currentSchoolWord() { return state.schoolSession[state.schoolIndex]; }
+function advanceSchoolWord() {
+  const t = THEMES_BY_ID[state.schoolTopic];
+  if (!t) return;
+  const word = pickNextWord(t);
+  if (!word) { handleNoWords(t); return; }
+  state.schoolCurrentWord = { ...word, themeId: t.id };
+  state.schoolChecked = false;
+  renderSchoolCard();
+}
 
 function renderSchoolCard() {
-  const w = currentSchoolWord();
-  if (!w) { showSchoolSummary(); return; }
+  const w = state.schoolCurrentWord;
+  if (!w) return;
   const s = getStatus(w.en);
   const stage = statusStage(s);
-  document.getElementById('tpDots').innerHTML = dotsHTML(stage);
+  document.getElementById('tpDots').innerHTML = dotsHTML(stage, s);
   const pill = document.getElementById('tpPill');
   pill.className = 'stage-pill ' + stage;
-  pill.textContent = STAGE_LABEL[stage];
+  pill.textContent = stageLabel(s);
   document.getElementById('tpDe').textContent = w.de;
   document.getElementById('tpSkel').textContent = makeSkeleton(w.en);
   const inp = document.getElementById('tpInput');
@@ -1772,14 +1860,13 @@ function renderSchoolCard() {
   document.getElementById('tpCheckBtn').onclick = checkSchoolAnswer;
   document.getElementById('tpDontKnowBtn').disabled = false;
   state.schoolChecked = false;
-  const pct = (state.schoolIndex / state.schoolSession.length) * 100;
-  document.getElementById('schoolProgress').style.width = pct + '%';
+  updateSchoolUI();
   setTimeout(() => inp.focus(), 50);
 }
 
 function checkSchoolAnswer() {
-  if (state.schoolChecked) { nextSchoolWord(); return; }
-  const w = currentSchoolWord();
+  if (state.schoolChecked) { advanceSchoolWord(); return; }
+  const w = state.schoolCurrentWord;
   if (!w) return;
   const guess = normaliseAnswer(document.getElementById('tpInput').value);
   const truth = normaliseAnswer(w.en);
@@ -1788,89 +1875,125 @@ function checkSchoolAnswer() {
   const ex = document.getElementById('tpEx');
   const card = document.getElementById('tpCard');
 
+  state.schoolStep++;
+  saveSchoolSession();
+
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
     fb.className = 'tp-feedback right';
     const sBefore = getStatus(w.en);
-    const sAfter = bumpCorrect(w.en, w.themeId);
+    const sAfter = bumpCorrect(w.en, w.themeId, state.schoolStep);
     const stage = statusStage(sAfter);
-    if (stage === 'mastered' && (sBefore.streak || 0) < 3) {
+    if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
       fb.innerHTML = '🌳 Mastered!';
-      state.schoolSessionStats.mastered++;
       card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
     } else {
-      fb.innerHTML = '✓ Right! ' + (stage === 's1' ? '🌱' : stage === 's2' ? '🌿' : '🌳');
-      state.schoolSessionStats.progressed++;
+      fb.innerHTML = '✓ Right! ' + STAGE_EMOJI[stage];
     }
-    document.getElementById('tpDots').innerHTML = dotsHTML(stage);
+    document.getElementById('tpDots').innerHTML = dotsHTML(stage, sAfter);
     const pill = document.getElementById('tpPill');
     pill.className = 'stage-pill ' + stage;
-    pill.textContent = STAGE_LABEL[stage];
+    pill.textContent = stageLabel(sAfter);
   } else {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'tp-feedback wrong';
     fb.innerHTML = 'Almost. Right answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
-    bumpWrong(w.en, w.themeId);
-    state.schoolSessionStats.red++;
-    document.getElementById('tpDots').innerHTML = dotsHTML('red');
+    const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
+    document.getElementById('tpDots').innerHTML = dotsHTML('red', sAfter);
     const pill = document.getElementById('tpPill');
     pill.className = 'stage-pill red';
-    pill.textContent = STAGE_LABEL.red;
+    pill.textContent = 'mistake';
   }
   if (w.ex) ex.textContent = '«' + w.ex + '»';
   state.schoolChecked = true;
   document.getElementById('tpCheckBtn').textContent = 'Next';
+  updateSchoolUI();
   refreshHomeStats();
 }
 
 function dontKnowSchool() {
-  // показываем правильный ответ без штрафа, слово вернётся в очередь
   if (state.schoolChecked) return;
-  const w = currentSchoolWord();
+  const w = state.schoolCurrentWord;
   if (!w) return;
   const inp = document.getElementById('tpInput');
   inp.value = w.en;
   inp.disabled = true;
-  document.getElementById('tpFeedback').className = 'tp-feedback';
-  document.getElementById('tpFeedback').innerHTML = 'Remember this word. It will come back later in the session.';
+
+  state.schoolStep++;
+  saveSchoolSession();
+
+  const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
+  document.getElementById('tpFeedback').className = 'tp-feedback wrong';
+  document.getElementById('tpFeedback').innerHTML = 'This word will come back soon.';
   if (w.ex) document.getElementById('tpEx').textContent = '«' + w.ex + '»';
-  // вернуть слово в конец очереди
-  state.schoolSession.push({ ...w });
+  document.getElementById('tpDots').innerHTML = dotsHTML('red', sAfter);
+  const pill = document.getElementById('tpPill');
+  pill.className = 'stage-pill red';
+  pill.textContent = 'mistake';
   state.schoolChecked = true;
   document.getElementById('tpCheckBtn').textContent = 'Next';
   document.getElementById('tpDontKnowBtn').disabled = true;
+  updateSchoolUI();
+  refreshHomeStats();
 }
 
-function nextSchoolWord() {
-  state.schoolIndex++;
-  if (state.schoolIndex >= state.schoolSession.length) {
-    showSchoolSummary();
-    return;
+function showSummary(theme, opts) {
+  const c = themeStatusCounts(theme);
+  document.getElementById('sumTitle').textContent = opts.title;
+  document.getElementById('sumSub').textContent = opts.sub;
+  document.getElementById('sumMastered').textContent = c.mastered;
+  document.getElementById('sumProgress').textContent = c.s1 + c.s2;
+  document.getElementById('sumRed').textContent = c.red;
+  const btn = document.getElementById('sumNextBtn');
+  if (opts.showContinue) {
+    btn.style.display = '';
+    btn.textContent = 'Continue';
+    btn.onclick = openTopicContinuous;
+  } else {
+    btn.style.display = 'none';
   }
-  renderSchoolCard();
-}
-
-function showSchoolSummary() {
-  const t = THEMES_BY_ID[state.schoolTopic];
-  const c = themeStatusCounts(t);
-  document.getElementById('sumTitle').textContent = state.schoolSessionStats.red === 0 ? 'No mistakes! 🌟' : 'Nice — moving forward!';
-  document.getElementById('sumSub').textContent = `${t.title}: ${c.mastered} of ${t.words.length} mastered`;
-  document.getElementById('sumMastered').textContent = state.schoolSessionStats.mastered;
-  document.getElementById('sumProgress').textContent = state.schoolSessionStats.progressed;
-  document.getElementById('sumRed').textContent = state.schoolSessionStats.red;
-  document.getElementById('sumNextBtn').style.display = '';
-  document.getElementById('sumNextBtn').textContent = `Another ${SESSION_SIZE} words`;
-  document.getElementById('schoolProgress').style.width = '100%';
   showScreen('schoolSummaryScreen');
   refreshHomeStats();
 }
 
-/* Enter в School Words: Проверить → Дальше */
+function showThemeComplete(theme) {
+  showSummary(theme, {
+    title: 'Theme mastered! 🌳',
+    sub: 'Every word in "' + theme.title + '" is in the green zone.',
+    showContinue: false
+  });
+}
+
+function showSessionPause(theme) {
+  const c = themeStatusCounts(theme);
+  const remaining = theme.words.length - c.mastered;
+  showSummary(theme, {
+    title: 'Good work! 👍',
+    sub: c.mastered + ' of ' + theme.words.length + ' mastered. ' + remaining + ' words still need practice.',
+    showContinue: true
+  });
+}
+
+function updateSchoolUI() {
+  const t = THEMES_BY_ID[state.schoolTopic];
+  if (!t) return;
+  const total = t.words.length;
+  const c = themeStatusCounts(t);
+  document.getElementById('schoolSegRed').style.width = (c.red / total * 100) + '%';
+  document.getElementById('schoolSegOrange').style.width = ((c.s1 + c.s2) / total * 100) + '%';
+  document.getElementById('schoolSegGreen').style.width = (c.mastered / total * 100) + '%';
+  const remaining = total - c.mastered;
+  document.getElementById('schoolSessionMeta').textContent = remaining > 0
+    ? remaining + ' word' + (remaining !== 1 ? 's' : '') + ' to go. Type in English.'
+    : 'All words mastered!';
+}
+
+/* Enter in School Words: Check → Next */
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   if (!document.getElementById('schoolCardsScreen').classList.contains('active')) return;
   e.preventDefault();
-  if (state.schoolChecked) nextSchoolWord(); else checkSchoolAnswer();
+  if (state.schoolChecked) advanceSchoolWord(); else checkSchoolAnswer();
 });
 
 /* ============================================================
