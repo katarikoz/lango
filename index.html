@@ -1,0 +1,2117 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Lango — Build Better English</title>
+<script>
+  /* Синхронная проверка перед рендером — чтобы не было вспышки контента,
+     если семья ещё не ввела пароль. */
+  (function () {
+    var unlocked = false;
+    try { unlocked = localStorage.getItem('lango.familyUnlocked') === '1'; } catch (e) {}
+    if (!unlocked) document.documentElement.classList.add('locked');
+  })();
+</script>
+<style>
+  :root {
+    --bg: #f6f4ee;
+    --ink: #1f2330;
+    --ink-soft: #525a6b;
+    --line: #e5e1d6;
+    --card: #ffffff;
+    --accent: #2e6cdf;
+    --accent-soft: #e8f0fe;
+    --max: #2e6cdf;
+    --max-soft: #e8f0fe;
+    --aleks: #e07a3b;
+    --aleks-soft: #fdeede;
+    --good: #2f9e6b;
+    --good-soft: #e6f4ec;
+    --warn: #c46a3a;
+    --shadow: 0 6px 20px rgba(20, 25, 40, 0.06), 0 1px 3px rgba(20, 25, 40, 0.04);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+  body { min-height: 100vh; min-height: 100dvh; }
+  .app {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    min-height: 44px;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .brand .logo {
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+  }
+  .brand .tag {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .top-right {
+    display: flex; gap: 8px; align-items: center;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+  }
+  .pill .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .pill[data-profile="aleks"] .dot { background: var(--aleks); }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* WELCOME */
+  .hero {
+    text-align: center;
+    padding: 30px 10px 20px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .hero p {
+    color: var(--ink-soft);
+    font-size: 16px;
+    margin: 0 0 28px;
+  }
+  .profile-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .profile-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .profile-card:active { transform: scale(0.98); }
+  .profile-card .avatar {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    margin: 0 auto 14px;
+    display: grid; place-items: center;
+    font-size: 36px; font-weight: 700;
+    color: white;
+  }
+  .profile-card[data-profile="max"] .avatar { background: var(--max); }
+  .profile-card[data-profile="aleks"] .avatar { background: var(--aleks); }
+  .profile-card .name { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .profile-card .meta { font-size: 13px; color: var(--ink-soft); }
+
+  /* HOME */
+  .greeting {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .sub {
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+    font-size: 15px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat .n { font-size: 22px; font-weight: 700; }
+  .stat .l { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+  .section-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 24px 0 10px;
+  }
+  .modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .mode {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 18px;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    box-shadow: var(--shadow);
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .mode:active { transform: scale(0.98); }
+  .mode.locked {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .mode .icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 20px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .mode.m-power .icon { background: #fdf0e3; color: #c25c1a; }
+  .mode.m-better .icon { background: #ecf6ee; color: #2f9e6b; }
+  .mode.m-connect .icon { background: #f0ecfb; color: #6a4ad6; }
+  .mode.m-spell .icon { background: #fce9eb; color: #c44758; }
+  .mode.m-speak .icon { background: #fdf6dc; color: #b78d1f; }
+  .mode .ttl { font-size: 17px; font-weight: 600; margin-bottom: 2px; }
+  .mode .desc { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+  .mode .ribbon {
+    align-self: flex-start;
+    font-size: 11px;
+    color: var(--ink-soft);
+    background: #f1ede4;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-top: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .mode.locked .ribbon { background: #efece4; }
+
+  .session-strip {
+    margin-top: 22px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .session-strip strong { color: var(--ink); font-weight: 600; }
+
+  /* GENERIC MODE SCREEN */
+  .mode-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .back-btn {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .mode-head h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 22px;
+  }
+  .progress-bar > div {
+    height: 100%;
+    background: var(--accent);
+    transition: width .3s ease;
+  }
+  body[data-profile="aleks"] .progress-bar > div { background: var(--aleks); }
+
+  /* SCHOOL WORDS */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .topic-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+  .topic-card:active { transform: scale(0.98); }
+  .topic-card .t-name { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .topic-card .t-meta { font-size: 13px; color: var(--ink-soft); }
+  .topic-card .t-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .t-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .t-badge-now { background: #ecf6ee; color: var(--good); }
+  .t-badge-rev { background: #f1ede4; color: var(--ink-soft); }
+
+  /* STATUS DOTS */
+  .dots { display: inline-flex; gap: 5px; vertical-align: middle; }
+  .dots .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #d4d0c4;
+    transition: background .25s ease, transform .25s ease;
+  }
+  .dots.s1 .dot.filled { background: #f0a868; }
+  .dots.s2 .dot.filled { background: #e07a3b; }
+  .dots.mastered .dot { background: var(--good); }
+  .dots.red .dot { background: #c44758; }
+  .dots.red .dot:nth-child(2), .dots.red .dot:nth-child(3) { opacity: 0.4; }
+
+  .stage-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f1ede4;
+    color: var(--ink-soft);
+  }
+  .stage-pill.new      { background: #f1ede4; color: var(--ink-soft); }
+  .stage-pill.red      { background: #fce9eb; color: #c44758; }
+  .stage-pill.s1       { background: #fdf0e3; color: #c25c1a; }
+  .stage-pill.s2       { background: #fbe5cf; color: #a64a13; }
+  .stage-pill.mastered { background: #ecf6ee; color: var(--good); }
+
+  /* TOPIC SUMMARY (theme card) */
+  .topic-stats {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .topic-stats span { display: inline-flex; align-items: center; gap: 4px; }
+  .topic-progress {
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  .topic-progress > div {
+    height: 100%;
+    background: var(--good);
+    transition: width .3s ease;
+  }
+
+  /* TYPING PRACTICE CARD (used by School Words) */
+  .tp-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 26px 22px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .tp-card .tp-status-row {
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tp-card .tp-label {
+    font-size: 12px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .tp-card .tp-de {
+    font-size: 24px; font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .tp-card .tp-skel {
+    font-size: 22px; letter-spacing: 0.35em;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .tp-card .tp-input {
+    width: 100%;
+    max-width: 360px;
+    font-size: 26px;
+    text-align: center;
+    padding: 14px 16px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: #fafaf6;
+    color: var(--ink);
+    margin: 0 auto;
+    display: block;
+    outline: none;
+    transition: border-color .15s ease;
+    text-transform: lowercase;
+  }
+  .tp-card .tp-input:focus { border-color: var(--accent); }
+  body[data-profile="aleks"] .tp-card .tp-input:focus { border-color: var(--aleks); }
+  .tp-card .tp-input.right { border-color: var(--good); background: #ebf6ef; }
+  .tp-card .tp-input.wrong { border-color: #c44758; background: #fce9eb; }
+  .tp-card .tp-feedback {
+    margin-top: 16px;
+    min-height: 36px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .tp-card .tp-feedback.right { color: var(--good); font-weight: 600; }
+  .tp-card .tp-feedback.wrong { color: #c44758; }
+  .tp-card .tp-feedback .correct {
+    background: #fff5cc;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-left: 4px;
+  }
+  .tp-card .tp-ex {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+  .tp-card.celebrate {
+    animation: pop .4s ease;
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.025); box-shadow: 0 8px 30px rgba(47, 158, 107, 0.18); }
+    100% { transform: scale(1); }
+  }
+
+  /* SESSION SUMMARY */
+  .summary {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 28px 22px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .summary h3 { margin: 0 0 4px; font-size: 22px; }
+  .summary .sub-line { color: var(--ink-soft); margin-bottom: 18px; }
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .summary-row .cell {
+    padding: 14px 8px;
+    border-radius: 14px;
+    background: #fafaf6;
+  }
+  .summary-row .cell .n { font-size: 22px; font-weight: 700; }
+  .summary-row .cell .l { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+  /* SPELLING TRAINER */
+  .sp-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 28px 22px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sp-card .sp-label {
+    font-size: 12px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .sp-card .sp-de {
+    font-size: 26px; font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .sp-card .sp-skel {
+    font-size: 22px; letter-spacing: 0.35em;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .sp-card .sp-input {
+    width: 100%;
+    max-width: 360px;
+    font-size: 26px;
+    text-align: center;
+    padding: 14px 16px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: #fafaf6;
+    color: var(--ink);
+    margin: 0 auto;
+    display: block;
+    outline: none;
+    transition: border-color .15s ease;
+    text-transform: lowercase;
+  }
+  .sp-card .sp-input:focus { border-color: var(--accent); }
+  body[data-profile="aleks"] .sp-card .sp-input:focus { border-color: var(--aleks); }
+  .sp-card .sp-input.right { border-color: var(--good); background: #ebf6ef; }
+  .sp-card .sp-input.wrong { border-color: #c44758; background: #fce9eb; }
+  .sp-card .sp-feedback {
+    margin-top: 18px;
+    min-height: 50px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .sp-card .sp-feedback.right { color: var(--good); font-weight: 600; }
+  .sp-card .sp-feedback.wrong { color: #c44758; }
+  .sp-card .sp-feedback .correct {
+    background: #fff5cc;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-left: 4px;
+  }
+  .sp-card .sp-ex {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .sp-card.tricky-flag::before {
+    content: "коварное слово";
+    display: inline-block;
+    background: #fce9eb;
+    color: #c44758;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .flashcard {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 36px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-height: 280px;
+    display: flex; flex-direction: column; justify-content: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .flashcard .word {
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .flashcard .hint { font-size: 13px; color: var(--ink-soft); }
+  .flashcard.flipped .word { font-size: 30px; color: var(--accent); }
+  body[data-profile="aleks"] .flashcard.flipped .word { color: var(--aleks); }
+  .flashcard .ru { font-size: 20px; color: var(--ink); margin-top: 14px; }
+  .flashcard .ex { font-size: 15px; color: var(--ink-soft); font-style: italic; margin-top: 14px; line-height: 1.5; }
+  .row-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .btn {
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  body[data-profile="aleks"] .btn.primary { background: var(--aleks); border-color: var(--aleks); }
+  .btn.good { background: var(--good); color: white; border-color: var(--good); }
+  .btn.ghost { background: transparent; }
+
+  /* POWER WORDS */
+  .pw-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .pw-weak {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .pw-weak .label {
+    font-size: 12px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .pw-weak .word {
+    font-size: 38px;
+    font-weight: 700;
+    color: #b1b1b1;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    letter-spacing: -0.01em;
+  }
+  .pw-arrow {
+    text-align: center;
+    color: var(--ink-soft);
+    margin: 6px 0 14px;
+    font-size: 18px;
+  }
+  .pw-strong-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .pw-strong-grid .opt {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid transparent;
+    border-radius: 14px;
+    padding: 16px 12px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: transform .12s ease, background .12s ease;
+  }
+  body[data-profile="aleks"] .pw-strong-grid .opt {
+    background: var(--aleks-soft);
+    color: var(--aleks);
+  }
+  .pw-strong-grid .opt:active { transform: scale(0.97); }
+  .pw-strong-grid .opt.selected {
+    background: var(--accent);
+    color: white;
+  }
+  body[data-profile="aleks"] .pw-strong-grid .opt.selected {
+    background: var(--aleks);
+    color: white;
+  }
+  .pw-example {
+    margin-top: 18px;
+    padding: 16px;
+    background: #fafaf6;
+    border-radius: 14px;
+    border: 1px dashed var(--line);
+    min-height: 60px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .pw-example.empty { color: var(--ink-soft); font-style: italic; font-size: 14px; }
+  .pw-example b { background: #fff5cc; padding: 0 4px; border-radius: 4px; font-weight: 600; }
+
+  /* BETTER ANSWER preview block (shown inside power words once per round) */
+  .better-preview {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 16px;
+  }
+  .better-preview .h {
+    font-size: 13px; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .better-preview .weak-line {
+    color: #9b9b9b;
+    text-decoration: line-through;
+    margin-bottom: 6px;
+  }
+  .better-preview .strong-line {
+    font-weight: 500;
+    line-height: 1.55;
+  }
+  .better-preview .strong-line .tag {
+    background: #ecf6ee; color: var(--good);
+    font-size: 11px; padding: 1px 6px; border-radius: 6px;
+    margin-right: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-soft);
+  }
+  .toast {
+    position: fixed; left: 50%; bottom: 30px;
+    transform: translateX(-50%);
+    background: #1f2330; color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s, transform .25s;
+    z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+
+  @media (max-width: 520px) {
+    .modes, .topic-grid, .profile-row { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .hero h1 { font-size: 30px; }
+    .flashcard .word { font-size: 38px; }
+    .pw-weak .word { font-size: 32px; }
+  }
+
+  /* LOCK SCREEN */
+  html.locked .app { display: none; }
+  html:not(.locked) .lock-screen { display: none; }
+  .lock-screen {
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    background: var(--bg);
+  }
+  .lock-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 34px 26px;
+    box-shadow: var(--shadow);
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+  }
+  .lock-card .lock-logo {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .lock-card .lock-tag {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 26px;
+  }
+  .lock-card .lock-msg {
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .lock-card input {
+    width: 100%;
+    font-size: 22px;
+    text-align: center;
+    padding: 14px 16px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: #fafaf6;
+    color: var(--ink);
+    margin: 0;
+    outline: none;
+    transition: border-color .15s ease;
+  }
+  .lock-card input:focus { border-color: var(--accent); }
+  .lock-card input.wrong {
+    border-color: #c44758;
+    background: #fce9eb;
+    animation: shake .3s ease;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .lock-card .lock-err {
+    color: #c44758;
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 18px;
+  }
+  .lock-card button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 14px;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    transition: transform .12s ease, opacity .15s ease;
+  }
+  .lock-card button:active { transform: scale(0.98); }
+  .lock-card .lock-hint {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 18px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-card">
+    <div class="lock-logo">Lango</div>
+    <div class="lock-tag">Build Better English</div>
+    <div class="lock-msg">Введите семейный пароль</div>
+    <input id="lockInput" type="text" autocomplete="off" autocorrect="off"
+           autocapitalize="off" spellcheck="false" inputmode="text"
+           placeholder="пароль" onkeydown="if(event.key==='Enter') tryUnlock()">
+    <div class="lock-err" id="lockErr"></div>
+    <button onclick="tryUnlock()">Войти</button>
+    <div class="lock-hint">Пароль вводится один раз на каждом iPad — потом запоминается.</div>
+  </div>
+</div>
+<script>
+  const PASSWORD_B64 = "QjFzMHUj";  /* base64 от семейного пароля. Поменять — пересчитать. */
+  function tryUnlock() {
+    const inp = document.getElementById('lockInput');
+    const err = document.getElementById('lockErr');
+    const got = (inp.value || '').trim();
+    let encoded;
+    try { encoded = btoa(unescape(encodeURIComponent(got))); } catch (e) { encoded = ''; }
+    if (encoded === PASSWORD_B64) {
+      try { localStorage.setItem('lango.familyUnlocked', '1'); } catch (e) {}
+      document.documentElement.classList.remove('locked');
+      err.textContent = '';
+      // повторно инициализируем экран приветствия с актуальной мета-инфой
+      if (typeof refreshWelcomeMeta === 'function') refreshWelcomeMeta();
+    } else {
+      inp.classList.remove('wrong'); void inp.offsetWidth; inp.classList.add('wrong');
+      err.textContent = 'Неверный пароль';
+      inp.focus(); inp.select();
+    }
+  }
+  /* автофокус когда страница в locked-режиме */
+  if (document.documentElement.classList.contains('locked')) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var i = document.getElementById('lockInput');
+      if (i) setTimeout(function(){ i.focus(); }, 100);
+    });
+  }
+</script>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">Lango</div>
+      <div class="tag">Build Better English</div>
+    </div>
+    <div class="top-right">
+      <div class="pill" id="profilePill" style="display:none">
+        <span class="dot"></span><span id="profilePillName">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME / PROFILE PICKER -->
+  <section class="screen active" id="welcomeScreen">
+    <div class="hero">
+      <h1>Кто учится сегодня?</h1>
+      <p>Семь минут в день — и английский становится сильнее, чем в школе.</p>
+    </div>
+    <div class="profile-row">
+      <div class="profile-card" data-profile="max" onclick="pickProfile('max')">
+        <div class="avatar">M</div>
+        <div class="name">Max</div>
+        <div class="meta" id="metaMax">Готов начать</div>
+      </div>
+      <div class="profile-card" data-profile="aleks" onclick="pickProfile('aleks')">
+        <div class="avatar">A</div>
+        <div class="name">Alex</div>
+        <div class="meta" id="metaAleks">Готов начать</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section class="screen" id="homeScreen">
+    <h2 class="greeting" id="greeting">Привет!</h2>
+    <p class="sub">Сегодня прокачиваем речь. Не просто учим слова — учимся говорить сильнее.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="statKnown">0</div><div class="l">🌳 выучено</div></div>
+      <div class="stat"><div class="n" id="statSpell">0</div><div class="l">🔴 ошибочных</div></div>
+      <div class="stat"><div class="n" id="statStreak">0</div><div class="l">дней подряд</div></div>
+    </div>
+
+    <div class="section-title">Режимы</div>
+    <div class="modes">
+      <div class="mode m-school" onclick="openSchoolWords()">
+        <div>
+          <div class="icon">A</div>
+          <div class="ttl">School Words</div>
+          <div class="desc">Слова из учебника. Чтобы быть впереди класса.</div>
+        </div>
+      </div>
+      <div class="mode m-power" onclick="openPowerWords()">
+        <div>
+          <div class="icon">★</div>
+          <div class="ttl">Power Words</div>
+          <div class="desc">Меняем cool / good / bad на сильные слова.</div>
+        </div>
+      </div>
+      <div class="mode m-better locked">
+        <div>
+          <div class="icon">✎</div>
+          <div class="ttl">Better Answers</div>
+          <div class="desc">Короткий ответ → полный, красивый ответ.</div>
+        </div>
+        <div class="ribbon">Скоро</div>
+      </div>
+      <div class="mode m-connect locked">
+        <div>
+          <div class="icon">↔</div>
+          <div class="ttl">Connectors</div>
+          <div class="desc">because, however, for example, therefore.</div>
+        </div>
+        <div class="ribbon">Скоро</div>
+      </div>
+      <div class="mode m-spell" onclick="openSpelling()">
+        <div>
+          <div class="icon">✓</div>
+          <div class="ttl">Spelling Trainer</div>
+          <div class="desc">Сложные слова и личные ошибки.</div>
+        </div>
+      </div>
+      <div class="mode m-speak locked">
+        <div>
+          <div class="icon">♪</div>
+          <div class="ttl">Speaking Builder</div>
+          <div class="desc">Opinion → Reason → Example → Conclusion.</div>
+        </div>
+        <div class="ribbon">Скоро</div>
+      </div>
+    </div>
+
+    <div class="session-strip">
+      <strong>7 минут в день:</strong>&nbsp;2 мин слова · 2 мин spelling · 2 мин better answers · 1 мин speaking.
+    </div>
+  </section>
+
+  <!-- SCHOOL WORDS — THEME LIST -->
+  <section class="screen" id="schoolTopicsScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <h2>School Words</h2>
+    </div>
+    <p class="sub">Выбери тему из учебника. Слова и переводы — как в книге.</p>
+    <div class="topic-grid" id="topicGrid"></div>
+  </section>
+
+  <!-- SCHOOL WORDS — TYPING PRACTICE -->
+  <section class="screen" id="schoolCardsScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="showScreen('schoolTopicsScreen')">←</button>
+      <h2 id="schoolTopicTitle">Тема</h2>
+    </div>
+    <p class="sub" id="schoolSessionMeta">Сессия из 12 слов. Печатай по-английски.</p>
+    <div class="progress-bar"><div id="schoolProgress" style="width:0"></div></div>
+
+    <div class="tp-card" id="tpCard">
+      <div class="tp-status-row">
+        <span id="tpDots"></span>
+        <span class="stage-pill" id="tpPill">новое</span>
+      </div>
+      <div class="tp-label">Как написать по-английски</div>
+      <div class="tp-de" id="tpDe">—</div>
+      <div class="tp-skel" id="tpSkel">_ _ _ _</div>
+      <input class="tp-input" id="tpInput" type="text" autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" inputmode="text" placeholder="напиши здесь">
+      <div class="tp-feedback" id="tpFeedback"></div>
+      <div class="tp-ex" id="tpEx"></div>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn ghost" id="tpDontKnowBtn" onclick="dontKnowSchool()">Не знаю — показать</button>
+      <button class="btn primary" id="tpCheckBtn" onclick="checkSchoolAnswer()">Проверить</button>
+    </div>
+  </section>
+
+  <!-- SCHOOL WORDS — SESSION SUMMARY -->
+  <section class="screen" id="schoolSummaryScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="showScreen('schoolTopicsScreen')">←</button>
+      <h2>Сессия закончена</h2>
+    </div>
+    <div class="summary">
+      <h3 id="sumTitle">Молодец!</h3>
+      <div class="sub-line" id="sumSub">—</div>
+      <div class="summary-row">
+        <div class="cell"><div class="n" id="sumMastered">0</div><div class="l">🌳 выучено</div></div>
+        <div class="cell"><div class="n" id="sumProgress">0</div><div class="l">🌿 в процессе</div></div>
+        <div class="cell"><div class="n" id="sumRed">0</div><div class="l">🔴 ошибки</div></div>
+      </div>
+      <div class="row-actions" style="grid-template-columns: 1fr 1fr;">
+        <button class="btn ghost" onclick="showScreen('schoolTopicsScreen')">К темам</button>
+        <button class="btn primary" id="sumNextBtn" onclick="startNextSchoolSession()">Ещё 12 слов</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPELLING TRAINER -->
+  <section class="screen" id="spellingScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <h2>Spelling Trainer</h2>
+    </div>
+    <p class="sub">Печатай слово по-английски — точно, как в учебнике. Свои ошибки запоминаются и возвращаются чаще.</p>
+    <div class="progress-bar"><div id="spellingProgress" style="width:0"></div></div>
+
+    <div class="sp-card" id="spCard">
+      <div class="sp-label">Как написать по-английски</div>
+      <div class="sp-de" id="spDe">—</div>
+      <div class="sp-skel" id="spSkel">_ _ _ _</div>
+      <input class="sp-input" id="spInput" type="text" autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" inputmode="text" placeholder="напиши здесь">
+      <div class="sp-feedback" id="spFeedback"></div>
+      <div class="sp-ex" id="spEx"></div>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn ghost" id="spSkipBtn" onclick="skipSpelling()">Пропустить</button>
+      <button class="btn primary" id="spCheckBtn" onclick="checkSpelling()">Проверить</button>
+    </div>
+  </section>
+
+  <!-- POWER WORDS -->
+  <section class="screen" id="powerScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <h2>Power Words</h2>
+    </div>
+    <p class="sub">Слабое слово зачёркнуто. Выбери сильную замену — увидишь её в красивом предложении.</p>
+    <div class="progress-bar"><div id="powerProgress" style="width:0"></div></div>
+
+    <div class="pw-card">
+      <div class="pw-weak">
+        <div class="label">слабое слово</div>
+        <div class="word" id="powerWeak">cool</div>
+      </div>
+      <div class="pw-arrow">↓ выбери замену ↓</div>
+      <div class="pw-strong-grid" id="powerOptions"></div>
+      <div class="pw-example empty" id="powerExample">Выбери одно из слов сверху, чтобы увидеть пример.</div>
+    </div>
+
+    <div class="better-preview" id="betterPreview">
+      <div class="h">Так это работает в речи</div>
+      <div class="weak-line" id="bpWeak">"I like football. It is cool."</div>
+      <div class="strong-line" id="bpStrong">
+        <span class="tag">Strong</span>
+        I really enjoy football because it is exciting. For example, the result can change at any moment.
+      </div>
+    </div>
+
+    <div class="row-actions">
+      <button class="btn ghost" onclick="prevPower()">Назад</button>
+      <button class="btn primary" onclick="nextPower()">Дальше</button>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ============================================================
+   ДАННЫЕ — словари тем учебника.
+   Чтобы добавить новую тему: просто допишите ещё один объект
+   в массив window.LANGO_THEMES ниже.
+     id     — уникальный идентификатор темы
+     title  — то, что видит ребёнок в списке тем
+     status — 'current' для активной темы, 'review' для повторения
+     words  — массив { en, de, ex?, tricky? }
+   ============================================================ */
+window.LANGO_THEMES = [
+  {
+    id: 'theme04',
+    title: 'Theme 4 — Free time',
+    short: 'Free time',
+    status: 'review',
+    note: 'Уже почти пройдено в школе — подходит для повторения.',
+    words: [
+      { en: 'free time',     de: 'die Freizeit', ex: 'In my free time I meet friends, go to the cinema and read books.' },
+      { en: 'club',          de: 'der Klub, der Verein; hier: die AG' },
+      { en: 'to be',         de: 'sein' },
+      { en: 'everyone',      de: 'jede(r); alle', ex: 'Everyone is welcome.' },
+      { en: 'welcome',       de: 'willkommen (in)', ex: 'Everyone is welcome.' },
+      { en: 'sports ground', de: 'der Sportplatz' },
+      { en: 'to learn',      de: 'lernen' },
+      { en: 'to join',       de: 'mitmachen bei; beitreten', ex: 'Which club would you like to join?' },
+      { en: 'library',       de: 'die Bibliothek, die Bücherei', tricky: true },
+      { en: 'how to',        de: 'wie man' },
+      { en: 'to take photos', de: 'Bilder machen, fotografieren', ex: 'My brother can take fantastic photos with his camera.' },
+      { en: 'sports hall',   de: 'die Sporthalle' },
+      { en: 'to feel',       de: '(sich) fühlen' },
+      { en: 'gym',           de: 'die Turnhalle, das Fitnessstudio' },
+      { en: 'would like',    de: 'möchte (gern)', ex: 'Which club would you like to join?' },
+      { en: 'to want to',    de: 'etwas tun wollen' },
+      { en: 'to sound',      de: 'klingen, sich anhören', ex: 'Do you want to eat lasagne? — Yes, that sounds perfect.' },
+      { en: 'perfect',       de: 'perfekt', ex: 'Yes, that sounds perfect.' },
+      { en: 'could',         de: 'könnte(st, n, t)' },
+      { en: 'to be right',   de: 'Recht haben', ex: "Yes, you're right." },
+      { en: 'why',           de: 'warum' },
+      { en: 'nothing',       de: 'nichts' },
+      { en: 'to sit',        de: 'sitzen' },
+      { en: 'chocolate',     de: 'die Schokolade', tricky: true },
+      { en: 'swimming',      de: 'das Schwimmen', tricky: true },
+      { en: 'to collect',    de: 'sammeln', tricky: true },
+      { en: 'card',          de: 'die Karte' },
+      { en: 'table tennis',  de: 'das Tischtennis' },
+      { en: 'horse',         de: 'das Pferd' },
+      { en: 'gymnastics',    de: 'das Turnen', tricky: true },
+      { en: 'year',          de: 'das Jahr', ex: 'One year = 365 days.' },
+      { en: 'old',           de: 'alt' },
+      { en: 'to draw',       de: 'zeichnen' },
+      { en: 'dance',         de: 'der Tanz' },
+      { en: 'kind',          de: 'die Art, die Sorte' },
+      { en: 'to stand',      de: 'stehen; hier: ertragen, aushalten', ex: "Rock music is too loud. I can't stand it." },
+      { en: 'to hate',       de: 'hassen, nicht ausstehen können' },
+      { en: 'to watch',      de: 'beobachten; hier: anschauen' },
+      { en: 'cousin',        de: 'der/die Cousin/e', tricky: true },
+      { en: 'exciting',      de: 'aufregend; spannend', tricky: true },
+      { en: 'to cook',       de: 'kochen', ex: 'Can you cook spaghetti?' },
+      { en: 'lion',          de: 'der Löwe' },
+      { en: 'cow',           de: 'die Kuh' },
+      { en: 'pig',           de: 'das Schwein' },
+      { en: 'mouse',         de: 'die Maus (pl: mice)', ex: 'I think mice are cute.' },
+      { en: 'snake',         de: 'die Schlange' },
+      { en: 'farm',          de: 'der Bauernhof' },
+      { en: 'friendly',      de: 'freundlich', ex: 'Sir Barks-A-Lot is a friendly dog. He is nice to everyone.' },
+      { en: 'to bite',       de: 'beißen' },
+      { en: 'to bark',       de: 'bellen', ex: "Sir Barks-A-Lot doesn't bark a lot." },
+      { en: 'basket',        de: 'der Korb' },
+      { en: 'meat',          de: 'das Fleisch' },
+      { en: 'to walk the dog', de: 'den Hund ausführen' },
+      { en: 'cage',          de: 'der Käfig' },
+      { en: 'to fly',        de: 'fliegen' },
+      { en: 'around',        de: 'herum, umher' },
+      { en: 'seed',          de: 'der Same(n), das Korn' },
+      { en: 'sweet',         de: 'süß' },
+      { en: 'garden',        de: 'der Garten' },
+      { en: 'to run',        de: 'laufen, rennen', ex: 'Baloo can run around in the room.' },
+      { en: 'world',         de: 'die Welt, die Erde' },
+      { en: 'to speak',      de: 'sprechen, reden' },
+      { en: 'Spanish',       de: 'Spanisch; spanisch' },
+      { en: 'to send',       de: '(zu)schicken', ex: 'Please send me an email.' },
+      { en: 'player',        de: 'der/die Spieler/in', ex: 'Who is your favourite football player?' },
+      { en: 'to dance',      de: 'tanzen' },
+      { en: 'goalkeeper',    de: 'der Tormann / die Torfrau' },
+      { en: 'noise',         de: 'der Lärm, der Krach; das Geräusch', tricky: true },
+      { en: 'to move',       de: 'sich bewegen' },
+      { en: 'so that',       de: 'sodass, damit' },
+      { en: 'each',          de: 'jede(r, s)' },
+      { en: 'goal',          de: 'das Tor', ex: 'He shoots the ball. Goal! Goal!' },
+      { en: 'to shoot',      de: '(er)schießen', ex: 'He shoots the ball. Goal! Goal!' },
+      { en: 'teammate',      de: 'der/die Mannschaftskamerad/in, der/die Mitspieler/in', tricky: true },
+      { en: 'important',     de: 'wichtig', ex: 'Why is football so important to you?', tricky: true },
+      { en: 'that',          de: 'dass' },
+      { en: 'him',           de: 'ihm, ihn', ex: 'Ben is nice. I like him.' },
+      { en: 'us',            de: 'uns' },
+      { en: 'them',          de: 'sie, ihnen' },
+      { en: 'kangaroo',      de: 'das Känguru', tricky: true },
+      { en: 'Australia',     de: 'Australien' },
+      { en: 'strong',        de: 'stark' },
+      { en: 'to jump',       de: 'springen' },
+      { en: 'tail',          de: 'der Schwanz' },
+      { en: 'to be called',  de: 'heißen', ex: "These are Ben's budgies. They're called A and B." },
+      { en: 'grass',         de: 'das Gras; die Wiese, der Rasen' },
+      { en: 'mushroom',      de: 'der Pilz', tricky: true },
+      { en: 'fur',           de: 'das Fell, der Pelz' },
+      { en: 'kilometre',     de: 'der Kilometer', tricky: true },
+      { en: 'per',           de: 'pro' },
+      { en: 'monkey',        de: 'der Affe' },
+      { en: 'to throw',      de: 'werfen' },
+      { en: 'lunchtime',     de: 'die Mittagszeit; die Mittagspause' },
+      { en: 'people',        de: 'die Leute, die Menschen', ex: 'How many people live in your city?' },
+      { en: 'German',        de: 'Deutsch; deutsch' },
+      { en: 'to happen',     de: 'geschehen, passieren', tricky: true }
+    ]
+  },
+
+  {
+    id: 'theme05',
+    title: 'Theme 5 — A birthday party',
+    short: 'Birthday party',
+    status: 'current',
+    note: 'Тема, которую сейчас начинают. Готовимся заранее.',
+    words: [
+      { en: 'birthday',     de: 'der Geburtstag', ex: "It's his birthday." },
+      { en: 'May',          de: 'Mai' },
+      { en: 'to invite',    de: 'einladen', ex: 'He invites his friends to a sleepover birthday party.' },
+      { en: 'sleepover',    de: 'die Übernachtung, die Übernachtungsparty', ex: 'He invites his friends to a sleepover birthday party.', tricky: true },
+      { en: 'would',        de: 'würde(st, n, t)' },
+      { en: 'month',        de: 'der Monat' },
+      { en: 'January',      de: 'Januar', tricky: true },
+      { en: 'February',     de: 'Februar', tricky: true },
+      { en: 'March',        de: 'März' },
+      { en: 'April',        de: 'April' },
+      { en: 'June',         de: 'Juni' },
+      { en: 'July',         de: 'Juli' },
+      { en: 'August',       de: 'August' },
+      { en: 'September',    de: 'September' },
+      { en: 'October',      de: 'Oktober' },
+      { en: 'November',     de: 'November' },
+      { en: 'December',     de: 'Dezember', tricky: true },
+      { en: "I'd like",     de: 'ich hätte gern …' },
+      { en: 'Anything else?', de: 'Darf es noch etwas sein?' },
+      { en: 'afternoon',    de: 'der Nachmittag', tricky: true },
+      { en: 'him',          de: 'ihm, ihn' },
+      { en: 'to decorate',  de: 'schmücken, dekorieren' },
+      { en: 'balloon',      de: 'der (Luft)ballon', tricky: true },
+      { en: 'to arrive',    de: 'ankommen' },
+      { en: 'to give',      de: 'geben' },
+      { en: 'Happy Birthday!', de: 'Alles Gute zum Geburtstag!' },
+      { en: 'to come in',   de: 'hereinkommen' },
+      { en: 'special',      de: 'besondere(r, s), speziell', tricky: true },
+      { en: 'cake',         de: 'der Kuchen' },
+      { en: 'to wait',      de: 'warten' },
+      { en: 'lemonade',     de: 'die Limonade', tricky: true },
+      { en: 'to dance',     de: 'tanzen' },
+      { en: 'to grill',     de: 'grillen' },
+      { en: 'to write',     de: 'schreiben (das „w" wird nicht ausgesprochen)', tricky: true },
+      { en: 'right now',    de: 'gerade, jetzt, im Augenblick', ex: "Sorry, I can't right now, I'm busy." },
+      { en: 'activity',     de: 'die Aktivität' },
+      { en: 'your turn',    de: 'du bist dran' },
+      { en: 'own',          de: 'eigene(r, s)', ex: 'I want to have my own party.' },
+      { en: 'to celebrate', de: 'feiern' },
+      { en: 'cream',        de: 'die Sahne' },
+      { en: 'candle',       de: 'die Kerze' },
+      { en: 'Turkish',      de: 'Türkisch; türkisch' },
+      { en: 'to blow out',  de: '(eine Kerze) ausblasen', ex: "Let's blow out the candles together." },
+      { en: 'best wishes',  de: 'viele Grüße' },
+      { en: 'to have a barbecue', de: 'grillen, eine Grillparty feiern', ex: "Let's have a barbecue in the garden.", tricky: true },
+      { en: 'soon',         de: 'bald' },
+      { en: 'sweetheart',   de: 'der Liebling, der Schatz' },
+      { en: 'to hope',      de: 'hoffen', ex: "I hope you're happy." },
+      { en: 'decoration',   de: 'die Dekoration, der Schmuck' },
+      { en: 'maybe',        de: 'vielleicht, möglicherweise' },
+      { en: 'to phone',     de: 'anrufen' },
+      { en: 'father',       de: 'der Vater' },
+      { en: 'grandparents', de: 'die Großeltern' },
+      { en: 'divorced',     de: 'geschieden', ex: "Megan's parents are divorced. She only lives with her mum.", tricky: true },
+      { en: 'woman',        de: 'die Frau (pl: women)', tricky: true },
+      { en: 'grandmother',  de: 'die Großmutter' },
+      { en: 'mother',       de: 'die Mutter' },
+      { en: 'aunt',         de: 'die Tante' },
+      { en: 'granddaughter', de: 'die Enkelin, die Enkeltochter', tricky: true },
+      { en: 'daughter',     de: 'die Tochter', ex: "Megan is Mr McGregor's daughter.", tricky: true },
+      { en: 'man',          de: 'der Mann (pl: men)' },
+      { en: 'grandfather',  de: 'der Großvater' },
+      { en: 'uncle',        de: 'der Onkel', ex: 'My aunt and uncle live in Berlin.' },
+      { en: 'grandson',     de: 'der Enkel(sohn)' },
+      { en: 'son',          de: 'der Sohn' },
+      { en: 'member',       de: 'das Mitglied' },
+      { en: 'invitation',   de: 'die Einladung' },
+      { en: 'barbecue',     de: 'die Grillparty; der Grill', tricky: true },
+      { en: 'price',        de: 'der Preis', ex: 'How much is the green T-shirt? — It’s £19.99.' },
+      { en: 'How much is/are…?', de: 'Was kostet/kosten …?', ex: 'How much is the green T-shirt?' },
+      { en: 'pound',        de: 'das Pfund (brit. Währung)' },
+      { en: 'market',       de: 'der Markt' },
+      { en: 'present',      de: 'das Geschenk' },
+      { en: 'change',       de: 'die (Ver)änderung; hier: das Wechselgeld' },
+      { en: 'date',         de: 'das Datum' },
+      { en: 'last',         de: 'letzte(r, s)' },
+      { en: 'to finish',    de: 'beenden, aufhören' },
+      { en: 'to look for',  de: 'suchen (nach)' },
+      { en: 'sure',         de: 'sicher' },
+      { en: 'cheap',        de: 'billig, preiswert', ex: "The T-shirt is only £5. — Wow, that's cheap!" },
+      { en: 'like',         de: 'wie' },
+      { en: 'expensive',    de: 'teuer', tricky: true },
+      { en: 'thanks a lot', de: 'vielen Dank' },
+      { en: 'message',      de: 'die Nachricht', tricky: true },
+      { en: 'garland',      de: 'die Girlande' },
+      { en: 'clothes',      de: 'die Kleider, die Kleidung', ex: "I've got many clothes, for example thirty T-shirts and ten jeans.", tricky: true },
+      { en: 'for example',  de: 'zum Beispiel' },
+      { en: 'shoe',         de: 'der Schuh' },
+      { en: 'to make a wish', de: 'sich etwas wünschen' },
+      { en: 'rice',         de: 'der Reis' },
+      { en: 'until',        de: 'bis' },
+      { en: 'the next day', de: 'am nächsten Tag' },
+      { en: 'recipe',       de: 'das Rezept', tricky: true },
+      { en: 'cherry',       de: 'die Kirsche' },
+      { en: 'pineapple',    de: 'die Ananas', tricky: true },
+      { en: 'lemon',        de: 'die Zitrone' },
+      { en: 'sugar',        de: 'der Zucker', tricky: true },
+      { en: 'to mix',       de: '(ver)mischen' },
+      { en: 'to cut',       de: 'schneiden' },
+      { en: 'straw',        de: 'der Strohhalm, der Trinkhalm' }
+    ]
+  }
+];
+</script>
+<script>
+/* ============================================================
+   ДАННЫЕ
+   ============================================================ */
+
+const PROFILES = {
+  max:   { id: 'max',   name: 'Max'  },
+  aleks: { id: 'aleks', name: 'Alex' }
+};
+
+/* School Words — берём из window.LANGO_THEMES (data/themes.js) */
+const THEMES = (window.LANGO_THEMES || []);
+const THEMES_BY_ID = Object.fromEntries(THEMES.map(t => [t.id, t]));
+/* Список всех «коварных» слов из всех тем — основа для Spelling Trainer */
+function allTrickyWords() {
+  const out = [];
+  for (const t of THEMES) {
+    for (const w of t.words) {
+      if (w.tricky) out.push({ ...w, themeId: t.id });
+    }
+  }
+  return out;
+}
+
+/* Power Words — настоящий контент v0.1 */
+const POWER_WORDS = [
+  { weak: "cool",
+    strong: ["exciting", "impressive", "amazing", "fascinating"],
+    examples: {
+      "exciting":    "The football match was really <b>exciting</b> because the score changed in the last minute.",
+      "impressive":  "His drawing was <b>impressive</b> — every detail looked almost real.",
+      "amazing":     "The view from the top of the mountain was <b>amazing</b>.",
+      "fascinating": "I read a <b>fascinating</b> book about how planes actually fly."
+    }
+  },
+  { weak: "good",
+    strong: ["useful", "helpful", "excellent", "valuable"],
+    examples: {
+      "useful":    "This dictionary is really <b>useful</b> when I write essays.",
+      "helpful":   "Our maths teacher is always <b>helpful</b> when I get stuck.",
+      "excellent": "She did an <b>excellent</b> job on her presentation.",
+      "valuable":  "His advice was <b>valuable</b> — it saved me a lot of time."
+    }
+  },
+  { weak: "bad",
+    strong: ["boring", "disappointing", "awful", "harmful"],
+    examples: {
+      "boring":        "The film was <b>boring</b> — nothing happened for the first hour.",
+      "disappointing": "Our holiday was <b>disappointing</b> because it rained every day.",
+      "awful":         "The smell in the kitchen was <b>awful</b>.",
+      "harmful":       "Spending too much time on the screen can be <b>harmful</b> to your eyes."
+    }
+  },
+  { weak: "nice",
+    strong: ["pleasant", "lovely", "charming", "delightful"],
+    examples: {
+      "pleasant":   "We had a <b>pleasant</b> walk along the river after lunch.",
+      "lovely":     "What a <b>lovely</b> garden — the flowers smell wonderful.",
+      "charming":   "The little village in the mountains was <b>charming</b>.",
+      "delightful": "The cake she baked was simply <b>delightful</b>."
+    }
+  },
+  { weak: "big",
+    strong: ["enormous", "huge", "massive", "vast"],
+    examples: {
+      "enormous": "We saw an <b>enormous</b> ship at the harbour.",
+      "huge":     "There was a <b>huge</b> queue in front of the museum.",
+      "massive":  "He took a <b>massive</b> bite of his sandwich.",
+      "vast":     "The Sahara is a <b>vast</b> desert in northern Africa."
+    }
+  },
+  { weak: "small",
+    strong: ["tiny", "minor", "modest", "slight"],
+    examples: {
+      "tiny":   "A <b>tiny</b> insect was crawling on the window.",
+      "minor":  "There was a <b>minor</b> mistake in the test, but I corrected it.",
+      "modest": "He lives in a <b>modest</b> flat near the school.",
+      "slight": "I felt a <b>slight</b> pain in my leg after the run."
+    }
+  },
+  { weak: "happy",
+    strong: ["cheerful", "delighted", "thrilled", "glad"],
+    examples: {
+      "cheerful":  "She has a <b>cheerful</b> smile that makes everyone feel good.",
+      "delighted": "I was <b>delighted</b> when I saw my grade for the project.",
+      "thrilled":  "Mum was <b>thrilled</b> to get tickets to the concert.",
+      "glad":      "I am <b>glad</b> we decided to walk instead of taking the bus."
+    }
+  },
+  { weak: "sad",
+    strong: ["miserable", "gloomy", "disappointed", "heartbroken"],
+    examples: {
+      "miserable":    "The dog looked <b>miserable</b> sitting in the rain.",
+      "gloomy":       "It was a cold, <b>gloomy</b> Sunday in November.",
+      "disappointed": "I was <b>disappointed</b> when the trip was cancelled.",
+      "heartbroken":  "She was <b>heartbroken</b> when her cat ran away."
+    }
+  },
+  { weak: "like",
+    strong: ["enjoy", "love", "appreciate", "adore"],
+    examples: {
+      "enjoy":      "I really <b>enjoy</b> playing football on Saturdays.",
+      "love":       "I <b>love</b> the smell of fresh bread in the morning.",
+      "appreciate": "I <b>appreciate</b> all the help you gave me with my project.",
+      "adore":      "My little sister <b>adores</b> her new puppy."
+    }
+  },
+  { weak: "interesting",
+    strong: ["fascinating", "engaging", "intriguing", "captivating"],
+    examples: {
+      "fascinating": "The film about space was absolutely <b>fascinating</b>.",
+      "engaging":    "Our history teacher tells stories in a really <b>engaging</b> way.",
+      "intriguing":  "The book had an <b>intriguing</b> plot full of surprises.",
+      "captivating": "Her speech was <b>captivating</b> from the very first word."
+    }
+  },
+  { weak: "funny",
+    strong: ["hilarious", "amusing", "witty", "entertaining"],
+    examples: {
+      "hilarious":    "Yesterday's lesson was <b>hilarious</b> — even the teacher was laughing.",
+      "amusing":      "He told us an <b>amusing</b> story about his cat.",
+      "witty":        "Her answer was so <b>witty</b> that everyone smiled.",
+      "entertaining": "The show was really <b>entertaining</b> from start to finish."
+    }
+  },
+  { weak: "fast",
+    strong: ["rapid", "quick", "speedy", "swift"],
+    examples: {
+      "rapid":  "There has been a <b>rapid</b> change in the weather today.",
+      "quick":  "He gave a <b>quick</b> answer and went on with his work.",
+      "speedy": "We hope for a <b>speedy</b> recovery after his injury.",
+      "swift":  "The river is <b>swift</b> after all the rain last week."
+    }
+  },
+  { weak: "smart",
+    strong: ["clever", "brilliant", "intelligent", "sharp"],
+    examples: {
+      "clever":      "That was a <b>clever</b> way to solve the puzzle.",
+      "brilliant":   "She is a <b>brilliant</b> chess player for her age.",
+      "intelligent": "Dolphins are very <b>intelligent</b> animals.",
+      "sharp":       "He has a <b>sharp</b> mind and notices every detail."
+    }
+  }
+];
+
+/* Better Answer preview pairs — показываем по очереди как «ленту вдохновения» */
+const BETTER_PAIRS = [
+  {
+    weak: "I like football. It is cool.",
+    strong: "I really enjoy football because it is exciting. For example, the result can change at any moment."
+  },
+  {
+    weak: "The film was good.",
+    strong: "The film was excellent because the story kept me guessing until the end."
+  },
+  {
+    weak: "Our trip was nice.",
+    strong: "Our trip was lovely because we walked through a charming old town and ate amazing pizza."
+  },
+  {
+    weak: "Maths is hard.",
+    strong: "Maths is challenging for me, however I am getting better because I practise a little every day."
+  },
+  {
+    weak: "My dog is funny.",
+    strong: "My dog is hilarious because he tries to catch his own tail every morning."
+  }
+];
+
+/* ============================================================
+   СОСТОЯНИЕ
+   ============================================================ */
+
+let state = {
+  profile: null,                // 'max' | 'aleks'
+  schoolTopic: null,            // выбранная тема
+  schoolSession: [],            // массив { en, de, ex, tricky, themeId } для текущей сессии
+  schoolIndex: 0,
+  schoolChecked: false,
+  schoolSessionStats: { mastered: 0, progressed: 0, red: 0, total: 0 },
+  powerIndex: 0,
+  powerSelected: null,
+  spellingQueue: [],
+  spellingIndex: 0,
+  spellingChecked: false
+};
+
+const SESSION_SIZE = 12;
+
+const STORAGE_KEY = (p) => `lango.profile.${p}`;
+
+function loadProgress(profileId) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY(profileId));
+    if (raw) {
+      const d = JSON.parse(raw);
+      d.wordStatus = d.wordStatus || {}; // { en: { streak, red, themeId, hits, misses } }
+      d.learnedPowerWords = d.learnedPowerWords || [];
+      d.streak = d.streak || 0;
+      // миграция со старого формата (knownSchoolWords / spellingMastered) — пропускаем
+      return d;
+    }
+  } catch (e) { /* ignore */ }
+  return {
+    wordStatus: {},
+    learnedPowerWords: [],
+    streak: 0,
+    lastVisit: null
+  };
+}
+
+/* === Универсальные хелперы статуса слова === */
+
+function getStatus(en) {
+  const p = progress();
+  return p.wordStatus[en] || { streak: 0, red: false, themeId: null, hits: 0, misses: 0 };
+}
+
+function bumpCorrect(en, themeId) {
+  const p = progress();
+  const s = p.wordStatus[en] || { streak: 0, red: false, themeId, hits: 0, misses: 0 };
+  s.streak = Math.min(3, (s.streak || 0) + 1);
+  s.red = false;
+  s.hits = (s.hits || 0) + 1;
+  s.themeId = themeId || s.themeId;
+  p.wordStatus[en] = s;
+  saveProgress(state.profile, p);
+  return s;
+}
+
+function bumpWrong(en, themeId) {
+  const p = progress();
+  const s = p.wordStatus[en] || { streak: 0, red: false, themeId, hits: 0, misses: 0 };
+  s.streak = 0;
+  s.red = true;
+  s.misses = (s.misses || 0) + 1;
+  s.themeId = themeId || s.themeId;
+  p.wordStatus[en] = s;
+  saveProgress(state.profile, p);
+  return s;
+}
+
+/* стадия для UI: 'new' | 'red' | 's1' | 's2' | 'mastered' */
+function statusStage(s) {
+  if (!s || (!s.streak && !s.red && !s.hits && !s.misses)) return 'new';
+  if (s.red) return 'red';
+  if (s.streak >= 3) return 'mastered';
+  if (s.streak === 2) return 's2';
+  if (s.streak === 1) return 's1';
+  return 'new';
+}
+
+const STAGE_EMOJI = { new: '🌱', red: '🔴', s1: '🌱', s2: '🌿', mastered: '🌳' };
+const STAGE_LABEL = { new: 'новое', red: 'ошибка', s1: '1 из 3', s2: '2 из 3', mastered: 'выучено' };
+
+function dotsHTML(stage) {
+  const filled = stage === 'mastered' ? 3 : stage === 's2' ? 2 : stage === 's1' ? 1 : 0;
+  let cls = 'dots ' + stage;
+  let html = '<span class="' + cls + '">';
+  for (let i = 0; i < 3; i++) {
+    html += '<i class="dot' + (i < filled ? ' filled' : '') + '"></i>';
+  }
+  html += '</span>';
+  return html;
+}
+
+function saveProgress(profileId, data) {
+  try {
+    localStorage.setItem(STORAGE_KEY(profileId), JSON.stringify(data));
+  } catch (e) { /* iPad sometimes blocks in private mode — silently degrade */ }
+}
+
+function progress() { return loadProgress(state.profile); }
+
+function updateStreak() {
+  const p = progress();
+  const today = new Date().toISOString().slice(0, 10);
+  if (p.lastVisit === today) return p;
+  // simple: any visit on a new day increments streak (gap-tolerant could come later)
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  p.streak = (p.lastVisit === yesterday) ? (p.streak + 1) : 1;
+  p.lastVisit = today;
+  saveProgress(state.profile, p);
+  return p;
+}
+
+/* ============================================================
+   НАВИГАЦИЯ
+   ============================================================ */
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function pickProfile(id) {
+  state.profile = id;
+  document.body.dataset.profile = id;
+  const p = updateStreak();
+  document.getElementById('profilePill').style.display = 'inline-flex';
+  document.getElementById('profilePill').dataset.profile = id;
+  document.getElementById('profilePillName').textContent = PROFILES[id].name;
+  document.getElementById('greeting').textContent = `Привет, ${PROFILES[id].name}!`;
+  refreshHomeStats();
+  renderTopics();
+  showScreen('homeScreen');
+}
+
+function goHome() { showScreen('homeScreen'); refreshHomeStats(); }
+
+document.getElementById('profilePill').addEventListener('click', () => {
+  // Тап по профилю — вернуть к выбору профиля
+  showScreen('welcomeScreen');
+  document.getElementById('profilePill').style.display = 'none';
+  refreshWelcomeMeta();
+});
+
+/* ============================================================
+   HOME
+   ============================================================ */
+
+function refreshHomeStats() {
+  const p = progress();
+  const ws = p.wordStatus || {};
+  let mastered = 0, redCount = 0;
+  for (const en in ws) {
+    const stage = statusStage(ws[en]);
+    if (stage === 'mastered') mastered++;
+    if (stage === 'red') redCount++;
+  }
+  document.getElementById('statKnown').textContent = mastered;
+  document.getElementById('statSpell').textContent = redCount;
+  document.getElementById('statStreak').textContent = p.streak || 0;
+}
+
+function refreshWelcomeMeta() {
+  for (const id of ['max', 'aleks']) {
+    const p = loadProgress(id);
+    const ws = p.wordStatus || {};
+    let mastered = 0;
+    for (const en in ws) if (statusStage(ws[en]) === 'mastered') mastered++;
+    const meta = document.getElementById(id === 'max' ? 'metaMax' : 'metaAleks');
+    if (mastered === 0 && !p.streak) meta.textContent = 'Готов начать';
+    else meta.textContent = `🌳 ${mastered} выучено · ${p.streak || 0} дней подряд`;
+  }
+}
+
+/* ============================================================
+   SCHOOL WORDS
+   ============================================================ */
+
+function themeStatusCounts(theme) {
+  const counts = { mastered: 0, s2: 0, s1: 0, red: 0, new: 0 };
+  for (const w of theme.words) {
+    const stage = statusStage(getStatus(w.en));
+    counts[stage] = (counts[stage] || 0) + 1;
+  }
+  return counts;
+}
+
+function renderTopics() {
+  const grid = document.getElementById('topicGrid');
+  grid.innerHTML = '';
+  for (const t of THEMES) {
+    const total = t.words.length;
+    const c = themeStatusCounts(t);
+    const pct = Math.round((c.mastered / total) * 100);
+    const badge = t.status === 'current'
+      ? '<span class="t-badge t-badge-now">Сейчас учим</span>'
+      : '<span class="t-badge t-badge-rev">Повторение</span>';
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.onclick = () => openTopic(t.id);
+    card.innerHTML = `
+      <div class="t-row">
+        <div class="t-name">${t.title}</div>
+        ${badge}
+      </div>
+      <div class="t-meta">${c.mastered} из ${total} выучено (${pct}%)</div>
+      <div class="topic-stats">
+        <span>🌳 ${c.mastered}</span>
+        <span>🌿 ${c.s2}</span>
+        <span>🌱 ${c.s1}</span>
+        <span>🔴 ${c.red}</span>
+        <span>⚪ ${c.new}</span>
+      </div>
+      <div class="topic-progress"><div style="width:${pct}%"></div></div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function openSchoolWords() {
+  renderTopics();
+  showScreen('schoolTopicsScreen');
+}
+
+function openTopic(themeId) {
+  state.schoolTopic = themeId;
+  startNextSchoolSession();
+}
+
+/* Собираем сессию по приоритету:
+   красные → s1/s2 (в процессе) → новые.
+   Чтобы не было однообразия, чуть-чуть мешаем порядок внутри одной группы. */
+function buildSchoolSession(theme) {
+  const buckets = { red: [], inprog: [], fresh: [] };
+  for (const w of theme.words) {
+    const s = getStatus(w.en);
+    const stage = statusStage(s);
+    if (stage === 'mastered') continue; // выученные пока не трогаем
+    const item = { ...w, themeId: theme.id };
+    if (stage === 'red') buckets.red.push(item);
+    else if (stage === 's1' || stage === 's2') buckets.inprog.push(item);
+    else buckets.fresh.push(item);
+  }
+  // лёгкая случайность внутри ведра
+  const mix = arr => shuffle(arr);
+  const queue = [...mix(buckets.red), ...mix(buckets.inprog), ...mix(buckets.fresh)];
+  return queue.slice(0, SESSION_SIZE);
+}
+
+function startNextSchoolSession() {
+  const t = THEMES_BY_ID[state.schoolTopic];
+  if (!t) { showScreen('schoolTopicsScreen'); return; }
+  const session = buildSchoolSession(t);
+  if (!session.length) {
+    // всё выучено — отдельный экран
+    document.getElementById('sumTitle').textContent = 'Тема выучена! 🌳';
+    document.getElementById('sumSub').textContent = 'Все слова в зелёной зоне.';
+    document.getElementById('sumMastered').textContent = t.words.length;
+    document.getElementById('sumProgress').textContent = 0;
+    document.getElementById('sumRed').textContent = 0;
+    document.getElementById('sumNextBtn').style.display = 'none';
+    showScreen('schoolSummaryScreen');
+    return;
+  }
+  document.getElementById('sumNextBtn').style.display = '';
+  state.schoolSession = session;
+  state.schoolIndex = 0;
+  state.schoolChecked = false;
+  state.schoolSessionStats = { mastered: 0, progressed: 0, red: 0, total: session.length };
+  document.getElementById('schoolTopicTitle').textContent = t.title;
+  document.getElementById('schoolSessionMeta').textContent = `Сессия из ${session.length} слов. Печатай по-английски.`;
+  showScreen('schoolCardsScreen');
+  renderSchoolCard();
+  setTimeout(() => document.getElementById('tpInput').focus(), 250);
+}
+
+function currentSchoolWord() { return state.schoolSession[state.schoolIndex]; }
+
+function renderSchoolCard() {
+  const w = currentSchoolWord();
+  if (!w) { showSchoolSummary(); return; }
+  const s = getStatus(w.en);
+  const stage = statusStage(s);
+  document.getElementById('tpDots').innerHTML = dotsHTML(stage);
+  const pill = document.getElementById('tpPill');
+  pill.className = 'stage-pill ' + stage;
+  pill.textContent = STAGE_LABEL[stage];
+  document.getElementById('tpDe').textContent = w.de;
+  document.getElementById('tpSkel').textContent = makeSkeleton(w.en);
+  const inp = document.getElementById('tpInput');
+  inp.value = '';
+  inp.disabled = false;
+  inp.classList.remove('right', 'wrong');
+  document.getElementById('tpFeedback').textContent = '';
+  document.getElementById('tpFeedback').className = 'tp-feedback';
+  document.getElementById('tpEx').textContent = '';
+  document.getElementById('tpCheckBtn').textContent = 'Проверить';
+  document.getElementById('tpCheckBtn').onclick = checkSchoolAnswer;
+  document.getElementById('tpDontKnowBtn').disabled = false;
+  state.schoolChecked = false;
+  const pct = (state.schoolIndex / state.schoolSession.length) * 100;
+  document.getElementById('schoolProgress').style.width = pct + '%';
+  setTimeout(() => inp.focus(), 50);
+}
+
+function checkSchoolAnswer() {
+  if (state.schoolChecked) { nextSchoolWord(); return; }
+  const w = currentSchoolWord();
+  if (!w) return;
+  const guess = normaliseAnswer(document.getElementById('tpInput').value);
+  const truth = normaliseAnswer(w.en);
+  const inp = document.getElementById('tpInput');
+  const fb = document.getElementById('tpFeedback');
+  const ex = document.getElementById('tpEx');
+  const card = document.getElementById('tpCard');
+
+  if (guess === truth) {
+    inp.classList.remove('wrong'); inp.classList.add('right');
+    fb.className = 'tp-feedback right';
+    const sBefore = getStatus(w.en);
+    const sAfter = bumpCorrect(w.en, w.themeId);
+    const stage = statusStage(sAfter);
+    if (stage === 'mastered' && (sBefore.streak || 0) < 3) {
+      fb.innerHTML = '🌳 Выучено!';
+      state.schoolSessionStats.mastered++;
+      card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
+    } else {
+      fb.innerHTML = '✓ Правильно! ' + (stage === 's1' ? '🌱' : stage === 's2' ? '🌿' : '🌳');
+      state.schoolSessionStats.progressed++;
+    }
+    document.getElementById('tpDots').innerHTML = dotsHTML(stage);
+    const pill = document.getElementById('tpPill');
+    pill.className = 'stage-pill ' + stage;
+    pill.textContent = STAGE_LABEL[stage];
+  } else {
+    inp.classList.remove('right'); inp.classList.add('wrong');
+    fb.className = 'tp-feedback wrong';
+    fb.innerHTML = 'Почти. Правильно: <span class="correct">' + escapeHtml(w.en) + '</span>';
+    bumpWrong(w.en, w.themeId);
+    state.schoolSessionStats.red++;
+    document.getElementById('tpDots').innerHTML = dotsHTML('red');
+    const pill = document.getElementById('tpPill');
+    pill.className = 'stage-pill red';
+    pill.textContent = STAGE_LABEL.red;
+  }
+  if (w.ex) ex.textContent = '«' + w.ex + '»';
+  state.schoolChecked = true;
+  document.getElementById('tpCheckBtn').textContent = 'Дальше';
+  refreshHomeStats();
+}
+
+function dontKnowSchool() {
+  // показываем правильный ответ без штрафа, слово вернётся в очередь
+  if (state.schoolChecked) return;
+  const w = currentSchoolWord();
+  if (!w) return;
+  const inp = document.getElementById('tpInput');
+  inp.value = w.en;
+  inp.disabled = true;
+  document.getElementById('tpFeedback').className = 'tp-feedback';
+  document.getElementById('tpFeedback').innerHTML = 'Запомни это слово. Оно вернётся в этой сессии.';
+  if (w.ex) document.getElementById('tpEx').textContent = '«' + w.ex + '»';
+  // вернуть слово в конец очереди
+  state.schoolSession.push({ ...w });
+  state.schoolChecked = true;
+  document.getElementById('tpCheckBtn').textContent = 'Дальше';
+  document.getElementById('tpDontKnowBtn').disabled = true;
+}
+
+function nextSchoolWord() {
+  state.schoolIndex++;
+  if (state.schoolIndex >= state.schoolSession.length) {
+    showSchoolSummary();
+    return;
+  }
+  renderSchoolCard();
+}
+
+function showSchoolSummary() {
+  const t = THEMES_BY_ID[state.schoolTopic];
+  const c = themeStatusCounts(t);
+  document.getElementById('sumTitle').textContent = state.schoolSessionStats.red === 0 ? 'Без ошибок! 🌟' : 'Молодец, движемся вперёд!';
+  document.getElementById('sumSub').textContent = `${t.title}: ${c.mastered} из ${t.words.length} выучено`;
+  document.getElementById('sumMastered').textContent = state.schoolSessionStats.mastered;
+  document.getElementById('sumProgress').textContent = state.schoolSessionStats.progressed;
+  document.getElementById('sumRed').textContent = state.schoolSessionStats.red;
+  document.getElementById('sumNextBtn').style.display = '';
+  document.getElementById('sumNextBtn').textContent = `Ещё ${SESSION_SIZE} слов`;
+  document.getElementById('schoolProgress').style.width = '100%';
+  showScreen('schoolSummaryScreen');
+  refreshHomeStats();
+}
+
+/* Enter в School Words: Проверить → Дальше */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  if (!document.getElementById('schoolCardsScreen').classList.contains('active')) return;
+  e.preventDefault();
+  if (state.schoolChecked) nextSchoolWord(); else checkSchoolAnswer();
+});
+
+/* ============================================================
+   SPELLING TRAINER
+   ============================================================ */
+
+function makeSkeleton(word) {
+  // показываем длину слова: пробелы остаются, буквы → подчёркивания
+  return word.split('').map(ch => {
+    if (ch === ' ') return '·';
+    if (/[a-zA-Z]/.test(ch)) return '_';
+    return ch; // апострофы, дефисы, цифры — оставляем
+  }).join(' ');
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildSpellingQueue() {
+  // Источник: красные слова (red) + коварные (tricky) из всех тем,
+  // исключая выученные (streak >= 3).
+  const reds = [];
+  const trickyCurrent = [];
+  const trickyOther = [];
+  const currentTheme = THEMES.find(t => t.status === 'current') || THEMES[0];
+  for (const t of THEMES) {
+    for (const w of t.words) {
+      const s = getStatus(w.en);
+      if (statusStage(s) === 'mastered') continue;
+      const item = { ...w, themeId: t.id };
+      if (s.red) { reds.push(item); continue; }
+      if (w.tricky) (t === currentTheme ? trickyCurrent : trickyOther).push(item);
+    }
+  }
+  const queue = [...shuffle(reds), ...shuffle(trickyCurrent), ...shuffle(trickyOther)];
+  if (queue.length) return queue.slice(0, 20);
+  // fallback: первые 12 слов текущей темы
+  return (currentTheme ? currentTheme.words.slice(0, 12) : []).map(w => ({ ...w, themeId: currentTheme.id }));
+}
+
+function openSpelling() {
+  state.spellingQueue = buildSpellingQueue();
+  state.spellingIndex = 0;
+  state.spellingChecked = false;
+  showScreen('spellingScreen');
+  renderSpelling();
+  // фокус с задержкой, чтобы iPad не дёргал клавиатуру до анимации
+  setTimeout(() => document.getElementById('spInput').focus(), 250);
+}
+
+function renderSpelling() {
+  const q = state.spellingQueue;
+  if (!q.length || state.spellingIndex >= q.length) {
+    document.getElementById('spDe').textContent = 'Готово!';
+    document.getElementById('spSkel').textContent = '';
+    document.getElementById('spInput').value = '';
+    document.getElementById('spInput').disabled = true;
+    document.getElementById('spFeedback').textContent = 'Все коварные слова на сегодня — пройдены.';
+    document.getElementById('spEx').textContent = '';
+    document.getElementById('spCheckBtn').textContent = 'На главную';
+    document.getElementById('spCheckBtn').onclick = goHome;
+    document.getElementById('spellingProgress').style.width = '100%';
+    return;
+  }
+  const w = q[state.spellingIndex];
+  const card = document.getElementById('spCard');
+  card.classList.toggle('tricky-flag', !!w.tricky);
+  document.getElementById('spDe').textContent = w.de;
+  document.getElementById('spSkel').textContent = makeSkeleton(w.en);
+  const inp = document.getElementById('spInput');
+  inp.value = '';
+  inp.disabled = false;
+  inp.classList.remove('right', 'wrong');
+  document.getElementById('spFeedback').textContent = '';
+  document.getElementById('spFeedback').className = 'sp-feedback';
+  document.getElementById('spEx').textContent = '';
+  document.getElementById('spCheckBtn').textContent = 'Проверить';
+  document.getElementById('spCheckBtn').onclick = checkSpelling;
+  state.spellingChecked = false;
+  const pct = (state.spellingIndex / q.length) * 100;
+  document.getElementById('spellingProgress').style.width = pct + '%';
+  setTimeout(() => inp.focus(), 50);
+}
+
+function normaliseAnswer(s) {
+  return (s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function checkSpelling() {
+  if (state.spellingChecked) { nextSpelling(); return; }
+  const q = state.spellingQueue;
+  const w = q[state.spellingIndex];
+  if (!w) return;
+  const guess = normaliseAnswer(document.getElementById('spInput').value);
+  const truth = normaliseAnswer(w.en);
+  const inp = document.getElementById('spInput');
+  const fb = document.getElementById('spFeedback');
+  const ex = document.getElementById('spEx');
+
+  if (guess === truth) {
+    inp.classList.remove('wrong'); inp.classList.add('right');
+    fb.className = 'sp-feedback right';
+    const sAfter = bumpCorrect(w.en, w.themeId);
+    const stage = statusStage(sAfter);
+    fb.innerHTML = stage === 'mastered' ? '🌳 Выучено!' : '✓ Правильно! ' + (stage === 's2' ? '🌿' : '🌱');
+  } else {
+    inp.classList.remove('right'); inp.classList.add('wrong');
+    fb.className = 'sp-feedback wrong';
+    fb.innerHTML = 'Почти. Правильно: <span class="correct">' + escapeHtml(w.en) + '</span>';
+    bumpWrong(w.en, w.themeId);
+  }
+  if (w.ex) ex.textContent = '«' + w.ex + '»';
+  state.spellingChecked = true;
+  document.getElementById('spCheckBtn').textContent = 'Дальше';
+  refreshHomeStats();
+}
+
+function nextSpelling() {
+  state.spellingIndex++;
+  renderSpelling();
+}
+
+function skipSpelling() {
+  // пропуск без штрафа
+  state.spellingIndex++;
+  renderSpelling();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+/* Enter — проверить, повторный Enter — Дальше */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  if (!document.getElementById('spellingScreen').classList.contains('active')) return;
+  e.preventDefault();
+  if (state.spellingChecked) nextSpelling(); else checkSpelling();
+});
+
+/* ============================================================
+   POWER WORDS
+   ============================================================ */
+
+function openPowerWords() {
+  state.powerIndex = 0;
+  state.powerSelected = null;
+  showScreen('powerScreen');
+  renderPower();
+}
+
+function renderPower() {
+  const item = POWER_WORDS[state.powerIndex];
+  document.getElementById('powerWeak').textContent = item.weak;
+
+  const grid = document.getElementById('powerOptions');
+  grid.innerHTML = '';
+  for (const word of item.strong) {
+    const b = document.createElement('div');
+    b.className = 'opt';
+    b.textContent = word;
+    b.onclick = () => selectStrong(word);
+    grid.appendChild(b);
+  }
+  state.powerSelected = null;
+  const ex = document.getElementById('powerExample');
+  ex.classList.add('empty');
+  ex.innerHTML = 'Выбери одно из слов сверху, чтобы увидеть пример.';
+
+  const pct = (state.powerIndex / POWER_WORDS.length) * 100;
+  document.getElementById('powerProgress').style.width = pct + '%';
+
+  // Better-answer preview cycles
+  const bp = BETTER_PAIRS[state.powerIndex % BETTER_PAIRS.length];
+  document.getElementById('bpWeak').textContent = '"' + bp.weak + '"';
+  document.getElementById('bpStrong').innerHTML = '<span class="tag">Strong</span>' + bp.strong;
+}
+
+function selectStrong(word) {
+  const item = POWER_WORDS[state.powerIndex];
+  state.powerSelected = word;
+  // подсветить выбранную
+  document.querySelectorAll('#powerOptions .opt').forEach(el => {
+    el.classList.toggle('selected', el.textContent === word);
+  });
+  const ex = document.getElementById('powerExample');
+  ex.classList.remove('empty');
+  ex.innerHTML = item.examples[word];
+
+  // зачесть пару как "освоенную", когда хоть одна сильная замена выбрана
+  const p = progress();
+  if (!p.learnedPowerWords.includes(item.weak)) {
+    p.learnedPowerWords.push(item.weak);
+    saveProgress(state.profile, p);
+  }
+}
+
+function nextPower() {
+  if (state.powerIndex < POWER_WORDS.length - 1) {
+    state.powerIndex++;
+    renderPower();
+  } else {
+    toast('Все Power Words пройдены!');
+    goHome();
+  }
+}
+
+function prevPower() {
+  if (state.powerIndex > 0) {
+    state.powerIndex--;
+    renderPower();
+  }
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+
+refreshWelcomeMeta();
+</script>
+</body>
+</html>
