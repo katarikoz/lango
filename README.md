@@ -1,20 +1,25 @@
-# Lango — Build Better English
+# LanGo — Build Better English
 
-Семейное мини-приложение для Макса и Алекса. Учим английский по школьному учебнику, прокачиваем словарь, тренируем spelling.
+Family learning app for kids. School textbook vocabulary, power words, spelling — all in one place.
 
-## Запуск
-Откройте `index.html` в браузере или зайдите по адресу `lango.milxi.fun`.
+**Live:** [lango.milxi.fun](https://lango.milxi.fun)
 
-## Что внутри
-- **School Words** — печать всех слов из текущей школьной темы. Статус по 3 шагам: 🌱 → 🌿 → 🌳. Любая ошибка сбрасывает на 🔴.
-- **Power Words** — замена слабых cool / good / bad на сильные.
-- **Spelling Trainer** — фокус на коварных словах и недавних ошибках.
-- Профили: Max и Alex, отдельный прогресс у каждого.
-- Темы из учебника подключаются в массиве `LANGO_THEMES` в начале `index.html`.
+## Modes
 
-## Деплой
-GitHub Pages, ветка `main`. Любой push → обновление через ~30 секунд.
+- **School Words** — type textbook words (German → English) with adaptive spaced repetition. Difficulty adjusts per word; easy words need 3 correct, hard ones up to 5. Multi-segment progress bar (red/orange/green).
+- **Power Words** — replace weak words (cool, good, bad) with stronger alternatives, with example sentences.
+- **Spelling Trainer** — tricky words + personal mistakes come back more often.
+- **Better Answers** — short reply → full answer (coming soon).
+- **Connectors** — because, however, therefore (coming soon).
+- **Speaking Builder** — structured opinion framework (coming soon).
 
-## Содержимое
-- `index.html` — всё приложение в одном файле, никаких внешних зависимостей.
-- localStorage хранит прогресс по профилю и флаг разблокировки.
+## How it works
+
+- Two profiles (🐱 / 🦊) with separate progress
+- Themes from the school textbook — add more in the `LANGO_THEMES` array
+- Progress stored in localStorage per profile
+- Single `index.html`, no build step, font via Google Fonts (Nunito)
+
+## Deploy
+
+GitHub Pages, `main` branch. Push → live in ~30 seconds.
