@@ -708,6 +708,168 @@
     .pw-weak .word { font-size: 32px; }
   }
 
+  /* CREATURE PET */
+  .creature-zone {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 24px 20px 18px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+  }
+  .creature-emoji {
+    font-size: 64px;
+    line-height: 1;
+    animation: creatureBreathe 3s ease-in-out infinite;
+  }
+  @keyframes creatureBreathe {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-4px) scale(1.04); }
+  }
+  .creature-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .creature-theme-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .creature-msg {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .creature-progress {
+    height: 8px;
+    background: var(--line);
+    border-radius: 99px;
+    margin-top: 14px;
+    overflow: hidden;
+  }
+  .creature-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent), var(--good));
+    transition: width .4s ease;
+  }
+  [data-profile="aleks"] ~ #homeScreen .creature-progress-fill,
+  body.profile-aleks .creature-progress-fill {
+    background: linear-gradient(90deg, var(--aleks), #e6a13b);
+  }
+  .creature-progress-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .creature-zone.streak-glow .creature-emoji {
+    animation: creatureBreathe 3s ease-in-out infinite, creatureGlow 2s ease-in-out infinite;
+  }
+  @keyframes creatureGlow {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(46, 108, 223, 0.3)); }
+    50% { filter: drop-shadow(0 0 18px rgba(46, 108, 223, 0.6)); }
+  }
+
+  /* Creature collection row */
+  .creature-collection {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+    margin-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .creature-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: opacity .2s;
+  }
+  .creature-mini:hover { opacity: 0.85; }
+  .creature-mini-active { opacity: 1 !important; }
+  .creature-mini-emoji { font-size: 32px; line-height: 1; }
+  .creature-mini-label { font-size: 10px; color: var(--ink-soft); white-space: nowrap; }
+
+  /* Creature minis on welcome profile cards */
+  .profile-card .creatures-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 6px;
+  }
+  .creature-welcome-mini { font-size: 22px; line-height: 1; }
+
+  /* Evolution overlay */
+  .creature-evolve-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .creature-evolve-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .creature-evolve-card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 36px 32px 28px;
+    text-align: center;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    transform: scale(0.7);
+    transition: transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .creature-evolve-overlay.show .creature-evolve-card {
+    transform: scale(1);
+  }
+  .evolve-emoji {
+    font-size: 80px;
+    line-height: 1;
+    animation: evolvePop .6s ease;
+  }
+  @keyframes evolvePop {
+    0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    50% { transform: scale(1.15) rotate(3deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  .evolve-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-top: 12px;
+  }
+  .evolve-flavor {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .evolve-btn {
+    margin-top: 20px;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .evolve-btn:active { transform: scale(0.96); }
+
 </style>
 </head>
 <body>
@@ -736,11 +898,13 @@
         <div class="avatar">🐱</div>
         <div class="name">Cat</div>
         <div class="meta" id="metaMax">Ready to start</div>
+        <div class="creatures-row" id="creaturesMax"></div>
       </div>
       <div class="profile-card" data-profile="aleks" onclick="pickProfile('aleks')">
         <div class="avatar">🦊</div>
         <div class="name">Fox</div>
         <div class="meta" id="metaAleks">Ready to start</div>
+        <div class="creatures-row" id="creaturesAleks"></div>
       </div>
     </div>
   </section>
@@ -749,6 +913,18 @@
   <section class="screen" id="homeScreen">
     <h2 class="greeting" id="greeting">Hi!</h2>
     <p class="sub">Today we're upgrading speech. Not just learning words — learning to say them stronger.</p>
+
+    <div class="creature-zone" id="creatureZone">
+      <div class="creature-emoji" id="creatureEmoji">🥚</div>
+      <div class="creature-name" id="creatureName">???</div>
+      <div class="creature-theme-label" id="creatureThemeLabel"></div>
+      <div class="creature-msg" id="creatureMsg">Master words to hatch this egg!</div>
+      <div class="creature-progress">
+        <div class="creature-progress-fill" id="creatureProgressFill" style="width:0%"></div>
+      </div>
+      <div class="creature-progress-label" id="creatureProgressLabel">0 words</div>
+    </div>
+    <div class="creature-collection" id="creatureCollectionRow"></div>
 
     <div class="stats">
       <div class="stat"><div class="n" id="statKnown">0</div><div class="l">🌳 mastered</div></div>
@@ -928,6 +1104,15 @@
       <button class="btn primary" onclick="nextPower()">Next</button>
     </div>
   </section>
+
+  <div class="creature-evolve-overlay" id="evolveOverlay" onclick="dismissEvolve()">
+    <div class="creature-evolve-card" onclick="event.stopPropagation()">
+      <div class="evolve-emoji" id="evolveEmoji">🐲</div>
+      <div class="evolve-title" id="evolveTitle">Your creature evolved!</div>
+      <div class="evolve-flavor" id="evolveFlavor"></div>
+      <button class="evolve-btn" onclick="dismissEvolve()">Awesome!</button>
+    </div>
+  </div>
 
   <div class="toast" id="toast"></div>
 </div>
@@ -1460,6 +1645,209 @@ function statusStage(s) {
 
 const STAGE_EMOJI = { new: '🌱', red: '🔴', s1: '🌱', s2: '🌿', mastered: '🌳' };
 
+/* ============================================================
+   CREATURE PET — per-theme creatures
+   ============================================================ */
+const THEME_CREATURES = {
+  theme04: {
+    name: 'Dragon',
+    stages: [
+      { pct: 0,  label: '???',              emoji: '🥚', flavor: 'Something is stirring inside...' },
+      { pct: 10, label: 'Baby Dragon',      emoji: '🐣', flavor: "It's a Dragon! A tiny one just hatched!" },
+      { pct: 25, label: 'Drake',            emoji: '🦎', flavor: 'Scales are growing. Wings are next!' },
+      { pct: 50, label: 'Young Dragon',     emoji: '🐲', flavor: 'Fire breath unlocked!' },
+      { pct: 75, label: 'Dragon',           emoji: '🐉', flavor: 'Your dragon soars across the sky!' },
+      { pct: 95, label: 'Legendary Dragon', emoji: '👑', flavor: 'The most powerful dragon in the realm!' },
+    ]
+  },
+  theme05: {
+    name: 'Phoenix',
+    stages: [
+      { pct: 0,  label: '???',              emoji: '🥚', flavor: 'Something is stirring inside...' },
+      { pct: 10, label: 'Spark',            emoji: '🐤', flavor: "It's a Phoenix! A spark of fire is born!" },
+      { pct: 25, label: 'Firebird',         emoji: '🐦', flavor: 'Feathers are glowing warm.' },
+      { pct: 50, label: 'Young Phoenix',    emoji: '🦅', flavor: 'Wings of flame spread wide!' },
+      { pct: 75, label: 'Phoenix',          emoji: '🔥', flavor: 'Reborn from the ashes!' },
+      { pct: 95, label: 'Eternal Phoenix',  emoji: '🌟', flavor: 'Immortal fire lights the sky!' },
+    ]
+  }
+};
+
+const DEFAULT_CREATURE = {
+  name: 'Creature',
+  stages: [
+    { pct: 0,  label: '???',               emoji: '🥚', flavor: 'Something is stirring inside...' },
+    { pct: 10, label: 'Hatchling',         emoji: '🐣', flavor: 'A new creature has hatched!' },
+    { pct: 25, label: 'Youngling',         emoji: '🐾', flavor: 'Growing stronger every day!' },
+    { pct: 50, label: 'Apprentice',        emoji: '⚡', flavor: 'Powers awakening!' },
+    { pct: 75, label: 'Champion',          emoji: '🛡️', flavor: 'A true champion emerges!' },
+    { pct: 95, label: 'Legendary',         emoji: '👑', flavor: 'The stuff of legends!' },
+  ]
+};
+
+function getCreatureDef(themeId) {
+  return THEME_CREATURES[themeId] || DEFAULT_CREATURE;
+}
+
+function getCreatureStage(themeId) {
+  const theme = THEMES_BY_ID[themeId];
+  if (!theme) return null;
+  const c = themeStatusCounts(theme);
+  const total = theme.words.length;
+  const pctVal = total > 0 ? (c.mastered / total) * 100 : 0;
+  const def = getCreatureDef(themeId);
+  let stage = def.stages[0];
+  for (const s of def.stages) {
+    if (pctVal >= s.pct) stage = s;
+  }
+  return { emoji: stage.emoji, label: stage.label, flavor: stage.flavor, pct: pctVal, pctThreshold: stage.pct, creatureName: def.name, mastered: c.mastered, total: total };
+}
+
+function getNextCreatureStage(themeId) {
+  const theme = THEMES_BY_ID[themeId];
+  if (!theme) return null;
+  const c = themeStatusCounts(theme);
+  const total = theme.words.length;
+  const pctVal = total > 0 ? (c.mastered / total) * 100 : 0;
+  const def = getCreatureDef(themeId);
+  for (const s of def.stages) {
+    if (s.pct > pctVal) return s;
+  }
+  return null;
+}
+
+function getFeaturedTheme() {
+  return THEMES.find(t => t.status === 'current') || THEMES[0];
+}
+
+function refreshCreatures() {
+  const featured = getFeaturedTheme();
+  if (!featured) return;
+  const info = getCreatureStage(featured.id);
+  if (!info) return;
+  const next = getNextCreatureStage(featured.id);
+  const p = progress();
+  const streak = p.streak || 0;
+
+  document.getElementById('creatureEmoji').textContent = info.emoji;
+  document.getElementById('creatureName').textContent = info.label;
+  document.getElementById('creatureThemeLabel').textContent = featured.short || featured.title;
+
+  const zone = document.getElementById('creatureZone');
+  if (streak >= 3) zone.classList.add('streak-glow');
+  else zone.classList.remove('streak-glow');
+
+  // Message
+  const msgEl = document.getElementById('creatureMsg');
+  if (!next) {
+    msgEl.textContent = info.flavor;
+  } else if (streak >= 3) {
+    msgEl.textContent = 'Day ' + streak + ' streak — your creature is glowing!';
+  } else if (info.pctThreshold === 0) {
+    const needed = Math.ceil(next.pct * info.total / 100) - info.mastered;
+    msgEl.textContent = 'Master ' + needed + ' word' + (needed !== 1 ? 's' : '') + ' to hatch this egg!';
+  } else {
+    const needed = Math.ceil(next.pct * info.total / 100) - info.mastered;
+    if (needed === 1) {
+      msgEl.textContent = 'Just 1 more word to become a ' + next.label + '!';
+    } else {
+      msgEl.textContent = needed + ' words until ' + next.label + '!';
+    }
+  }
+
+  // Progress bar
+  const fillEl = document.getElementById('creatureProgressFill');
+  const labelEl = document.getElementById('creatureProgressLabel');
+  const pct = Math.min(100, info.pct);
+  fillEl.style.width = pct + '%';
+  labelEl.textContent = info.mastered + ' / ' + info.total + ' words';
+
+  // Color progress bar for aleks
+  if (state.profile === 'aleks') {
+    fillEl.style.background = 'linear-gradient(90deg, var(--aleks), #e6a13b)';
+  } else {
+    fillEl.style.background = '';
+  }
+
+  renderCreatureCollection(featured.id);
+}
+
+function renderCreatureCollection(featuredId) {
+  const row = document.getElementById('creatureCollectionRow');
+  row.innerHTML = '';
+  for (const t of THEMES) {
+    const info = getCreatureStage(t.id);
+    if (!info) continue;
+    const def = getCreatureDef(t.id);
+    const mini = document.createElement('div');
+    mini.className = 'creature-mini' + (t.id === featuredId ? ' creature-mini-active' : '');
+    mini.innerHTML = '<div class="creature-mini-emoji">' + info.emoji + '</div>' +
+      '<div class="creature-mini-label">' + (info.pctThreshold === 0 ? '???' : def.name) + '</div>';
+    row.appendChild(mini);
+  }
+}
+
+function checkCreatureEvolution(themeId, masteredBefore, masteredAfter) {
+  const theme = THEMES_BY_ID[themeId];
+  if (!theme) return;
+  const total = theme.words.length;
+  if (total === 0) return;
+  const pctBefore = (masteredBefore / total) * 100;
+  const pctAfter = (masteredAfter / total) * 100;
+  const def = getCreatureDef(themeId);
+  let stageBefore = def.stages[0];
+  let stageAfter = def.stages[0];
+  for (const s of def.stages) {
+    if (pctBefore >= s.pct) stageBefore = s;
+    if (pctAfter >= s.pct) stageAfter = s;
+  }
+  if (stageAfter.pct > stageBefore.pct) {
+    const isFirstHatch = stageBefore.pct === 0;
+    showCreatureEvolution(stageAfter, def.name, isFirstHatch);
+  }
+}
+
+function showCreatureEvolution(stage, creatureName, isFirstHatch) {
+  document.getElementById('evolveEmoji').textContent = stage.emoji;
+  if (isFirstHatch) {
+    document.getElementById('evolveTitle').textContent = stage.label + '!';
+  } else {
+    document.getElementById('evolveTitle').textContent = creatureName + ' evolved!';
+  }
+  document.getElementById('evolveFlavor').textContent = stage.flavor;
+  const btn = document.getElementById('evolveOverlay').querySelector('.evolve-btn');
+  if (state.profile === 'aleks') {
+    btn.style.background = 'var(--aleks)';
+  } else {
+    btn.style.background = '';
+  }
+  document.getElementById('evolveOverlay').classList.add('show');
+}
+
+function dismissEvolve() {
+  document.getElementById('evolveOverlay').classList.remove('show');
+}
+
+function refreshWelcomeCreatures() {
+  for (const id of ['max', 'aleks']) {
+    const container = document.getElementById(id === 'max' ? 'creaturesMax' : 'creaturesAleks');
+    container.innerHTML = '';
+    const saved = state.profile;
+    state.profile = id;
+    _progressCache = null;
+    for (const t of THEMES) {
+      const info = getCreatureStage(t.id);
+      if (!info) continue;
+      const span = document.createElement('span');
+      span.className = 'creature-welcome-mini';
+      span.textContent = info.emoji;
+      container.appendChild(span);
+    }
+    state.profile = saved;
+    _progressCache = null;
+  }
+}
+
 function stageLabel(s) {
   const stage = statusStage(s);
   if (stage === 'new') return 'new';
@@ -1575,6 +1963,7 @@ function refreshHomeStats() {
   document.getElementById('statKnown').textContent = mastered;
   document.getElementById('statSpell').textContent = redCount;
   document.getElementById('statStreak').textContent = p.streak || 0;
+  refreshCreatures();
 }
 
 function refreshWelcomeMeta() {
@@ -1587,6 +1976,7 @@ function refreshWelcomeMeta() {
     if (mastered === 0 && !p.streak) meta.textContent = 'Ready to start';
     else meta.textContent = `🌳 ${mastered} mastered · ${p.streak || 0} day streak`;
   }
+  refreshWelcomeCreatures();
 }
 
 /* ============================================================
@@ -1748,6 +2138,9 @@ function checkSchoolAnswer() {
   state.schoolStep++;
   saveSchoolSession();
 
+  const theme = THEMES_BY_ID[w.themeId];
+  const masteredBefore = theme ? themeStatusCounts(theme).mastered : 0;
+
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
     fb.className = 'tp-feedback right';
@@ -1757,6 +2150,7 @@ function checkSchoolAnswer() {
     if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
       fb.innerHTML = '🌳 Mastered!';
       card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
+      checkCreatureEvolution(w.themeId, masteredBefore, masteredBefore + 1);
     } else {
       fb.innerHTML = '✓ Right! ' + STAGE_EMOJI[stage];
     }
@@ -1969,12 +2363,19 @@ function checkSpelling() {
   const fb = document.getElementById('spFeedback');
   const ex = document.getElementById('spEx');
 
+  const theme = THEMES_BY_ID[w.themeId];
+  const masteredBefore = theme ? themeStatusCounts(theme).mastered : 0;
+
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
     fb.className = 'sp-feedback right';
+    const sBefore = getStatus(w.en);
     const sAfter = bumpCorrect(w.en, w.themeId);
     const stage = statusStage(sAfter);
     fb.innerHTML = stage === 'mastered' ? '🌳 Mastered!' : '✓ Right! ' + (stage === 's2' ? '🌿' : '🌱');
+    if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
+      checkCreatureEvolution(w.themeId, masteredBefore, masteredBefore + 1);
+    }
   } else {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'sp-feedback wrong';
