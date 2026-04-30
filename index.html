@@ -9,15 +9,6 @@
 <title>LanGo — Build Better English</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%98%9B%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23f6f4ee'/%3E%3Ctext x='50%25' y='62%25' font-size='130' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%98%9B%3C/text%3E%3C/svg%3E">
-<script>
-  /* Синхронная проверка перед рендером — чтобы не было вспышки контента,
-     если семья ещё не ввела пароль. */
-  (function () {
-    var unlocked = false;
-    try { unlocked = localStorage.getItem('lango.familyUnlocked') === '1'; } catch (e) {}
-    if (!unlocked) document.documentElement.classList.add('locked');
-  })();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -136,11 +127,9 @@
     border-radius: 50%;
     margin: 0 auto 14px;
     display: grid; place-items: center;
-    font-size: 36px; font-weight: 700;
-    color: white;
+    font-size: 52px;
+    line-height: 1;
   }
-  .profile-card[data-profile="max"] .avatar { background: var(--max); }
-  .profile-card[data-profile="aleks"] .avatar { background: var(--aleks); }
   .profile-card .name { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
   .profile-card .meta { font-size: 13px; color: var(--ink-soft); }
 
@@ -719,132 +708,9 @@
     .pw-weak .word { font-size: 32px; }
   }
 
-  /* LOCK SCREEN */
-  html.locked .app { display: none; }
-  html:not(.locked) .lock-screen { display: none; }
-  .lock-screen {
-    min-height: 100vh; min-height: 100dvh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-    background: var(--bg);
-  }
-  .lock-card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    padding: 34px 26px;
-    box-shadow: var(--shadow);
-    max-width: 380px;
-    width: 100%;
-    text-align: center;
-  }
-  .lock-card .lock-logo {
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    letter-spacing: -0.01em;
-  }
-  .lock-card .lock-tag {
-    font-size: 13px;
-    color: var(--ink-soft);
-    margin-bottom: 26px;
-  }
-  .lock-card .lock-msg {
-    font-size: 15px;
-    color: var(--ink);
-    margin-bottom: 14px;
-  }
-  .lock-card input {
-    width: 100%;
-    font-size: 22px;
-    text-align: center;
-    padding: 14px 16px;
-    border: 2px solid var(--line);
-    border-radius: 14px;
-    background: #fafaf6;
-    color: var(--ink);
-    margin: 0;
-    outline: none;
-    transition: border-color .15s ease;
-  }
-  .lock-card input:focus { border-color: var(--accent); }
-  .lock-card input.wrong {
-    border-color: #c44758;
-    background: #fce9eb;
-    animation: shake .3s ease;
-  }
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    75% { transform: translateX(6px); }
-  }
-  .lock-card .lock-err {
-    color: #c44758;
-    font-size: 13px;
-    margin-top: 10px;
-    min-height: 18px;
-  }
-  .lock-card button {
-    width: 100%;
-    margin-top: 16px;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    border-radius: 14px;
-    background: var(--accent);
-    color: white;
-    cursor: pointer;
-    transition: transform .12s ease, opacity .15s ease;
-  }
-  .lock-card button:active { transform: scale(0.98); }
-  .lock-card .lock-hint {
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin-top: 18px;
-    line-height: 1.5;
-  }
 </style>
 </head>
 <body>
-<div class="lock-screen" id="lockScreen">
-  <div class="lock-card">
-    <div class="lock-logo">😛 LanGo</div>
-    <input id="lockInput" type="text" autocomplete="off" autocorrect="off"
-           autocapitalize="off" spellcheck="false" inputmode="text"
-           placeholder="password" onkeydown="if(event.key==='Enter') tryUnlock()">
-    <div class="lock-err" id="lockErr"></div>
-    <button onclick="tryUnlock()">Enter</button>
-  </div>
-</div>
-<script>
-  const PASSWORD_B64 = "QjFzMHUj";  /* base64 от семейного пароля. Поменять — пересчитать. */
-  function tryUnlock() {
-    const inp = document.getElementById('lockInput');
-    const err = document.getElementById('lockErr');
-    const got = (inp.value || '').trim();
-    let encoded;
-    try { encoded = btoa(unescape(encodeURIComponent(got))); } catch (e) { encoded = ''; }
-    if (encoded === PASSWORD_B64) {
-      try { localStorage.setItem('lango.familyUnlocked', '1'); } catch (e) {}
-      document.documentElement.classList.remove('locked');
-      err.textContent = '';
-      // повторно инициализируем экран приветствия с актуальной мета-инфой
-      if (typeof refreshWelcomeMeta === 'function') refreshWelcomeMeta();
-    } else {
-      inp.classList.remove('wrong'); void inp.offsetWidth; inp.classList.add('wrong');
-      err.textContent = 'Wrong password';
-      inp.focus(); inp.select();
-    }
-  }
-  /* автофокус когда страница в locked-режиме */
-  if (document.documentElement.classList.contains('locked')) {
-    document.addEventListener('DOMContentLoaded', function () {
-      var i = document.getElementById('lockInput');
-      if (i) setTimeout(function(){ i.focus(); }, 100);
-    });
-  }
-</script>
 
 <div class="app">
   <div class="topbar">
@@ -854,7 +720,7 @@
     </div>
     <div class="top-right">
       <div class="pill" id="profilePill" style="display:none">
-        <span class="dot"></span><span id="profilePillName">—</span>
+        <span id="profilePillEmoji"></span><span id="profilePillName">—</span>
       </div>
     </div>
   </div>
@@ -867,13 +733,13 @@
     </div>
     <div class="profile-row">
       <div class="profile-card" data-profile="max" onclick="pickProfile('max')">
-        <div class="avatar">M</div>
-        <div class="name">Max</div>
+        <div class="avatar">🐱</div>
+        <div class="name">Cat</div>
         <div class="meta" id="metaMax">Ready to start</div>
       </div>
       <div class="profile-card" data-profile="aleks" onclick="pickProfile('aleks')">
-        <div class="avatar">A</div>
-        <div class="name">Alex</div>
+        <div class="avatar">🦊</div>
+        <div class="name">Fox</div>
         <div class="meta" id="metaAleks">Ready to start</div>
       </div>
     </div>
@@ -1300,8 +1166,8 @@ window.LANGO_THEMES = [
    ============================================================ */
 
 const PROFILES = {
-  max:   { id: 'max',   name: 'Max'  },
-  aleks: { id: 'aleks', name: 'Alex' }
+  max:   { id: 'max',   name: 'Cat',  emoji: '🐱' },
+  aleks: { id: 'aleks', name: 'Fox',  emoji: '🦊' }
 };
 
 /* School Words — берём из window.LANGO_THEMES (data/themes.js) */
@@ -1676,6 +1542,7 @@ function pickProfile(id) {
   const p = updateStreak();
   document.getElementById('profilePill').style.display = 'inline-flex';
   document.getElementById('profilePill').dataset.profile = id;
+  document.getElementById('profilePillEmoji').textContent = PROFILES[id].emoji;
   document.getElementById('profilePillName').textContent = PROFILES[id].name;
   document.getElementById('greeting').textContent = `Hi, ${PROFILES[id].name}!`;
   refreshHomeStats();
