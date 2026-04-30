@@ -2149,6 +2149,7 @@ function renderSchoolCard() {
   checkBtn.disabled = true;
   document.getElementById('tpDontKnowBtn').disabled = false;
   state.schoolChecked = false;
+  state.schoolDontKnow = false;
   updateSchoolUI();
   updateMiniCreature();
   setTimeout(() => inp.focus(), 50);
@@ -2175,6 +2176,7 @@ function updateMiniCreature() {
 }
 
 function checkSchoolAnswer() {
+  if (state.schoolDontKnow) { confirmDontKnow(); return; }
   if (state.schoolChecked) { advanceSchoolWord(); return; }
   const w = state.schoolCurrentWord;
   if (!w) return;
@@ -2223,7 +2225,9 @@ function checkSchoolAnswer() {
   }
   if (w.ex) ex.textContent = '«' + w.ex + '»';
   state.schoolChecked = true;
-  document.getElementById('tpCheckBtn').textContent = 'Next';
+  const checkBtn = document.getElementById('tpCheckBtn');
+  checkBtn.textContent = 'Next';
+  checkBtn.disabled = false;
   updateSchoolUI();
   updateMiniCreature();
   refreshHomeStats();
@@ -2233,28 +2237,61 @@ function dontKnowSchool() {
   if (state.schoolChecked) return;
   const w = state.schoolCurrentWord;
   if (!w) return;
-  const inp = document.getElementById('tpInput');
-  inp.value = w.en;
-  inp.disabled = true;
 
   state.schoolStep++;
   state.sessionAnswered++;
   saveSchoolSession();
 
   const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
-  document.getElementById('tpFeedback').className = 'tp-feedback wrong';
-  document.getElementById('tpFeedback').innerHTML = 'This word will come back soon.';
-  if (w.ex) document.getElementById('tpEx').textContent = '«' + w.ex + '»';
   document.getElementById('tpDots').innerHTML = dotsHTML('red', sAfter);
   const pill = document.getElementById('tpPill');
   pill.className = 'stage-pill red';
   pill.textContent = 'mistake';
-  state.schoolChecked = true;
-  document.getElementById('tpCheckBtn').textContent = 'Next';
+
+  // Show the answer — kid must type it to continue
+  const fb = document.getElementById('tpFeedback');
+  fb.className = 'tp-feedback wrong';
+  fb.innerHTML = 'Type it: <span class="correct">' + escapeHtml(w.en) + '</span>';
+  if (w.ex) document.getElementById('tpEx').textContent = '«' + w.ex + '»';
+
+  const inp = document.getElementById('tpInput');
+  inp.value = '';
+  inp.disabled = false;
+  inp.focus();
   document.getElementById('tpDontKnowBtn').disabled = true;
+
+  // Replace Check button with confirm-typing logic
+  const checkBtn = document.getElementById('tpCheckBtn');
+  checkBtn.textContent = 'Check';
+  checkBtn.disabled = true;
+  state.schoolDontKnow = true;
   updateSchoolUI();
   updateMiniCreature();
   refreshHomeStats();
+}
+
+function confirmDontKnow() {
+  const w = state.schoolCurrentWord;
+  if (!w) return;
+  const guess = normaliseAnswer(document.getElementById('tpInput').value);
+  const truth = normaliseAnswer(w.en);
+  const inp = document.getElementById('tpInput');
+  const fb = document.getElementById('tpFeedback');
+  if (guess === truth) {
+    inp.classList.remove('wrong'); inp.classList.add('right');
+    fb.className = 'tp-feedback right';
+    fb.innerHTML = '✓ Good — now you know it!';
+    inp.disabled = true;
+    state.schoolChecked = true;
+    state.schoolDontKnow = false;
+    const checkBtn = document.getElementById('tpCheckBtn');
+    checkBtn.textContent = 'Next';
+    checkBtn.disabled = false;
+  } else {
+    inp.classList.remove('right'); inp.classList.add('wrong');
+    fb.className = 'tp-feedback wrong';
+    fb.innerHTML = 'Not quite. Type: <span class="correct">' + escapeHtml(w.en) + '</span>';
+  }
 }
 
 function showSummary(theme, opts) {
@@ -2353,12 +2390,15 @@ document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   if (!document.getElementById('schoolCardsScreen').classList.contains('active')) return;
   e.preventDefault();
+  if (state.schoolDontKnow) { confirmDontKnow(); return; }
   if (state.schoolChecked) advanceSchoolWord();
   else if (document.getElementById('tpInput').value.trim()) checkSchoolAnswer();
 });
 document.getElementById('tpInput').addEventListener('input', () => {
   const btn = document.getElementById('tpCheckBtn');
-  if (btn.textContent === 'Check') btn.disabled = !document.getElementById('tpInput').value.trim();
+  if (btn.textContent === 'Check' || state.schoolDontKnow) {
+    btn.disabled = !document.getElementById('tpInput').value.trim();
+  }
 });
 
 /* ============================================================
