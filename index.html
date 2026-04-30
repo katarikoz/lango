@@ -270,6 +270,7 @@
   }
   .seg-red { background: #c44758 !important; }
   .seg-orange { background: #f0a868 !important; }
+  .seg-yellow { background: #e8c840 !important; }
   .seg-green { background: var(--good) !important; }
   body[data-profile="aleks"] .progress-bar > div { background: var(--aleks); }
 
@@ -354,6 +355,12 @@
     display: flex; justify-content: center; align-items: center; gap: 10px;
     margin-bottom: 14px;
   }
+  .tp-creature-mini {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; color: var(--ink-soft);
+  }
+  .tp-creature-mini span:first-child { font-size: 20px; }
   .tp-card .tp-label {
     font-size: 12px; color: var(--ink-soft);
     text-transform: uppercase; letter-spacing: 0.08em;
@@ -1003,12 +1010,16 @@
       <h2 id="schoolTopicTitle">Theme</h2>
     </div>
     <p class="sub" id="schoolSessionMeta">Type in English.</p>
-    <div class="progress-bar"><div class="seg-red" id="schoolSegRed" style="width:0"></div><div class="seg-orange" id="schoolSegOrange" style="width:0"></div><div class="seg-green" id="schoolSegGreen" style="width:0"></div></div>
+    <div class="progress-bar"><div class="seg-red" id="schoolSegRed" style="width:0"></div><div class="seg-orange" id="schoolSegOrange" style="width:0"></div><div class="seg-yellow" id="schoolSegYellow" style="width:0"></div><div class="seg-green" id="schoolSegGreen" style="width:0"></div></div>
 
     <div class="tp-card" id="tpCard">
       <div class="tp-status-row">
         <span id="tpDots"></span>
         <span class="stage-pill" id="tpPill">new</span>
+        <span class="tp-creature-mini" id="tpCreatureMini">
+          <span id="tpCreatureEmoji">🥚</span>
+          <span id="tpCreatureHint"></span>
+        </span>
       </div>
       <div class="tp-label">How to write in English</div>
       <div class="tp-de" id="tpDe">—</div>
@@ -1039,8 +1050,9 @@
         <div class="cell"><div class="n" id="sumProgress">0</div><div class="l">🌿 in progress</div></div>
         <div class="cell"><div class="n" id="sumRed">0</div><div class="l">🔴 mistakes</div></div>
       </div>
-      <div class="row-actions" style="grid-template-columns: 1fr 1fr;">
+      <div class="row-actions" id="sumActions" style="grid-template-columns: 1fr 1fr;">
         <button class="btn ghost" onclick="showScreen('schoolTopicsScreen')">Back to themes</button>
+        <button class="btn ghost" id="sumMoreBtn" style="display:none">+10 more</button>
         <button class="btn primary" id="sumNextBtn" onclick="openTopicContinuous()">Continue</button>
       </div>
     </div>
@@ -1528,7 +1540,9 @@ let state = {
   powerSelected: null,
   spellingQueue: [],
   spellingIndex: 0,
-  spellingChecked: false
+  spellingChecked: false,
+  sessionAnswered: 0,
+  sessionLimit: 20
 };
 
 const STORAGE_KEY = (p) => `lango.profile.${p}`;
@@ -1694,13 +1708,14 @@ function getCreatureStage(themeId) {
   if (!theme) return null;
   const c = themeStatusCounts(theme);
   const total = theme.words.length;
-  const pctVal = total > 0 ? (c.mastered / total) * 100 : 0;
+  const weighted = c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
+  const pctVal = total > 0 ? (weighted / total) * 100 : 0;
   const def = getCreatureDef(themeId);
   let stage = def.stages[0];
   for (const s of def.stages) {
     if (pctVal >= s.pct) stage = s;
   }
-  return { emoji: stage.emoji, label: stage.label, flavor: stage.flavor, pct: pctVal, pctThreshold: stage.pct, creatureName: def.name, mastered: c.mastered, total: total };
+  return { emoji: stage.emoji, label: stage.label, flavor: stage.flavor, pct: pctVal, pctThreshold: stage.pct, creatureName: def.name, mastered: c.mastered, weightedMastered: weighted, total: total };
 }
 
 function getNextCreatureStage(themeId) {
@@ -1708,7 +1723,8 @@ function getNextCreatureStage(themeId) {
   if (!theme) return null;
   const c = themeStatusCounts(theme);
   const total = theme.words.length;
-  const pctVal = total > 0 ? (c.mastered / total) * 100 : 0;
+  const weighted = c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
+  const pctVal = total > 0 ? (weighted / total) * 100 : 0;
   const def = getCreatureDef(themeId);
   for (const s of def.stages) {
     if (s.pct > pctVal) return s;
@@ -1739,15 +1755,16 @@ function refreshCreatures() {
 
   // Message
   const msgEl = document.getElementById('creatureMsg');
+  const weightedNeeded = (pctTarget) => Math.max(1, Math.ceil(pctTarget * info.total / 100 - info.weightedMastered));
   if (!next) {
     msgEl.textContent = info.flavor;
   } else if (streak >= 3) {
     msgEl.textContent = 'Day ' + streak + ' streak — your creature is glowing!';
   } else if (info.pctThreshold === 0) {
-    const needed = Math.ceil(next.pct * info.total / 100) - info.mastered;
+    const needed = weightedNeeded(next.pct);
     msgEl.textContent = 'Master ' + needed + ' word' + (needed !== 1 ? 's' : '') + ' to hatch this egg!';
   } else {
-    const needed = Math.ceil(next.pct * info.total / 100) - info.mastered;
+    const needed = weightedNeeded(next.pct);
     if (needed === 1) {
       msgEl.textContent = 'Just 1 more word to become a ' + next.label + '!';
     } else {
@@ -1760,7 +1777,8 @@ function refreshCreatures() {
   const labelEl = document.getElementById('creatureProgressLabel');
   const pct = Math.min(100, info.pct);
   fillEl.style.width = pct + '%';
-  labelEl.textContent = info.mastered + ' / ' + info.total + ' words';
+  const wLabel = info.weightedMastered % 1 === 0 ? info.weightedMastered : info.weightedMastered.toFixed(1);
+  labelEl.textContent = wLabel + ' / ' + info.total + ' words';
 
   // Color progress bar for aleks
   if (state.profile === 'aleks') {
@@ -1787,13 +1805,14 @@ function renderCreatureCollection(featuredId) {
   }
 }
 
-function checkCreatureEvolution(themeId, masteredBefore, masteredAfter) {
+function checkCreatureEvolution(themeId, pctBefore) {
   const theme = THEMES_BY_ID[themeId];
   if (!theme) return;
   const total = theme.words.length;
   if (total === 0) return;
-  const pctBefore = (masteredBefore / total) * 100;
-  const pctAfter = (masteredAfter / total) * 100;
+  const c = themeStatusCounts(theme);
+  const weighted = c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
+  const pctAfter = (weighted / total) * 100;
   const def = getCreatureDef(themeId);
   let stageBefore = def.stages[0];
   let stageAfter = def.stages[0];
@@ -2000,7 +2019,8 @@ function renderTopics() {
     const c = themeStatusCounts(t);
     const pct = Math.round((c.mastered / total) * 100);
     const redPct = (c.red / total * 100);
-    const orangePct = ((c.s1 + c.s2) / total * 100);
+    const orangePct = (c.s1 / total * 100);
+    const yellowPct = (c.s2 / total * 100);
     const greenPct = (c.mastered / total * 100);
     const badge = t.status === 'current'
       ? '<span class="t-badge t-badge-now">Now learning</span>'
@@ -2024,6 +2044,7 @@ function renderTopics() {
       <div class="progress-bar" style="margin-bottom:0;margin-top:10px">
         <div class="seg-red" style="width:${redPct}%"></div>
         <div class="seg-orange" style="width:${orangePct}%"></div>
+        <div class="seg-yellow" style="width:${yellowPct}%"></div>
         <div class="seg-green" style="width:${greenPct}%"></div>
       </div>
     `;
@@ -2077,6 +2098,8 @@ function openTopicContinuous() {
   if (!t) { showScreen('schoolTopicsScreen'); return; }
   const session = loadSchoolSession();
   state.schoolStep = session.step;
+  state.sessionAnswered = 0;
+  state.sessionLimit = 20;
   document.getElementById('schoolTopicTitle').textContent = t.title;
   const word = pickNextWord(t);
   if (!word) { handleNoWords(t); return; }
@@ -2091,6 +2114,10 @@ function openTopicContinuous() {
 function advanceSchoolWord() {
   const t = THEMES_BY_ID[state.schoolTopic];
   if (!t) return;
+  if (state.sessionAnswered >= state.sessionLimit) {
+    showSessionRoundDone(t);
+    return;
+  }
   const word = pickNextWord(t);
   if (!word) { handleNoWords(t); return; }
   state.schoolCurrentWord = { ...word, themeId: t.id };
@@ -2116,18 +2143,42 @@ function renderSchoolCard() {
   document.getElementById('tpFeedback').textContent = '';
   document.getElementById('tpFeedback').className = 'tp-feedback';
   document.getElementById('tpEx').textContent = '';
-  document.getElementById('tpCheckBtn').textContent = 'Check';
-  document.getElementById('tpCheckBtn').onclick = checkSchoolAnswer;
+  const checkBtn = document.getElementById('tpCheckBtn');
+  checkBtn.textContent = 'Check';
+  checkBtn.onclick = checkSchoolAnswer;
+  checkBtn.disabled = true;
   document.getElementById('tpDontKnowBtn').disabled = false;
   state.schoolChecked = false;
   updateSchoolUI();
+  updateMiniCreature();
   setTimeout(() => inp.focus(), 50);
+}
+
+function updateMiniCreature() {
+  const themeId = state.schoolTopic;
+  if (!themeId) return;
+  const info = getCreatureStage(themeId);
+  if (!info) return;
+  document.getElementById('tpCreatureEmoji').textContent = info.emoji;
+  const next = getNextCreatureStage(themeId);
+  const hintEl = document.getElementById('tpCreatureHint');
+  if (!next) {
+    hintEl.textContent = ''; // max stage
+  } else {
+    const needed = Math.max(1, Math.ceil(next.pct * info.total / 100 - info.weightedMastered));
+    if (info.pctThreshold === 0) {
+      hintEl.textContent = needed + ' to hatch!';
+    } else {
+      hintEl.textContent = needed + ' to evolve!';
+    }
+  }
 }
 
 function checkSchoolAnswer() {
   if (state.schoolChecked) { advanceSchoolWord(); return; }
   const w = state.schoolCurrentWord;
   if (!w) return;
+  if (!document.getElementById('tpInput').value.trim()) return;
   const guess = normaliseAnswer(document.getElementById('tpInput').value);
   const truth = normaliseAnswer(w.en);
   const inp = document.getElementById('tpInput');
@@ -2136,10 +2187,12 @@ function checkSchoolAnswer() {
   const card = document.getElementById('tpCard');
 
   state.schoolStep++;
+  state.sessionAnswered++;
   saveSchoolSession();
 
   const theme = THEMES_BY_ID[w.themeId];
-  const masteredBefore = theme ? themeStatusCounts(theme).mastered : 0;
+  const cBefore = theme ? themeStatusCounts(theme) : { mastered: 0, s2: 0, s1: 0 };
+  const pctBefore = theme ? (cBefore.mastered + cBefore.s2 * 0.5 + cBefore.s1 * 0.25) / theme.words.length * 100 : 0;
 
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
@@ -2150,10 +2203,10 @@ function checkSchoolAnswer() {
     if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
       fb.innerHTML = '🌳 Mastered!';
       card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
-      checkCreatureEvolution(w.themeId, masteredBefore, masteredBefore + 1);
     } else {
       fb.innerHTML = '✓ Right! ' + STAGE_EMOJI[stage];
     }
+    checkCreatureEvolution(w.themeId, pctBefore);
     document.getElementById('tpDots').innerHTML = dotsHTML(stage, sAfter);
     const pill = document.getElementById('tpPill');
     pill.className = 'stage-pill ' + stage;
@@ -2172,6 +2225,7 @@ function checkSchoolAnswer() {
   state.schoolChecked = true;
   document.getElementById('tpCheckBtn').textContent = 'Next';
   updateSchoolUI();
+  updateMiniCreature();
   refreshHomeStats();
 }
 
@@ -2184,6 +2238,7 @@ function dontKnowSchool() {
   inp.disabled = true;
 
   state.schoolStep++;
+  state.sessionAnswered++;
   saveSchoolSession();
 
   const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
@@ -2198,6 +2253,7 @@ function dontKnowSchool() {
   document.getElementById('tpCheckBtn').textContent = 'Next';
   document.getElementById('tpDontKnowBtn').disabled = true;
   updateSchoolUI();
+  updateMiniCreature();
   refreshHomeStats();
 }
 
@@ -2209,6 +2265,8 @@ function showSummary(theme, opts) {
   document.getElementById('sumProgress').textContent = c.s1 + c.s2;
   document.getElementById('sumRed').textContent = c.red;
   const btn = document.getElementById('sumNextBtn');
+  const moreBtn = document.getElementById('sumMoreBtn');
+  moreBtn.style.display = 'none';
   if (opts.showContinue) {
     btn.style.display = '';
     btn.textContent = 'Continue';
@@ -2216,6 +2274,7 @@ function showSummary(theme, opts) {
   } else {
     btn.style.display = 'none';
   }
+  document.getElementById('sumActions').style.gridTemplateColumns = '1fr 1fr';
   showScreen('schoolSummaryScreen');
   refreshHomeStats();
 }
@@ -2238,18 +2297,55 @@ function showSessionPause(theme) {
   });
 }
 
+function showSessionRoundDone(theme) {
+  const c = themeStatusCounts(theme);
+  const inProgress = c.s1 + c.s2;
+  document.getElementById('sumTitle').textContent = 'Round done! 🎉';
+  document.getElementById('sumSub').textContent =
+    'You answered ' + state.sessionAnswered + ' questions. ' +
+    c.mastered + ' mastered, ' + inProgress + ' in progress.';
+  document.getElementById('sumMastered').textContent = c.mastered;
+  document.getElementById('sumProgress').textContent = inProgress;
+  document.getElementById('sumRed').textContent = c.red;
+
+  const moreBtn = document.getElementById('sumMoreBtn');
+  moreBtn.style.display = '';
+  moreBtn.textContent = '+10 more';
+  moreBtn.onclick = function() {
+    state.sessionLimit = state.sessionAnswered + 10;
+    showScreen('schoolCardsScreen');
+    advanceSchoolWord();
+  };
+
+  const nextBtn = document.getElementById('sumNextBtn');
+  nextBtn.style.display = '';
+  nextBtn.textContent = 'Keep going';
+  nextBtn.onclick = function() {
+    state.sessionLimit = state.sessionAnswered + 20;
+    showScreen('schoolCardsScreen');
+    advanceSchoolWord();
+  };
+
+  document.getElementById('sumActions').style.gridTemplateColumns = '1fr 1fr 1fr';
+  showScreen('schoolSummaryScreen');
+  refreshHomeStats();
+}
+
 function updateSchoolUI() {
   const t = THEMES_BY_ID[state.schoolTopic];
   if (!t) return;
   const total = t.words.length;
   const c = themeStatusCounts(t);
   document.getElementById('schoolSegRed').style.width = (c.red / total * 100) + '%';
-  document.getElementById('schoolSegOrange').style.width = ((c.s1 + c.s2) / total * 100) + '%';
+  document.getElementById('schoolSegOrange').style.width = (c.s1 / total * 100) + '%';
+  document.getElementById('schoolSegYellow').style.width = (c.s2 / total * 100) + '%';
   document.getElementById('schoolSegGreen').style.width = (c.mastered / total * 100) + '%';
   const remaining = total - c.mastered;
-  document.getElementById('schoolSessionMeta').textContent = remaining > 0
-    ? remaining + ' word' + (remaining !== 1 ? 's' : '') + ' to go. Type in English.'
+  const qNum = Math.min(state.sessionAnswered + 1, state.sessionLimit);
+  const meta = remaining > 0
+    ? 'Question ' + qNum + ' of ' + state.sessionLimit + ' · ' + remaining + ' word' + (remaining !== 1 ? 's' : '') + ' to master'
     : 'All words mastered!';
+  document.getElementById('schoolSessionMeta').textContent = meta;
 }
 
 /* Enter in School Words: Check → Next */
@@ -2257,7 +2353,12 @@ document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   if (!document.getElementById('schoolCardsScreen').classList.contains('active')) return;
   e.preventDefault();
-  if (state.schoolChecked) advanceSchoolWord(); else checkSchoolAnswer();
+  if (state.schoolChecked) advanceSchoolWord();
+  else if (document.getElementById('tpInput').value.trim()) checkSchoolAnswer();
+});
+document.getElementById('tpInput').addEventListener('input', () => {
+  const btn = document.getElementById('tpCheckBtn');
+  if (btn.textContent === 'Check') btn.disabled = !document.getElementById('tpInput').value.trim();
 });
 
 /* ============================================================
@@ -2340,8 +2441,10 @@ function renderSpelling() {
   document.getElementById('spFeedback').textContent = '';
   document.getElementById('spFeedback').className = 'sp-feedback';
   document.getElementById('spEx').textContent = '';
-  document.getElementById('spCheckBtn').textContent = 'Check';
-  document.getElementById('spCheckBtn').onclick = checkSpelling;
+  const spCheckBtn = document.getElementById('spCheckBtn');
+  spCheckBtn.textContent = 'Check';
+  spCheckBtn.onclick = checkSpelling;
+  spCheckBtn.disabled = true;
   state.spellingChecked = false;
   const pct = (state.spellingIndex / q.length) * 100;
   document.getElementById('spellingProgress').style.width = pct + '%';
@@ -2357,6 +2460,7 @@ function checkSpelling() {
   const q = state.spellingQueue;
   const w = q[state.spellingIndex];
   if (!w) return;
+  if (!document.getElementById('spInput').value.trim()) return;
   const guess = normaliseAnswer(document.getElementById('spInput').value);
   const truth = normaliseAnswer(w.en);
   const inp = document.getElementById('spInput');
@@ -2364,7 +2468,8 @@ function checkSpelling() {
   const ex = document.getElementById('spEx');
 
   const theme = THEMES_BY_ID[w.themeId];
-  const masteredBefore = theme ? themeStatusCounts(theme).mastered : 0;
+  const cBefore = theme ? themeStatusCounts(theme) : { mastered: 0, s2: 0, s1: 0 };
+  const pctBefore = theme ? (cBefore.mastered + cBefore.s2 * 0.5 + cBefore.s1 * 0.25) / theme.words.length * 100 : 0;
 
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
@@ -2373,9 +2478,7 @@ function checkSpelling() {
     const sAfter = bumpCorrect(w.en, w.themeId);
     const stage = statusStage(sAfter);
     fb.innerHTML = stage === 'mastered' ? '🌳 Mastered!' : '✓ Right! ' + (stage === 's2' ? '🌿' : '🌱');
-    if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
-      checkCreatureEvolution(w.themeId, masteredBefore, masteredBefore + 1);
-    }
+    checkCreatureEvolution(w.themeId, pctBefore);
   } else {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'sp-feedback wrong';
@@ -2410,7 +2513,12 @@ document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   if (!document.getElementById('spellingScreen').classList.contains('active')) return;
   e.preventDefault();
-  if (state.spellingChecked) nextSpelling(); else checkSpelling();
+  if (state.spellingChecked) nextSpelling();
+  else if (document.getElementById('spInput').value.trim()) checkSpelling();
+});
+document.getElementById('spInput').addEventListener('input', () => {
+  const btn = document.getElementById('spCheckBtn');
+  if (btn.textContent === 'Check') btn.disabled = !document.getElementById('spInput').value.trim();
 });
 
 /* ============================================================
