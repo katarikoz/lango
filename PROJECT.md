@@ -63,9 +63,53 @@ Same typing engine as School Words, fed a different word pool: words flagged `tr
 
 ## Planned modes
 
-- **Better Answers** — short reply → full, structured answer. "I like football" → "I really enjoy football because it is exciting. For example, the result can change at any moment." Train the structure of a strong answer, not just words.
-- **Connectors** — because, however, for example, therefore, although, as a result. Practice slotting connectors into otherwise plain sentences.
-- **Speaking Builder** — opinion → reason → example → conclusion. Possibly with audio.
+These three are not built yet. We have the concept, an early UX sketch, and a list of open questions. None of these is a finished design — each needs a proper design pass before implementation. Keeping the sketches here so they don't dissolve back into chat history.
+
+### Better Answers
+
+**Goal:** train the *structure* of a strong answer, not just stronger vocabulary. Take a flat short reply ("I like football. It is cool.") and turn it into a full one ("I really enjoy football because it is exciting. For example, the result can change at any moment.").
+
+**UX sketch:** show a weak answer at the top. Below it, build-up buttons for each upgrade: *add a reason*, *add an example*, *add a connector*, *swap the weak word*. Each button reveals the right template ("because ___", "For example, ___"), the kid fills in their own content. At the end, the whole strong answer is visible — their own version, structurally correct.
+
+**Open questions:**
+- Where does the weak-answer prompt come from? Hand-curated list, generated from textbook themes, or kid-typed?
+- Free-form text or fill-in-the-blanks? Free-form is real practice; blanks are easier to grade.
+- How do we score progress here? It's not a vocabulary set — there's no "mastered". Maybe sessions completed + variety of structures used.
+- How sharp is the line between this mode and Speaking Builder? Probably: Better Answers = upgrading a given weak reply (reactive). Speaking Builder = composing a strong answer from scratch on a topic (generative).
+
+### Connectors
+
+**Goal:** internalise the "small bridges" of English so sentences stop being staccato. because, however, for example, therefore, although, as a result, in addition, also, but, so.
+
+**UX sketch:** two simple sentences shown stacked. Kid taps the right connector to link them, or types it. Start with multiple choice while the connector inventory is small; graduate to free typing once they're confident. Bonus level: kid is given one sentence and a connector, has to write the second half themselves.
+
+**Open questions:**
+- How wide is the connector vocabulary? Start with 6, expand to 10+?
+- Should examples come from the actual textbook themes, so kids practise on familiar topic vocab?
+- Is there a "wrong but understandable" path — i.e., multiple connectors fit, do we accept all valid ones?
+
+### Speaking Builder
+
+**Goal:** the most structural mode. A four-step opinion template that makes "say something interesting in English" mechanical: Opinion → Reason → Example → Conclusion.
+
+**UX sketch:** a topic at the top ("My favourite animal", "Best lunch ever", "A teacher I like"). Four labelled boxes below for the four parts of the answer. Kid fills each in. At the end, the four lines are stitched into a single paragraph — their own structured answer. They've just composed a strong English mini-essay without knowing it.
+
+Audio is the eventual stretch goal: Web Speech API for them to *speak* each part instead of typing. Then play it back.
+
+**Open questions:**
+- Where do topics come from? A bank we hand-write? Tied to current school theme?
+- How much help do we give per box? Just the label, or also a sentence-starter ("I think...", "For example...")?
+- Recording audio is a big step — do we ship it text-only first, then layer audio when text version proves itself?
+- Same overlap question as above: precisely how does this differ from Better Answers? See note in Better Answers section.
+
+### Overlap note
+
+Better Answers and Speaking Builder are *cousins*, not duplicates:
+
+- **Better Answers** = take a *given* weak reply and rebuild it. Reactive. The kid sees what was wrong and what's better.
+- **Speaking Builder** = compose a strong reply *from a topic*. Generative. The kid produces from scratch using the four-part template.
+
+Both end up reinforcing the same structure (opinion + reason + example + conclusion), but from opposite directions.
 
 ## Content pipeline
 
