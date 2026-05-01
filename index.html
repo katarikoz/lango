@@ -565,6 +565,7 @@
     gap: 12px;
     margin-top: 18px;
   }
+  .row-actions.three-col { grid-template-columns: 1fr 1fr 1fr; }
   .btn {
     border: 1px solid var(--line);
     background: var(--card);
@@ -1051,7 +1052,7 @@
         <div class="cell"><div class="n" id="sumProgress">0</div><div class="l">🌿 in progress</div></div>
         <div class="cell"><div class="n" id="sumRed">0</div><div class="l">🔴 mistakes</div></div>
       </div>
-      <div class="row-actions" id="sumActions" style="grid-template-columns: 1fr 1fr;">
+      <div class="row-actions" id="sumActions">
         <button class="btn ghost" onclick="showScreen('schoolTopicsScreen')">Back to themes</button>
         <button class="btn ghost" id="sumMoreBtn" style="display:none">+10 more</button>
         <button class="btn primary" id="sumNextBtn" onclick="openTopicContinuous()">Continue</button>
@@ -1536,7 +1537,7 @@ let state = {
   schoolTopic: null,            // выбранная тема
   schoolStep: 0,                // global step counter for spaced repetition
   schoolCurrentWord: null,      // { en, de, ex, tricky, themeId }
-  schoolChecked: false,
+  cardPhase: 'input',           // 'input' | 'dontKnow' | 'answered'
   powerIndex: 0,
   powerSelected: null,
   spellingQueue: [],
@@ -1709,7 +1710,7 @@ function getCreatureStage(themeId) {
   if (!theme) return null;
   const c = themeStatusCounts(theme);
   const total = theme.words.length;
-  const weighted = c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
+  const weighted = weightedProgress(c);
   const pctVal = total > 0 ? (weighted / total) * 100 : 0;
   const def = getCreatureDef(themeId);
   let stage = def.stages[0];
@@ -1722,10 +1723,7 @@ function getCreatureStage(themeId) {
 function getNextCreatureStage(themeId) {
   const theme = THEMES_BY_ID[themeId];
   if (!theme) return null;
-  const c = themeStatusCounts(theme);
-  const total = theme.words.length;
-  const weighted = c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
-  const pctVal = total > 0 ? (weighted / total) * 100 : 0;
+  const pctVal = weightedPct(theme);
   const def = getCreatureDef(themeId);
   for (const s of def.stages) {
     if (s.pct > pctVal) return s;
@@ -1756,16 +1754,15 @@ function refreshCreatures() {
 
   // Message
   const msgEl = document.getElementById('creatureMsg');
-  const weightedNeeded = (pctTarget) => Math.max(1, Math.ceil(pctTarget * info.total / 100 - info.weightedMastered));
   if (!next) {
     msgEl.textContent = info.flavor;
   } else if (streak >= 3) {
     msgEl.textContent = 'Day ' + streak + ' streak — your creature is glowing!';
   } else if (info.pctThreshold === 0) {
-    const needed = weightedNeeded(next.pct);
+    const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
     msgEl.textContent = 'Master ' + needed + ' word' + (needed !== 1 ? 's' : '') + ' to hatch this egg!';
   } else {
-    const needed = weightedNeeded(next.pct);
+    const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
     if (needed === 1) {
       msgEl.textContent = 'Just 1 more word to become a ' + next.label + '!';
     } else {
@@ -1809,11 +1806,8 @@ function renderCreatureCollection(featuredId) {
 function checkCreatureEvolution(themeId, pctBefore) {
   const theme = THEMES_BY_ID[themeId];
   if (!theme) return;
-  const total = theme.words.length;
-  if (total === 0) return;
-  const c = themeStatusCounts(theme);
-  const weighted = c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
-  const pctAfter = (weighted / total) * 100;
+  if (theme.words.length === 0) return;
+  const pctAfter = weightedPct(theme);
   const def = getCreatureDef(themeId);
   let stageBefore = def.stages[0];
   let stageAfter = def.stages[0];
@@ -2012,6 +2006,20 @@ function themeStatusCounts(theme) {
   return counts;
 }
 
+function weightedProgress(c) {
+  return c.mastered * 1.0 + c.s2 * 0.5 + c.s1 * 0.25;
+}
+
+function weightedPct(theme) {
+  const c = themeStatusCounts(theme);
+  const w = weightedProgress(c);
+  return theme.words.length > 0 ? (w / theme.words.length) * 100 : 0;
+}
+
+function wordsNeeded(targetPct, weightedMastered, total) {
+  return Math.max(1, Math.ceil(targetPct * total / 100 - weightedMastered));
+}
+
 function renderTopics() {
   const grid = document.getElementById('topicGrid');
   grid.innerHTML = '';
@@ -2105,7 +2113,7 @@ function openTopicContinuous() {
   const word = pickNextWord(t);
   if (!word) { handleNoWords(t); return; }
   state.schoolCurrentWord = { ...word, themeId: t.id };
-  state.schoolChecked = false;
+  state.cardPhase = 'input';
   showScreen('schoolCardsScreen');
   updateSchoolUI();
   renderSchoolCard();
@@ -2122,7 +2130,7 @@ function advanceSchoolWord() {
   const word = pickNextWord(t);
   if (!word) { handleNoWords(t); return; }
   state.schoolCurrentWord = { ...word, themeId: t.id };
-  state.schoolChecked = false;
+  state.cardPhase = 'input';
   renderSchoolCard();
 }
 
@@ -2149,8 +2157,7 @@ function renderSchoolCard() {
   checkBtn.onclick = checkSchoolAnswer;
   checkBtn.disabled = true;
   document.getElementById('tpDontKnowBtn').disabled = false;
-  state.schoolChecked = false;
-  state.schoolDontKnow = false;
+  state.cardPhase = 'input';
   updateSchoolUI();
   updateMiniCreature();
   setTimeout(() => inp.focus(), 50);
@@ -2167,7 +2174,7 @@ function updateMiniCreature() {
   if (!next) {
     hintEl.textContent = ''; // max stage
   } else {
-    const needed = Math.max(1, Math.ceil(next.pct * info.total / 100 - info.weightedMastered));
+    const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
     if (info.pctThreshold === 0) {
       hintEl.textContent = needed + ' to hatch!';
     } else {
@@ -2177,14 +2184,14 @@ function updateMiniCreature() {
 }
 
 function checkSchoolAnswer() {
-  if (state.schoolDontKnow) { confirmDontKnow(); return; }
-  if (state.schoolChecked) { advanceSchoolWord(); return; }
+  if (state.cardPhase === 'dontKnow') { confirmDontKnow(); return; }
+  if (state.cardPhase === 'answered') { advanceSchoolWord(); return; }
   const w = state.schoolCurrentWord;
   if (!w) return;
-  if (!document.getElementById('tpInput').value.trim()) return;
-  const guess = normaliseAnswer(document.getElementById('tpInput').value);
-  const truth = normaliseAnswer(w.en);
   const inp = document.getElementById('tpInput');
+  if (!inp.value.trim()) return;
+  const guess = normaliseAnswer(inp.value);
+  const truth = normaliseAnswer(w.en);
   const fb = document.getElementById('tpFeedback');
   const ex = document.getElementById('tpEx');
   const card = document.getElementById('tpCard');
@@ -2194,8 +2201,7 @@ function checkSchoolAnswer() {
   saveSchoolSession();
 
   const theme = THEMES_BY_ID[w.themeId];
-  const cBefore = theme ? themeStatusCounts(theme) : { mastered: 0, s2: 0, s1: 0 };
-  const pctBefore = theme ? (cBefore.mastered + cBefore.s2 * 0.5 + cBefore.s1 * 0.25) / theme.words.length * 100 : 0;
+  const pctBefore = theme ? weightedPct(theme) : 0;
 
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
@@ -2225,7 +2231,7 @@ function checkSchoolAnswer() {
     pill.textContent = 'mistake';
   }
   if (w.ex) ex.textContent = '«' + w.ex + '»';
-  state.schoolChecked = true;
+  state.cardPhase = 'answered';
   const checkBtn = document.getElementById('tpCheckBtn');
   checkBtn.textContent = 'Next';
   checkBtn.disabled = false;
@@ -2235,7 +2241,7 @@ function checkSchoolAnswer() {
 }
 
 function dontKnowSchool() {
-  if (state.schoolChecked) return;
+  if (state.cardPhase !== 'input') return;
   const w = state.schoolCurrentWord;
   if (!w) return;
 
@@ -2265,7 +2271,7 @@ function dontKnowSchool() {
   const checkBtn = document.getElementById('tpCheckBtn');
   checkBtn.textContent = 'Check';
   checkBtn.disabled = true;
-  state.schoolDontKnow = true;
+  state.cardPhase = 'dontKnow';
   updateSchoolUI();
   updateMiniCreature();
   refreshHomeStats();
@@ -2283,8 +2289,7 @@ function confirmDontKnow() {
     fb.className = 'tp-feedback right';
     fb.innerHTML = '✓ Good — now you know it!';
     inp.disabled = true;
-    state.schoolChecked = true;
-    state.schoolDontKnow = false;
+    state.cardPhase = 'answered';
     const checkBtn = document.getElementById('tpCheckBtn');
     checkBtn.textContent = 'Next';
     checkBtn.disabled = false;
@@ -2302,9 +2307,11 @@ function showSummary(theme, opts) {
   document.getElementById('sumMastered').textContent = c.mastered;
   document.getElementById('sumProgress').textContent = c.s1 + c.s2;
   document.getElementById('sumRed').textContent = c.red;
+  const actions = document.getElementById('sumActions');
   const btn = document.getElementById('sumNextBtn');
   const moreBtn = document.getElementById('sumMoreBtn');
   moreBtn.style.display = 'none';
+  actions.classList.remove('three-col');
   if (opts.showContinue) {
     btn.style.display = '';
     btn.textContent = 'Continue';
@@ -2312,7 +2319,6 @@ function showSummary(theme, opts) {
   } else {
     btn.style.display = 'none';
   }
-  document.getElementById('sumActions').style.gridTemplateColumns = '1fr 1fr';
   showScreen('schoolSummaryScreen');
   refreshHomeStats();
 }
@@ -2338,14 +2344,14 @@ function showSessionPause(theme) {
 function showSessionRoundDone(theme) {
   const c = themeStatusCounts(theme);
   const inProgress = c.s1 + c.s2;
-  document.getElementById('sumTitle').textContent = 'Round done! 🎉';
-  document.getElementById('sumSub').textContent =
-    'You answered ' + state.sessionAnswered + ' questions. ' +
-    c.mastered + ' mastered, ' + inProgress + ' in progress.';
-  document.getElementById('sumMastered').textContent = c.mastered;
-  document.getElementById('sumProgress').textContent = inProgress;
-  document.getElementById('sumRed').textContent = c.red;
+  showSummary(theme, {
+    title: 'Round done! 🎉',
+    sub: 'You answered ' + state.sessionAnswered + ' questions. ' +
+      c.mastered + ' mastered, ' + inProgress + ' in progress.',
+    showContinue: false
+  });
 
+  // Add round-done specific buttons on top of base summary
   const moreBtn = document.getElementById('sumMoreBtn');
   moreBtn.style.display = '';
   moreBtn.textContent = '+10 more';
@@ -2364,9 +2370,7 @@ function showSessionRoundDone(theme) {
     advanceSchoolWord();
   };
 
-  document.getElementById('sumActions').style.gridTemplateColumns = '1fr 1fr 1fr';
-  showScreen('schoolSummaryScreen');
-  refreshHomeStats();
+  document.getElementById('sumActions').classList.add('three-col');
 }
 
 function updateSchoolUI() {
@@ -2391,14 +2395,13 @@ document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter') return;
   if (!document.getElementById('schoolCardsScreen').classList.contains('active')) return;
   e.preventDefault();
-  if (state.schoolDontKnow) { confirmDontKnow(); return; }
-  if (state.schoolChecked) advanceSchoolWord();
+  if (state.cardPhase === 'dontKnow') { confirmDontKnow(); return; }
+  if (state.cardPhase === 'answered') advanceSchoolWord();
   else if (document.getElementById('tpInput').value.trim()) checkSchoolAnswer();
 });
 document.getElementById('tpInput').addEventListener('input', () => {
-  const btn = document.getElementById('tpCheckBtn');
-  if (btn.textContent === 'Check' || state.schoolDontKnow) {
-    btn.disabled = !document.getElementById('tpInput').value.trim();
+  if (state.cardPhase === 'input' || state.cardPhase === 'dontKnow') {
+    document.getElementById('tpCheckBtn').disabled = !document.getElementById('tpInput').value.trim();
   }
 });
 
@@ -2509,8 +2512,7 @@ function checkSpelling() {
   const ex = document.getElementById('spEx');
 
   const theme = THEMES_BY_ID[w.themeId];
-  const cBefore = theme ? themeStatusCounts(theme) : { mastered: 0, s2: 0, s1: 0 };
-  const pctBefore = theme ? (cBefore.mastered + cBefore.s2 * 0.5 + cBefore.s1 * 0.25) / theme.words.length * 100 : 0;
+  const pctBefore = theme ? weightedPct(theme) : 0;
 
   if (guess === truth) {
     inp.classList.remove('wrong'); inp.classList.add('right');
@@ -2558,8 +2560,9 @@ document.addEventListener('keydown', (e) => {
   else if (document.getElementById('spInput').value.trim()) checkSpelling();
 });
 document.getElementById('spInput').addEventListener('input', () => {
-  const btn = document.getElementById('spCheckBtn');
-  if (btn.textContent === 'Check') btn.disabled = !document.getElementById('spInput').value.trim();
+  if (!state.spellingChecked) {
+    document.getElementById('spCheckBtn').disabled = !document.getElementById('spInput').value.trim();
+  }
 });
 
 /* ============================================================
