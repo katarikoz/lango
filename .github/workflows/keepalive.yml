@@ -1,0 +1,26 @@
+name: Supabase keep-alive
+
+# Pings the LanGo Supabase project so the free-tier project never
+# pauses after 7 days of inactivity. Runs on GitHub's servers, so it
+# works even when no one's computer is on.
+
+on:
+  schedule:
+    # Every 3 days at 06:00 UTC — well inside the 7-day window.
+    - cron: "0 6 */3 * *"
+  workflow_dispatch: {}   # lets you run it manually from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST endpoint
+        run: |
+          echo "Pinging Supabase to keep the project awake..."
+          # Hitting the REST root registers as project activity regardless of
+          # tables or row-level security, so the 7-day pause timer keeps resetting.
+          curl --silent --show-error --fail \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -o /dev/null
+          echo "Done — project pinged, inactivity timer reset."
