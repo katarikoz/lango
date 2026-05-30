@@ -5,7 +5,7 @@
 -- One row per profile. The whole progress object lives in `data` (jsonb):
 -- wordStatus, learnedPowerWords, streak, subjects, etc.
 create table if not exists public.progress (
-  profile     text primary key,            -- 'max' (Cat) | 'aleks' (Fox)
+  profile     text primary key,            -- 'max' (Cat) | 'alex' (Fox)
   data        jsonb not null default '{}'::jsonb,
   updated_at  timestamptz not null default now()
 );
@@ -41,6 +41,6 @@ create trigger progress_touch
 
 -- Seed the two profiles (no-op if they already exist).
 insert into public.progress (profile, data) values
-  ('max',   '{}'::jsonb),
-  ('aleks', '{}'::jsonb)
+  ('max',  '{}'::jsonb),
+  ('alex', '{}'::jsonb)
 on conflict (profile) do nothing;
