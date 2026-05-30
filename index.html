@@ -344,6 +344,7 @@
 
   /* TYPING PRACTICE CARD (used by School Words) */
   .tp-card {
+    position: relative;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 22px;
@@ -356,6 +357,7 @@
     margin-bottom: 14px;
   }
   .tp-creature-mini {
+    position: relative;
     margin-left: auto;
     display: flex; align-items: center; gap: 4px;
     font-size: 11px; color: var(--ink-soft);
@@ -421,22 +423,160 @@
     line-height: 1.5;
   }
   .tp-card.celebrate {
-    animation: pop .4s ease;
+    animation: masteryBoom .5s ease;
   }
-  @keyframes pop {
+  @keyframes masteryBoom {
     0% { transform: scale(1); }
-    50% { transform: scale(1.025); box-shadow: 0 8px 30px rgba(47, 158, 107, 0.18); }
+    30% { transform: scale(1.04); box-shadow: 0 8px 30px rgba(47, 158, 107, 0.25); }
+    60% { transform: scale(0.98); }
     100% { transform: scale(1); }
+  }
+
+  /* ANIMATION & REWARD SYSTEM */
+  .confetti-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 10;
+  }
+  .confetti-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    bottom: 50%;
+    left: 50%;
+  }
+
+  .streak-counter {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+  }
+  .streak-counter.visible { opacity: 1; }
+  .streak-counter.level2 { color: var(--accent); text-shadow: 0 0 8px rgba(46,108,223,0.3); }
+  .streak-counter.level3 { color: var(--accent); animation: streakPulse 0.8s ease-in-out infinite; }
+  body[data-profile="aleks"] .streak-counter.level2,
+  body[data-profile="aleks"] .streak-counter.level3 { color: var(--aleks); text-shadow: 0 0 8px rgba(224,122,59,0.3); }
+  @keyframes streakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  .streak-lost {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #c44758;
+    opacity: 0;
+    z-index: 5;
+    animation: streakFadeOut 1.2s ease-out forwards;
+  }
+  @keyframes streakFadeOut {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-12px); }
+  }
+
+  .creature-bounce { animation: creatureBounce 0.5s ease !important; }
+  @keyframes creatureBounce {
+    0%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+    50% { transform: translateY(0); }
+    70% { transform: translateY(-3px); }
+  }
+  .creature-shake { animation: creatureShake 0.4s ease !important; }
+  @keyframes creatureShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(2px); }
+  }
+  .creature-thought {
+    position: absolute;
+    top: -8px;
+    right: -4px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 2px 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    animation: thoughtPop 1.5s ease forwards;
+    z-index: 6;
+  }
+  @keyframes thoughtPop {
+    0% { opacity: 0; transform: scale(0.5) translateY(4px); }
+    15% { opacity: 1; transform: scale(1) translateY(0); }
+    75% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-6px); }
+  }
+
+  .xp-float {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    pointer-events: none;
+    z-index: 10;
+    animation: xpRise 0.9s ease-out forwards;
+  }
+  body[data-profile="aleks"] .xp-float { color: var(--aleks); }
+  .xp-float.xp-gold { color: #d4a017; font-size: 24px; }
+  .xp-float.xp-small { font-size: 16px; opacity: 0.8; }
+  @keyframes xpRise {
+    0% { opacity: 1; transform: translate(-50%, 0) scale(0.7); }
+    30% { transform: translate(-50%, -20px) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -50px) scale(1); }
+  }
+
+  .mastery-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(212,160,23,0.25) 0%, transparent 70%);
+    border-radius: 22px;
+    pointer-events: none;
+    z-index: 8;
+    animation: flashFade 0.8s ease-out forwards;
+  }
+  @keyframes flashFade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .summary-creature {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .summary-creature.dancing { animation: creatureDance 1.5s ease infinite; }
+  @keyframes creatureDance {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-5deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(-8px) rotate(5deg); }
   }
 
   /* SESSION SUMMARY */
   .summary {
+    position: relative;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 22px;
     padding: 28px 22px;
     box-shadow: var(--shadow);
     text-align: center;
+    overflow: hidden;
   }
   .summary h3 { margin: 0 0 4px; font-size: 22px; }
   .summary .sub-line { color: var(--ink-soft); margin-bottom: 18px; }
@@ -456,6 +596,7 @@
 
   /* SPELLING TRAINER */
   .sp-card {
+    position: relative;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 22px;
@@ -879,7 +1020,229 @@
   }
   .evolve-btn:active { transform: scale(0.96); }
 
+  /* ============================================================
+     SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
+     ============================================================ */
+  .test-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff8e0;
+    border: 1px solid #f1d97a;
+    color: #8a6a14;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+  .test-banner .pill-badge {
+    background: #f1d97a;
+    color: #5a4708;
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .subject-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .subject-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 20px 16px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    text-align: left;
+    transition: transform .15s ease;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .subject-card:active { transform: scale(0.98); }
+  .subject-card.empty { opacity: 0.7; }
+  .subject-card .s-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: #fafaf6;
+    display: grid; place-items: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .subject-card .s-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .subject-card .s-meta { font-size: 13px; color: var(--ink-soft); }
+
+  .t-badge-demo { background: #fff8e0; color: #8a6a14; }
+
+  /* EXERCISE RUNNER */
+  .ex-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+  }
+  .ex-meta {
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .ex-prompt {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .ex-figure {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 18px;
+  }
+  .ex-figure svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .ex-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .ex-input {
+    width: 140px;
+    font-size: 26px;
+    text-align: center;
+    padding: 12px 14px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: #fafaf6;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .15s ease;
+    font-family: inherit;
+    font-weight: 600;
+  }
+  .ex-input:focus { border-color: var(--accent); }
+  body[data-profile="aleks"] .ex-input:focus { border-color: var(--aleks); }
+  .ex-input.right { border-color: var(--good); background: #ebf6ef; }
+  .ex-input.wrong { border-color: #c44758; background: #fce9eb; }
+  .ex-unit {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .ex-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .ex-option {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: transform .12s ease, background .12s ease, border-color .15s;
+    font-family: inherit;
+  }
+  body[data-profile="aleks"] .ex-option {
+    background: var(--aleks-soft);
+    color: var(--aleks);
+  }
+  .ex-option:active { transform: scale(0.97); }
+  .ex-option:disabled { cursor: default; }
+  .ex-option.right {
+    background: #e6f4ec;
+    color: var(--good);
+    border-color: var(--good);
+  }
+  .ex-option.wrong {
+    background: #fce9eb;
+    color: #c44758;
+    border-color: #c44758;
+  }
+  .ex-feedback {
+    margin-top: 14px;
+    min-height: 26px;
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .ex-feedback.right { color: var(--good); font-weight: 600; }
+  .ex-feedback.wrong { color: #c44758; }
+  .ex-feedback .correct {
+    background: #fff5cc;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .ex-explanation {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: #fafaf6;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    text-align: left;
+  }
+  .ex-info-title {
+    font-size: 14px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .ex-info-text {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    text-align: left;
+    margin-bottom: 6px;
+  }
+  .ex-info-text b { color: var(--accent); }
+  body[data-profile="aleks"] .ex-info-text b { color: var(--aleks); }
+
+  @media (max-width: 520px) {
+    .subject-grid { grid-template-columns: 1fr 1fr; }
+    .ex-prompt { font-size: 17px; }
+    .ex-option { font-size: 15px; }
+  }
+
+  /* Login */
+  .login-form { max-width: 340px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 12px; }
+  .login-form input {
+    padding: 14px 16px; border: 2px solid var(--line); border-radius: 14px;
+    font-size: 16px; font-family: inherit; background: var(--card); color: var(--ink);
+  }
+  .login-form input:focus { outline: none; border-color: var(--accent); }
+  .login-form .btn { margin-top: 4px; }
+  .login-error { color: #d33; font-size: 14px; min-height: 18px; text-align: center; }
+
 </style>
+<!-- Supabase: cloud progress sync + login -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -896,8 +1259,22 @@
     </div>
   </div>
 
+  <!-- LOGIN -->
+  <section class="screen active" id="loginScreen">
+    <div class="hero">
+      <h1>Welcome back</h1>
+      <p>Sign in to keep your progress safe across devices.</p>
+    </div>
+    <form class="login-form" id="loginForm" autocomplete="on">
+      <input type="email" id="loginEmail" name="email" placeholder="Email" autocomplete="username" inputmode="email" required>
+      <input type="password" id="loginPassword" name="password" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" class="btn primary" id="loginBtn">Sign in</button>
+      <div class="login-error" id="loginError"></div>
+    </form>
+  </section>
+
   <!-- WELCOME / PROFILE PICKER -->
-  <section class="screen active" id="welcomeScreen">
+  <section class="screen" id="welcomeScreen">
     <div class="hero">
       <h1>Who's learning today?</h1>
       <p>Seven minutes a day — and your English grows stronger than school can teach.</p>
@@ -993,6 +1370,17 @@
     <div class="session-strip">
       <strong>7 minutes a day:</strong>&nbsp;2 min words · 2 min spelling · 2 min better answers · 1 min speaking.
     </div>
+
+    <div class="section-title">Other subjects <span style="background:#fff8e0;color:#8a6a14;font-size:9px;padding:2px 7px;border-radius:99px;letter-spacing:0.06em;margin-left:6px;vertical-align:middle">TEST</span></div>
+    <div class="modes" id="subjectsHomeRow">
+      <div class="mode" onclick="openSubjects()">
+        <div>
+          <div class="icon" style="background:#fafaf6">📚</div>
+          <div class="ttl">Mathe, Deutsch & mehr</div>
+          <div class="desc">Школьные предметы из учебника. Tippe, um zu üben.</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- SCHOOL WORDS — THEME LIST -->
@@ -1015,6 +1403,8 @@
     <div class="progress-bar"><div class="seg-red" id="schoolSegRed" style="width:0"></div><div class="seg-orange" id="schoolSegOrange" style="width:0"></div><div class="seg-yellow" id="schoolSegYellow" style="width:0"></div><div class="seg-green" id="schoolSegGreen" style="width:0"></div></div>
 
     <div class="tp-card" id="tpCard">
+      <div class="confetti-container" id="tpConfetti"></div>
+      <div class="streak-counter" id="tpStreak"></div>
       <div class="tp-status-row">
         <span id="tpDots"></span>
         <span class="stage-pill" id="tpPill">new</span>
@@ -1045,6 +1435,8 @@
       <h2>Session done</h2>
     </div>
     <div class="summary">
+      <div class="confetti-container" id="summaryConfetti"></div>
+      <div class="summary-creature" id="summaryCreature"></div>
       <h3 id="sumTitle">Nice work!</h3>
       <div class="sub-line" id="sumSub">—</div>
       <div class="summary-row">
@@ -1070,6 +1462,8 @@
     <div class="progress-bar"><div id="spellingProgress" style="width:0"></div></div>
 
     <div class="sp-card" id="spCard">
+      <div class="confetti-container" id="spConfetti"></div>
+      <div class="streak-counter" id="spStreak"></div>
       <div class="sp-label">How to write in English</div>
       <div class="sp-de" id="spDe">—</div>
       <div class="sp-skel" id="spSkel">_ _ _ _</div>
@@ -1116,6 +1510,60 @@
     <div class="row-actions">
       <button class="btn ghost" onclick="prevPower()">Back</button>
       <button class="btn primary" onclick="nextPower()">Next</button>
+    </div>
+  </section>
+
+  <!-- SUBJECTS — PICKER (Mathe, Deutsch, Erdkunde, NaWi) -->
+  <section class="screen" id="subjectsScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="goHome()">←</button>
+      <h2>Subjects</h2>
+    </div>
+    <div class="test-banner">
+      <span class="pill-badge">Test</span>
+      <span>Этот раздел в разработке. Контент пока минимальный — пробуем как работает.</span>
+    </div>
+    <div class="subject-grid" id="subjectsGrid"></div>
+  </section>
+
+  <!-- SUBJECTS — TOPICS WITHIN A SUBJECT -->
+  <section class="screen" id="subjectHomeScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="openSubjects()">←</button>
+      <h2 id="subjectTitle">Subject</h2>
+    </div>
+    <p class="sub" id="subjectSub">Wähle ein Thema zum Üben.</p>
+    <div class="topic-grid" id="subjectTopicsGrid"></div>
+  </section>
+
+  <!-- SUBJECTS — EXERCISE RUNNER -->
+  <section class="screen" id="subjectRunnerScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="backToSubjectHome()">←</button>
+      <h2 id="subjectRunnerTitle">Thema</h2>
+    </div>
+    <div class="progress-bar"><div id="subjectProgressFill" style="width:0"></div></div>
+    <div id="exContainer"></div>
+  </section>
+
+  <!-- SUBJECTS — SESSION SUMMARY -->
+  <section class="screen" id="subjectSummaryScreen">
+    <div class="mode-head">
+      <button class="back-btn" onclick="openSubjects()">←</button>
+      <h2>Geschafft</h2>
+    </div>
+    <div class="summary">
+      <h3 id="subSumTitle">Gut gemacht!</h3>
+      <div class="sub-line" id="subSumSub">—</div>
+      <div class="summary-row">
+        <div class="cell"><div class="n" id="subSumCorrect">0</div><div class="l">✓ richtig</div></div>
+        <div class="cell"><div class="n" id="subSumWrong">0</div><div class="l">✗ falsch</div></div>
+        <div class="cell"><div class="n"><span id="subSumMastered">0</span>/<span id="subSumTotal">0</span></div><div class="l">🌳 mastered</div></div>
+      </div>
+      <div class="row-actions">
+        <button class="btn ghost" onclick="backToSubjectHome()">Zurück</button>
+        <button class="btn primary" onclick="restartSubjectTopic()">Nochmal üben</button>
+      </div>
     </div>
   </section>
 
@@ -1358,6 +1806,110 @@ window.LANGO_THEMES = [
     ]
   }
 ];
+
+/* ============================================================
+   SUBJECTS — школьные предметы (математика, немецкий, etc.)
+   Структура:
+     id      — уникальный идентификатор предмета
+     title   — то, что видит ребёнок
+     icon    — эмодзи в карточке
+     topics  — массив тем по этому предмету
+   Каждая тема:
+     id        — уникальный идентификатор темы
+     title     — название темы (на немецком, как в учебнике)
+     grade     — класс (для будущей фильтрации)
+     status    — 'current' | 'review' | 'demo'
+     exercises — массив упражнений
+   Каждое упражнение:
+     id          — уникальный идентификатор (используется для прогресса!)
+     type        — 'numeric' | 'choice' | 'info' (позже: 'fill', 'truefalse', 'explore')
+     prompt      — формулировка задачи
+     figure?     — короткий код фигуры: 'rect:8,5' | 'square:6'
+     answer      — правильный ответ (для numeric: число)
+     tolerance?  — допуск (для дробей)
+     unit?       — единица измерения ('cm', 'cm²', etc.)
+     options?    — массив вариантов (для choice)
+     correctIndex? — индекс правильного варианта (для choice)
+     text?       — текст карточки (для info)
+     explanation? — объяснение, показываемое после ответа
+   ============================================================ */
+window.LANGO_SUBJECTS = [
+  {
+    id: 'math',
+    title: 'Mathe',
+    icon: '🧮',
+    topics: [
+      {
+        id: 'math-umfang-flaeche',
+        title: 'Umfang und Fläche',
+        short: 'Umfang & Fläche',
+        grade: 3,
+        status: 'demo',
+        exercises: [
+          {
+            id: 'math-uf-001',
+            type: 'info',
+            title: 'Umfang oder Fläche?',
+            text: 'Der <b>Umfang</b> ist die Länge aller Seiten zusammen — wie lang der Zaun um ein Feld ist. Die <b>Fläche</b> ist, wie viel Platz innen drin ist — wie viel Gras auf dem Feld wächst.'
+          },
+          {
+            id: 'math-uf-002',
+            type: 'numeric',
+            prompt: 'Ein Rechteck ist 8 cm lang und 5 cm breit. Wie groß ist der Umfang?',
+            unit: 'cm',
+            answer: 26,
+            explanation: 'Umfang = 2 · (Länge + Breite) = 2 · (8 + 5) = 26 cm'
+          },
+          {
+            id: 'math-uf-003',
+            type: 'numeric',
+            figure: 'rect:6,4',
+            prompt: 'Berechne die Fläche dieses Rechtecks.',
+            unit: 'cm²',
+            answer: 24,
+            explanation: 'Fläche = Länge · Breite = 6 · 4 = 24 cm²'
+          },
+          {
+            id: 'math-uf-004',
+            type: 'choice',
+            prompt: 'Welche Formel berechnet den Umfang eines Quadrats mit Seite a?',
+            options: ['a + a', 'a · a', '4 · a', '2 · a'],
+            correctIndex: 2,
+            explanation: 'Ein Quadrat hat 4 gleich lange Seiten. Also Umfang = a + a + a + a = 4 · a.'
+          },
+          {
+            id: 'math-uf-005',
+            type: 'numeric',
+            figure: 'square:7',
+            prompt: 'Wie groß ist die Fläche dieses Quadrats?',
+            unit: 'cm²',
+            answer: 49,
+            explanation: 'Fläche eines Quadrats = a · a = 7 · 7 = 49 cm²'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'deutsch',
+    title: 'Deutsch',
+    icon: '📖',
+    topics: []
+  },
+  {
+    id: 'erdkunde',
+    title: 'Erdkunde',
+    icon: '🌍',
+    topics: []
+  },
+  {
+    id: 'nawi',
+    title: 'Naturwissenschaften',
+    short: 'NaWi',
+    icon: '🔬',
+    topics: []
+  }
+];
 </script>
 <script>
 /* ============================================================
@@ -1544,7 +2096,9 @@ let state = {
   spellingIndex: 0,
   spellingChecked: false,
   sessionAnswered: 0,
-  sessionLimit: 20
+  sessionLimit: 20,
+  answerStreak: 0,
+  bestStreak: 0
 };
 
 const STORAGE_KEY = (p) => `lango.profile.${p}`;
@@ -1906,6 +2460,7 @@ function saveProgress(profileId, data) {
   try {
     localStorage.setItem(STORAGE_KEY(profileId), JSON.stringify(data));
   } catch (e) { /* iPad sometimes blocks in private mode — silently degrade */ }
+  if (typeof cloudPush === 'function') cloudPush(profileId);
 }
 
 function progress() {
@@ -1927,6 +2482,103 @@ function updateStreak() {
 }
 
 /* ============================================================
+   ANIMATION & REWARD HELPERS
+   ============================================================ */
+
+function spawnConfetti(containerId, count, isGold) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const isAleks = state.profile === 'aleks';
+  const colors = isGold
+    ? ['#d4a017', '#f0c644', '#e8b82e', '#c49512']
+    : isAleks
+      ? ['#e07a3b', '#f0a868', '#c25c1a', '#fdeede']
+      : ['#2e6cdf', '#5b8fe8', '#1b52b0', '#e8f0fe'];
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-particle';
+    const angle = (Math.random() - 0.5) * 2.5;
+    const dist = 60 + Math.random() * 100;
+    const tx = Math.round(angle * dist);
+    const ty = -Math.round(dist);
+    const rot = Math.round(Math.random() * 540);
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    if (Math.random() > 0.5) p.style.borderRadius = '50%';
+    container.appendChild(p);
+    p.animate([
+      { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+      { transform: 'translate(' + tx + 'px,' + ty + 'px) rotate(' + rot + 'deg) scale(0.5)', opacity: 0 }
+    ], { duration: 600, easing: 'ease-out', delay: Math.random() * 150, fill: 'forwards' });
+  }
+  setTimeout(() => { while (container.firstChild) container.firstChild.remove(); }, 800);
+}
+
+function updateStreakDisplay(streakElId) {
+  const el = document.getElementById(streakElId);
+  if (!el) return;
+  const s = state.answerStreak;
+  if (s < 2) { el.classList.remove('visible'); return; }
+  el.classList.add('visible');
+  el.classList.remove('level2', 'level3');
+  if (s >= 10) {
+    el.textContent = '\u26A1 ' + s + ' UNSTOPPABLE!';
+    el.classList.add('level3');
+  } else if (s >= 5) {
+    el.textContent = '\uD83D\uDD25\uD83D\uDD25 ' + s;
+    el.classList.add('level2');
+  } else {
+    el.textContent = '\uD83D\uDD25 ' + s;
+  }
+}
+
+function showStreakLost(streakElId) {
+  const el = document.getElementById(streakElId);
+  if (!el) return;
+  if (state.answerStreak >= 2) {
+    el.classList.remove('visible');
+    const lost = document.createElement('div');
+    lost.className = 'streak-lost';
+    lost.textContent = 'streak lost';
+    el.parentElement.appendChild(lost);
+    setTimeout(() => lost.remove(), 1300);
+  }
+  state.bestStreak = Math.max(state.bestStreak, state.answerStreak);
+  state.answerStreak = 0;
+  el.classList.remove('visible', 'level2', 'level3');
+}
+
+function reactCreature(isCorrect) {
+  const emojiEl = document.getElementById('tpCreatureEmoji');
+  if (!emojiEl) return;
+  const miniEl = document.getElementById('tpCreatureMini');
+  emojiEl.classList.remove('creature-bounce', 'creature-shake');
+  void emojiEl.offsetWidth;
+  if (isCorrect) {
+    emojiEl.classList.add('creature-bounce');
+    if (state.answerStreak >= 3 && miniEl) {
+      const thoughts = ['Yay!', 'Wow!', 'Go go!', 'Yes!', 'Super!'];
+      const bubble = document.createElement('div');
+      bubble.className = 'creature-thought';
+      bubble.textContent = thoughts[Math.floor(Math.random() * thoughts.length)];
+      miniEl.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 1600);
+    }
+  } else {
+    emojiEl.classList.add('creature-shake');
+  }
+}
+
+function showXP(containerId, points, type) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const el = document.createElement('div');
+  el.className = 'xp-float' + (type === 'gold' ? ' xp-gold' : type === 'small' ? ' xp-small' : '');
+  el.textContent = '+' + points;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 1000);
+}
+
+/* ============================================================
    НАВИГАЦИЯ
    ============================================================ */
 
@@ -1940,6 +2592,7 @@ function showScreen(id) {
 function pickProfile(id) {
   state.profile = id;
   _progressCache = null;
+  _subjectsCache = null;
   document.body.dataset.profile = id;
   const p = updateStreak();
   document.getElementById('profilePill').style.display = 'inline-flex';
@@ -2109,6 +2762,8 @@ function openTopicContinuous() {
   state.schoolStep = session.step;
   state.sessionAnswered = 0;
   state.sessionLimit = 20;
+  state.answerStreak = 0;
+  state.bestStreak = 0;
   document.getElementById('schoolTopicTitle').textContent = t.title;
   const word = pickNextWord(t);
   if (!word) { handleNoWords(t); return; }
@@ -2204,6 +2859,7 @@ function checkSchoolAnswer() {
   const pctBefore = theme ? weightedPct(theme) : 0;
 
   if (guess === truth) {
+    state.answerStreak++;
     inp.classList.remove('wrong'); inp.classList.add('right');
     fb.className = 'tp-feedback right';
     const sBefore = getStatus(w.en);
@@ -2212,9 +2868,19 @@ function checkSchoolAnswer() {
     if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
       fb.innerHTML = '🌳 Mastered!';
       card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
+      spawnConfetti('tpConfetti', 16, true);
+      showXP('tpCard', 25, 'gold');
+      const flash = document.createElement('div');
+      flash.className = 'mastery-flash';
+      card.appendChild(flash);
+      setTimeout(() => flash.remove(), 900);
     } else {
       fb.innerHTML = '✓ Right! ' + STAGE_EMOJI[stage];
+      spawnConfetti('tpConfetti', 8 + state.answerStreak * 2);
+      showXP('tpCard', 10);
     }
+    reactCreature(true);
+    updateStreakDisplay('tpStreak');
     checkCreatureEvolution(w.themeId, pctBefore);
     document.getElementById('tpDots').innerHTML = dotsHTML(stage, sAfter);
     const pill = document.getElementById('tpPill');
@@ -2224,6 +2890,8 @@ function checkSchoolAnswer() {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'tp-feedback wrong';
     fb.innerHTML = 'Almost. Right answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
+    showStreakLost('tpStreak');
+    reactCreature(false);
     const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
     document.getElementById('tpDots').innerHTML = dotsHTML('red', sAfter);
     const pill = document.getElementById('tpPill');
@@ -2249,6 +2917,8 @@ function dontKnowSchool() {
   state.sessionAnswered++;
   saveSchoolSession();
 
+  showStreakLost('tpStreak');
+  reactCreature(false);
   const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
   document.getElementById('tpDots').innerHTML = dotsHTML('red', sAfter);
   const pill = document.getElementById('tpPill');
@@ -2288,6 +2958,7 @@ function confirmDontKnow() {
     inp.classList.remove('wrong'); inp.classList.add('right');
     fb.className = 'tp-feedback right';
     fb.innerHTML = '✓ Good — now you know it!';
+    showXP('tpCard', 5, 'small');
     inp.disabled = true;
     state.cardPhase = 'answered';
     const checkBtn = document.getElementById('tpCheckBtn');
@@ -2302,6 +2973,16 @@ function confirmDontKnow() {
 
 function showSummary(theme, opts) {
   const c = themeStatusCounts(theme);
+  // Summary creature
+  const creatureEl = document.getElementById('summaryCreature');
+  const info = getCreatureStage(theme.id);
+  if (info) {
+    creatureEl.textContent = info.emoji;
+    creatureEl.style.display = '';
+  } else {
+    creatureEl.style.display = 'none';
+  }
+  creatureEl.classList.remove('dancing');
   document.getElementById('sumTitle').textContent = opts.title;
   document.getElementById('sumSub').textContent = opts.sub;
   document.getElementById('sumMastered').textContent = c.mastered;
@@ -2329,6 +3010,8 @@ function showThemeComplete(theme) {
     sub: 'Every word in "' + theme.title + '" is in the green zone.',
     showContinue: false
   });
+  // Gold confetti burst for theme complete
+  setTimeout(() => spawnConfetti('summaryConfetti', 24, true), 200);
 }
 
 function showSessionPause(theme) {
@@ -2344,12 +3027,16 @@ function showSessionPause(theme) {
 function showSessionRoundDone(theme) {
   const c = themeStatusCounts(theme);
   const inProgress = c.s1 + c.s2;
+  const streakText = state.bestStreak >= 3 ? ' Best streak: ' + state.bestStreak + '!' : '';
   showSummary(theme, {
     title: 'Round done! 🎉',
     sub: 'You answered ' + state.sessionAnswered + ' questions. ' +
-      c.mastered + ' mastered, ' + inProgress + ' in progress.',
+      c.mastered + ' mastered, ' + inProgress + ' in progress.' + streakText,
     showContinue: false
   });
+  // Dancing creature + confetti burst
+  document.getElementById('summaryCreature').classList.add('dancing');
+  setTimeout(() => spawnConfetti('summaryConfetti', 20), 200);
 
   // Add round-done specific buttons on top of base summary
   const moreBtn = document.getElementById('sumMoreBtn');
@@ -2453,6 +3140,8 @@ function openSpelling() {
   state.spellingQueue = buildSpellingQueue();
   state.spellingIndex = 0;
   state.spellingChecked = false;
+  state.answerStreak = 0;
+  state.bestStreak = 0;
   showScreen('spellingScreen');
   renderSpelling();
   // фокус с задержкой, чтобы iPad не дёргал клавиатуру до анимации
@@ -2515,17 +3204,28 @@ function checkSpelling() {
   const pctBefore = theme ? weightedPct(theme) : 0;
 
   if (guess === truth) {
+    state.answerStreak++;
     inp.classList.remove('wrong'); inp.classList.add('right');
     fb.className = 'sp-feedback right';
     const sBefore = getStatus(w.en);
     const sAfter = bumpCorrect(w.en, w.themeId);
     const stage = statusStage(sAfter);
-    fb.innerHTML = stage === 'mastered' ? '🌳 Mastered!' : '✓ Right! ' + (stage === 's2' ? '🌿' : '🌱');
+    if (stage === 'mastered' && statusStage(sBefore) !== 'mastered') {
+      fb.innerHTML = '🌳 Mastered!';
+      spawnConfetti('spConfetti', 16, true);
+      showXP('spCard', 25, 'gold');
+    } else {
+      fb.innerHTML = '✓ Right! ' + (stage === 's2' ? '🌿' : '🌱');
+      spawnConfetti('spConfetti', 8 + state.answerStreak * 2);
+      showXP('spCard', 10);
+    }
+    updateStreakDisplay('spStreak');
     checkCreatureEvolution(w.themeId, pctBefore);
   } else {
     inp.classList.remove('right'); inp.classList.add('wrong');
     fb.className = 'sp-feedback wrong';
     fb.innerHTML = 'Almost. Right answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
+    showStreakLost('spStreak');
     bumpWrong(w.en, w.themeId);
   }
   if (w.ex) ex.textContent = '«' + w.ex + '»';
@@ -2653,10 +3353,607 @@ function toast(msg) {
 }
 
 /* ============================================================
+   SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
+   Универсальный движок упражнений: numeric / choice / info.
+   Контент берётся из window.LANGO_SUBJECTS.
+   ============================================================ */
+
+const SUBJECTS = (window.LANGO_SUBJECTS || []);
+const SUBJECTS_BY_ID = Object.fromEntries(SUBJECTS.map(s => [s.id, s]));
+
+function findTopic(subjectId, topicId) {
+  const sub = SUBJECTS_BY_ID[subjectId];
+  if (!sub) return null;
+  return sub.topics.find(t => t.id === topicId) || null;
+}
+
+/* --- состояние --- */
+state.subjectId = null;
+state.subjectTopicId = null;
+state.subjectQueue = [];      // массив exerciseId
+state.subjectIndex = 0;
+state.subjectAnswered = 0;
+state.subjectSessionLimit = 0;
+state.subjectCorrect = 0;
+state.subjectWrong = 0;
+state.exPhase = 'input';      // 'input' | 'answered'
+
+/* --- storage --- */
+const SUBJECTS_STORAGE_KEY = (p) => `lango.subjects.${p}`;
+
+let _subjectsCache = null;
+function loadSubjectsProgress(profileId) {
+  try {
+    const raw = localStorage.getItem(SUBJECTS_STORAGE_KEY(profileId));
+    if (raw) {
+      const d = JSON.parse(raw);
+      d.exerciseStatus = d.exerciseStatus || {};
+      return d;
+    }
+  } catch (e) { /* ignore */ }
+  return { exerciseStatus: {} };
+}
+function subjectsProgress() {
+  if (_subjectsCache) return _subjectsCache;
+  _subjectsCache = loadSubjectsProgress(state.profile);
+  return _subjectsCache;
+}
+function saveSubjectsProgress(profileId, data) {
+  _subjectsCache = null;
+  try {
+    localStorage.setItem(SUBJECTS_STORAGE_KEY(profileId), JSON.stringify(data));
+  } catch (e) { /* iPad private mode — degrade silently */ }
+  if (typeof cloudPush === 'function') cloudPush(profileId);
+}
+
+function exStatus(exId) {
+  const p = subjectsProgress();
+  return p.exerciseStatus[exId] || { hits: 0, misses: 0, streak: 0, red: false };
+}
+function exMastered(exId) {
+  return (exStatus(exId).streak || 0) >= 3;
+}
+function exBumpCorrect(exId) {
+  const p = subjectsProgress();
+  const s = p.exerciseStatus[exId] || { hits: 0, misses: 0, streak: 0, red: false };
+  s.hits++;
+  s.streak = (s.streak || 0) + 1;
+  s.red = false;
+  p.exerciseStatus[exId] = s;
+  saveSubjectsProgress(state.profile, p);
+}
+function exBumpWrong(exId) {
+  const p = subjectsProgress();
+  const s = p.exerciseStatus[exId] || { hits: 0, misses: 0, streak: 0, red: false };
+  s.misses++;
+  s.streak = 0;
+  s.red = true;
+  p.exerciseStatus[exId] = s;
+  saveSubjectsProgress(state.profile, p);
+}
+
+function topicProgress(topic) {
+  if (!topic || !topic.exercises) return { mastered: 0, total: 0, pct: 0 };
+  let mastered = 0;
+  const total = topic.exercises.length;
+  for (const ex of topic.exercises) {
+    // info-карточки не "масштерятся" — просмотр = выполнено
+    if (ex.type === 'info') {
+      if ((exStatus(ex.id).hits || 0) > 0) mastered++;
+    } else if (exMastered(ex.id)) mastered++;
+  }
+  return { mastered, total, pct: total ? (mastered / total) * 100 : 0 };
+}
+
+/* --- рендер списка предметов --- */
+function openSubjects() {
+  renderSubjects();
+  showScreen('subjectsScreen');
+}
+
+function renderSubjects() {
+  const grid = document.getElementById('subjectsGrid');
+  grid.innerHTML = '';
+  for (const sub of SUBJECTS) {
+    const topicCount = sub.topics.length;
+    const hasContent = topicCount > 0;
+    let meta;
+    if (!hasContent) {
+      meta = 'Bald verfügbar';
+    } else {
+      // Подсчёт общего прогресса по предмету
+      let totalEx = 0, masteredEx = 0;
+      for (const t of sub.topics) {
+        const tp = topicProgress(t);
+        totalEx += tp.total;
+        masteredEx += tp.mastered;
+      }
+      const topicWord = topicCount === 1 ? 'Thema' : 'Themen';
+      meta = `${topicCount} ${topicWord} · ${masteredEx}/${totalEx} gemeistert`;
+    }
+    const card = document.createElement('div');
+    card.className = 'subject-card' + (hasContent ? '' : ' empty');
+    if (hasContent) card.onclick = () => openSubject(sub.id);
+    card.innerHTML = `
+      <div>
+        <div class="s-icon">${sub.icon}</div>
+        <div class="s-title">${sub.title}</div>
+      </div>
+      <div class="s-meta">${meta}</div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+/* --- рендер списка тем внутри предмета --- */
+function openSubject(subjectId) {
+  state.subjectId = subjectId;
+  renderSubjectTopics();
+  showScreen('subjectHomeScreen');
+}
+
+function renderSubjectTopics() {
+  const sub = SUBJECTS_BY_ID[state.subjectId];
+  if (!sub) return;
+  document.getElementById('subjectTitle').textContent = sub.icon + '  ' + sub.title;
+  const grid = document.getElementById('subjectTopicsGrid');
+  grid.innerHTML = '';
+  if (sub.topics.length === 0) {
+    grid.innerHTML = '<div class="empty-state">Темы для этого предмета пока не загружены. Скоро появятся.</div>';
+    return;
+  }
+  for (const topic of sub.topics) {
+    const tp = topicProgress(topic);
+    const pct = Math.round(tp.pct);
+    let badge;
+    if (topic.status === 'current') badge = '<span class="t-badge t-badge-now">Aktuell</span>';
+    else if (topic.status === 'demo') badge = '<span class="t-badge t-badge-demo">Demo</span>';
+    else badge = '<span class="t-badge t-badge-rev">Wiederholung</span>';
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.onclick = () => openSubjectTopic(topic.id);
+    card.innerHTML = `
+      <div class="t-row">
+        <div class="t-name">${escapeHtml(topic.title)}</div>
+        ${badge}
+      </div>
+      <div class="t-meta">${tp.mastered} von ${tp.total} gemeistert (${pct}%)</div>
+      <div class="progress-bar" style="margin-top:10px;margin-bottom:0">
+        <div class="seg-green" style="width:${pct}%"></div>
+      </div>
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function backToSubjectHome() {
+  showScreen('subjectHomeScreen');
+  renderSubjectTopics();
+}
+
+/* --- запуск сессии по теме --- */
+function openSubjectTopic(topicId) {
+  const sub = SUBJECTS_BY_ID[state.subjectId];
+  const topic = findTopic(state.subjectId, topicId);
+  if (!topic || !topic.exercises || !topic.exercises.length) return;
+  state.subjectTopicId = topicId;
+  // Очередь: сначала не-освоенные упражнения, потом info-карточки
+  // (если все non-info освоены, прогоняем всё подряд)
+  const nonMastered = topic.exercises.filter(ex => {
+    if (ex.type === 'info') return (exStatus(ex.id).hits || 0) === 0;
+    return !exMastered(ex.id);
+  });
+  const queue = nonMastered.length ? nonMastered : topic.exercises.slice();
+  state.subjectQueue = shuffle(queue.map(e => e.id));
+  state.subjectIndex = 0;
+  state.subjectAnswered = 0;
+  state.subjectSessionLimit = Math.min(state.subjectQueue.length, 20);
+  state.subjectCorrect = 0;
+  state.subjectWrong = 0;
+  state.answerStreak = 0;
+  state.bestStreak = 0;
+  state.exPhase = 'input';
+  document.getElementById('subjectRunnerTitle').textContent = topic.title;
+  showScreen('subjectRunnerScreen');
+  renderExercise();
+}
+
+function restartSubjectTopic() {
+  if (state.subjectTopicId) openSubjectTopic(state.subjectTopicId);
+}
+
+function currentExercise() {
+  const topic = findTopic(state.subjectId, state.subjectTopicId);
+  if (!topic) return null;
+  if (state.subjectIndex >= state.subjectQueue.length) return null;
+  const exId = state.subjectQueue[state.subjectIndex];
+  return topic.exercises.find(e => e.id === exId) || null;
+}
+
+/* --- SVG-фигуры для геометрии --- */
+function renderFigure(spec) {
+  if (!spec || typeof spec !== 'string') return '';
+  const colonIdx = spec.indexOf(':');
+  const kind = colonIdx >= 0 ? spec.slice(0, colonIdx) : spec;
+  const params = colonIdx >= 0 ? spec.slice(colonIdx + 1).split(',').map(s => parseFloat(s.trim())) : [];
+  if (kind === 'rect') return svgRect(params[0] || 1, params[1] || 1);
+  if (kind === 'square') return svgRect(params[0] || 1, params[0] || 1);
+  return '';
+}
+
+function svgRect(w, h) {
+  // Холст 260×180, фигура максимум 200×130, отступ для подписей
+  const boxW = 260, boxH = 180, maxW = 200, maxH = 120;
+  const aspect = w / h;
+  let dw = maxW, dh = maxW / aspect;
+  if (dh > maxH) { dh = maxH; dw = maxH * aspect; }
+  const x = (boxW - dw) / 2;
+  const y = (boxH - dh) / 2 + 4;
+  const isSquare = Math.abs(w - h) < 0.0001;
+  const labelW = w + ' cm';
+  const labelH = h + ' cm';
+  return `<svg viewBox="0 0 ${boxW} ${boxH}" xmlns="http://www.w3.org/2000/svg" style="width:260px;max-width:100%">
+    <rect x="${x}" y="${y}" width="${dw}" height="${dh}" fill="#e8f0fe" stroke="#2e6cdf" stroke-width="2" rx="2"/>
+    <text x="${x + dw / 2}" y="${y - 8}" text-anchor="middle" font-size="13" fill="#525a6b" font-family="Nunito, sans-serif" font-weight="600">${labelW}</text>
+    ${!isSquare ? `<text x="${x + dw + 10}" y="${y + dh / 2 + 4}" text-anchor="start" font-size="13" fill="#525a6b" font-family="Nunito, sans-serif" font-weight="600">${labelH}</text>` : ''}
+  </svg>`;
+}
+
+/* --- рендер упражнения (по типу) --- */
+function renderExercise() {
+  const ex = currentExercise();
+  if (!ex) { showSubjectSummary(); return; }
+  state.exPhase = 'input';
+  updateSubjectProgressBar();
+
+  const container = document.getElementById('exContainer');
+  container.innerHTML = '';
+  const card = document.createElement('div');
+  card.className = 'ex-card';
+  card.id = 'currentExCard';
+
+  const meta = document.createElement('div');
+  meta.className = 'ex-meta';
+  meta.textContent = 'Frage ' + (state.subjectAnswered + 1) + ' von ' + state.subjectSessionLimit;
+  card.appendChild(meta);
+
+  if (ex.type === 'info')        renderExerciseInfo(card, ex);
+  else if (ex.type === 'numeric') renderExerciseNumeric(card, ex);
+  else if (ex.type === 'choice')  renderExerciseChoice(card, ex);
+  else                            renderExerciseUnknown(card, ex);
+
+  container.appendChild(card);
+}
+
+function renderExerciseInfo(card, ex) {
+  const titleHtml = ex.title ? `<div class="ex-info-title">${escapeHtml(ex.title)}</div>` : '';
+  card.insertAdjacentHTML('beforeend', `
+    ${titleHtml}
+    <div class="ex-info-text">${ex.text || ''}</div>
+    <div class="row-actions" style="margin-top:18px">
+      <button class="btn primary" onclick="exAcknowledgeInfo()">Verstanden — weiter</button>
+    </div>
+  `);
+}
+
+function renderExerciseNumeric(card, ex) {
+  const figureHtml = ex.figure ? `<div class="ex-figure">${renderFigure(ex.figure)}</div>` : '';
+  const unitHtml = ex.unit ? `<span class="ex-unit">${escapeHtml(ex.unit)}</span>` : '';
+  card.insertAdjacentHTML('beforeend', `
+    <div class="ex-prompt">${escapeHtml(ex.prompt || '')}</div>
+    ${figureHtml}
+    <div class="ex-input-row">
+      <input class="ex-input" id="exNumInput" type="text" inputmode="decimal" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="?">
+      ${unitHtml}
+    </div>
+    <div class="ex-feedback" id="exFeedback"></div>
+    <div class="ex-explanation" id="exExplanation" style="display:none"></div>
+    <div class="row-actions" style="margin-top:18px">
+      <button class="btn ghost" id="exDontKnow" onclick="exDontKnowNumeric()">Weiß nicht</button>
+      <button class="btn primary" id="exCheckBtn" onclick="exCheckNumeric()" disabled>Prüfen</button>
+    </div>
+  `);
+  setTimeout(() => {
+    const inp = document.getElementById('exNumInput');
+    if (inp) inp.focus();
+  }, 80);
+  // enable Check on input
+  const inp = document.getElementById('exNumInput');
+  if (inp) {
+    inp.addEventListener('input', () => {
+      document.getElementById('exCheckBtn').disabled = !inp.value.trim();
+    });
+  }
+}
+
+function renderExerciseChoice(card, ex) {
+  const options = ex.options || [];
+  let optionsHtml = '';
+  options.forEach((opt, i) => {
+    optionsHtml += `<button class="ex-option" data-i="${i}" onclick="exChooseOption(${i})">${escapeHtml(opt)}</button>`;
+  });
+  card.insertAdjacentHTML('beforeend', `
+    <div class="ex-prompt">${escapeHtml(ex.prompt || '')}</div>
+    <div class="ex-options" id="exOptions">${optionsHtml}</div>
+    <div class="ex-feedback" id="exFeedback"></div>
+    <div class="ex-explanation" id="exExplanation" style="display:none"></div>
+    <div class="row-actions" style="margin-top:18px">
+      <button class="btn primary" id="exNextBtn" onclick="advanceSubject()" style="display:none">Weiter</button>
+    </div>
+  `);
+}
+
+function renderExerciseUnknown(card, ex) {
+  card.insertAdjacentHTML('beforeend', `
+    <div class="ex-prompt">Тип упражнения «${escapeHtml(ex.type || '')}» пока не поддерживается.</div>
+    <div class="row-actions" style="margin-top:18px">
+      <button class="btn primary" onclick="advanceSubject()">Weiter</button>
+    </div>
+  `);
+}
+
+/* --- проверка ответов --- */
+function exAcknowledgeInfo() {
+  const ex = currentExercise();
+  if (!ex) return;
+  exBumpCorrect(ex.id); // просмотр = +1 hit
+  advanceSubject();
+}
+
+function exCheckNumeric() {
+  const ex = currentExercise();
+  if (!ex) return;
+  if (state.exPhase === 'answered') { advanceSubject(); return; }
+  const inp = document.getElementById('exNumInput');
+  if (!inp || !inp.value.trim()) return;
+  const raw = inp.value.trim().replace(',', '.');
+  const guess = parseFloat(raw);
+  if (isNaN(guess)) return;
+  const tol = ex.tolerance || 0;
+  const isCorrect = Math.abs(guess - ex.answer) <= tol;
+
+  const fb = document.getElementById('exFeedback');
+  const expl = document.getElementById('exExplanation');
+  inp.disabled = true;
+  document.getElementById('exDontKnow').style.display = 'none';
+
+  if (isCorrect) {
+    state.subjectCorrect++;
+    state.answerStreak++;
+    inp.classList.add('right');
+    fb.className = 'ex-feedback right';
+    fb.innerHTML = '✓ Richtig!';
+    exBumpCorrect(ex.id);
+  } else {
+    state.subjectWrong++;
+    state.answerStreak = 0;
+    inp.classList.add('wrong');
+    fb.className = 'ex-feedback wrong';
+    const correctText = ex.answer + (ex.unit ? ' ' + ex.unit : '');
+    fb.innerHTML = 'Fast. Richtige Antwort: <span class="correct">' + escapeHtml(correctText) + '</span>';
+    exBumpWrong(ex.id);
+    // повторим это упражнение позже в этой же сессии
+    state.subjectQueue.push(ex.id);
+    state.subjectSessionLimit = Math.min(state.subjectQueue.length, state.subjectSessionLimit + 1);
+  }
+  if (ex.explanation) {
+    expl.style.display = 'block';
+    expl.innerHTML = ex.explanation;
+  }
+  state.exPhase = 'answered';
+  const btn = document.getElementById('exCheckBtn');
+  btn.textContent = 'Weiter';
+  btn.disabled = false;
+}
+
+function exDontKnowNumeric() {
+  const ex = currentExercise();
+  if (!ex) return;
+  const inp = document.getElementById('exNumInput');
+  if (inp) { inp.disabled = true; inp.classList.add('wrong'); }
+  const fb = document.getElementById('exFeedback');
+  fb.className = 'ex-feedback wrong';
+  const correctText = ex.answer + (ex.unit ? ' ' + ex.unit : '');
+  fb.innerHTML = 'Richtige Antwort: <span class="correct">' + escapeHtml(correctText) + '</span>';
+  if (ex.explanation) {
+    const expl = document.getElementById('exExplanation');
+    expl.style.display = 'block';
+    expl.innerHTML = ex.explanation;
+  }
+  exBumpWrong(ex.id);
+  state.subjectWrong++;
+  state.answerStreak = 0;
+  state.subjectQueue.push(ex.id);
+  state.subjectSessionLimit = Math.min(state.subjectQueue.length, state.subjectSessionLimit + 1);
+  document.getElementById('exDontKnow').style.display = 'none';
+  const btn = document.getElementById('exCheckBtn');
+  btn.textContent = 'Weiter';
+  btn.disabled = false;
+  state.exPhase = 'answered';
+}
+
+function exChooseOption(i) {
+  const ex = currentExercise();
+  if (!ex || state.exPhase === 'answered') return;
+  const opts = document.querySelectorAll('#exOptions .ex-option');
+  opts.forEach(o => o.disabled = true);
+  const chosen = opts[i];
+  const correct = i === ex.correctIndex;
+  const fb = document.getElementById('exFeedback');
+  const expl = document.getElementById('exExplanation');
+  if (correct) {
+    chosen.classList.add('right');
+    fb.className = 'ex-feedback right';
+    fb.innerHTML = '✓ Richtig!';
+    state.subjectCorrect++;
+    state.answerStreak++;
+    exBumpCorrect(ex.id);
+  } else {
+    chosen.classList.add('wrong');
+    if (opts[ex.correctIndex]) opts[ex.correctIndex].classList.add('right');
+    fb.className = 'ex-feedback wrong';
+    fb.innerHTML = 'Nicht ganz. Die richtige Antwort ist grün markiert.';
+    state.subjectWrong++;
+    state.answerStreak = 0;
+    exBumpWrong(ex.id);
+    state.subjectQueue.push(ex.id);
+    state.subjectSessionLimit = Math.min(state.subjectQueue.length, state.subjectSessionLimit + 1);
+  }
+  if (ex.explanation) {
+    expl.style.display = 'block';
+    expl.innerHTML = ex.explanation;
+  }
+  document.getElementById('exNextBtn').style.display = '';
+  state.exPhase = 'answered';
+}
+
+function advanceSubject() {
+  state.subjectAnswered++;
+  state.subjectIndex++;
+  if (state.subjectAnswered >= state.subjectSessionLimit || state.subjectIndex >= state.subjectQueue.length) {
+    showSubjectSummary();
+    return;
+  }
+  renderExercise();
+}
+
+function updateSubjectProgressBar() {
+  const total = state.subjectSessionLimit || 1;
+  const pct = (state.subjectAnswered / total) * 100;
+  document.getElementById('subjectProgressFill').style.width = pct + '%';
+  document.getElementById('subjectProgressFill').style.background = state.profile === 'aleks' ? 'var(--aleks)' : 'var(--accent)';
+}
+
+function showSubjectSummary() {
+  const topic = findTopic(state.subjectId, state.subjectTopicId);
+  const tp = topic ? topicProgress(topic) : { mastered: 0, total: 0 };
+  document.getElementById('subSumTitle').textContent = state.subjectCorrect >= state.subjectWrong ? 'Geschafft! 🎉' : 'Geübt!';
+  const total = state.subjectCorrect + state.subjectWrong;
+  document.getElementById('subSumSub').textContent = total > 0
+    ? `${state.subjectCorrect} richtig von ${total} (${Math.round(state.subjectCorrect / total * 100)}%).`
+    : 'Sitzung beendet.';
+  document.getElementById('subSumCorrect').textContent = state.subjectCorrect;
+  document.getElementById('subSumWrong').textContent = state.subjectWrong;
+  document.getElementById('subSumMastered').textContent = tp.mastered;
+  document.getElementById('subSumTotal').textContent = tp.total;
+  showScreen('subjectSummaryScreen');
+}
+
+/* Enter в numeric: Prüfen → Weiter */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  if (!document.getElementById('subjectRunnerScreen').classList.contains('active')) return;
+  const ex = currentExercise();
+  if (!ex || ex.type !== 'numeric') return;
+  e.preventDefault();
+  if (state.exPhase === 'answered') advanceSubject();
+  else {
+    const inp = document.getElementById('exNumInput');
+    if (inp && inp.value.trim()) exCheckNumeric();
+  }
+});
+
+
+/* ============================================================
+   SUPABASE — login gate + cloud sync
+   ============================================================ */
+
+const SUPABASE_URL = 'https://eajjditulzgchkcxqrip.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_rGNYmsvHVzHBWg2aKb4UJw_GxgDN3Hq';
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+// How much real progress a blob holds — used so we never overwrite good data with empty.
+function _progressWeight(b) {
+  if (!b) return 0;
+  let n = 0;
+  if (b.wordStatus) n += Object.keys(b.wordStatus).length;
+  if (b.learnedPowerWords) n += b.learnedPowerWords.length;
+  return n;
+}
+function _subjectsWeight(b) {
+  return (b && b.exerciseStatus) ? Object.keys(b.exerciseStatus).length : 0;
+}
+
+// Push one profile's full state (words + subjects) to the cloud.
+async function cloudPushNow(id) {
+  if (!id) return;
+  try {
+    const blob = { progress: loadProgress(id), subjects: loadSubjectsProgress(id) };
+    const { error } = await sb.from('progress').upsert({ profile: id, data: blob }, { onConflict: 'profile' });
+    if (error) console.warn('cloudPush:', error.message);
+  } catch (e) { console.warn('cloudPush failed:', e); }
+}
+
+// Debounced push so rapid answers don't spam the network.
+const _pushTimers = {};
+function cloudPush(id) {
+  if (!id) return;
+  clearTimeout(_pushTimers[id]);
+  _pushTimers[id] = setTimeout(() => cloudPushNow(id), 1200);
+}
+
+// On startup: reconcile cloud and local. Whichever side has more progress wins,
+// so we never lose data — local-only progress gets migrated up, cloud progress comes down.
+async function cloudPull() {
+  try {
+    const { data, error } = await sb.from('progress').select('profile, data');
+    if (error) { console.warn('cloudPull:', error.message); return; }
+    const byProfile = {};
+    (data || []).forEach(r => { byProfile[r.profile] = r.data || {}; });
+    for (const id of ['max', 'aleks']) {
+      const cloud = byProfile[id] || {};
+      const cloudProg = cloud.progress || {}, cloudSubj = cloud.subjects || {};
+      const localProg = loadProgress(id), localSubj = loadSubjectsProgress(id);
+      let needPush = false;
+      if (_progressWeight(cloudProg) > _progressWeight(localProg)) saveProgress(id, cloudProg);
+      else if (_progressWeight(localProg) > _progressWeight(cloudProg)) needPush = true;
+      if (_subjectsWeight(cloudSubj) > _subjectsWeight(localSubj)) saveSubjectsProgress(id, cloudSubj);
+      else if (_subjectsWeight(localSubj) > _subjectsWeight(cloudSubj)) needPush = true;
+      if (needPush) await cloudPushNow(id);
+    }
+  } catch (e) { console.warn('cloudPull failed:', e); }
+}
+
+async function afterLogin() {
+  await cloudPull();
+  _progressCache = null; _subjectsCache = null;
+  refreshWelcomeMeta();
+  showScreen('welcomeScreen');
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  err.textContent = '';
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  try {
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { err.textContent = 'Wrong email or password.'; return; }
+    await afterLogin();
+  } catch (e2) {
+    err.textContent = 'Connection problem — try again.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Sign in';
+  }
+});
+
+/* ============================================================
    INIT
    ============================================================ */
 
-refreshWelcomeMeta();
+async function initApp() {
+  refreshWelcomeMeta();   // render instantly from local cache (offline-friendly)
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) { await afterLogin(); return; }
+  } catch (e) { console.warn('session check failed:', e); }
+  showScreen('loginScreen');
+}
+
+initApp();
 </script>
 </body>
 </html>
