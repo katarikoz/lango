@@ -19,8 +19,9 @@ jobs:
           echo "Pinging Supabase to keep the project awake..."
           # Hitting the REST root registers as project activity regardless of
           # tables or row-level security, so the 7-day pause timer keeps resetting.
-          curl --silent --show-error --fail \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -o /dev/null
+          STATUS=$(curl --silent --show-error -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/auth/v1/health" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}")
+          echo "HTTP status: $STATUS"
+          if [ "$STATUS" -ge 500 ]; then echo "Server error"; exit 1; fi
           echo "Done — project pinged, inactivity timer reset."
