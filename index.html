@@ -318,6 +318,11 @@
         width: 18px;
         height: 18px;
       }
+      .stat-img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+      }
       .stat-ic.ic-mastered { background: var(--good-soft); color: var(--good); }
       .stat-ic.ic-review { background: var(--red-soft); color: var(--red); }
       .stat-ic.ic-streak { background: var(--yellow-highlight); color: var(--yellow-text); }
@@ -2361,7 +2366,7 @@
 
         <div class="stats">
           <div class="stat">
-            <div class="stat-ic ic-mastered"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></div>
+            <div class="stat-ic ic-mastered"><img src="assets/ic-collected.png" alt="" class="stat-img"></div>
             <div class="n" id="statKnown">0</div>
             <div class="l">Words collected</div>
           </div>
