@@ -30,15 +30,15 @@
     />
     <style>
       :root {
-        --bg: #0f1123;
+        --bg: #040713;
         --ink: #eef0f6;
         --ink-soft: #8b90a5;
         --line: #252840;
         --card: #181b2e;
-        --accent: #4a8af4;
-        --accent-soft: #1c2a4a;
-        --max: #4a8af4;
-        --max-soft: #1c2a4a;
+        --accent: #f0850a;
+        --accent-soft: #3a2810;
+        --max: #f0850a;
+        --max-soft: #3a2810;
         --alex: #f09050;
         --alex-soft: #3a2518;
         --rhino: #9b7ee8;
@@ -277,12 +277,204 @@
         color: var(--ink-soft);
       }
 
-      /* HOME */
-      .greeting {
+      /* HOME — Hero */
+      #homeScreen {
+        position: relative;
+      }
+      .hero-phoenix {
+        position: absolute;
+        left: calc(50% + 50px);
+        top: -170px;
+        transform: translateX(-50%);
+        height: 720px;
+        pointer-events: none;
+        object-fit: contain;
+        z-index: 0;
+        -webkit-mask: radial-gradient(ellipse at center, black 40%, transparent 75%);
+        mask: radial-gradient(ellipse at center, black 40%, transparent 75%);
+      }
+      .hero-text {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 16px;
+      }
+      .hero-title {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.15;
+        margin: 0 0 10px;
+      }
+      .hero-accent { color: var(--accent); }
+      [data-profile="alex"] .hero-accent { color: var(--alex); }
+      [data-profile="rhino"] .hero-accent { color: var(--rhino); }
+      .hero-sub {
+        font-size: 16px;
+        color: var(--ink-soft);
+        margin: 0;
+      }
+
+      /* Hero row: level card + sidebar */
+      .hero-row {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+      }
+
+      /* Level card */
+      .hero-level {
+        position: relative;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        background: transparent;
+        border-radius: 16px;
+        padding: 16px;
+        cursor: pointer;
+        overflow: hidden;
+        flex: 1;
+        max-width: 320px;
+      }
+      .hero-level::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        padding: 1px;
+        background: linear-gradient(135deg, var(--accent) 0%, rgba(240,133,10,0.3) 40%, transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+      .hero-level:active { opacity: 0.85; }
+
+      /* Hex badge */
+      .level-hex-wrap {
+        flex-shrink: 0;
+        text-align: center;
+        width: 68px;
+      }
+      .level-hex {
+        width: 60px;
+        height: 68px;
+        margin: 0 auto;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        background: linear-gradient(180deg, var(--accent), #6b3a00);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .level-hex-inner {
+        width: 54px;
+        height: 62px;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        background: linear-gradient(180deg, #141828, #0a0e1a);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .level-hex-num {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .level-hex-label {
+        display: block;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        color: var(--accent);
+        margin-top: 3px;
+      }
+
+      /* Level card info */
+      .hero-level-info { flex: 1; min-width: 0; }
+      .level-evo-text {
+        font-size: 14px;
+        color: var(--ink-soft);
+        margin-bottom: 1px;
+      }
+      .level-evo-text .evo-count {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .level-evo-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+      [data-profile="alex"] .level-evo-name { color: var(--alex); }
+      [data-profile="rhino"] .level-evo-name { color: var(--rhino); }
+
+      /* Sidebar */
+      .hero-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 160px;
+        flex-shrink: 0;
+        margin-left: auto;
+      }
+      .sidebar-card {
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px;
+        text-align: center;
+      }
+      .sidebar-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+        margin-bottom: 4px;
+      }
+      .sidebar-value {
         font-size: 28px;
         font-weight: 700;
-        margin: 0 0 4px;
-        letter-spacing: -0.01em;
+      }
+      .sidebar-sub {
+        font-size: 11px;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .streak-flames {
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+        margin-top: 4px;
+        font-size: 14px;
+      }
+      .sidebar-creature-emoji {
+        font-size: 32px;
+        line-height: 1;
+        margin-top: 6px;
+      }
+      .sidebar-creature-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 4px 0 2px;
+      }
+      .sidebar-creature-msg {
+        font-size: 11px;
+        color: var(--ink-soft);
+        line-height: 1.3;
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .hero-phoenix { opacity: 0.5; }
+        .hero-row { flex-direction: column; }
+        .hero-level { max-width: 100%; }
+        .hero-sidebar { width: 100%; flex-direction: row; }
+        .sidebar-card { flex: 1; }
       }
       .sub {
         color: var(--ink-soft);
@@ -1468,84 +1660,31 @@
         }
       }
 
-      /* CREATURE PET */
-      .creature-zone {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        padding: 24px 20px 18px;
-        text-align: center;
-        box-shadow: var(--shadow);
-        margin-bottom: 12px;
-      }
+      /* CREATURE */
       .creature-emoji {
         font-size: 64px;
         line-height: 1;
         animation: creatureBreathe 3s ease-in-out infinite;
       }
       @keyframes creatureBreathe {
-        0%,
-        100% {
-          transform: translateY(0) scale(1);
-        }
-        50% {
-          transform: translateY(-4px) scale(1.04);
-        }
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-4px) scale(1.04); }
       }
-      .creature-name {
-        font-size: 18px;
-        font-weight: 700;
-        margin-top: 6px;
+      #homeScreen.streak-glow .hero-phoenix {
+        animation: phoenixGlow 3s ease-in-out infinite;
       }
-      .creature-theme-label {
-        font-size: 12px;
-        color: var(--ink-soft);
-        margin-top: 2px;
+      @keyframes phoenixGlow {
+        0%, 100% { filter: brightness(1); }
+        50% { filter: brightness(1.3); }
       }
-      .creature-msg {
-        font-size: 13px;
-        color: var(--ink-soft);
-        margin-top: 4px;
-      }
-      .creature-progress {
-        height: 8px;
-        background: var(--line);
-        border-radius: 99px;
-        margin-top: 14px;
-        overflow: hidden;
-      }
-      .creature-progress-fill {
-        height: 100%;
-        border-radius: 99px;
-        background: linear-gradient(90deg, var(--accent), var(--good));
-        transition: width 0.4s ease;
-      }
-      [data-profile="alex"] ~ #homeScreen .creature-progress-fill,
-      body.profile-alex .creature-progress-fill {
-        background: linear-gradient(90deg, var(--alex), #f0b050);
-      }
-      [data-profile="rhino"] ~ #homeScreen .creature-progress-fill,
-      body.profile-rhino .creature-progress-fill {
-        background: linear-gradient(90deg, var(--rhino), #b8a0f0);
-      }
-      .creature-progress-label {
-        font-size: 12px;
-        color: var(--ink-soft);
-        margin-top: 4px;
-      }
-      .creature-zone.streak-glow .creature-emoji {
+      #homeScreen.streak-glow .creature-emoji {
         animation:
           creatureBreathe 3s ease-in-out infinite,
           creatureGlow 2s ease-in-out infinite;
       }
       @keyframes creatureGlow {
-        0%,
-        100% {
-          filter: drop-shadow(0 0 6px rgba(74, 138, 244, 0.4));
-        }
-        50% {
-          filter: drop-shadow(0 0 18px rgba(74, 138, 244, 0.7));
-        }
+        0%, 100% { filter: drop-shadow(0 0 6px rgba(74, 138, 244, 0.4)); }
+        50% { filter: drop-shadow(0 0 18px rgba(74, 138, 244, 0.7)); }
       }
 
       /* Creature collection row */
@@ -1673,59 +1812,25 @@
         transform: scale(0.96);
       }
 
-      /* Level bar */
-      .level-bar {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 14px 18px;
-        margin-bottom: 16px;
-      }
-      .level-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-      }
-      .level-rank {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--accent);
-      }
-      [data-profile="alex"] .level-rank {
-        color: var(--alex);
-      }
-      [data-profile="rhino"] .level-rank {
-        color: var(--rhino);
-      }
-      .level-num {
-        font-size: 13px;
-        color: var(--ink-soft);
-        font-weight: 600;
-      }
+      /* Level progress */
       .level-progress {
-        height: 8px;
-        background: var(--surface);
+        height: 10px;
+        background: var(--line);
         border-radius: 99px;
         overflow: hidden;
         margin-bottom: 6px;
       }
       .level-progress-fill {
         height: 100%;
-        background: var(--accent);
+        background: linear-gradient(90deg, #e87a10, #f0b040);
         border-radius: 99px;
         transition: width 0.4s ease;
       }
-      [data-profile="alex"] .level-progress-fill {
-        background: var(--alex);
-      }
-      [data-profile="rhino"] .level-progress-fill {
-        background: var(--rhino);
-      }
+      [data-profile="alex"] .level-progress-fill { background: var(--alex); }
+      [data-profile="rhino"] .level-progress-fill { background: var(--rhino); }
       .level-xp {
         font-size: 12px;
         color: var(--ink-soft);
-        text-align: right;
       }
       .levelup-title {
         font-size: 28px;
@@ -2339,42 +2444,52 @@
 
       <!-- HOME -->
       <section class="screen" id="homeScreen">
-        <h2 class="greeting" id="greeting">Hi!</h2>
-        <p class="sub">
-          Today we're upgrading speech. Not just learning words — learning to
-          say them stronger.
-        </p>
+        <img class="hero-phoenix" src="assets/phoenix.png" alt="" />
 
-        <div class="creature-zone" id="creatureZone">
-          <div class="creature-emoji" id="creatureEmoji">🥚</div>
-          <div class="creature-name" id="creatureName">???</div>
-          <div class="creature-theme-label" id="creatureThemeLabel"></div>
-          <div class="creature-msg" id="creatureMsg">
-            Master words to hatch this egg!
+        <div class="hero-text">
+          <h2 class="hero-title">Rise every day.<br><span class="hero-accent">Speak stronger.</span></h2>
+          <p class="hero-sub">Your <span id="heroCreatureName">creature</span> grows with every word.</p>
+        </div>
+
+        <div class="hero-row">
+          <div class="hero-level" id="levelBar" onclick="showLevelInfo()">
+            <div class="level-hex-wrap">
+              <div class="level-hex">
+                <div class="level-hex-inner">
+                  <span class="level-hex-num" id="levelNum">1</span>
+                </div>
+              </div>
+              <span class="level-hex-label">LEVEL</span>
+            </div>
+            <div class="hero-level-info">
+              <div class="level-evo-text" id="levelEvoText">0 words until</div>
+              <div class="level-evo-name" id="levelEvoName">???</div>
+              <div class="level-progress">
+                <div class="level-progress-fill" id="levelFill" style="width: 0%"></div>
+              </div>
+              <div class="level-xp" id="levelXP">0 / 50</div>
+            </div>
+            <span id="levelRank" style="display:none">Newbie</span>
+            <div class="creature-emoji" id="creatureEmoji" style="display:none">🥚</div>
           </div>
-          <div class="creature-progress">
-            <div
-              class="creature-progress-fill"
-              id="creatureProgressFill"
-              style="width: 0%"
-            ></div>
-          </div>
-          <div class="creature-progress-label" id="creatureProgressLabel">
-            0 words
+
+          <div class="hero-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-label">Fire streak</div>
+              <div class="sidebar-value" id="statStreak">0</div>
+              <div class="sidebar-sub">days</div>
+              <div class="streak-flames" id="streakFlames"></div>
+            </div>
+            <div class="sidebar-card">
+              <div class="sidebar-label" id="creatureThemeLabel">Phoenix state</div>
+              <div class="sidebar-creature-name" id="creatureName">???</div>
+              <div class="sidebar-creature-msg" id="creatureMsg">Master words to hatch this egg!</div>
+              <div class="sidebar-creature-emoji" id="creatureSidebarEmoji">🥚</div>
+            </div>
           </div>
         </div>
+
         <div class="creature-collection" id="creatureCollectionRow"></div>
-
-        <div class="level-bar" id="levelBar" onclick="showLevelInfo()" style="cursor:pointer">
-          <div class="level-info">
-            <span class="level-rank" id="levelRank">Newbie</span>
-            <span class="level-num" id="levelNum">Lv. 1</span>
-          </div>
-          <div class="level-progress">
-            <div class="level-progress-fill" id="levelFill" style="width: 0%"></div>
-          </div>
-          <div class="level-xp" id="levelXP">0 / 50 XP</div>
-        </div>
 
         <div class="stats">
           <div class="stat">
@@ -2389,13 +2504,6 @@
             <div class="stat-text">
               <div class="n" id="statSpell">0</div>
               <div class="l">To review</div>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-ic ic-streak"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
-            <div class="stat-text">
-              <div class="n" id="statStreak">0</div>
-              <div class="l">Day streak</div>
             </div>
           </div>
           <div class="stat">
@@ -3993,56 +4101,76 @@
         document.getElementById("creatureThemeLabel").textContent =
           featured.short || featured.title;
 
-        const zone = document.getElementById("creatureZone");
-        if (streak >= 3) zone.classList.add("streak-glow");
-        else zone.classList.remove("streak-glow");
+        // Sidebar emoji
+        const sideEmoji = document.getElementById("creatureSidebarEmoji");
+        if (sideEmoji) sideEmoji.textContent = info.emoji;
 
-        // Message
+        // Streak glow on home screen
+        const homeScreen = document.getElementById("homeScreen");
+        if (homeScreen) {
+          if (streak >= 3) homeScreen.classList.add("streak-glow");
+          else homeScreen.classList.remove("streak-glow");
+        }
+
+        // Update hero subtitle creature name
+        const heroName = document.getElementById("heroCreatureName");
+        if (heroName) heroName.textContent = info.label;
+
+        // Level card — evolution text + progress
+        const evoTextEl = document.getElementById("levelEvoText");
+        const evoNameEl = document.getElementById("levelEvoName");
+        const levelFill = document.getElementById("levelFill");
+        const levelXP = document.getElementById("levelXP");
+
+        if (evoTextEl && evoNameEl) {
+          if (!next) {
+            evoTextEl.innerHTML = info.flavor;
+            evoNameEl.textContent = info.label;
+          } else {
+            const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
+            evoTextEl.innerHTML = '<span class="evo-count">' + needed + '</span> word' + (needed !== 1 ? 's' : '') + ' until';
+            evoNameEl.textContent = next.label;
+          }
+        }
+        if (levelFill) {
+          const pct = Math.min(100, info.pct);
+          levelFill.style.width = pct + "%";
+        }
+        if (levelXP) {
+          const wLabel = info.weightedMastered % 1 === 0
+            ? info.weightedMastered
+            : info.weightedMastered.toFixed(1);
+          levelXP.textContent = wLabel + " / " + info.total;
+        }
+
+        // Message in sidebar
         const msgEl = document.getElementById("creatureMsg");
         if (!next) {
           msgEl.textContent = info.flavor;
         } else if (streak >= 3) {
           msgEl.textContent =
-            "Day " + streak + " streak — your creature is glowing!";
+            "Day " + streak + " streak — glowing!";
         } else if (info.pctThreshold === 0) {
-          const needed = wordsNeeded(
-            next.pct,
-            info.weightedMastered,
-            info.total,
-          );
-          msgEl.textContent =
-            "Master " +
-            needed +
-            " word" +
-            (needed !== 1 ? "s" : "") +
-            " to hatch this egg!";
+          const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
+          msgEl.textContent = "Master " + needed + " word" + (needed !== 1 ? "s" : "") + " to hatch!";
         } else {
-          const needed = wordsNeeded(
-            next.pct,
-            info.weightedMastered,
-            info.total,
-          );
-          if (needed === 1) {
-            msgEl.textContent =
-              "Just 1 more word to become a " + next.label + "!";
-          } else {
-            msgEl.textContent = needed + " words until " + next.label + "!";
-          }
+          const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
+          msgEl.textContent = needed + " word" + (needed !== 1 ? "s" : "") + " until " + next.label + "!";
         }
 
-        // Progress bar
+        // Creature progress bar (if present)
         const fillEl = document.getElementById("creatureProgressFill");
         const labelEl = document.getElementById("creatureProgressLabel");
-        const pct = Math.min(100, info.pct);
-        fillEl.style.width = pct + "%";
-        const wLabel =
-          info.weightedMastered % 1 === 0
-            ? info.weightedMastered
-            : info.weightedMastered.toFixed(1);
-        labelEl.textContent = wLabel + " / " + info.total + " words";
-
-        // Color progress bar for alex
-        fillEl.style.background = prof().gradient;
+        if (fillEl && labelEl) {
+          const pct = Math.min(100, info.pct);
+          fillEl.style.width = pct + "%";
+          const wLabel =
+            info.weightedMastered % 1 === 0
+              ? info.weightedMastered
+              : info.weightedMastered.toFixed(1);
+          labelEl.textContent = wLabel + " / " + info.total + " words";
+          fillEl.style.background = prof().gradient;
+        }
 
         renderCreatureCollection(featured.id);
       }
@@ -4373,11 +4501,8 @@
       function updateLevelBar() {
         const li = getLevel(progress().xp);
         const rank = document.getElementById("levelRank");
-        if (!rank) return;
-        rank.textContent = li.title;
-        document.getElementById("levelNum").textContent = "Lv. " + li.level;
-        document.getElementById("levelXP").textContent = li.xpCurrent + " / " + li.xpNext + " XP";
-        document.getElementById("levelFill").style.width = li.pct + "%";
+        if (rank) rank.textContent = li.title;
+        document.getElementById("levelNum").textContent = li.level;
         // Update pill
         const pillLv = document.getElementById("pillLv");
         if (pillLv) pillLv.textContent = "Lv. " + li.level;
@@ -4409,8 +4534,9 @@
           const titleCls = active ? "li-current" : "";
           const check = done ? "✓ " : "";
           const arrow = active ? "► " : "";
+          const title = (done || active) ? LEVELS[i].title : "???";
           html += '<span class="li-num ' + cls + '">' + check + arrow + "Lv. " + lv + "</span>";
-          html += '<span class="li-title ' + titleCls + " " + cls + '">' + LEVELS[i].title + "</span>";
+          html += '<span class="li-title ' + titleCls + " " + cls + '">' + title + "</span>";
           html += '<span class="li-xp ' + cls + '">' + LEVELS[i].xp + " XP</span>";
         }
         // Immortal+ rows
@@ -4466,8 +4592,6 @@
           PROFILES[id].emoji;
         document.getElementById("profilePillName").textContent =
           PROFILES[id].name;
-        document.getElementById("greeting").textContent =
-          `Hi, ${PROFILES[id].name}!`;
         refreshHomeStats();
         renderTopics();
         showScreen("homeScreen");
@@ -4501,7 +4625,9 @@
         }
         document.getElementById("statKnown").textContent = mastered;
         document.getElementById("statSpell").textContent = redCount;
-        document.getElementById("statStreak").textContent = p.streak || 0;
+        const streak = p.streak || 0;
+        document.getElementById("statStreak").textContent = streak;
+        document.getElementById("streakFlames").textContent = '🔥'.repeat(Math.min(streak, 7));
         document.getElementById("statXP").textContent = p.xp || 0;
         updateLevelBar();
         refreshCreatures();
@@ -4609,6 +4735,7 @@
       function pickNextWord(theme) {
         const step = state.schoolStep;
         const dueWords = [];
+        const notYetDue = [];
         const newWords = [];
         for (const w of theme.words) {
           const s = getStatus(w.en);
@@ -4618,16 +4745,22 @@
             newWords.push({ word: w, status: s });
           } else if ((s.nextShowStep || 0) <= step) {
             dueWords.push({ word: w, status: s });
+          } else {
+            notYetDue.push({ word: w, status: s });
           }
         }
-        dueWords.sort((a, b) => {
+        const sortByDifficulty = (a, b) => {
           const ar = a.status.red ? 1 : 0,
             br = b.status.red ? 1 : 0;
           if (ar !== br) return br - ar;
           return (b.status.difficulty || 0) - (a.status.difficulty || 0);
-        });
+        };
+        dueWords.sort(sortByDifficulty);
+        notYetDue.sort(sortByDifficulty);
         if (dueWords.length > 0) return dueWords[0].word;
         if (newWords.length > 0) return newWords[0].word;
+        // All remaining words not yet due — show them anyway
+        if (notYetDue.length > 0) return notYetDue[0].word;
         return null;
       }
 
@@ -4646,7 +4779,7 @@
         const session = loadSchoolSession();
         state.schoolStep = session.step;
         state.sessionAnswered = 0;
-        state.sessionLimit = 20;
+        state.sessionLimit = Infinity;
         state.answerStreak = 0;
         state.bestStreak = 0;
         document.getElementById("schoolTopicTitle").textContent = t.title;
