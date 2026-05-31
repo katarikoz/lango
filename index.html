@@ -7,7 +7,10 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <meta name="apple-mobile-web-app-title" content="LanGo" />
     <title>LanGo — Build Better English</title>
     <link
@@ -17,7 +20,7 @@
     />
     <link
       rel="apple-touch-icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23f6f4ee'/%3E%3Ctext x='50%25' y='62%25' font-size='130' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f1123'/%3E%3Ctext x='50%25' y='62%25' font-size='130' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,24 +30,28 @@
     />
     <style>
       :root {
-        --bg: #f6f4ee;
-        --ink: #1f2330;
-        --ink-soft: #525a6b;
-        --line: #e5e1d6;
-        --card: #ffffff;
-        --accent: #2e6cdf;
-        --accent-soft: #e8f0fe;
-        --max: #2e6cdf;
-        --max-soft: #e8f0fe;
-        --alex: #e07a3b;
-        --alex-soft: #fdeede;
-        --rhino: #7c5cbf;
-        --rhino-soft: #f0ecfb;
-        --good: #2f9e6b;
-        --good-soft: #e6f4ec;
-        --warn: #c46a3a;
-        --shadow:
-          0 6px 20px rgba(20, 25, 40, 0.06), 0 1px 3px rgba(20, 25, 40, 0.04);
+        --bg: #0f1123;
+        --ink: #eef0f6;
+        --ink-soft: #8b90a5;
+        --line: #252840;
+        --card: #181b2e;
+        --accent: #4a8af4;
+        --accent-soft: #1c2a4a;
+        --max: #4a8af4;
+        --max-soft: #1c2a4a;
+        --alex: #f09050;
+        --alex-soft: #3a2518;
+        --rhino: #9b7ee8;
+        --rhino-soft: #271e40;
+        --good: #3fc47f;
+        --good-soft: #162e20;
+        --warn: #e88a55;
+        --surface: #1e2138;
+        --red: #e55b6a;
+        --red-soft: #3a1520;
+        --yellow-highlight: #3a3018;
+        --yellow-text: #f0c644;
+        --shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
       }
       * {
         box-sizing: border-box;
@@ -94,13 +101,12 @@
         font-size: 22px;
         letter-spacing: -0.01em;
         display: flex;
-        flex-direction: column;
         align-items: center;
+        gap: 6px;
         line-height: 1;
       }
       .brand .logo .logo-emoji {
-        font-size: 32px;
-        margin-bottom: 2px;
+        font-size: 28px;
       }
       .brand .tag {
         font-size: 13px;
@@ -114,26 +120,84 @@
       .pill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 999px;
+        gap: 10px;
+        padding: 6px 14px 6px 6px;
+        border-radius: 18px;
         background: var(--card);
         border: 1px solid var(--line);
-        font-size: 14px;
-        color: var(--ink-soft);
         cursor: pointer;
         user-select: none;
       }
-      .pill .dot {
-        width: 10px;
-        height: 10px;
+      .pill-avatar {
+        font-size: 28px;
+        line-height: 1;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent-soft);
         border-radius: 50%;
-        background: var(--accent);
+        flex-shrink: 0;
       }
-      .pill[data-profile="alex"] .dot {
+      .pill[data-profile="alex"] .pill-avatar {
+        background: var(--alex-soft);
+      }
+      .pill[data-profile="rhino"] .pill-avatar {
+        background: var(--rhino-soft);
+      }
+      .pill-right {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .pill-top-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .pill-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1;
+      }
+      .pill-chevron {
+        font-size: 11px;
+        color: var(--ink-soft);
+        transform: rotate(-90deg);
+        line-height: 1;
+      }
+      .pill-lv-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .pill-lv {
+        font-size: 11px;
+        color: var(--ink-soft);
+        font-weight: 600;
+        white-space: nowrap;
+        line-height: 1;
+      }
+      .pill-xp-bar {
+        width: 48px;
+        height: 5px;
+        background: var(--surface);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .pill-xp-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 99px;
+        transition: width 0.4s ease;
+      }
+      .pill[data-profile="alex"] .pill-xp-fill {
         background: var(--alex);
       }
-      .pill[data-profile="rhino"] .dot {
+      .pill[data-profile="rhino"] .pill-xp-fill {
         background: var(--rhino);
       }
 
@@ -227,25 +291,48 @@
       }
       .stats {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
         margin-bottom: 26px;
       }
       .stat {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 14px;
+        border-radius: 16px;
+        padding: 14px 8px 12px;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
       }
+      .stat-ic {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .stat-ic svg {
+        width: 18px;
+        height: 18px;
+      }
+      .stat-ic.ic-mastered { background: var(--good-soft); color: var(--good); }
+      .stat-ic.ic-review { background: var(--red-soft); color: var(--red); }
+      .stat-ic.ic-streak { background: var(--yellow-highlight); color: var(--yellow-text); }
+      .stat-ic.ic-xp { background: var(--accent-soft); color: var(--accent); }
+      [data-profile="alex"] .stat-ic.ic-xp { background: var(--alex-soft); color: var(--alex); }
+      [data-profile="rhino"] .stat-ic.ic-xp { background: var(--rhino-soft); color: var(--rhino); }
       .stat .n {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: 700;
+        line-height: 1;
       }
       .stat .l {
-        font-size: 12px;
+        font-size: 11px;
         color: var(--ink-soft);
-        margin-top: 2px;
+        line-height: 1.2;
       }
 
       .section-title {
@@ -295,24 +382,24 @@
         margin-bottom: 12px;
       }
       .mode.m-power .icon {
-        background: #fdf0e3;
-        color: #c25c1a;
+        background: #3a2518;
+        color: #f09050;
       }
       .mode.m-better .icon {
-        background: #ecf6ee;
-        color: #2f9e6b;
+        background: var(--good-soft);
+        color: var(--good);
       }
       .mode.m-connect .icon {
-        background: #f0ecfb;
-        color: #6a4ad6;
+        background: #271e40;
+        color: #9b7ee8;
       }
       .mode.m-spell .icon {
-        background: #fce9eb;
-        color: #c44758;
+        background: var(--red-soft);
+        color: var(--red);
       }
       .mode.m-speak .icon {
-        background: #fdf6dc;
-        color: #b78d1f;
+        background: #302a14;
+        color: #e0b040;
       }
       .mode .ttl {
         font-size: 17px;
@@ -328,7 +415,7 @@
         align-self: flex-start;
         font-size: 11px;
         color: var(--ink-soft);
-        background: #f1ede4;
+        background: var(--surface);
         padding: 3px 8px;
         border-radius: 6px;
         margin-top: 10px;
@@ -336,7 +423,7 @@
         text-transform: uppercase;
       }
       .mode.locked .ribbon {
-        background: #efece4;
+        background: var(--line);
       }
 
       .session-strip {
@@ -392,7 +479,7 @@
         transition: width 0.3s ease;
       }
       .seg-red {
-        background: #c44758 !important;
+        background: var(--red) !important;
       }
       .seg-orange {
         background: #f0a868 !important;
@@ -451,11 +538,11 @@
         white-space: nowrap;
       }
       .t-badge-now {
-        background: #ecf6ee;
+        background: var(--good-soft);
         color: var(--good);
       }
       .t-badge-rev {
-        background: #f1ede4;
+        background: var(--surface);
         color: var(--ink-soft);
       }
 
@@ -469,7 +556,7 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background: #d4d0c4;
+        background: #353850;
         transition:
           background 0.25s ease,
           transform 0.25s ease;
@@ -478,13 +565,13 @@
         background: #f0a868;
       }
       .dots.s2 .dot.filled {
-        background: #e07a3b;
+        background: #f09050;
       }
       .dots.mastered .dot {
         background: var(--good);
       }
       .dots.red .dot {
-        background: #c44758;
+        background: var(--red);
       }
       .dots.red .dot:not(:first-child) {
         opacity: 0.4;
@@ -498,27 +585,27 @@
         border-radius: 999px;
         font-size: 12px;
         font-weight: 600;
-        background: #f1ede4;
+        background: var(--surface);
         color: var(--ink-soft);
       }
       .stage-pill.new {
-        background: #f1ede4;
+        background: var(--surface);
         color: var(--ink-soft);
       }
       .stage-pill.red {
-        background: #fce9eb;
-        color: #c44758;
+        background: var(--red-soft);
+        color: var(--red);
       }
       .stage-pill.s1 {
-        background: #fdf0e3;
-        color: #c25c1a;
+        background: #3a2518;
+        color: #f09050;
       }
       .stage-pill.s2 {
-        background: #fbe5cf;
-        color: #a64a13;
+        background: #3a2a1a;
+        color: #e88a55;
       }
       .stage-pill.mastered {
-        background: #ecf6ee;
+        background: var(--good-soft);
         color: var(--good);
       }
 
@@ -545,8 +632,20 @@
         border: 1px solid var(--line);
         border-radius: 22px;
         padding: 26px 22px;
-        box-shadow: var(--shadow);
+        box-shadow:
+          var(--shadow),
+          0 0 15px rgba(74, 138, 244, 0.15);
         text-align: center;
+      }
+      body[data-profile="alex"] .tp-card {
+        box-shadow:
+          var(--shadow),
+          0 0 15px rgba(240, 144, 80, 0.15);
+      }
+      body[data-profile="rhino"] .tp-card {
+        box-shadow:
+          var(--shadow),
+          0 0 15px rgba(155, 126, 232, 0.15);
       }
       .tp-card .tp-status-row {
         display: flex;
@@ -595,30 +694,35 @@
         padding: 14px 16px;
         border: 2px solid var(--line);
         border-radius: 14px;
-        background: #fafaf6;
+        background: var(--surface);
         color: var(--ink);
         margin: 0 auto;
         display: block;
         outline: none;
-        transition: border-color 0.15s ease;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
         text-transform: lowercase;
       }
       .tp-card .tp-input:focus {
         border-color: var(--accent);
+        box-shadow: 0 0 10px rgba(74, 138, 244, 0.3);
       }
       body[data-profile="alex"] .tp-card .tp-input:focus {
         border-color: var(--alex);
+        box-shadow: 0 0 10px rgba(240, 144, 80, 0.3);
       }
       body[data-profile="rhino"] .tp-card .tp-input:focus {
         border-color: var(--rhino);
+        box-shadow: 0 0 10px rgba(155, 126, 232, 0.3);
       }
       .tp-card .tp-input.right {
         border-color: var(--good);
-        background: #ebf6ef;
+        background: var(--good-soft);
       }
       .tp-card .tp-input.wrong {
-        border-color: #c44758;
-        background: #fce9eb;
+        border-color: var(--red);
+        background: var(--red-soft);
       }
       .tp-card .tp-feedback {
         margin-top: 16px;
@@ -631,14 +735,14 @@
         font-weight: 600;
       }
       .tp-card .tp-feedback.wrong {
-        color: #c44758;
+        color: var(--red);
       }
       .tp-card .tp-feedback .correct {
-        background: #fff5cc;
+        background: var(--yellow-highlight);
         padding: 2px 8px;
         border-radius: 6px;
         font-weight: 700;
-        color: var(--ink);
+        color: var(--yellow-text);
         margin-left: 4px;
       }
       .tp-card .tp-ex {
@@ -657,7 +761,7 @@
         }
         30% {
           transform: scale(1.04);
-          box-shadow: 0 8px 30px rgba(47, 158, 107, 0.25);
+          box-shadow: 0 8px 30px rgba(63, 196, 127, 0.4);
         }
         60% {
           transform: scale(0.98);
@@ -700,7 +804,7 @@
       }
       .streak-counter.level2 {
         color: var(--accent);
-        text-shadow: 0 0 8px rgba(46, 108, 223, 0.3);
+        text-shadow: 0 0 8px rgba(74, 138, 244, 0.5);
       }
       .streak-counter.level3 {
         color: var(--accent);
@@ -709,12 +813,12 @@
       body[data-profile="alex"] .streak-counter.level2,
       body[data-profile="alex"] .streak-counter.level3 {
         color: var(--alex);
-        text-shadow: 0 0 8px rgba(224, 122, 59, 0.3);
+        text-shadow: 0 0 8px rgba(240, 144, 80, 0.5);
       }
       body[data-profile="rhino"] .streak-counter.level2,
       body[data-profile="rhino"] .streak-counter.level3 {
         color: var(--rhino);
-        text-shadow: 0 0 8px rgba(124, 92, 191, 0.3);
+        text-shadow: 0 0 8px rgba(155, 126, 232, 0.5);
       }
       @keyframes streakPulse {
         0%,
@@ -731,7 +835,7 @@
         right: 14px;
         font-size: 13px;
         font-weight: 600;
-        color: #c44758;
+        color: var(--red);
         opacity: 0;
         z-index: 5;
         animation: streakFadeOut 1.2s ease-out forwards;
@@ -835,7 +939,7 @@
         color: var(--rhino);
       }
       .xp-float.xp-gold {
-        color: #d4a017;
+        color: var(--yellow-text);
         font-size: 24px;
       }
       .xp-float.xp-small {
@@ -861,7 +965,7 @@
         inset: 0;
         background: radial-gradient(
           circle,
-          rgba(212, 160, 23, 0.25) 0%,
+          rgba(240, 198, 68, 0.3) 0%,
           transparent 70%
         );
         border-radius: 22px;
@@ -930,7 +1034,7 @@
       .summary-row .cell {
         padding: 14px 8px;
         border-radius: 14px;
-        background: #fafaf6;
+        background: var(--surface);
       }
       .summary-row .cell .n {
         font-size: 22px;
@@ -949,8 +1053,20 @@
         border: 1px solid var(--line);
         border-radius: 22px;
         padding: 28px 22px;
-        box-shadow: var(--shadow);
+        box-shadow:
+          var(--shadow),
+          0 0 15px rgba(74, 138, 244, 0.15);
         text-align: center;
+      }
+      body[data-profile="alex"] .sp-card {
+        box-shadow:
+          var(--shadow),
+          0 0 15px rgba(240, 144, 80, 0.15);
+      }
+      body[data-profile="rhino"] .sp-card {
+        box-shadow:
+          var(--shadow),
+          0 0 15px rgba(155, 126, 232, 0.15);
       }
       .sp-card .sp-label {
         font-size: 12px;
@@ -980,30 +1096,35 @@
         padding: 14px 16px;
         border: 2px solid var(--line);
         border-radius: 14px;
-        background: #fafaf6;
+        background: var(--surface);
         color: var(--ink);
         margin: 0 auto;
         display: block;
         outline: none;
-        transition: border-color 0.15s ease;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
         text-transform: lowercase;
       }
       .sp-card .sp-input:focus {
         border-color: var(--accent);
+        box-shadow: 0 0 10px rgba(74, 138, 244, 0.3);
       }
       body[data-profile="alex"] .sp-card .sp-input:focus {
         border-color: var(--alex);
+        box-shadow: 0 0 10px rgba(240, 144, 80, 0.3);
       }
       body[data-profile="rhino"] .sp-card .sp-input:focus {
         border-color: var(--rhino);
+        box-shadow: 0 0 10px rgba(155, 126, 232, 0.3);
       }
       .sp-card .sp-input.right {
         border-color: var(--good);
-        background: #ebf6ef;
+        background: var(--good-soft);
       }
       .sp-card .sp-input.wrong {
-        border-color: #c44758;
-        background: #fce9eb;
+        border-color: var(--red);
+        background: var(--red-soft);
       }
       .sp-card .sp-feedback {
         margin-top: 18px;
@@ -1016,14 +1137,14 @@
         font-weight: 600;
       }
       .sp-card .sp-feedback.wrong {
-        color: #c44758;
+        color: var(--red);
       }
       .sp-card .sp-feedback .correct {
-        background: #fff5cc;
+        background: var(--yellow-highlight);
         padding: 2px 8px;
         border-radius: 6px;
         font-weight: 700;
-        color: var(--ink);
+        color: var(--yellow-text);
         margin-left: 4px;
       }
       .sp-card .sp-ex {
@@ -1036,8 +1157,8 @@
       .sp-card.tricky-flag::before {
         content: "tricky word";
         display: inline-block;
-        background: #fce9eb;
-        color: #c44758;
+        background: var(--red-soft);
+        color: var(--red);
         font-size: 10px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
@@ -1122,19 +1243,23 @@
         background: var(--accent);
         color: white;
         border-color: var(--accent);
+        box-shadow: 0 0 12px rgba(74, 138, 244, 0.3);
       }
       body[data-profile="alex"] .btn.primary {
         background: var(--alex);
         border-color: var(--alex);
+        box-shadow: 0 0 12px rgba(240, 144, 80, 0.3);
       }
       body[data-profile="rhino"] .btn.primary {
         background: var(--rhino);
         border-color: var(--rhino);
+        box-shadow: 0 0 12px rgba(155, 126, 232, 0.3);
       }
       .btn.good {
         background: var(--good);
         color: white;
         border-color: var(--good);
+        box-shadow: 0 0 12px rgba(63, 196, 127, 0.3);
       }
       .btn:disabled {
         opacity: 0.35;
@@ -1166,7 +1291,7 @@
       .pw-weak .word {
         font-size: 38px;
         font-weight: 700;
-        color: #b1b1b1;
+        color: #606580;
         text-decoration: line-through;
         text-decoration-thickness: 2px;
         letter-spacing: -0.01em;
@@ -1222,7 +1347,7 @@
       .pw-example {
         margin-top: 18px;
         padding: 16px;
-        background: #fafaf6;
+        background: var(--surface);
         border-radius: 14px;
         border: 1px dashed var(--line);
         min-height: 60px;
@@ -1236,7 +1361,8 @@
         font-size: 14px;
       }
       .pw-example b {
-        background: #fff5cc;
+        background: var(--yellow-highlight);
+        color: var(--yellow-text);
         padding: 0 4px;
         border-radius: 4px;
         font-weight: 600;
@@ -1258,7 +1384,7 @@
         margin-bottom: 10px;
       }
       .better-preview .weak-line {
-        color: #9b9b9b;
+        color: #606580;
         text-decoration: line-through;
         margin-bottom: 6px;
       }
@@ -1267,7 +1393,7 @@
         line-height: 1.55;
       }
       .better-preview .strong-line .tag {
-        background: #ecf6ee;
+        background: var(--good-soft);
         color: var(--good);
         font-size: 11px;
         padding: 1px 6px;
@@ -1288,8 +1414,8 @@
         left: 50%;
         bottom: 30px;
         transform: translateX(-50%);
-        background: #1f2330;
-        color: white;
+        background: #eef0f6;
+        color: #0f1123;
         padding: 12px 18px;
         border-radius: 12px;
         font-size: 14px;
@@ -1312,7 +1438,7 @@
           grid-template-columns: 1fr;
         }
         .stats {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
         .hero h1 {
           font-size: 30px;
@@ -1379,11 +1505,11 @@
       }
       [data-profile="alex"] ~ #homeScreen .creature-progress-fill,
       body.profile-alex .creature-progress-fill {
-        background: linear-gradient(90deg, var(--alex), #e6a13b);
+        background: linear-gradient(90deg, var(--alex), #f0b050);
       }
       [data-profile="rhino"] ~ #homeScreen .creature-progress-fill,
       body.profile-rhino .creature-progress-fill {
-        background: linear-gradient(90deg, var(--rhino), #a78bdf);
+        background: linear-gradient(90deg, var(--rhino), #b8a0f0);
       }
       .creature-progress-label {
         font-size: 12px;
@@ -1398,10 +1524,10 @@
       @keyframes creatureGlow {
         0%,
         100% {
-          filter: drop-shadow(0 0 6px rgba(46, 108, 223, 0.3));
+          filter: drop-shadow(0 0 6px rgba(74, 138, 244, 0.4));
         }
         50% {
-          filter: drop-shadow(0 0 18px rgba(46, 108, 223, 0.6));
+          filter: drop-shadow(0 0 18px rgba(74, 138, 244, 0.7));
         }
       }
 
@@ -1456,7 +1582,7 @@
       .creature-evolve-overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.7);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1476,7 +1602,9 @@
         text-align: center;
         max-width: 320px;
         width: 90%;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        box-shadow:
+          0 12px 40px rgba(0, 0, 0, 0.4),
+          0 0 20px rgba(74, 138, 244, 0.2);
         transform: scale(0.7);
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
@@ -1528,6 +1656,131 @@
         transform: scale(0.96);
       }
 
+      /* Level bar */
+      .level-bar {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px 18px;
+        margin-bottom: 16px;
+      }
+      .level-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .level-rank {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      [data-profile="alex"] .level-rank {
+        color: var(--alex);
+      }
+      [data-profile="rhino"] .level-rank {
+        color: var(--rhino);
+      }
+      .level-num {
+        font-size: 13px;
+        color: var(--ink-soft);
+        font-weight: 600;
+      }
+      .level-progress {
+        height: 8px;
+        background: var(--surface);
+        border-radius: 99px;
+        overflow: hidden;
+        margin-bottom: 6px;
+      }
+      .level-progress-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 99px;
+        transition: width 0.4s ease;
+      }
+      [data-profile="alex"] .level-progress-fill {
+        background: var(--alex);
+      }
+      [data-profile="rhino"] .level-progress-fill {
+        background: var(--rhino);
+      }
+      .level-xp {
+        font-size: 12px;
+        color: var(--ink-soft);
+        text-align: right;
+      }
+      .levelup-title {
+        font-size: 28px;
+        font-weight: 800;
+        margin-top: 12px;
+      }
+      .levelup-rank {
+        font-size: 22px;
+        color: var(--accent);
+        margin-top: 8px;
+        font-weight: 700;
+      }
+      .level-info-card {
+        max-width: 340px;
+        padding: 28px 24px 22px;
+      }
+      .level-info-title {
+        font-size: 20px;
+        font-weight: 800;
+        margin-bottom: 16px;
+      }
+      .level-info-table {
+        text-align: left;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 6px 12px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .level-info-table .li-num {
+        font-size: 12px;
+        color: var(--ink-soft);
+        font-weight: 600;
+      }
+      .level-info-table .li-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .level-info-table .li-title.li-current {
+        color: var(--accent);
+      }
+      [data-profile="alex"] .level-info-table .li-title.li-current {
+        color: var(--alex);
+      }
+      [data-profile="rhino"] .level-info-table .li-title.li-current {
+        color: var(--rhino);
+      }
+      .level-info-table .li-xp {
+        font-size: 12px;
+        color: var(--ink-soft);
+      }
+      .level-info-table .li-row-done .li-title {
+        color: var(--good);
+      }
+      .level-info-table .li-row-done .li-num,
+      .level-info-table .li-row-done .li-xp {
+        color: var(--good);
+        opacity: 0.6;
+      }
+      .level-info-hint {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-bottom: 14px;
+        line-height: 1.4;
+      }
+      [data-profile="alex"] .levelup-rank {
+        color: var(--alex);
+      }
+      [data-profile="rhino"] .levelup-rank {
+        color: var(--rhino);
+      }
+
       /* ============================================================
      SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
      ============================================================ */
@@ -1535,9 +1788,9 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        background: #fff8e0;
-        border: 1px solid #f1d97a;
-        color: #8a6a14;
+        background: #302a14;
+        border: 1px solid #5a4c20;
+        color: #e0b040;
         border-radius: 12px;
         padding: 10px 14px;
         font-size: 13px;
@@ -1545,8 +1798,8 @@
         line-height: 1.4;
       }
       .test-banner .pill-badge {
-        background: #f1d97a;
-        color: #5a4708;
+        background: #5a4c20;
+        color: var(--yellow-text);
         font-weight: 700;
         font-size: 10px;
         text-transform: uppercase;
@@ -1584,7 +1837,7 @@
         width: 44px;
         height: 44px;
         border-radius: 12px;
-        background: #fafaf6;
+        background: var(--surface);
         display: grid;
         place-items: center;
         font-size: 24px;
@@ -1601,8 +1854,8 @@
       }
 
       .t-badge-demo {
-        background: #fff8e0;
-        color: #8a6a14;
+        background: #302a14;
+        color: #e0b040;
       }
 
       /* EXERCISE RUNNER */
@@ -1652,7 +1905,7 @@
         padding: 12px 14px;
         border: 2px solid var(--line);
         border-radius: 14px;
-        background: #fafaf6;
+        background: var(--surface);
         color: var(--ink);
         outline: none;
         transition: border-color 0.15s ease;
@@ -1670,11 +1923,11 @@
       }
       .ex-input.right {
         border-color: var(--good);
-        background: #ebf6ef;
+        background: var(--good-soft);
       }
       .ex-input.wrong {
-        border-color: #c44758;
-        background: #fce9eb;
+        border-color: var(--red);
+        background: var(--red-soft);
       }
       .ex-unit {
         font-size: 18px;
@@ -1718,14 +1971,14 @@
         cursor: default;
       }
       .ex-option.right {
-        background: #e6f4ec;
+        background: var(--good-soft);
         color: var(--good);
         border-color: var(--good);
       }
       .ex-option.wrong {
-        background: #fce9eb;
-        color: #c44758;
-        border-color: #c44758;
+        background: var(--red-soft);
+        color: var(--red);
+        border-color: var(--red);
       }
       .ex-feedback {
         margin-top: 14px;
@@ -1739,19 +1992,19 @@
         font-weight: 600;
       }
       .ex-feedback.wrong {
-        color: #c44758;
+        color: var(--red);
       }
       .ex-feedback .correct {
-        background: #fff5cc;
+        background: var(--yellow-highlight);
         padding: 2px 8px;
         border-radius: 6px;
         font-weight: 700;
-        color: var(--ink);
+        color: var(--yellow-text);
       }
       .ex-explanation {
         margin-top: 10px;
         padding: 12px 14px;
-        background: #fafaf6;
+        background: var(--surface);
         border: 1px dashed var(--line);
         border-radius: 12px;
         font-size: 14px;
@@ -1806,7 +2059,7 @@
         justify-content: center;
         padding: 32px 22px;
         overflow-y: auto;
-        background: linear-gradient(160deg, #e9eefc 0%, #e7e6fb 100%);
+        background: linear-gradient(160deg, #0f1123 0%, #151530 100%);
       }
       .login-inner {
         width: 100%;
@@ -1819,7 +2072,9 @@
           #3a7bff 46%,
           #7c4dff 100%
         );
-        box-shadow: 0 26px 60px rgba(60, 72, 160, 0.4);
+        box-shadow:
+          0 26px 60px rgba(0, 0, 0, 0.5),
+          0 0 30px rgba(58, 123, 255, 0.2);
       }
       .login-brand {
         text-align: center;
@@ -1845,10 +2100,10 @@
         max-width: 300px;
       }
       .login-card {
-        background: #fff;
+        background: var(--card);
         border-radius: 22px;
         padding: 24px 20px;
-        box-shadow: 0 14px 36px rgba(31, 35, 48, 0.2);
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
         display: flex;
         flex-direction: column;
         gap: 14px;
@@ -1861,7 +2116,7 @@
         left: 18px;
         top: 50%;
         transform: translateY(-50%);
-        color: #a9a395;
+        color: #606580;
         display: flex;
         transition: color 0.15s;
         pointer-events: none;
@@ -1870,28 +2125,28 @@
         width: 100%;
         box-sizing: border-box;
         padding: 16px 16px 16px 52px;
-        border: 2px solid #ece8df;
+        border: 2px solid var(--line);
         border-radius: 15px;
         font-size: 16px;
         font-family: inherit;
         font-weight: 600;
         color: var(--ink);
-        background: #faf9f5;
+        background: var(--surface);
         outline: none;
         transition:
           border-color 0.15s,
           background 0.15s;
       }
       .login-field input::placeholder {
-        color: #a9a395;
+        color: #606580;
         font-weight: 600;
       }
       .login-field input:focus {
-        border-color: #3a7bff;
-        background: #fff;
+        border-color: #4a8af4;
+        background: var(--surface);
       }
       .login-field input:focus + .login-ic {
-        color: #3a7bff;
+        color: #4a8af4;
       }
       #loginBtn {
         margin-top: 6px;
@@ -1905,7 +2160,9 @@
         font-weight: 800;
         color: #fff;
         background: linear-gradient(135deg, #ff8a3d 0%, #ff4d6d 100%);
-        box-shadow: 0 10px 24px rgba(255, 77, 109, 0.34);
+        box-shadow:
+          0 10px 24px rgba(255, 77, 109, 0.3),
+          0 0 15px rgba(255, 138, 61, 0.2);
       }
       #loginBtn:active {
         transform: scale(0.98);
@@ -1936,12 +2193,22 @@
       <div class="topbar">
         <div class="brand">
           <div class="logo"><span class="logo-emoji">😜</span>LanGo</div>
-          <div class="tag">Build Better English</div>
         </div>
         <div class="top-right">
           <div class="pill" id="profilePill" style="display: none">
-            <span id="profilePillEmoji"></span
-            ><span id="profilePillName">—</span>
+            <span class="pill-avatar" id="profilePillEmoji"></span>
+            <div class="pill-right">
+              <div class="pill-top-row">
+                <span class="pill-name" id="profilePillName">—</span>
+                <span class="pill-chevron">‹</span>
+              </div>
+              <div class="pill-lv-row">
+                <span class="pill-lv" id="pillLv">Lv. 1</span>
+                <div class="pill-xp-bar">
+                  <div class="pill-xp-fill" id="pillXpFill" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2081,18 +2348,37 @@
         </div>
         <div class="creature-collection" id="creatureCollectionRow"></div>
 
+        <div class="level-bar" id="levelBar" onclick="showLevelInfo()" style="cursor:pointer">
+          <div class="level-info">
+            <span class="level-rank" id="levelRank">Newbie</span>
+            <span class="level-num" id="levelNum">Lv. 1</span>
+          </div>
+          <div class="level-progress">
+            <div class="level-progress-fill" id="levelFill" style="width: 0%"></div>
+          </div>
+          <div class="level-xp" id="levelXP">0 / 50 XP</div>
+        </div>
+
         <div class="stats">
           <div class="stat">
+            <div class="stat-ic ic-mastered"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></div>
             <div class="n" id="statKnown">0</div>
-            <div class="l">🌳 mastered</div>
+            <div class="l">Mastered</div>
           </div>
           <div class="stat">
+            <div class="stat-ic ic-review"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <div class="n" id="statSpell">0</div>
-            <div class="l">🔴 to fix</div>
+            <div class="l">To review</div>
           </div>
           <div class="stat">
+            <div class="stat-ic ic-streak"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
             <div class="n" id="statStreak">0</div>
-            <div class="l">day streak</div>
+            <div class="l">Day streak</div>
+          </div>
+          <div class="stat">
+            <div class="stat-ic ic-xp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+            <div class="n" id="statXP">0</div>
+            <div class="l">Total XP</div>
           </div>
         </div>
 
@@ -2156,8 +2442,8 @@
           Other subjects
           <span
             style="
-              background: #fff8e0;
-              color: #8a6a14;
+              background: #302a14;
+              color: #e0b040;
               font-size: 9px;
               padding: 2px 7px;
               border-radius: 99px;
@@ -2171,7 +2457,7 @@
         <div class="modes" id="subjectsHomeRow">
           <div class="mode" onclick="openSubjects()">
             <div>
-              <div class="icon" style="background: #fafaf6">📚</div>
+              <div class="icon" style="background: var(--surface)">📚</div>
               <div class="ttl">Mathe, Deutsch & mehr</div>
               <div class="desc">
                 Школьные предметы из учебника. Tippe, um zu üben.
@@ -2482,6 +2768,32 @@
           </div>
           <div class="evolve-flavor" id="evolveFlavor"></div>
           <button class="evolve-btn" onclick="dismissEvolve()">Awesome!</button>
+        </div>
+      </div>
+
+      <div
+        class="creature-evolve-overlay"
+        id="levelUpOverlay"
+        onclick="this.classList.remove('show')"
+      >
+        <div class="creature-evolve-card levelup-card" id="levelUpCard" onclick="event.stopPropagation()">
+          <div class="evolve-emoji">⚡</div>
+          <div class="levelup-title" id="levelUpNum">Level 2</div>
+          <div class="levelup-rank" id="levelUpRank">Rookie</div>
+          <button class="evolve-btn" onclick="document.getElementById('levelUpOverlay').classList.remove('show')">Awesome!</button>
+        </div>
+      </div>
+
+      <div
+        class="creature-evolve-overlay"
+        id="levelInfoOverlay"
+        onclick="this.classList.remove('show')"
+      >
+        <div class="creature-evolve-card level-info-card" onclick="event.stopPropagation()">
+          <div class="level-info-title">Ranks</div>
+          <div class="level-info-table" id="levelInfoTable"></div>
+          <div class="level-info-hint">+10 correct · +25 mastery · +5 don't-know</div>
+          <button class="evolve-btn" onclick="document.getElementById('levelInfoOverlay').classList.remove('show')">Got it</button>
         </div>
       </div>
 
@@ -2860,6 +3172,90 @@
             { en: "straw", de: "der Strohhalm, der Trinkhalm" },
           ],
         },
+        {
+          id: "theme05a",
+          title: "Theme 5a — Test prep",
+          short: "Test prep",
+          status: "current",
+          note: "Первые слова темы 5 + месяцы + порядковые числительные.",
+          words: [
+            { en: "birthday", de: "der Geburtstag", ex: "It's his birthday." },
+            {
+              en: "to invite",
+              de: "einladen",
+              ex: "He invites his friends to a sleepover birthday party.",
+            },
+            {
+              en: "sleepover",
+              de: "die Übernachtung, die Übernachtungsparty",
+              ex: "He invites his friends to a sleepover birthday party.",
+              tricky: true,
+            },
+            { en: "would", de: "würde(st, n, t)" },
+            { en: "month", de: "der Monat" },
+            { en: "January", de: "Januar", tricky: true },
+            { en: "February", de: "Februar", tricky: true },
+            { en: "March", de: "März" },
+            { en: "April", de: "April" },
+            { en: "May", de: "Mai" },
+            { en: "June", de: "Juni" },
+            { en: "July", de: "Juli" },
+            { en: "August", de: "August" },
+            { en: "September", de: "September" },
+            { en: "October", de: "Oktober" },
+            { en: "November", de: "November" },
+            { en: "December", de: "Dezember", tricky: true },
+            { en: "sixth", de: "sechste(r, s)", ex: "June is the sixth month." },
+            { en: "seventh", de: "siebte(r, s)" },
+            {
+              en: "eighth",
+              de: "achte(r, s)",
+              ex: "August is the eighth month.",
+              tricky: true,
+            },
+            {
+              en: "ninth",
+              de: "neunte(r, s)",
+              ex: "September is the ninth month.",
+              tricky: true,
+            },
+            { en: "tenth", de: "zehnte(r, s)" },
+            { en: "eleventh", de: "elfte(r, s)" },
+            {
+              en: "twelfth",
+              de: "zwölfte(r, s)",
+              ex: "December is the twelfth month.",
+              tricky: true,
+            },
+            { en: "thirteenth", de: "dreizehnte(r, s)" },
+            { en: "fourteenth", de: "vierzehnte(r, s)" },
+            { en: "fifteenth", de: "fünfzehnte(r, s)" },
+            { en: "sixteenth", de: "sechzehnte(r, s)" },
+            { en: "seventeenth", de: "siebzehnte(r, s)" },
+            { en: "eighteenth", de: "achtzehnte(r, s)" },
+            { en: "nineteenth", de: "neunzehnte(r, s)" },
+            {
+              en: "twentieth",
+              de: "zwanzigste(r, s)",
+              tricky: true,
+            },
+            { en: "twenty-first", de: "einundzwanzigste(r, s)" },
+            { en: "twenty-second", de: "zweiundzwanzigste(r, s)" },
+            { en: "twenty-third", de: "dreiundzwanzigste(r, s)" },
+            { en: "twenty-fourth", de: "vierundzwanzigste(r, s)" },
+            { en: "twenty-fifth", de: "fünfundzwanzigste(r, s)" },
+            { en: "twenty-sixth", de: "sechsundzwanzigste(r, s)" },
+            { en: "twenty-seventh", de: "siebenundzwanzigste(r, s)" },
+            { en: "twenty-eighth", de: "achtundzwanzigste(r, s)" },
+            { en: "twenty-ninth", de: "neunundzwanzigste(r, s)" },
+            {
+              en: "thirtieth",
+              de: "dreißigste(r, s)",
+              tricky: true,
+            },
+            { en: "thirty-first", de: "einunddreißigste(r, s)" },
+          ],
+        },
       ];
 
       /* ============================================================
@@ -2982,7 +3378,7 @@
           emoji: "🐱",
           color: "var(--accent)",
           gradient: "",
-          confetti: ["#2e6cdf", "#5b8fe8", "#1b52b0", "#e8f0fe"],
+          confetti: ["#4a8af4", "#6ba4f8", "#2e6cdf", "#1c2a4a"],
           metaEl: "metaMax",
           creaturesEl: "creaturesMax",
         },
@@ -2991,8 +3387,8 @@
           name: "Fox",
           emoji: "🦊",
           color: "var(--alex)",
-          gradient: "linear-gradient(90deg, var(--alex), #e6a13b)",
-          confetti: ["#e07a3b", "#f0a868", "#c25c1a", "#fdeede"],
+          gradient: "linear-gradient(90deg, var(--alex), #f0b050)",
+          confetti: ["#f09050", "#f0a868", "#e07a3b", "#3a2518"],
           metaEl: "metaAleks",
           creaturesEl: "creaturesAleks",
         },
@@ -3001,8 +3397,8 @@
           name: "Rhino",
           emoji: "🦏",
           color: "var(--rhino)",
-          gradient: "linear-gradient(90deg, var(--rhino), #a78bdf)",
-          confetti: ["#7c5cbf", "#a78bdf", "#5e3fa3", "#f0ecfb"],
+          gradient: "linear-gradient(90deg, var(--rhino), #b8a0f0)",
+          confetti: ["#9b7ee8", "#b8a0f0", "#7c5cbf", "#271e40"],
           metaEl: "metaRhino",
           creaturesEl: "creaturesRhino",
         },
@@ -3011,6 +3407,19 @@
       function prof() {
         return PROFILES[state.profile] || PROFILES.max;
       }
+
+      const LEVELS = [
+        { xp: 0, title: "Newbie" },
+        { xp: 50, title: "Rookie" },
+        { xp: 130, title: "Explorer" },
+        { xp: 250, title: "Warrior" },
+        { xp: 420, title: "Knight" },
+        { xp: 650, title: "Champion" },
+        { xp: 950, title: "Master" },
+        { xp: 1350, title: "Legend" },
+        { xp: 1850, title: "Mythic" },
+        { xp: 2500, title: "Immortal" },
+      ];
 
       /* School Words — берём из window.LANGO_THEMES (data/themes.js) */
       const THEMES = window.LANGO_THEMES || [];
@@ -3244,6 +3653,7 @@
             d.wordStatus = d.wordStatus || {};
             d.learnedPowerWords = d.learnedPowerWords || [];
             d.streak = d.streak || 0;
+            d.xp = d.xp || 0;
             // Migration: add adaptive difficulty fields to old word records
             for (const en in d.wordStatus) {
               const s = d.wordStatus[en];
@@ -3265,6 +3675,7 @@
           wordStatus: {},
           learnedPowerWords: [],
           streak: 0,
+          xp: 0,
           lastVisit: null,
         };
       }
@@ -3890,6 +4301,122 @@
       }
 
       /* ============================================================
+   XP & LEVEL SYSTEM
+   ============================================================ */
+
+      function getLevel(xp) {
+        let idx = 0;
+        for (let i = LEVELS.length - 1; i >= 0; i--) {
+          if (xp >= LEVELS[i].xp) { idx = i; break; }
+        }
+        let level = idx + 1;
+        let title = LEVELS[idx].title;
+        let xpCurrent, xpNext;
+        if (idx < LEVELS.length - 1) {
+          xpCurrent = xp - LEVELS[idx].xp;
+          xpNext = LEVELS[idx + 1].xp - LEVELS[idx].xp;
+        } else {
+          // Immortal+: +800 per extra level
+          const extra = Math.floor((xp - LEVELS[idx].xp) / 800);
+          level += extra;
+          if (extra > 0) title = LEVELS[idx].title + " " + toRoman(extra + 1);
+          xpCurrent = (xp - LEVELS[idx].xp) % 800;
+          xpNext = 800;
+        }
+        const pct = xpNext > 0 ? Math.min(100, Math.round(xpCurrent / xpNext * 100)) : 100;
+        return { level, title, xpCurrent, xpNext, pct };
+      }
+
+      function toRoman(n) {
+        const vals = [10,9,5,4,1], syms = ["X","IX","V","IV","I"];
+        let r = "";
+        for (let i = 0; i < vals.length; i++)
+          while (n >= vals[i]) { r += syms[i]; n -= vals[i]; }
+        return r;
+      }
+
+      function addXP(points) {
+        const p = progress();
+        const before = getLevel(p.xp);
+        p.xp += points;
+        saveProgress(state.profile, p);
+        const after = getLevel(p.xp);
+        if (after.level > before.level) showLevelUp(after);
+        updateLevelBar();
+      }
+
+      function updateLevelBar() {
+        const li = getLevel(progress().xp);
+        const rank = document.getElementById("levelRank");
+        if (!rank) return;
+        rank.textContent = li.title;
+        document.getElementById("levelNum").textContent = "Lv. " + li.level;
+        document.getElementById("levelXP").textContent = li.xpCurrent + " / " + li.xpNext + " XP";
+        document.getElementById("levelFill").style.width = li.pct + "%";
+        // Update pill
+        const pillLv = document.getElementById("pillLv");
+        if (pillLv) pillLv.textContent = "Lv. " + li.level;
+        const pillFill = document.getElementById("pillXpFill");
+        if (pillFill) pillFill.style.width = li.pct + "%";
+      }
+
+      function showLevelUp(li) {
+        const overlay = document.getElementById("levelUpOverlay");
+        if (!overlay) return;
+        document.getElementById("levelUpRank").textContent = li.title;
+        document.getElementById("levelUpNum").textContent = "Level " + li.level;
+        overlay.classList.add("show");
+        spawnConfetti("levelUpCard", 20, true);
+        const dismiss = () => overlay.classList.remove("show");
+        overlay.onclick = dismiss;
+        setTimeout(dismiss, 3000);
+      }
+
+      function showLevelInfo() {
+        const cur = getLevel(progress().xp);
+        const table = document.getElementById("levelInfoTable");
+        let html = "";
+        for (let i = 0; i < LEVELS.length; i++) {
+          const lv = i + 1;
+          const done = cur.level > lv;
+          const active = cur.level === lv;
+          const cls = done ? "li-row-done" : "";
+          const titleCls = active ? "li-current" : "";
+          const check = done ? "✓ " : "";
+          const arrow = active ? "► " : "";
+          html += '<span class="li-num ' + cls + '">' + check + arrow + "Lv. " + lv + "</span>";
+          html += '<span class="li-title ' + titleCls + " " + cls + '">' + LEVELS[i].title + "</span>";
+          html += '<span class="li-xp ' + cls + '">' + LEVELS[i].xp + " XP</span>";
+        }
+        // Immortal+ rows
+        if (cur.level > LEVELS.length) {
+          for (let extra = 1; extra <= cur.level - LEVELS.length; extra++) {
+            const lv = LEVELS.length + extra;
+            const xp = LEVELS[LEVELS.length - 1].xp + extra * 800;
+            const done = cur.level > lv;
+            const active = cur.level === lv;
+            const cls = done ? "li-row-done" : "";
+            const titleCls = active ? "li-current" : "";
+            const check = done ? "✓ " : "";
+            const arrow = active ? "► " : "";
+            html += '<span class="li-num ' + cls + '">' + check + arrow + "Lv. " + lv + "</span>";
+            html += '<span class="li-title ' + titleCls + " " + cls + '">Immortal ' + toRoman(extra + 1) + "</span>";
+            html += '<span class="li-xp ' + cls + '">' + xp + " XP</span>";
+          }
+        }
+        // Show next level if beyond listed
+        if (cur.level >= LEVELS.length) {
+          const nextExtra = cur.level - LEVELS.length + 1;
+          const nextXp = LEVELS[LEVELS.length - 1].xp + nextExtra * 800;
+          html += '<span class="li-num">Lv. ' + (cur.level + 1) + "</span>";
+          html += '<span class="li-title">Immortal ' + toRoman(nextExtra + 1) + "</span>";
+          html += '<span class="li-xp">' + nextXp + " XP</span>";
+        }
+        table.innerHTML = html;
+        document.getElementById("levelInfoOverlay").classList.add("show");
+      }
+
+      /* ============================================================
    НАВИГАЦИЯ
    ============================================================ */
 
@@ -3950,6 +4477,8 @@
         document.getElementById("statKnown").textContent = mastered;
         document.getElementById("statSpell").textContent = redCount;
         document.getElementById("statStreak").textContent = p.streak || 0;
+        document.getElementById("statXP").textContent = p.xp || 0;
+        updateLevelBar();
         refreshCreatures();
       }
 
@@ -4220,6 +4749,7 @@
             card.classList.add("celebrate");
             spawnConfetti("tpConfetti", 16, true);
             showXP("tpCard", 25, "gold");
+            addXP(25);
             const flash = document.createElement("div");
             flash.className = "mastery-flash";
             card.appendChild(flash);
@@ -4228,6 +4758,7 @@
             fb.innerHTML = "✓ Right! " + STAGE_EMOJI[stage];
             spawnConfetti("tpConfetti", 8 + state.answerStreak * 2);
             showXP("tpCard", 10);
+            addXP(10);
           }
           reactCreature(true);
           updateStreakDisplay("tpStreak");
@@ -4316,6 +4847,7 @@
           fb.className = "tp-feedback right";
           fb.innerHTML = "✓ Good — now you know it!";
           showXP("tpCard", 5, "small");
+          addXP(5);
           inp.disabled = true;
           state.cardPhase = "answered";
           const checkBtn = document.getElementById("tpCheckBtn");
@@ -4634,10 +5166,12 @@
             fb.innerHTML = "🌳 Mastered!";
             spawnConfetti("spConfetti", 16, true);
             showXP("spCard", 25, "gold");
+            addXP(25);
           } else {
             fb.innerHTML = "✓ Right! " + (stage === "s2" ? "🌿" : "🌱");
             spawnConfetti("spConfetti", 8 + state.answerStreak * 2);
             showXP("spCard", 10);
+            addXP(10);
           }
           updateStreakDisplay("spStreak");
           checkCreatureEvolution(w.themeId, pctBefore);
@@ -5079,9 +5613,9 @@
         const labelW = w + " cm";
         const labelH = h + " cm";
         return `<svg viewBox="0 0 ${boxW} ${boxH}" xmlns="http://www.w3.org/2000/svg" style="width:260px;max-width:100%">
-    <rect x="${x}" y="${y}" width="${dw}" height="${dh}" fill="#e8f0fe" stroke="#2e6cdf" stroke-width="2" rx="2"/>
-    <text x="${x + dw / 2}" y="${y - 8}" text-anchor="middle" font-size="13" fill="#525a6b" font-family="Nunito, sans-serif" font-weight="600">${labelW}</text>
-    ${!isSquare ? `<text x="${x + dw + 10}" y="${y + dh / 2 + 4}" text-anchor="start" font-size="13" fill="#525a6b" font-family="Nunito, sans-serif" font-weight="600">${labelH}</text>` : ""}
+    <rect x="${x}" y="${y}" width="${dw}" height="${dh}" fill="#1c2a4a" stroke="#4a8af4" stroke-width="2" rx="2"/>
+    <text x="${x + dw / 2}" y="${y - 8}" text-anchor="middle" font-size="13" fill="#8b90a5" font-family="Nunito, sans-serif" font-weight="600">${labelW}</text>
+    ${!isSquare ? `<text x="${x + dw + 10}" y="${y + dh / 2 + 4}" text-anchor="start" font-size="13" fill="#8b90a5" font-family="Nunito, sans-serif" font-weight="600">${labelH}</text>` : ""}
   </svg>`;
       }
 
