@@ -35,14 +35,8 @@
         --ink-soft: #8b90a5;
         --line: #252840;
         --card: #181b2e;
-        --accent: #f0850a;
-        --accent-soft: #3a2810;
-        --max: #f0850a;
-        --max-soft: #3a2810;
-        --alex: #f09050;
-        --alex-soft: #3a2518;
-        --rhino: #9b7ee8;
-        --rhino-soft: #271e40;
+        --accent: #f06810;
+        --accent-soft: #3a2510;
         --good: #3fc47f;
         --good-soft: #162e20;
         --warn: #e88a55;
@@ -80,59 +74,59 @@
         min-height: 100dvh;
       }
       .app {
-        max-width: 880px;
+        max-width: 55rem;
         margin: 0 auto;
-        padding: 24px 20px 60px;
+        padding: 1.5rem 1.25rem 3.75rem;
       }
       .topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 24px;
-        min-height: 44px;
+        margin-bottom: 1.5rem;
+        min-height: 2.75rem;
       }
       .brand {
         display: flex;
         align-items: baseline;
-        gap: 10px;
+        gap: 0.625rem;
       }
       .brand .logo {
         font-weight: 700;
-        font-size: 22px;
+        font-size: 1.375rem;
         letter-spacing: -0.01em;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 0.375rem;
         line-height: 1;
       }
       .brand .logo .logo-emoji {
-        font-size: 28px;
+        font-size: 1.75rem;
       }
       .brand .tag {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
       }
       .top-right {
         display: flex;
-        gap: 8px;
+        gap: 0.5rem;
         align-items: center;
       }
       .pill {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        padding: 6px 14px 6px 6px;
-        border-radius: 18px;
+        gap: 0.625rem;
+        padding: 0.375rem 0.875rem 0.375rem 0.375rem;
+        border-radius: 1.125rem;
         background: var(--card);
         border: 1px solid var(--line);
         cursor: pointer;
         user-select: none;
       }
       .pill-avatar {
-        font-size: 28px;
+        font-size: 1.75rem;
         line-height: 1;
-        width: 36px;
-        height: 36px;
+        width: 2.25rem;
+        height: 2.25rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -140,31 +134,25 @@
         border-radius: 50%;
         flex-shrink: 0;
       }
-      .pill[data-profile="alex"] .pill-avatar {
-        background: var(--alex-soft);
-      }
-      .pill[data-profile="rhino"] .pill-avatar {
-        background: var(--rhino-soft);
-      }
       .pill-right {
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 0.1875rem;
         min-width: 0;
       }
       .pill-top-row {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 0.375rem;
       }
       .pill-name {
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 700;
         color: var(--ink);
         line-height: 1;
       }
       .pill-chevron {
-        font-size: 11px;
+        font-size: 0.6875rem;
         color: var(--ink-soft);
         transform: rotate(-90deg);
         line-height: 1;
@@ -172,18 +160,18 @@
       .pill-lv-row {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 0.375rem;
       }
       .pill-lv {
-        font-size: 11px;
+        font-size: 0.6875rem;
         color: var(--ink-soft);
         font-weight: 600;
         white-space: nowrap;
         line-height: 1;
       }
       .pill-xp-bar {
-        width: 48px;
-        height: 5px;
+        width: 3rem;
+        height: 0.3125rem;
         background: var(--surface);
         border-radius: 99px;
         overflow: hidden;
@@ -193,12 +181,6 @@
         background: var(--accent);
         border-radius: 99px;
         transition: width 0.4s ease;
-      }
-      .pill[data-profile="alex"] .pill-xp-fill {
-        background: var(--alex);
-      }
-      .pill[data-profile="rhino"] .pill-xp-fill {
-        background: var(--rhino);
       }
 
       /* SCREENS */
@@ -212,7 +194,7 @@
       @keyframes fade {
         from {
           opacity: 0;
-          transform: translateY(4px);
+          transform: translateY(0.25rem);
         }
         to {
           opacity: 1;
@@ -223,30 +205,30 @@
       /* WELCOME */
       .hero {
         text-align: center;
-        padding: 30px 10px 20px;
+        padding: 1.875rem 0.625rem 1.25rem;
       }
       .hero h1 {
-        font-size: 36px;
-        margin: 0 0 8px;
+        font-size: 2.25rem;
+        margin: 0 0 0.5rem;
         letter-spacing: -0.02em;
       }
       .hero p {
         color: var(--ink-soft);
-        font-size: 16px;
-        margin: 0 0 28px;
+        font-size: 1rem;
+        margin: 0 0 1.75rem;
       }
       .profile-row {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 16px;
-        max-width: 640px;
+        gap: 1rem;
+        max-width: 40rem;
         margin: 0 auto;
       }
       .profile-card {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 28px 20px;
+        border-radius: 1.375rem;
+        padding: 1.75rem 1.25rem;
         text-align: center;
         cursor: pointer;
         box-shadow: var(--shadow);
@@ -258,22 +240,22 @@
         transform: scale(0.98);
       }
       .profile-card .avatar {
-        width: 84px;
-        height: 84px;
+        width: 5.25rem;
+        height: 5.25rem;
         border-radius: 50%;
-        margin: 0 auto 14px;
+        margin: 0 auto 0.875rem;
         display: grid;
         place-items: center;
-        font-size: 52px;
+        font-size: 3.25rem;
         line-height: 1;
       }
       .profile-card .name {
-        font-size: 22px;
+        font-size: 1.375rem;
         font-weight: 600;
-        margin-bottom: 4px;
+        margin-bottom: 0.25rem;
       }
       .profile-card .meta {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
       }
 
@@ -281,34 +263,42 @@
       #homeScreen {
         position: relative;
       }
+      #homeScreen > *:not(.hero-phoenix) {
+        position: relative;
+        z-index: 1;
+      }
       .hero-phoenix {
         position: absolute;
-        left: calc(50% + 50px);
-        top: -170px;
+        left: calc(50% + 3.125rem);
+        top: -10.625rem;
         transform: translateX(-50%);
-        height: 720px;
+        height: 45rem;
         pointer-events: none;
         object-fit: contain;
         z-index: 0;
         -webkit-mask: radial-gradient(ellipse at center, black 40%, transparent 75%);
         mask: radial-gradient(ellipse at center, black 40%, transparent 75%);
       }
+      /* Phoenix visual states */
+      .hero-phoenix.phoenix-active  { filter: brightness(1.1); }
+      .hero-phoenix.phoenix-cooling { filter: brightness(0.85) saturate(0.7); }
+      .hero-phoenix.phoenix-dormant { filter: brightness(0.5) saturate(0.3); opacity: 0.6; }
+      .hero-phoenix.phoenix-ash     { filter: brightness(0.3) saturate(0) sepia(0.5); opacity: 0.4; }
+
       .hero-text {
         position: relative;
         z-index: 1;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
       }
       .hero-title {
-        font-size: 32px;
+        font-size: 2rem;
         font-weight: 700;
         line-height: 1.15;
-        margin: 0 0 10px;
+        margin: 0 0 0.625rem;
       }
       .hero-accent { color: var(--accent); }
-      [data-profile="alex"] .hero-accent { color: var(--alex); }
-      [data-profile="rhino"] .hero-accent { color: var(--rhino); }
       .hero-sub {
-        font-size: 16px;
+        font-size: 1rem;
         color: var(--ink-soft);
         margin: 0;
       }
@@ -318,31 +308,31 @@
         position: relative;
         z-index: 1;
         display: flex;
-        gap: 12px;
+        gap: 0.75rem;
         align-items: flex-start;
-        margin-bottom: 14px;
+        margin-bottom: 0.875rem;
       }
 
       /* Level card */
       .hero-level {
         position: relative;
         display: flex;
-        gap: 14px;
+        gap: 0.875rem;
         align-items: center;
         background: transparent;
-        border-radius: 16px;
-        padding: 16px;
+        border-radius: 1rem;
+        padding: 1rem;
         cursor: pointer;
         overflow: hidden;
-        flex: 1;
-        max-width: 320px;
+        flex: 0 1 auto;
+        max-width: 50%;
       }
       .hero-level::before {
         content: '';
         position: absolute;
         inset: 0;
-        border-radius: 16px;
-        padding: 1px;
+        border-radius: 1rem;
+        padding: 0.0625rem;
         background: linear-gradient(135deg, var(--accent) 0%, rgba(240,133,10,0.3) 40%, transparent 70%);
         -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         -webkit-mask-composite: xor;
@@ -355,11 +345,11 @@
       .level-hex-wrap {
         flex-shrink: 0;
         text-align: center;
-        width: 68px;
+        width: 4.25rem;
       }
       .level-hex {
-        width: 60px;
-        height: 68px;
+        width: 3.75rem;
+        height: 4.25rem;
         margin: 0 auto;
         clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
         background: linear-gradient(180deg, var(--accent), #6b3a00);
@@ -368,8 +358,8 @@
         justify-content: center;
       }
       .level-hex-inner {
-        width: 54px;
-        height: 62px;
+        width: 3.375rem;
+        height: 3.875rem;
         clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
         background: linear-gradient(180deg, #141828, #0a0e1a);
         display: flex;
@@ -377,191 +367,127 @@
         justify-content: center;
       }
       .level-hex-num {
-        font-size: 24px;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--ink);
       }
       .level-hex-label {
         display: block;
-        font-size: 9px;
+        font-size: 0.5625rem;
         font-weight: 600;
         letter-spacing: 0.12em;
         color: var(--accent);
-        margin-top: 3px;
+        margin-top: 0.1875rem;
       }
 
       /* Level card info */
       .hero-level-info { flex: 1; min-width: 0; }
       .level-evo-text {
-        font-size: 14px;
+        font-size: 0.875rem;
         color: var(--ink-soft);
-        margin-bottom: 1px;
+        margin-bottom: 0.0625rem;
       }
       .level-evo-text .evo-count {
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--ink);
       }
       .level-evo-name {
-        font-size: 17px;
+        font-size: 1.0625rem;
         font-weight: 700;
         color: var(--accent);
-        margin-bottom: 8px;
-      }
-      [data-profile="alex"] .level-evo-name { color: var(--alex); }
-      [data-profile="rhino"] .level-evo-name { color: var(--rhino); }
-
-      /* Sidebar */
-      .hero-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 160px;
-        flex-shrink: 0;
-        margin-left: auto;
-      }
-      .sidebar-card {
-        background: transparent;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 12px;
-        text-align: center;
-      }
-      .sidebar-label {
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--ink-soft);
-        margin-bottom: 4px;
-      }
-      .sidebar-value {
-        font-size: 28px;
-        font-weight: 700;
-      }
-      .sidebar-sub {
-        font-size: 11px;
-        color: var(--ink-soft);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .streak-flames {
-        display: flex;
-        justify-content: center;
-        gap: 2px;
-        margin-top: 4px;
-        font-size: 14px;
-      }
-      .sidebar-creature-emoji {
-        font-size: 32px;
-        line-height: 1;
-        margin-top: 6px;
-      }
-      .sidebar-creature-name {
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--accent);
-        margin: 4px 0 2px;
-      }
-      .sidebar-creature-msg {
-        font-size: 11px;
-        color: var(--ink-soft);
-        line-height: 1.3;
+        margin-bottom: 0.5rem;
       }
 
       /* Mobile */
       @media (max-width: 600px) {
         .hero-phoenix { opacity: 0.5; }
-        .hero-row { flex-direction: column; }
-        .hero-level { max-width: 100%; }
-        .hero-sidebar { width: 100%; flex-direction: row; }
-        .sidebar-card { flex: 1; }
       }
       .sub {
         color: var(--ink-soft);
-        margin: 0 0 22px;
-        font-size: 15px;
+        margin: 0 0 1.375rem;
+        font-size: 0.9375rem;
       }
-      .stats {
+      .hero-columns {
+        position: relative;
+        z-index: 1;
         display: flex;
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 14px 8px;
-        margin-bottom: 26px;
+        gap: 0.875rem;
+        align-items: flex-start;
+        margin-bottom: 0.875rem;
       }
-      .stat {
+      .hero-left {
         flex: 1;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 0 10px;
-        border-right: 1px solid var(--line);
-      }
-      .stat:last-child {
-        border-right: none;
-      }
-      .stat-ic {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .stat-ic svg {
-        width: 18px;
-        height: 18px;
-      }
-      .stat-img {
-        width: 34px;
-        height: 34px;
-        object-fit: contain;
-      }
-      .stat-ic.ic-mastered { background: var(--good-soft); color: var(--good); }
-      .stat-ic.ic-review { background: var(--red-soft); color: var(--red); }
-      .stat-ic.ic-streak { background: var(--yellow-highlight); color: var(--yellow-text); }
-      .stat-ic.ic-xp { background: var(--accent-soft); color: var(--accent); }
-      [data-profile="alex"] .stat-ic.ic-xp { background: var(--alex-soft); color: var(--alex); }
-      [data-profile="rhino"] .stat-ic.ic-xp { background: var(--rhino-soft); color: var(--rhino); }
-      .stat-text {
         min-width: 0;
       }
-      .stat .n {
-        font-size: 20px;
-        font-weight: 700;
-        line-height: 1.2;
+      .phoenix-status {
+        flex-shrink: 0;
+        width: 10.5rem;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: 0.875rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
       }
-      .stat .l {
-        font-size: 11px;
-        color: var(--ink-soft);
-        line-height: 1.2;
-        white-space: nowrap;
-      }
-
-      .section-title {
-        font-size: 13px;
+      .ps-title {
+        font-size: 0.6875rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: var(--ink-soft);
-        margin: 24px 0 10px;
+        font-weight: 600;
+      }
+      .ps-row {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+      }
+      .ps-icon {
+        font-size: 1.125rem;
+        flex-shrink: 0;
+        width: 1.5rem;
+        text-align: center;
+        filter: drop-shadow(0 0 4px rgba(240, 104, 16, 0.4));
+      }
+      .ps-info {
+        min-width: 0;
+      }
+      .ps-value {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .ps-hint {
+        font-size: 0.625rem;
+        color: var(--ink-soft);
+        line-height: 1.3;
+      }
+
+      .section-title {
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+        margin: 1.5rem 0 0.625rem;
       }
       .modes {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        gap: 0.875rem;
       }
       .mode {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 18px;
+        border-radius: 1.125rem;
+        padding: 1.125rem;
         cursor: pointer;
         transition:
           transform 0.15s,
           box-shadow 0.15s;
         box-shadow: var(--shadow);
-        min-height: 130px;
+        min-height: 8.125rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -575,15 +501,15 @@
         box-shadow: none;
       }
       .mode .icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.75rem;
         display: grid;
         place-items: center;
-        font-size: 20px;
+        font-size: 1.25rem;
         background: var(--accent-soft);
         color: var(--accent);
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem;
       }
       .mode.m-power .icon {
         background: #3a2518;
@@ -606,23 +532,23 @@
         color: #e0b040;
       }
       .mode .ttl {
-        font-size: 17px;
+        font-size: 1.0625rem;
         font-weight: 600;
-        margin-bottom: 2px;
+        margin-bottom: 0.125rem;
       }
       .mode .desc {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
         line-height: 1.4;
       }
       .mode .ribbon {
         align-self: flex-start;
-        font-size: 11px;
+        font-size: 0.6875rem;
         color: var(--ink-soft);
         background: var(--surface);
-        padding: 3px 8px;
-        border-radius: 6px;
-        margin-top: 10px;
+        padding: 0.1875rem 0.5rem;
+        border-radius: 0.375rem;
+        margin-top: 0.625rem;
         letter-spacing: 0.04em;
         text-transform: uppercase;
       }
@@ -631,15 +557,15 @@
       }
 
       .session-strip {
-        margin-top: 22px;
+        margin-top: 1.375rem;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 14px 16px;
+        border-radius: 0.875rem;
+        padding: 0.875rem 1rem;
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 14px;
+        gap: 0.75rem;
+        font-size: 0.875rem;
         color: var(--ink-soft);
       }
       .session-strip strong {
@@ -647,71 +573,197 @@
         font-weight: 600;
       }
 
+      /* QUEST LIST */
+      .quest-list {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1.125rem;
+        overflow: hidden;
+      }
+      .quest-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem 1rem;
+        cursor: pointer;
+        transition: background 0.15s;
+        border-bottom: 1px solid var(--line);
+      }
+      .quest-row:last-child { border-bottom: none; }
+      .quest-row:active { background: var(--surface); }
+      .quest-row.locked {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .quest-row.locked:active { background: transparent; }
+      .quest-dot {
+        width: 0.625rem;
+        height: 0.625rem;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .dot-good { background: var(--good); }
+      .dot-warn { background: var(--warn); }
+      .dot-red { background: var(--red); }
+      .dot-muted { background: var(--ink-soft); opacity: 0.4; }
+      .quest-icon {
+        font-size: 1.125rem;
+        flex-shrink: 0;
+        width: 1.5rem;
+        text-align: center;
+      }
+      .quest-name {
+        font-weight: 600;
+        font-size: 0.9375rem;
+        white-space: nowrap;
+      }
+      .quest-status {
+        margin-left: auto;
+        font-size: 0.8125rem;
+        color: var(--ink-soft);
+        text-align: right;
+        white-space: nowrap;
+      }
+      .quest-arrow {
+        color: var(--ink-soft);
+        font-size: 0.875rem;
+        flex-shrink: 0;
+        opacity: 0.5;
+      }
+
+      /* WORLDS GRID */
+      .worlds-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.875rem;
+      }
+      .world-card {
+        border-radius: 1.125rem;
+        padding: 1.25rem;
+        min-height: 8.75rem;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.15s, box-shadow 0.15s;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+      .world-card:active { transform: scale(0.97); }
+      .world-card.locked {
+        opacity: 0.45;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+      .world-card.locked:active { transform: none; }
+      .world-icon { font-size: 1.75rem; margin-bottom: 0.625rem; }
+      .world-title {
+        font-size: 1.0625rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .world-meta {
+        font-size: 0.75rem;
+        opacity: 0.75;
+        line-height: 1.4;
+      }
+      .world-card .ribbon {
+        align-self: flex-start;
+        font-size: 0.6875rem;
+        background: rgba(255,255,255,0.12);
+        padding: 0.1875rem 0.5rem;
+        border-radius: 0.375rem;
+        margin-top: 0.5rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      /* world color themes */
+      .w-english {
+        background: linear-gradient(135deg, #5b2d9e 0%, #3a1d66 100%);
+        border: 1px solid rgba(91,45,158,0.4);
+      }
+      .w-sail {
+        background: linear-gradient(135deg, #0e2a3a 0%, #1a4a5e 100%);
+        border: 1px solid rgba(26,74,94,0.5);
+      }
+      .w-math {
+        background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+        border: 1px solid rgba(6,95,70,0.5);
+      }
+      .w-deutsch {
+        background: linear-gradient(135deg, #78350f 0%, #5c2a0e 100%);
+        border: 1px solid rgba(120,53,15,0.4);
+      }
+
+      @media (max-width: 520px) {
+        .worlds-grid { grid-template-columns: 1fr; }
+      }
+
       /* GENERIC MODE SCREEN */
       .mode-head {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 14px;
+        gap: 0.75rem;
+        margin-bottom: 0.875rem;
       }
       .back-btn {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 10px 14px;
-        font-size: 14px;
+        border-radius: 0.75rem;
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
         cursor: pointer;
         color: var(--ink);
       }
       .mode-head h2 {
         margin: 0;
-        font-size: 22px;
+        font-size: 1.375rem;
         font-weight: 700;
         letter-spacing: -0.01em;
       }
       .progress-bar {
-        height: 6px;
-        background: var(--line);
+        height: 0.75rem;
+        background: #1a1d2e;
         border-radius: 999px;
         overflow: hidden;
-        margin-bottom: 22px;
+        margin-bottom: 1.375rem;
         display: flex;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
       }
       .progress-bar > div {
         height: 100%;
-        background: var(--accent);
         transition: width 0.3s ease;
+        position: relative;
       }
       .seg-red {
-        background: var(--red) !important;
+        background: linear-gradient(90deg, #e84057, #ff6b7a) !important;
+        box-shadow: 0 0 8px rgba(232,64,87,0.5);
       }
       .seg-orange {
-        background: #f0a868 !important;
+        background: linear-gradient(90deg, #f0a040, #f0c850) !important;
+        box-shadow: 0 0 8px rgba(240,168,64,0.5);
       }
       .seg-yellow {
-        background: #e8c840 !important;
+        background: linear-gradient(90deg, #d070e0, #a855f7) !important;
+        box-shadow: 0 0 8px rgba(168,85,247,0.45);
       }
       .seg-green {
-        background: var(--good) !important;
+        background: linear-gradient(90deg, #34d399, #22c55e) !important;
+        box-shadow: 0 0 8px rgba(52,211,153,0.5);
       }
-      body[data-profile="alex"] .progress-bar > div {
-        background: var(--alex);
-      }
-      body[data-profile="rhino"] .progress-bar > div {
-        background: var(--rhino);
-      }
-
       /* SCHOOL WORDS */
       .topic-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 0.75rem;
       }
       .topic-card {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 16px;
+        border-radius: 1rem;
+        padding: 1rem;
         cursor: pointer;
         box-shadow: var(--shadow);
       }
@@ -719,23 +771,23 @@
         transform: scale(0.98);
       }
       .topic-card .t-name {
-        font-size: 17px;
+        font-size: 1.0625rem;
         font-weight: 600;
-        margin-bottom: 4px;
+        margin-bottom: 0.25rem;
       }
       .topic-card .t-meta {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
       }
       .topic-card .t-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 8px;
+        gap: 0.5rem;
       }
       .t-badge {
-        font-size: 11px;
-        padding: 3px 8px;
+        font-size: 0.6875rem;
+        padding: 0.1875rem 0.5rem;
         border-radius: 999px;
         font-weight: 600;
         letter-spacing: 0.02em;
@@ -753,12 +805,12 @@
       /* STATUS DOTS */
       .dots {
         display: inline-flex;
-        gap: 5px;
+        gap: 0.3125rem;
         vertical-align: middle;
       }
       .dots .dot {
-        width: 10px;
-        height: 10px;
+        width: 0.625rem;
+        height: 0.625rem;
         border-radius: 50%;
         background: #353850;
         transition:
@@ -784,10 +836,10 @@
       .stage-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 4px 10px;
+        gap: 0.375rem;
+        padding: 0.25rem 0.625rem;
         border-radius: 999px;
-        font-size: 12px;
+        font-size: 0.75rem;
         font-weight: 600;
         background: var(--surface);
         color: var(--ink-soft);
@@ -817,15 +869,15 @@
       .topic-stats {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 8px;
-        font-size: 13px;
+        gap: 0.625rem;
+        margin-top: 0.5rem;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
       }
       .topic-stats span {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 0.25rem;
       }
       /* topic progress bars use .progress-bar with .seg-* segments */
 
@@ -834,70 +886,60 @@
         position: relative;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 26px 22px;
+        border-radius: 1.375rem;
+        padding: 1.625rem 1.375rem;
         box-shadow:
           var(--shadow),
-          0 0 15px rgba(74, 138, 244, 0.15);
+          0 0 15px rgba(240, 104, 16, 0.15);
         text-align: center;
-      }
-      body[data-profile="alex"] .tp-card {
-        box-shadow:
-          var(--shadow),
-          0 0 15px rgba(240, 144, 80, 0.15);
-      }
-      body[data-profile="rhino"] .tp-card {
-        box-shadow:
-          var(--shadow),
-          0 0 15px rgba(155, 126, 232, 0.15);
       }
       .tp-card .tp-status-row {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 14px;
+        gap: 0.625rem;
+        margin-bottom: 0.875rem;
       }
       .tp-creature-mini {
         position: relative;
         margin-left: auto;
         display: flex;
         align-items: center;
-        gap: 4px;
-        font-size: 11px;
+        gap: 0.25rem;
+        font-size: 0.6875rem;
         color: var(--ink-soft);
       }
       .tp-creature-mini span:first-child {
-        font-size: 20px;
+        font-size: 1.25rem;
       }
       .tp-card .tp-label {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        margin-bottom: 6px;
+        margin-bottom: 0.375rem;
       }
       .tp-card .tp-de {
-        font-size: 24px;
+        font-size: 1.5rem;
         font-weight: 600;
-        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
         line-height: 1.3;
       }
       .tp-card .tp-skel {
-        font-size: 22px;
+        font-size: 1.375rem;
         letter-spacing: 0.35em;
         color: var(--ink-soft);
-        margin-bottom: 18px;
+        margin-bottom: 1.125rem;
         font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       }
       .tp-card .tp-input {
         width: 100%;
-        max-width: 360px;
-        font-size: 26px;
+        max-width: 22.5rem;
+        font-size: 1.625rem;
         text-align: center;
-        padding: 14px 16px;
+        padding: 0.875rem 1rem;
         border: 2px solid var(--line);
-        border-radius: 14px;
+        border-radius: 0.875rem;
         background: var(--surface);
         color: var(--ink);
         margin: 0 auto;
@@ -910,15 +952,7 @@
       }
       .tp-card .tp-input:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 10px rgba(74, 138, 244, 0.3);
-      }
-      body[data-profile="alex"] .tp-card .tp-input:focus {
-        border-color: var(--alex);
-        box-shadow: 0 0 10px rgba(240, 144, 80, 0.3);
-      }
-      body[data-profile="rhino"] .tp-card .tp-input:focus {
-        border-color: var(--rhino);
-        box-shadow: 0 0 10px rgba(155, 126, 232, 0.3);
+        box-shadow: 0 0 10px rgba(240, 104, 16, 0.3);
       }
       .tp-card .tp-input.right {
         border-color: var(--good);
@@ -929,9 +963,9 @@
         background: var(--red-soft);
       }
       .tp-card .tp-feedback {
-        margin-top: 16px;
-        min-height: 36px;
-        font-size: 16px;
+        margin-top: 1rem;
+        min-height: 2.25rem;
+        font-size: 1rem;
         line-height: 1.5;
       }
       .tp-card .tp-feedback.right {
@@ -943,17 +977,17 @@
       }
       .tp-card .tp-feedback .correct {
         background: var(--yellow-highlight);
-        padding: 2px 8px;
-        border-radius: 6px;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
         font-weight: 700;
         color: var(--yellow-text);
-        margin-left: 4px;
+        margin-left: 0.25rem;
       }
       .tp-card .tp-ex {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
         font-style: italic;
-        margin-top: 12px;
+        margin-top: 0.75rem;
         line-height: 1.5;
       }
       .tp-card.celebrate {
@@ -985,18 +1019,18 @@
       }
       .confetti-particle {
         position: absolute;
-        width: 8px;
-        height: 8px;
-        border-radius: 2px;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 0.125rem;
         bottom: 50%;
         left: 50%;
       }
 
       .streak-counter {
         position: absolute;
-        top: 10px;
-        right: 14px;
-        font-size: 16px;
+        top: 0.625rem;
+        right: 0.875rem;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--ink-soft);
         opacity: 0;
@@ -1008,21 +1042,11 @@
       }
       .streak-counter.level2 {
         color: var(--accent);
-        text-shadow: 0 0 8px rgba(74, 138, 244, 0.5);
+        text-shadow: 0 0 8px rgba(240, 104, 16, 0.5);
       }
       .streak-counter.level3 {
         color: var(--accent);
         animation: streakPulse 0.8s ease-in-out infinite;
-      }
-      body[data-profile="alex"] .streak-counter.level2,
-      body[data-profile="alex"] .streak-counter.level3 {
-        color: var(--alex);
-        text-shadow: 0 0 8px rgba(240, 144, 80, 0.5);
-      }
-      body[data-profile="rhino"] .streak-counter.level2,
-      body[data-profile="rhino"] .streak-counter.level3 {
-        color: var(--rhino);
-        text-shadow: 0 0 8px rgba(155, 126, 232, 0.5);
       }
       @keyframes streakPulse {
         0%,
@@ -1035,9 +1059,9 @@
       }
       .streak-lost {
         position: absolute;
-        top: 10px;
-        right: 14px;
-        font-size: 13px;
+        top: 0.625rem;
+        right: 0.875rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         color: var(--red);
         opacity: 0;
@@ -1051,7 +1075,7 @@
         }
         100% {
           opacity: 0;
-          transform: translateY(-12px);
+          transform: translateY(-0.75rem);
         }
       }
 
@@ -1064,13 +1088,13 @@
           transform: translateY(0);
         }
         30% {
-          transform: translateY(-6px);
+          transform: translateY(-0.375rem);
         }
         50% {
           transform: translateY(0);
         }
         70% {
-          transform: translateY(-3px);
+          transform: translateY(-0.1875rem);
         }
       }
       .creature-shake {
@@ -1082,27 +1106,27 @@
           transform: translateX(0);
         }
         20% {
-          transform: translateX(-4px);
+          transform: translateX(-0.25rem);
         }
         40% {
-          transform: translateX(4px);
+          transform: translateX(0.25rem);
         }
         60% {
-          transform: translateX(-3px);
+          transform: translateX(-0.1875rem);
         }
         80% {
-          transform: translateX(2px);
+          transform: translateX(0.125rem);
         }
       }
       .creature-thought {
         position: absolute;
-        top: -8px;
-        right: -4px;
+        top: -0.5rem;
+        right: -0.25rem;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 2px 6px;
-        font-size: 11px;
+        border-radius: 0.625rem;
+        padding: 0.125rem 0.375rem;
+        font-size: 0.6875rem;
         white-space: nowrap;
         animation: thoughtPop 1.5s ease forwards;
         z-index: 6;
@@ -1110,7 +1134,7 @@
       @keyframes thoughtPop {
         0% {
           opacity: 0;
-          transform: scale(0.5) translateY(4px);
+          transform: scale(0.5) translateY(0.25rem);
         }
         15% {
           opacity: 1;
@@ -1121,7 +1145,7 @@
         }
         100% {
           opacity: 0;
-          transform: translateY(-6px);
+          transform: translateY(-0.375rem);
         }
       }
 
@@ -1129,25 +1153,19 @@
         position: absolute;
         left: 50%;
         top: 40%;
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: 700;
         color: var(--accent);
         pointer-events: none;
         z-index: 10;
         animation: xpRise 0.9s ease-out forwards;
       }
-      body[data-profile="alex"] .xp-float {
-        color: var(--alex);
-      }
-      body[data-profile="rhino"] .xp-float {
-        color: var(--rhino);
-      }
       .xp-float.xp-gold {
         color: var(--yellow-text);
-        font-size: 24px;
+        font-size: 1.5rem;
       }
       .xp-float.xp-small {
-        font-size: 16px;
+        font-size: 1rem;
         opacity: 0.8;
       }
       @keyframes xpRise {
@@ -1156,11 +1174,11 @@
           transform: translate(-50%, 0) scale(0.7);
         }
         30% {
-          transform: translate(-50%, -20px) scale(1.1);
+          transform: translate(-50%, -1.25rem) scale(1.1);
         }
         100% {
           opacity: 0;
-          transform: translate(-50%, -50px) scale(1);
+          transform: translate(-50%, -3.125rem) scale(1);
         }
       }
 
@@ -1172,7 +1190,7 @@
           rgba(240, 198, 68, 0.3) 0%,
           transparent 70%
         );
-        border-radius: 22px;
+        border-radius: 1.375rem;
         pointer-events: none;
         z-index: 8;
         animation: flashFade 0.8s ease-out forwards;
@@ -1187,9 +1205,9 @@
       }
 
       .summary-creature {
-        font-size: 56px;
+        font-size: 3.5rem;
         line-height: 1;
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
       }
       .summary-creature.dancing {
         animation: creatureDance 1.5s ease infinite;
@@ -1200,13 +1218,13 @@
           transform: translateY(0) rotate(0deg);
         }
         25% {
-          transform: translateY(-8px) rotate(-5deg);
+          transform: translateY(-0.5rem) rotate(-5deg);
         }
         50% {
           transform: translateY(0) rotate(0deg);
         }
         75% {
-          transform: translateY(-8px) rotate(5deg);
+          transform: translateY(-0.5rem) rotate(5deg);
         }
       }
 
@@ -1215,39 +1233,39 @@
         position: relative;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 28px 22px;
+        border-radius: 1.375rem;
+        padding: 1.75rem 1.375rem;
         box-shadow: var(--shadow);
         text-align: center;
         overflow: hidden;
       }
       .summary h3 {
-        margin: 0 0 4px;
-        font-size: 22px;
+        margin: 0 0 0.25rem;
+        font-size: 1.375rem;
       }
       .summary .sub-line {
         color: var(--ink-soft);
-        margin-bottom: 18px;
+        margin-bottom: 1.125rem;
       }
       .summary-row {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 18px;
+        gap: 0.625rem;
+        margin-bottom: 1.125rem;
       }
       .summary-row .cell {
-        padding: 14px 8px;
-        border-radius: 14px;
+        padding: 0.875rem 0.5rem;
+        border-radius: 0.875rem;
         background: var(--surface);
       }
       .summary-row .cell .n {
-        font-size: 22px;
+        font-size: 1.375rem;
         font-weight: 700;
       }
       .summary-row .cell .l {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
-        margin-top: 2px;
+        margin-top: 0.125rem;
       }
 
       /* SPELLING TRAINER */
@@ -1255,51 +1273,41 @@
         position: relative;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 28px 22px;
+        border-radius: 1.375rem;
+        padding: 1.75rem 1.375rem;
         box-shadow:
           var(--shadow),
-          0 0 15px rgba(74, 138, 244, 0.15);
+          0 0 15px rgba(240, 104, 16, 0.15);
         text-align: center;
       }
-      body[data-profile="alex"] .sp-card {
-        box-shadow:
-          var(--shadow),
-          0 0 15px rgba(240, 144, 80, 0.15);
-      }
-      body[data-profile="rhino"] .sp-card {
-        box-shadow:
-          var(--shadow),
-          0 0 15px rgba(155, 126, 232, 0.15);
-      }
       .sp-card .sp-label {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
       }
       .sp-card .sp-de {
-        font-size: 26px;
+        font-size: 1.625rem;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
         line-height: 1.3;
       }
       .sp-card .sp-skel {
-        font-size: 22px;
+        font-size: 1.375rem;
         letter-spacing: 0.35em;
         color: var(--ink-soft);
-        margin-bottom: 18px;
+        margin-bottom: 1.125rem;
         font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       }
       .sp-card .sp-input {
         width: 100%;
-        max-width: 360px;
-        font-size: 26px;
+        max-width: 22.5rem;
+        font-size: 1.625rem;
         text-align: center;
-        padding: 14px 16px;
+        padding: 0.875rem 1rem;
         border: 2px solid var(--line);
-        border-radius: 14px;
+        border-radius: 0.875rem;
         background: var(--surface);
         color: var(--ink);
         margin: 0 auto;
@@ -1312,15 +1320,7 @@
       }
       .sp-card .sp-input:focus {
         border-color: var(--accent);
-        box-shadow: 0 0 10px rgba(74, 138, 244, 0.3);
-      }
-      body[data-profile="alex"] .sp-card .sp-input:focus {
-        border-color: var(--alex);
-        box-shadow: 0 0 10px rgba(240, 144, 80, 0.3);
-      }
-      body[data-profile="rhino"] .sp-card .sp-input:focus {
-        border-color: var(--rhino);
-        box-shadow: 0 0 10px rgba(155, 126, 232, 0.3);
+        box-shadow: 0 0 10px rgba(240, 104, 16, 0.3);
       }
       .sp-card .sp-input.right {
         border-color: var(--good);
@@ -1331,9 +1331,9 @@
         background: var(--red-soft);
       }
       .sp-card .sp-feedback {
-        margin-top: 18px;
-        min-height: 50px;
-        font-size: 16px;
+        margin-top: 1.125rem;
+        min-height: 3.125rem;
+        font-size: 1rem;
         line-height: 1.5;
       }
       .sp-card .sp-feedback.right {
@@ -1345,17 +1345,17 @@
       }
       .sp-card .sp-feedback .correct {
         background: var(--yellow-highlight);
-        padding: 2px 8px;
-        border-radius: 6px;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
         font-weight: 700;
         color: var(--yellow-text);
-        margin-left: 4px;
+        margin-left: 0.25rem;
       }
       .sp-card .sp-ex {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
         font-style: italic;
-        margin-top: 14px;
+        margin-top: 0.875rem;
         line-height: 1.5;
       }
       .sp-card.tricky-flag::before {
@@ -1363,23 +1363,195 @@
         display: inline-block;
         background: var(--red-soft);
         color: var(--red);
-        font-size: 10px;
+        font-size: 0.625rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        padding: 3px 8px;
+        padding: 0.1875rem 0.5rem;
         border-radius: 999px;
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem;
         font-weight: 600;
+      }
+
+      /* SEGELSCHEIN */
+      .sail-card .sail-status-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+        margin-bottom: 0.875rem;
+      }
+      .sail-creature-mini {
+        position: relative;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-size: 0.6875rem;
+        color: var(--ink-soft);
+      }
+      .sail-creature-mini span:first-child {
+        font-size: 1.25rem;
+      }
+      .sail-separator {
+        border-bottom: 2px dashed var(--line);
+        max-width: 12.5rem;
+        margin: 0 auto 1.125rem;
+      }
+      .mode.m-sail .icon { background: #0e2a3a; color: #4ab8e8; }
+      .sail-card {
+        position: relative;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1.375rem;
+        padding: 1.75rem 1.375rem;
+        box-shadow: var(--shadow), 0 0 15px rgba(74, 184, 232, 0.12);
+        text-align: center;
+      }
+      .sail-card .sail-label {
+        font-size: 0.75rem;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.625rem;
+      }
+      .sail-card .sail-q {
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin-bottom: 1.125rem;
+        line-height: 1.35;
+      }
+      .sail-card .sail-cloze-text {
+        font-size: 1.25rem;
+        margin-bottom: 1.125rem;
+        line-height: 1.4;
+        color: var(--ink);
+      }
+      .sail-card .sail-cloze-text .blank {
+        display: inline-block;
+        min-width: 5rem;
+        border-bottom: 2px dashed #4ab8e8;
+        margin: 0 0.25rem;
+      }
+      .sail-card .sail-input {
+        width: 100%;
+        max-width: 25rem;
+        font-size: 1.25rem;
+        text-align: center;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--line);
+        border-radius: 0.875rem;
+        background: var(--surface);
+        color: var(--ink);
+        margin: 0 auto;
+        display: block;
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .sail-card .sail-input:focus {
+        border-color: #4ab8e8;
+        box-shadow: 0 0 10px rgba(74, 184, 232, 0.3);
+      }
+      .sail-card .sail-input.right {
+        border-color: var(--good);
+        background: var(--good-soft);
+      }
+      .sail-card .sail-input.wrong {
+        border-color: var(--red);
+        background: var(--red-soft);
+      }
+      .sail-card .sail-feedback {
+        margin-top: 1rem;
+        min-height: 2.25rem;
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      .sail-card .sail-feedback.right { color: var(--good); font-weight: 600; }
+      .sail-card .sail-feedback.wrong { color: var(--red); }
+      .sail-card .sail-feedback .correct {
+        background: var(--yellow-highlight);
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
+        font-weight: 700;
+        color: var(--yellow-text);
+        margin-left: 0.25rem;
+      }
+      .sail-card .sail-answer-box {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 0.875rem;
+        padding: 1rem 1.125rem;
+        margin-top: 0.875rem;
+        font-size: 1.0625rem;
+        line-height: 1.5;
+        text-align: left;
+        color: var(--ink);
+      }
+      .sail-card .sail-illustration {
+        margin: 0.875rem auto;
+        max-width: 20rem;
+      }
+      .sail-card .sail-illustration svg {
+        width: 100%;
+        height: auto;
+      }
+      .sail-card.celebrate { animation: masteryBoom 0.5s ease; }
+
+      .sail-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-top: 1.125rem;
+      }
+      .sail-dk-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 0.75rem 0.875rem;
+        background: rgba(30, 33, 55, 0.6);
+        border: 1px solid rgba(120, 110, 160, 0.3);
+        border-radius: 0.875rem;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+        text-align: left;
+      }
+      .sail-dk-btn:hover {
+        background: rgba(40, 43, 70, 0.8);
+        border-color: rgba(140, 130, 180, 0.45);
+      }
+      .sail-dk-btn:active {
+        transform: scale(0.98);
+      }
+      .sail-dk-btn:disabled {
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      .sail-dk-icon {
+        font-size: 1.375rem;
+        flex-shrink: 0;
+      }
+      .sail-dk-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.0625rem;
+      }
+      .sail-dk-title {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .sail-dk-sub {
+        font-size: 0.6875rem;
+        color: var(--ink-soft);
       }
 
       .flashcard {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 36px 24px;
+        border-radius: 1.375rem;
+        padding: 2.25rem 1.5rem;
         text-align: center;
         box-shadow: var(--shadow);
-        min-height: 280px;
+        min-height: 17.5rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1387,42 +1559,36 @@
         user-select: none;
       }
       .flashcard .word {
-        font-size: 46px;
+        font-size: 2.875rem;
         font-weight: 700;
         letter-spacing: -0.01em;
-        margin-bottom: 6px;
+        margin-bottom: 0.375rem;
       }
       .flashcard .hint {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
       }
       .flashcard.flipped .word {
-        font-size: 30px;
+        font-size: 1.875rem;
         color: var(--accent);
       }
-      body[data-profile="alex"] .flashcard.flipped .word {
-        color: var(--alex);
-      }
-      body[data-profile="rhino"] .flashcard.flipped .word {
-        color: var(--rhino);
-      }
       .flashcard .ru {
-        font-size: 20px;
+        font-size: 1.25rem;
         color: var(--ink);
-        margin-top: 14px;
+        margin-top: 0.875rem;
       }
       .flashcard .ex {
-        font-size: 15px;
+        font-size: 0.9375rem;
         color: var(--ink-soft);
         font-style: italic;
-        margin-top: 14px;
+        margin-top: 0.875rem;
         line-height: 1.5;
       }
       .row-actions {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-top: 18px;
+        gap: 0.75rem;
+        margin-top: 1.125rem;
       }
       .row-actions.three-col {
         grid-template-columns: 1fr 1fr 1fr;
@@ -1431,9 +1597,9 @@
         border: 1px solid var(--line);
         background: var(--card);
         color: var(--ink);
-        border-radius: 14px;
-        padding: 16px;
-        font-size: 16px;
+        border-radius: 0.875rem;
+        padding: 1rem;
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
         transition:
@@ -1447,17 +1613,7 @@
         background: var(--accent);
         color: white;
         border-color: var(--accent);
-        box-shadow: 0 0 12px rgba(74, 138, 244, 0.3);
-      }
-      body[data-profile="alex"] .btn.primary {
-        background: var(--alex);
-        border-color: var(--alex);
-        box-shadow: 0 0 12px rgba(240, 144, 80, 0.3);
-      }
-      body[data-profile="rhino"] .btn.primary {
-        background: var(--rhino);
-        border-color: var(--rhino);
-        box-shadow: 0 0 12px rgba(155, 126, 232, 0.3);
+        box-shadow: 0 0 12px rgba(240, 104, 16, 0.3);
       }
       .btn.good {
         background: var(--good);
@@ -1477,23 +1633,23 @@
       .pw-card {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 24px;
+        border-radius: 1.375rem;
+        padding: 1.5rem;
         box-shadow: var(--shadow);
       }
       .pw-weak {
         text-align: center;
-        margin-bottom: 18px;
+        margin-bottom: 1.125rem;
       }
       .pw-weak .label {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
       }
       .pw-weak .word {
-        font-size: 38px;
+        font-size: 2.375rem;
         font-weight: 700;
         color: #606580;
         text-decoration: line-through;
@@ -1503,35 +1659,27 @@
       .pw-arrow {
         text-align: center;
         color: var(--ink-soft);
-        margin: 6px 0 14px;
-        font-size: 18px;
+        margin: 0.375rem 0 0.875rem;
+        font-size: 1.125rem;
       }
       .pw-strong-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 0.625rem;
       }
       .pw-strong-grid .opt {
         background: var(--accent-soft);
         color: var(--accent);
         border: 1px solid transparent;
-        border-radius: 14px;
-        padding: 16px 12px;
-        font-size: 17px;
+        border-radius: 0.875rem;
+        padding: 1rem 0.75rem;
+        font-size: 1.0625rem;
         font-weight: 600;
         cursor: pointer;
         text-align: center;
         transition:
           transform 0.12s ease,
           background 0.12s ease;
-      }
-      body[data-profile="alex"] .pw-strong-grid .opt {
-        background: var(--alex-soft);
-        color: var(--alex);
-      }
-      body[data-profile="rhino"] .pw-strong-grid .opt {
-        background: var(--rhino-soft);
-        color: var(--rhino);
       }
       .pw-strong-grid .opt:active {
         transform: scale(0.97);
@@ -1540,35 +1688,27 @@
         background: var(--accent);
         color: white;
       }
-      body[data-profile="alex"] .pw-strong-grid .opt.selected {
-        background: var(--alex);
-        color: white;
-      }
-      body[data-profile="rhino"] .pw-strong-grid .opt.selected {
-        background: var(--rhino);
-        color: white;
-      }
       .pw-example {
-        margin-top: 18px;
-        padding: 16px;
+        margin-top: 1.125rem;
+        padding: 1rem;
         background: var(--surface);
-        border-radius: 14px;
+        border-radius: 0.875rem;
         border: 1px dashed var(--line);
-        min-height: 60px;
-        font-size: 16px;
+        min-height: 3.75rem;
+        font-size: 1rem;
         line-height: 1.55;
         color: var(--ink);
       }
       .pw-example.empty {
         color: var(--ink-soft);
         font-style: italic;
-        font-size: 14px;
+        font-size: 0.875rem;
       }
       .pw-example b {
         background: var(--yellow-highlight);
         color: var(--yellow-text);
-        padding: 0 4px;
-        border-radius: 4px;
+        padding: 0 0.25rem;
+        border-radius: 0.25rem;
         font-weight: 600;
       }
 
@@ -1576,21 +1716,21 @@
       .better-preview {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 18px;
-        margin-top: 16px;
+        border-radius: 1rem;
+        padding: 1.125rem;
+        margin-top: 1rem;
       }
       .better-preview .h {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
       }
       .better-preview .weak-line {
         color: #606580;
         text-decoration: line-through;
-        margin-bottom: 6px;
+        margin-bottom: 0.375rem;
       }
       .better-preview .strong-line {
         font-weight: 500;
@@ -1599,10 +1739,10 @@
       .better-preview .strong-line .tag {
         background: var(--good-soft);
         color: var(--good);
-        font-size: 11px;
-        padding: 1px 6px;
-        border-radius: 6px;
-        margin-right: 4px;
+        font-size: 0.6875rem;
+        padding: 0.0625rem 0.375rem;
+        border-radius: 0.375rem;
+        margin-right: 0.25rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         vertical-align: middle;
@@ -1610,19 +1750,19 @@
 
       .empty-state {
         text-align: center;
-        padding: 40px 20px;
+        padding: 2.5rem 1.25rem;
         color: var(--ink-soft);
       }
       .toast {
         position: fixed;
         left: 50%;
-        bottom: 30px;
+        bottom: 1.875rem;
         transform: translateX(-50%);
         background: #eef0f6;
         color: #0f1123;
-        padding: 12px 18px;
-        border-radius: 12px;
-        font-size: 14px;
+        padding: 0.75rem 1.125rem;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
         opacity: 0;
         pointer-events: none;
         transition:
@@ -1632,7 +1772,7 @@
       }
       .toast.show {
         opacity: 1;
-        transform: translateX(-50%) translateY(-4px);
+        transform: translateX(-50%) translateY(-0.25rem);
       }
 
       @media (max-width: 520px) {
@@ -1641,34 +1781,36 @@
         .profile-row {
           grid-template-columns: 1fr;
         }
-        .stats {
-          flex-wrap: wrap;
+        .phoenix-status {
+          width: 9rem;
+          padding: 0.75rem 0.75rem;
         }
-        .stat {
-          flex: 1 1 45%;
-          border-right: none;
-          padding: 6px 10px;
+        .ps-icon {
+          font-size: 1rem;
+        }
+        .ps-value {
+          font-size: 0.75rem;
         }
         .hero h1 {
-          font-size: 30px;
+          font-size: 1.875rem;
         }
         .flashcard .word {
-          font-size: 38px;
+          font-size: 2.375rem;
         }
         .pw-weak .word {
-          font-size: 32px;
+          font-size: 2rem;
         }
       }
 
       /* CREATURE */
       .creature-emoji {
-        font-size: 64px;
+        font-size: 4rem;
         line-height: 1;
         animation: creatureBreathe 3s ease-in-out infinite;
       }
       @keyframes creatureBreathe {
         0%, 100% { transform: translateY(0) scale(1); }
-        50% { transform: translateY(-4px) scale(1.04); }
+        50% { transform: translateY(-0.25rem) scale(1.04); }
       }
       #homeScreen.streak-glow .hero-phoenix {
         animation: phoenixGlow 3s ease-in-out infinite;
@@ -1683,24 +1825,24 @@
           creatureGlow 2s ease-in-out infinite;
       }
       @keyframes creatureGlow {
-        0%, 100% { filter: drop-shadow(0 0 6px rgba(74, 138, 244, 0.4)); }
-        50% { filter: drop-shadow(0 0 18px rgba(74, 138, 244, 0.7)); }
+        0%, 100% { filter: drop-shadow(0 0 6px rgba(240, 104, 16, 0.4)); }
+        50% { filter: drop-shadow(0 0 18px rgba(240, 104, 16, 0.7)); }
       }
 
       /* Creature collection row */
       .creature-collection {
         display: flex;
-        gap: 14px;
+        gap: 0.875rem;
         overflow-x: auto;
-        padding: 4px 2px 8px;
-        margin-bottom: 20px;
+        padding: 0.25rem 0.125rem 0.5rem;
+        margin-bottom: 1.25rem;
         -webkit-overflow-scrolling: touch;
       }
       .creature-mini {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2px;
+        gap: 0.125rem;
         cursor: pointer;
         flex-shrink: 0;
         opacity: 0.6;
@@ -1713,11 +1855,11 @@
         opacity: 1 !important;
       }
       .creature-mini-emoji {
-        font-size: 32px;
+        font-size: 2rem;
         line-height: 1;
       }
       .creature-mini-label {
-        font-size: 10px;
+        font-size: 0.625rem;
         color: var(--ink-soft);
         white-space: nowrap;
       }
@@ -1725,13 +1867,80 @@
       /* Creature minis on welcome profile cards */
       .profile-card .creatures-row {
         display: flex;
-        gap: 8px;
+        gap: 0.5rem;
         justify-content: center;
-        margin-top: 6px;
+        margin-top: 0.375rem;
       }
       .creature-welcome-mini {
-        font-size: 22px;
+        font-size: 1.375rem;
         line-height: 1;
+      }
+
+      /* Rebirth banner */
+      .rebirth-banner {
+        background: linear-gradient(135deg, #3a1520, #2a1018);
+        border: 1px solid var(--red);
+        border-radius: 0.875rem;
+        padding: 1rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      .rebirth-text {
+        font-size: 0.875rem;
+        color: var(--red);
+        margin-bottom: 0.625rem;
+        font-weight: 600;
+      }
+      .rebirth-btn { font-size: 0.875rem; }
+
+      /* Quest CTA */
+      .quest-cta {
+        text-align: left;
+        margin-bottom: 1rem;
+      }
+      .quest-cta-btn {
+        animation: questPulse 2s ease-in-out infinite;
+        font-size: 0.9375rem;
+      }
+      @keyframes questPulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(240, 133, 10, 0.5); }
+        50% { box-shadow: 0 0 16px 4px rgba(240, 133, 10, 0.3); }
+      }
+
+      /* Quest screen */
+      .quest-counter {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        font-size: 0.875rem;
+        color: var(--ink-soft);
+        margin-bottom: 0.75rem;
+      }
+      .quest-counter .qc-correct { color: var(--good); font-weight: 600; }
+      .quest-counter .qc-wrong { color: var(--red); font-weight: 600; }
+      .quest-result-card {
+        background: var(--card);
+        border-radius: 1.25rem;
+        padding: 2.25rem 1.5rem;
+        text-align: center;
+        max-width: 25rem;
+        margin: 1.25rem auto;
+      }
+      .quest-result-emoji {
+        font-size: 4rem;
+        line-height: 1;
+        margin-bottom: 0.75rem;
+      }
+      .quest-result-title {
+        font-size: 1.375rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .quest-result-sub {
+        font-size: 0.875rem;
+        color: var(--ink-soft);
+        margin-bottom: 1.25rem;
+        line-height: 1.4;
       }
 
       /* Evolution overlay */
@@ -1753,14 +1962,14 @@
       }
       .creature-evolve-card {
         background: var(--card);
-        border-radius: 24px;
-        padding: 36px 32px 28px;
+        border-radius: 1.5rem;
+        padding: 2.25rem 2rem 1.75rem;
         text-align: center;
-        max-width: 320px;
+        max-width: 20rem;
         width: 90%;
         box-shadow:
           0 12px 40px rgba(0, 0, 0, 0.4),
-          0 0 20px rgba(74, 138, 244, 0.2);
+          0 0 20px rgba(240, 104, 16, 0.2);
         transform: scale(0.7);
         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
@@ -1768,7 +1977,7 @@
         transform: scale(1);
       }
       .evolve-emoji {
-        font-size: 80px;
+        font-size: 5rem;
         line-height: 1;
         animation: evolvePop 0.6s ease;
       }
@@ -1787,24 +1996,24 @@
         }
       }
       .evolve-title {
-        font-size: 22px;
+        font-size: 1.375rem;
         font-weight: 700;
-        margin-top: 12px;
+        margin-top: 0.75rem;
       }
       .evolve-flavor {
-        font-size: 14px;
+        font-size: 0.875rem;
         color: var(--ink-soft);
-        margin-top: 6px;
+        margin-top: 0.375rem;
       }
       .evolve-btn {
-        margin-top: 20px;
-        padding: 12px 32px;
+        margin-top: 1.25rem;
+        padding: 0.75rem 2rem;
         border: none;
-        border-radius: 14px;
+        border-radius: 0.875rem;
         background: var(--accent);
         color: #fff;
         font-family: inherit;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 700;
         cursor: pointer;
       }
@@ -1814,11 +2023,11 @@
 
       /* Level progress */
       .level-progress {
-        height: 10px;
+        height: 0.625rem;
         background: var(--line);
         border-radius: 99px;
         overflow: hidden;
-        margin-bottom: 6px;
+        margin-bottom: 0.375rem;
       }
       .level-progress-fill {
         height: 100%;
@@ -1826,60 +2035,52 @@
         border-radius: 99px;
         transition: width 0.4s ease;
       }
-      [data-profile="alex"] .level-progress-fill { background: var(--alex); }
-      [data-profile="rhino"] .level-progress-fill { background: var(--rhino); }
       .level-xp {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
       }
       .levelup-title {
-        font-size: 28px;
+        font-size: 1.75rem;
         font-weight: 700;
-        margin-top: 12px;
+        margin-top: 0.75rem;
       }
       .levelup-rank {
-        font-size: 22px;
+        font-size: 1.375rem;
         color: var(--accent);
-        margin-top: 8px;
+        margin-top: 0.5rem;
         font-weight: 700;
       }
       .level-info-card {
-        max-width: 340px;
-        padding: 28px 24px 22px;
+        max-width: 21.25rem;
+        padding: 1.75rem 1.5rem 1.375rem;
       }
       .level-info-title {
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: 700;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
       }
       .level-info-table {
         text-align: left;
         display: grid;
         grid-template-columns: auto 1fr auto;
-        gap: 6px 12px;
+        gap: 0.375rem 0.75rem;
         align-items: center;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
       }
       .level-info-table .li-num {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
         font-weight: 600;
       }
       .level-info-table .li-title {
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 700;
       }
       .level-info-table .li-title.li-current {
         color: var(--accent);
       }
-      [data-profile="alex"] .level-info-table .li-title.li-current {
-        color: var(--alex);
-      }
-      [data-profile="rhino"] .level-info-table .li-title.li-current {
-        color: var(--rhino);
-      }
       .level-info-table .li-xp {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
       }
       .level-info-table .li-row-done .li-title {
@@ -1891,60 +2092,53 @@
         opacity: 0.6;
       }
       .level-info-hint {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
-        margin-bottom: 14px;
+        margin-bottom: 0.875rem;
         line-height: 1.4;
       }
-      [data-profile="alex"] .levelup-rank {
-        color: var(--alex);
-      }
-      [data-profile="rhino"] .levelup-rank {
-        color: var(--rhino);
-      }
-
       /* ============================================================
      SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
      ============================================================ */
       .test-banner {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.625rem;
         background: #302a14;
         border: 1px solid #5a4c20;
         color: #e0b040;
-        border-radius: 12px;
-        padding: 10px 14px;
-        font-size: 13px;
-        margin-bottom: 18px;
+        border-radius: 0.75rem;
+        padding: 0.625rem 0.875rem;
+        font-size: 0.8125rem;
+        margin-bottom: 1.125rem;
         line-height: 1.4;
       }
       .test-banner .pill-badge {
         background: #5a4c20;
         color: var(--yellow-text);
         font-weight: 700;
-        font-size: 10px;
+        font-size: 0.625rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        padding: 3px 8px;
+        padding: 0.1875rem 0.5rem;
         border-radius: 999px;
         flex-shrink: 0;
       }
       .subject-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
+        gap: 0.875rem;
       }
       .subject-card {
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 18px;
-        padding: 20px 16px;
+        border-radius: 1.125rem;
+        padding: 1.25rem 1rem;
         cursor: pointer;
         box-shadow: var(--shadow);
         text-align: left;
         transition: transform 0.15s ease;
-        min-height: 130px;
+        min-height: 8.125rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -1956,22 +2150,22 @@
         opacity: 0.7;
       }
       .subject-card .s-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.75rem;
         background: var(--surface);
         display: grid;
         place-items: center;
-        font-size: 24px;
-        margin-bottom: 10px;
+        font-size: 1.5rem;
+        margin-bottom: 0.625rem;
       }
       .subject-card .s-title {
-        font-size: 18px;
+        font-size: 1.125rem;
         font-weight: 700;
-        margin-bottom: 4px;
+        margin-bottom: 0.25rem;
       }
       .subject-card .s-meta {
-        font-size: 13px;
+        font-size: 0.8125rem;
         color: var(--ink-soft);
       }
 
@@ -1985,29 +2179,29 @@
         position: relative;
         background: var(--card);
         border: 1px solid var(--line);
-        border-radius: 22px;
-        padding: 24px 20px;
+        border-radius: 1.375rem;
+        padding: 1.5rem 1.25rem;
         box-shadow: var(--shadow);
       }
       .ex-meta {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: var(--ink-soft);
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem;
         text-align: center;
       }
       .ex-prompt {
-        font-size: 19px;
+        font-size: 1.1875rem;
         font-weight: 600;
         line-height: 1.4;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
         text-align: center;
       }
       .ex-figure {
         display: flex;
         justify-content: center;
-        margin: 8px 0 18px;
+        margin: 0.5rem 0 1.125rem;
       }
       .ex-figure svg {
         max-width: 100%;
@@ -2017,16 +2211,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        margin-bottom: 4px;
+        gap: 0.625rem;
+        margin-bottom: 0.25rem;
       }
       .ex-input {
-        width: 140px;
-        font-size: 26px;
+        width: 8.75rem;
+        font-size: 1.625rem;
         text-align: center;
-        padding: 12px 14px;
+        padding: 0.75rem 0.875rem;
         border: 2px solid var(--line);
-        border-radius: 14px;
+        border-radius: 0.875rem;
         background: var(--surface);
         color: var(--ink);
         outline: none;
@@ -2037,12 +2231,6 @@
       .ex-input:focus {
         border-color: var(--accent);
       }
-      body[data-profile="alex"] .ex-input:focus {
-        border-color: var(--alex);
-      }
-      body[data-profile="rhino"] .ex-input:focus {
-        border-color: var(--rhino);
-      }
       .ex-input.right {
         border-color: var(--good);
         background: var(--good-soft);
@@ -2052,23 +2240,23 @@
         background: var(--red-soft);
       }
       .ex-unit {
-        font-size: 18px;
+        font-size: 1.125rem;
         font-weight: 600;
         color: var(--ink-soft);
       }
       .ex-options {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 8px;
+        gap: 0.625rem;
+        margin-bottom: 0.5rem;
       }
       .ex-option {
         background: var(--accent-soft);
         color: var(--accent);
         border: 2px solid transparent;
-        border-radius: 14px;
-        padding: 14px 12px;
-        font-size: 16px;
+        border-radius: 0.875rem;
+        padding: 0.875rem 0.75rem;
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
         text-align: center;
@@ -2077,14 +2265,6 @@
           background 0.12s ease,
           border-color 0.15s;
         font-family: inherit;
-      }
-      body[data-profile="alex"] .ex-option {
-        background: var(--alex-soft);
-        color: var(--alex);
-      }
-      body[data-profile="rhino"] .ex-option {
-        background: var(--rhino-soft);
-        color: var(--rhino);
       }
       .ex-option:active {
         transform: scale(0.97);
@@ -2103,9 +2283,9 @@
         border-color: var(--red);
       }
       .ex-feedback {
-        margin-top: 14px;
-        min-height: 26px;
-        font-size: 15px;
+        margin-top: 0.875rem;
+        min-height: 1.625rem;
+        font-size: 0.9375rem;
         line-height: 1.5;
         text-align: center;
       }
@@ -2118,45 +2298,39 @@
       }
       .ex-feedback .correct {
         background: var(--yellow-highlight);
-        padding: 2px 8px;
-        border-radius: 6px;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.375rem;
         font-weight: 700;
         color: var(--yellow-text);
       }
       .ex-explanation {
-        margin-top: 10px;
-        padding: 12px 14px;
+        margin-top: 0.625rem;
+        padding: 0.75rem 0.875rem;
         background: var(--surface);
         border: 1px dashed var(--line);
-        border-radius: 12px;
-        font-size: 14px;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
         line-height: 1.5;
         color: var(--ink-soft);
         text-align: left;
       }
       .ex-info-title {
-        font-size: 14px;
+        font-size: 0.875rem;
         color: var(--ink-soft);
         text-transform: uppercase;
         letter-spacing: 0.08em;
         text-align: center;
-        margin-bottom: 12px;
+        margin-bottom: 0.75rem;
       }
       .ex-info-text {
-        font-size: 17px;
+        font-size: 1.0625rem;
         line-height: 1.55;
         color: var(--ink);
         text-align: left;
-        margin-bottom: 6px;
+        margin-bottom: 0.375rem;
       }
       .ex-info-text b {
         color: var(--accent);
-      }
-      body[data-profile="alex"] .ex-info-text b {
-        color: var(--alex);
-      }
-      body[data-profile="rhino"] .ex-info-text b {
-        color: var(--rhino);
       }
 
       @media (max-width: 520px) {
@@ -2164,10 +2338,10 @@
           grid-template-columns: 1fr 1fr;
         }
         .ex-prompt {
-          font-size: 17px;
+          font-size: 1.0625rem;
         }
         .ex-option {
-          font-size: 15px;
+          font-size: 0.9375rem;
         }
       }
 
@@ -2179,15 +2353,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 32px 22px;
+        padding: 2rem 1.375rem;
         overflow-y: auto;
         background: linear-gradient(160deg, #0f1123 0%, #151530 100%);
       }
       .login-inner {
         width: 100%;
-        max-width: 400px;
-        border-radius: 30px;
-        padding: 40px 26px 34px;
+        max-width: 25rem;
+        border-radius: 1.875rem;
+        padding: 2.5rem 1.625rem 2.125rem;
         background: linear-gradient(
           155deg,
           #2bd2ff 0%,
@@ -2200,42 +2374,42 @@
       }
       .login-brand {
         text-align: center;
-        font-size: 23px;
+        font-size: 1.4375rem;
         font-weight: 700;
         color: #fff;
         letter-spacing: 0.3px;
       }
       .login-hero {
         text-align: center;
-        margin: 30px 0 8px;
-        font-size: 30px;
+        margin: 1.875rem 0 0.5rem;
+        font-size: 1.875rem;
         font-weight: 700;
         color: #fff;
       }
       .login-sub {
         text-align: center;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 700;
         color: rgba(255, 255, 255, 0.95);
         line-height: 1.5;
-        margin: 0 auto 26px;
-        max-width: 300px;
+        margin: 0 auto 1.625rem;
+        max-width: 18.75rem;
       }
       .login-card {
         background: var(--card);
-        border-radius: 22px;
-        padding: 24px 20px;
+        border-radius: 1.375rem;
+        padding: 1.5rem 1.25rem;
         box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 0.875rem;
       }
       .login-field {
         position: relative;
       }
       .login-ic {
         position: absolute;
-        left: 18px;
+        left: 1.125rem;
         top: 50%;
         transform: translateY(-50%);
         color: #606580;
@@ -2246,10 +2420,10 @@
       .login-field input {
         width: 100%;
         box-sizing: border-box;
-        padding: 16px 16px 16px 52px;
+        padding: 1rem 1rem 1rem 3.25rem;
         border: 2px solid var(--line);
-        border-radius: 15px;
-        font-size: 16px;
+        border-radius: 0.9375rem;
+        font-size: 1rem;
         font-family: inherit;
         font-weight: 600;
         color: var(--ink);
@@ -2264,21 +2438,21 @@
         font-weight: 600;
       }
       .login-field input:focus {
-        border-color: #4a8af4;
+        border-color: var(--accent);
         background: var(--surface);
       }
       .login-field input:focus + .login-ic {
-        color: #4a8af4;
+        color: var(--accent);
       }
       #loginBtn {
-        margin-top: 6px;
+        margin-top: 0.375rem;
         cursor: pointer;
         width: 100%;
         border: none;
-        padding: 19px;
-        border-radius: 16px;
+        padding: 1.1875rem;
+        border-radius: 1rem;
         font-family: inherit;
-        font-size: 16px;
+        font-size: 1rem;
         font-weight: 700;
         color: #fff;
         background: linear-gradient(135deg, #ff8a3d 0%, #ff4d6d 100%);
@@ -2296,15 +2470,15 @@
       .login-error {
         color: #fff;
         background: rgba(0, 0, 0, 0.18);
-        border-radius: 10px;
-        font-size: 14px;
+        border-radius: 0.625rem;
+        font-size: 0.875rem;
         font-weight: 700;
         text-align: center;
         padding: 0;
       }
       .login-error:not(:empty) {
-        padding: 8px 12px;
-        margin-top: 2px;
+        padding: 0.5rem 0.75rem;
+        margin-top: 0.125rem;
       }
     </style>
     <!-- Supabase: cloud progress sync + login -->
@@ -2446,84 +2620,149 @@
       <section class="screen" id="homeScreen">
         <img class="hero-phoenix" src="assets/phoenix.png" alt="" />
 
-        <div class="hero-text">
-          <h2 class="hero-title">Rise every day.<br><span class="hero-accent">Speak stronger.</span></h2>
-          <p class="hero-sub">Your <span id="heroCreatureName">creature</span> grows with every word.</p>
-        </div>
-
-        <div class="hero-row">
-          <div class="hero-level" id="levelBar" onclick="showLevelInfo()">
-            <div class="level-hex-wrap">
-              <div class="level-hex">
-                <div class="level-hex-inner">
-                  <span class="level-hex-num" id="levelNum">1</span>
+        <div class="hero-columns">
+          <div class="hero-left">
+            <div class="hero-text">
+              <h2 class="hero-title">Rise every day.<br><span class="hero-accent">Speak stronger.</span></h2>
                 </div>
+            <div class="hero-row">
+              <div class="hero-level" id="levelBar" onclick="showLevelInfo()">
+                <div class="level-hex-wrap">
+                  <div class="level-hex">
+                    <div class="level-hex-inner">
+                      <span class="level-hex-num" id="levelNum">1</span>
+                    </div>
+                  </div>
+                  <span class="level-hex-label">LEVEL</span>
+                </div>
+                <div class="hero-level-info">
+                  <div class="level-evo-text" id="levelEvoText">0 words until</div>
+                  <div class="level-evo-name" id="levelEvoName">???</div>
+                  <div class="level-progress">
+                    <div class="level-progress-fill" id="levelFill" style="width: 0%"></div>
+                  </div>
+                  <div class="level-xp" id="levelXP">0 / 50</div>
+                </div>
+                <span id="levelRank" style="display:none">Newbie</span>
+                <div class="creature-emoji" id="creatureEmoji" style="display:none">🥚</div>
               </div>
-              <span class="level-hex-label">LEVEL</span>
             </div>
-            <div class="hero-level-info">
-              <div class="level-evo-text" id="levelEvoText">0 words until</div>
-              <div class="level-evo-name" id="levelEvoName">???</div>
-              <div class="level-progress">
-                <div class="level-progress-fill" id="levelFill" style="width: 0%"></div>
-              </div>
-              <div class="level-xp" id="levelXP">0 / 50</div>
-            </div>
-            <span id="levelRank" style="display:none">Newbie</span>
-            <div class="creature-emoji" id="creatureEmoji" style="display:none">🥚</div>
           </div>
 
-          <div class="hero-sidebar">
-            <div class="sidebar-card">
-              <div class="sidebar-label">Fire streak</div>
-              <div class="sidebar-value" id="statStreak">0</div>
-              <div class="sidebar-sub">days</div>
-              <div class="streak-flames" id="streakFlames"></div>
+          <div class="phoenix-status" id="phoenixStatus">
+            <div class="ps-title">Phoenix Status</div>
+            <div class="ps-row">
+              <span class="ps-icon">🔥</span>
+              <div class="ps-info">
+                <div class="ps-value" id="psStage">Ember Egg</div>
+                <div class="ps-hint" id="psStageHint">Current form</div>
+              </div>
             </div>
-            <div class="sidebar-card">
-              <div class="sidebar-label" id="creatureThemeLabel">Phoenix state</div>
-              <div class="sidebar-creature-name" id="creatureName">???</div>
-              <div class="sidebar-creature-msg" id="creatureMsg">Master words to hatch this egg!</div>
-              <div class="sidebar-creature-emoji" id="creatureSidebarEmoji">🥚</div>
+            <div class="ps-row">
+              <span class="ps-icon">⚡</span>
+              <div class="ps-info">
+                <div class="ps-value" id="psStreak">Start your streak</div>
+                <div class="ps-hint" id="psStreakHint">Come back tomorrow</div>
+              </div>
+            </div>
+            <div class="ps-row">
+              <span class="ps-icon" id="psGoalIcon">🎯</span>
+              <div class="ps-info">
+                <div class="ps-value" id="psGoal">Evolve at Lv. 3</div>
+                <div class="ps-hint" id="psGoalHint">Keep gaining XP</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="creature-collection" id="creatureCollectionRow"></div>
+        <div class="rebirth-banner" id="rebirthBanner" style="display:none">
+          <div class="rebirth-text">The flame went out. Rise from the ashes!</div>
+          <button class="btn primary rebirth-btn" onclick="startRebirthQuest()">Start Rebirth Quest</button>
+        </div>
 
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-ic ic-mastered"><img src="assets/ic-collected.png" alt="" class="stat-img"></div>
-            <div class="stat-text">
-              <div class="n" id="statKnown">0</div>
-              <div class="l">Words collected</div>
-            </div>
+        <div class="quest-cta" id="questCTA" style="display:none">
+          <button class="btn primary quest-cta-btn" onclick="startEvolutionQuest()">Start Quest</button>
+        </div>
+
+        <div class="section-title">Today's Quests</div>
+        <div class="quest-list">
+          <div class="quest-row" onclick="openEnglishWorld()">
+            <div class="quest-dot dot-good" id="qdot-english"></div>
+            <div class="quest-icon">📚</div>
+            <div class="quest-name">English Kingdom</div>
+            <div class="quest-status" id="qstatus-english">—</div>
+            <div class="quest-arrow">›</div>
           </div>
-          <div class="stat">
-            <div class="stat-ic ic-review"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-            <div class="stat-text">
-              <div class="n" id="statSpell">0</div>
-              <div class="l">To review</div>
-            </div>
+          <div class="quest-row" onclick="openSailing()">
+            <div class="quest-dot dot-good" id="qdot-sail"></div>
+            <div class="quest-icon">⛵</div>
+            <div class="quest-name">Sailing Harbor</div>
+            <div class="quest-status" id="qstatus-sail">—</div>
+            <div class="quest-arrow">›</div>
           </div>
-          <div class="stat">
-            <div class="stat-ic ic-xp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
-            <div class="stat-text">
-              <div class="n" id="statXP">0</div>
-              <div class="l">Total XP</div>
-            </div>
+          <div class="quest-row" onclick="openMathWorld()">
+            <div class="quest-dot dot-muted" id="qdot-math"></div>
+            <div class="quest-icon">📐</div>
+            <div class="quest-name">Math Citadel</div>
+            <div class="quest-status" id="qstatus-math">—</div>
+            <div class="quest-arrow">›</div>
+          </div>
+          <div class="quest-row locked">
+            <div class="quest-dot dot-muted" id="qdot-deutsch"></div>
+            <div class="quest-icon">📖</div>
+            <div class="quest-name">Deutsch Academy</div>
+            <div class="quest-status" id="qstatus-deutsch">Coming soon</div>
+            <div class="quest-arrow">›</div>
           </div>
         </div>
 
-        <div class="section-title">Modes</div>
+        <div class="section-title">Explore Worlds</div>
+        <div class="worlds-grid">
+          <div class="world-card w-english" onclick="openEnglishWorld()">
+            <div>
+              <div class="world-icon">📚</div>
+              <div class="world-title">English Kingdom</div>
+              <div class="world-meta" id="worldmeta-english">Words, spelling & more</div>
+            </div>
+          </div>
+          <div class="world-card w-sail" onclick="openSailing()">
+            <div>
+              <div class="world-icon">⛵</div>
+              <div class="world-title">Sailing Harbor</div>
+              <div class="world-meta" id="worldmeta-sail">Segelschein practice</div>
+            </div>
+          </div>
+          <div class="world-card w-math" onclick="openMathWorld()">
+            <div>
+              <div class="world-icon">📐</div>
+              <div class="world-title">Math Citadel</div>
+              <div class="world-meta" id="worldmeta-math">Explore topics</div>
+            </div>
+          </div>
+          <div class="world-card w-deutsch locked">
+            <div>
+              <div class="world-icon">📖</div>
+              <div class="world-title">Deutsch Academy</div>
+              <div class="world-meta" id="worldmeta-deutsch">Coming soon</div>
+            </div>
+            <div class="ribbon">Soon</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENGLISH KINGDOM — sub-modes -->
+      <section class="screen" id="englishWorldScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="goHome()">←</button>
+          <h2>📚 English Kingdom</h2>
+        </div>
+        <p class="sub">Choose your training mode.</p>
         <div class="modes">
           <div class="mode m-school" onclick="openSchoolWords()">
             <div>
               <div class="icon">A</div>
               <div class="ttl">School Words</div>
-              <div class="desc">
-                Words from your textbook. Stay ahead in class.
-              </div>
+              <div class="desc">Words from your textbook. Stay ahead in class.</div>
             </div>
           </div>
           <div class="mode m-power" onclick="openPowerWords()">
@@ -2531,6 +2770,13 @@
               <div class="icon">★</div>
               <div class="ttl">Power Words</div>
               <div class="desc">Swap cool / good / bad for stronger words.</div>
+            </div>
+          </div>
+          <div class="mode m-spell" onclick="openSpelling()">
+            <div>
+              <div class="icon">✓</div>
+              <div class="ttl">Spelling Trainer</div>
+              <div class="desc">Tricky words and your own mistakes.</div>
             </div>
           </div>
           <div class="mode m-better locked">
@@ -2549,61 +2795,13 @@
             </div>
             <div class="ribbon">Soon</div>
           </div>
-          <div class="mode m-spell" onclick="openSpelling()">
-            <div>
-              <div class="icon">✓</div>
-              <div class="ttl">Spelling Trainer</div>
-              <div class="desc">Tricky words and your own mistakes.</div>
-            </div>
-          </div>
-          <div class="mode m-speak locked">
-            <div>
-              <div class="icon">♪</div>
-              <div class="ttl">Speaking Builder</div>
-              <div class="desc">Opinion → Reason → Example → Conclusion.</div>
-            </div>
-            <div class="ribbon">Soon</div>
-          </div>
-        </div>
-
-        <div class="session-strip">
-          <strong>7 minutes a day:</strong>&nbsp;2 min words · 2 min spelling ·
-          2 min better answers · 1 min speaking.
-        </div>
-
-        <div class="section-title">
-          Other subjects
-          <span
-            style="
-              background: #302a14;
-              color: #e0b040;
-              font-size: 9px;
-              padding: 2px 7px;
-              border-radius: 99px;
-              letter-spacing: 0.06em;
-              margin-left: 6px;
-              vertical-align: middle;
-            "
-            >TEST</span
-          >
-        </div>
-        <div class="modes" id="subjectsHomeRow">
-          <div class="mode" onclick="openSubjects()">
-            <div>
-              <div class="icon" style="background: var(--surface)">📚</div>
-              <div class="ttl">Mathe, Deutsch & mehr</div>
-              <div class="desc">
-                Школьные предметы из учебника. Tippe, um zu üben.
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
       <!-- SCHOOL WORDS — THEME LIST -->
       <section class="screen" id="schoolTopicsScreen">
         <div class="mode-head">
-          <button class="back-btn" onclick="goHome()">←</button>
+          <button class="back-btn" onclick="showScreen('englishWorldScreen')">←</button>
           <h2>School Words</h2>
         </div>
         <p class="sub">
@@ -2634,11 +2832,7 @@
           <div class="streak-counter" id="tpStreak"></div>
           <div class="tp-status-row">
             <span id="tpDots"></span>
-            <span class="stage-pill" id="tpPill">new</span>
-            <span class="tp-creature-mini" id="tpCreatureMini">
-              <span id="tpCreatureEmoji">🥚</span>
-              <span id="tpCreatureHint"></span>
-            </span>
+            <span class="stage-pill" id="tpPill">🌱 New word</span>
           </div>
           <div class="tp-label">How to write in English</div>
           <div class="tp-de" id="tpDe">—</div>
@@ -2727,7 +2921,7 @@
       <!-- SPELLING TRAINER -->
       <section class="screen" id="spellingScreen">
         <div class="mode-head">
-          <button class="back-btn" onclick="goHome()">←</button>
+          <button class="back-btn" onclick="showScreen('englishWorldScreen')">←</button>
           <h2>Spelling Trainer</h2>
         </div>
         <p class="sub">
@@ -2741,6 +2935,10 @@
         <div class="sp-card" id="spCard">
           <div class="confetti-container" id="spConfetti"></div>
           <div class="streak-counter" id="spStreak"></div>
+          <div class="tp-status-row">
+            <span id="spDots"></span>
+            <span class="stage-pill" id="spPill">🌱 New word</span>
+          </div>
           <div class="sp-label">How to write in English</div>
           <div class="sp-de" id="spDe">—</div>
           <div class="sp-skel" id="spSkel">_ _ _ _</div>
@@ -2769,10 +2967,85 @@
         </div>
       </section>
 
+      <!-- SEGELSCHEIN — PRACTICE CARD -->
+      <section class="screen" id="sailScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="goHome()">←</button>
+          <h2>⛵ Segelschein</h2>
+        </div>
+        <div class="progress-bar">
+          <div id="sailSegRed" class="seg-red" style="width:0"></div>
+          <div id="sailSegOrange" class="seg-orange" style="width:0"></div>
+          <div id="sailSegYellow" class="seg-yellow" style="width:0"></div>
+          <div id="sailSegGreen" class="seg-green" style="width:0"></div>
+        </div>
+        <p class="sub" id="sailMeta">Question 1 — 80 to master</p>
+
+        <div class="sail-card" id="sailCard">
+          <div class="confetti-container" id="sailConfetti"></div>
+          <div class="streak-counter" id="sailStreak"></div>
+          <div class="sail-status-row">
+            <span id="sailDots"></span>
+            <span class="stage-pill" id="sailPill">new</span>
+            <span class="sail-creature-mini" id="sailCreatureMini">
+              <span id="sailCreatureEmoji">🥚</span>
+            </span>
+          </div>
+          <div class="sail-label" id="sailLabel">Frage</div>
+          <div class="sail-q" id="sailQ">—</div>
+          <div class="sail-separator"></div>
+          <div class="sail-illustration" id="sailIllustration"></div>
+          <div id="sailAnswerArea"></div>
+          <div class="sail-feedback" id="sailFeedback"></div>
+        </div>
+
+        <div class="sail-actions" id="sailActions">
+          <button class="sail-dk-btn" id="sailDontKnowBtn" onclick="sailDontKnow()">
+            <span class="sail-dk-icon">💡</span>
+            <span class="sail-dk-text">
+              <span class="sail-dk-title">Don't know — show me</span>
+              <span class="sail-dk-sub">I'll show you the answer</span>
+            </span>
+          </button>
+          <button class="btn primary" id="sailCheckBtn" onclick="sailCheck()">Check</button>
+        </div>
+      </section>
+
+      <!-- SEGELSCHEIN — SESSION SUMMARY -->
+      <section class="screen" id="sailSummaryScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="goHome()">←</button>
+          <h2>Session done</h2>
+        </div>
+        <div class="summary">
+          <div class="summary-creature" id="sailSumCreature"></div>
+          <h3 id="sailSumTitle">Gut gemacht!</h3>
+          <div class="sub-line" id="sailSumSub">—</div>
+          <div class="summary-row">
+            <div class="cell">
+              <div class="n" id="sailSumMastered">0</div>
+              <div class="l">🌳 mastered</div>
+            </div>
+            <div class="cell">
+              <div class="n" id="sailSumProgress">0</div>
+              <div class="l">🌿 in progress</div>
+            </div>
+            <div class="cell">
+              <div class="n" id="sailSumRed">0</div>
+              <div class="l">🔴 mistakes</div>
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="btn ghost" onclick="goHome()">Home</button>
+            <button class="btn primary" onclick="openSailing()">Again</button>
+          </div>
+        </div>
+      </section>
+
       <!-- POWER WORDS -->
       <section class="screen" id="powerScreen">
         <div class="mode-head">
-          <button class="back-btn" onclick="goHome()">←</button>
+          <button class="back-btn" onclick="showScreen('englishWorldScreen')">←</button>
           <h2>Power Words</h2>
         </div>
         <p class="sub">
@@ -2832,7 +3105,7 @@
       <!-- SUBJECTS — TOPICS WITHIN A SUBJECT -->
       <section class="screen" id="subjectHomeScreen">
         <div class="mode-head">
-          <button class="back-btn" onclick="openSubjects()">←</button>
+          <button class="back-btn" onclick="goHome()">←</button>
           <h2 id="subjectTitle">Subject</h2>
         </div>
         <p class="sub" id="subjectSub">Wähle ein Thema zum Üben.</p>
@@ -2854,7 +3127,7 @@
       <!-- SUBJECTS — SESSION SUMMARY -->
       <section class="screen" id="subjectSummaryScreen">
         <div class="mode-head">
-          <button class="back-btn" onclick="openSubjects()">←</button>
+          <button class="back-btn" onclick="goHome()">←</button>
           <h2>Geschafft</h2>
         </div>
         <div class="summary">
@@ -2889,15 +3162,66 @@
         </div>
       </section>
 
+      <!-- QUEST MODE -->
+      <section class="screen" id="questScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="exitQuest()">←</button>
+          <h2 id="questTitle">Quest</h2>
+        </div>
+        <p class="sub" id="questSub">Prove your strength!</p>
+        <div class="quest-counter" id="questCounter">
+          <span class="qc-correct">✓ 0 correct</span>
+          <span class="qc-wrong">✗ 0 mistakes</span>
+        </div>
+        <div class="progress-bar">
+          <div class="seg-green" id="questProgress" style="width: 0%"></div>
+        </div>
+        <div class="tp-card" id="questCard">
+          <div class="confetti-container" id="questConfetti"></div>
+          <div class="tp-label">How to write in English</div>
+          <div class="tp-de" id="questDe">—</div>
+          <div class="tp-skel" id="questSkel">_ _ _ _</div>
+          <input
+            class="tp-input"
+            id="questInput"
+            type="text"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            inputmode="text"
+            placeholder="type here"
+          />
+          <div class="tp-feedback" id="questFeedback"></div>
+        </div>
+        <div class="row-actions">
+          <button class="btn primary" id="questCheckBtn" onclick="checkQuestAnswer()" disabled>Check</button>
+        </div>
+      </section>
+
+      <!-- QUEST RESULT -->
+      <section class="screen" id="questResultScreen">
+        <div class="quest-result-card">
+          <div class="confetti-container" id="questResultConfetti"></div>
+          <div class="quest-result-emoji" id="questResultEmoji">🔥</div>
+          <div class="quest-result-title" id="questResultTitle">Quest Complete!</div>
+          <div class="quest-result-sub" id="questResultSub">—</div>
+          <div class="row-actions">
+            <button class="btn primary" id="questResultBtn" onclick="exitQuest()">Continue</button>
+          </div>
+        </div>
+      </section>
+
       <div
         class="creature-evolve-overlay"
         id="evolveOverlay"
         onclick="dismissEvolve()"
       >
         <div class="creature-evolve-card" onclick="event.stopPropagation()">
-          <div class="evolve-emoji" id="evolveEmoji">🐲</div>
+          <div class="confetti-container" id="evolveConfetti"></div>
+          <div class="evolve-emoji" id="evolveEmoji">🔥</div>
           <div class="evolve-title" id="evolveTitle">
-            Your creature evolved!
+            Phoenix evolved!
           </div>
           <div class="evolve-flavor" id="evolveFlavor"></div>
           <button class="evolve-btn" onclick="dismissEvolve()">Awesome!</button>
@@ -3511,7 +3835,7 @@
           emoji: "🐱",
           color: "var(--accent)",
           gradient: "",
-          confetti: ["#4a8af4", "#6ba4f8", "#2e6cdf", "#1c2a4a"],
+          confetti: ["#f06810", "#f09030", "#e05800", "#d4a017"],
           metaEl: "metaMax",
           creaturesEl: "creaturesMax",
         },
@@ -3519,9 +3843,9 @@
           id: "alex",
           name: "Fox",
           emoji: "🦊",
-          color: "var(--alex)",
-          gradient: "linear-gradient(90deg, var(--alex), #f0b050)",
-          confetti: ["#f09050", "#f0a868", "#e07a3b", "#3a2518"],
+          color: "var(--accent)",
+          gradient: "",
+          confetti: ["#f06810", "#f09030", "#e05800", "#d4a017"],
           metaEl: "metaAleks",
           creaturesEl: "creaturesAleks",
         },
@@ -3529,9 +3853,9 @@
           id: "rhino",
           name: "Rhino",
           emoji: "🦏",
-          color: "var(--rhino)",
-          gradient: "linear-gradient(90deg, var(--rhino), #b8a0f0)",
-          confetti: ["#9b7ee8", "#b8a0f0", "#7c5cbf", "#271e40"],
+          color: "var(--accent)",
+          gradient: "",
+          confetti: ["#f06810", "#f09030", "#e05800", "#d4a017"],
           metaEl: "metaRhino",
           creaturesEl: "creaturesRhino",
         },
@@ -3774,6 +4098,15 @@
         sessionLimit: 20,
         answerStreak: 0,
         bestStreak: 0,
+        // Quest mode
+        questMode: null,   // null | 'evolution' | 'rebirth'
+        questId: null,      // 'hatching' | 'ascension' | null (rebirth)
+        questWords: [],
+        questIndex: 0,
+        questCorrect: 0,
+        questTotal: 0,
+        questThreshold: 0,
+        questChecked: false,
       };
 
       const STORAGE_KEY = (p) => `lango.profile.${p}`;
@@ -3787,6 +4120,11 @@
             d.learnedPowerWords = d.learnedPowerWords || [];
             d.streak = d.streak || 0;
             d.xp = d.xp || 0;
+            // Migration: phoenix progression
+            if (d.phoenixStage === undefined) d.phoenixStage = 1;
+            if (d.bestStreak === undefined) d.bestStreak = d.streak || 0;
+            if (d.completedQuests === undefined) d.completedQuests = [];
+            if (d.rebirthPending === undefined) d.rebirthPending = false;
             // Migration: add adaptive difficulty fields to old word records
             for (const en in d.wordStatus) {
               const s = d.wordStatus[en];
@@ -3810,6 +4148,10 @@
           streak: 0,
           xp: 0,
           lastVisit: null,
+          phoenixStage: 1,
+          bestStreak: 0,
+          completedQuests: [],
+          rebirthPending: false,
         };
       }
 
@@ -3914,326 +4256,309 @@
       };
 
       /* ============================================================
-   CREATURE PET — per-theme creatures
+   PHOENIX PROGRESSION SYSTEM
    ============================================================ */
-      const THEME_CREATURES = {
-        theme04: {
-          name: "Dragon",
-          stages: [
-            {
-              pct: 0,
-              label: "???",
-              emoji: "🥚",
-              flavor: "Something is stirring inside...",
-            },
-            {
-              pct: 10,
-              label: "Baby Dragon",
-              emoji: "🐣",
-              flavor: "It's a Dragon! A tiny one just hatched!",
-            },
-            {
-              pct: 25,
-              label: "Drake",
-              emoji: "🦎",
-              flavor: "Scales are growing. Wings are next!",
-            },
-            {
-              pct: 50,
-              label: "Young Dragon",
-              emoji: "🐲",
-              flavor: "Fire breath unlocked!",
-            },
-            {
-              pct: 75,
-              label: "Dragon",
-              emoji: "🐉",
-              flavor: "Your dragon soars across the sky!",
-            },
-            {
-              pct: 95,
-              label: "Legendary Dragon",
-              emoji: "👑",
-              flavor: "The most powerful dragon in the realm!",
-            },
-          ],
-        },
-        theme05: {
-          name: "Phoenix",
-          stages: [
-            {
-              pct: 0,
-              label: "???",
-              emoji: "🥚",
-              flavor: "Something is stirring inside...",
-            },
-            {
-              pct: 10,
-              label: "Spark",
-              emoji: "🐤",
-              flavor: "It's a Phoenix! A spark of fire is born!",
-            },
-            {
-              pct: 25,
-              label: "Firebird",
-              emoji: "🐦",
-              flavor: "Feathers are glowing warm.",
-            },
-            {
-              pct: 50,
-              label: "Young Phoenix",
-              emoji: "🦅",
-              flavor: "Wings of flame spread wide!",
-            },
-            {
-              pct: 75,
-              label: "Phoenix",
-              emoji: "🔥",
-              flavor: "Reborn from the ashes!",
-            },
-            {
-              pct: 95,
-              label: "Eternal Phoenix",
-              emoji: "🌟",
-              flavor: "Immortal fire lights the sky!",
-            },
-          ],
-        },
+
+      const PHOENIX_STAGES = [
+        { stage: 1, name: "Ember Egg",       emoji: "🥚", level: 1,  quest: null,        themes: 0, bestStreak: 0, flavor: "A warm glow pulses inside..." },
+        { stage: 2, name: "Hatchling Phoenix", emoji: "🐣", level: 3,  quest: "hatching",  themes: 0, bestStreak: 0, flavor: "The shell cracks — a spark of fire is born!" },
+        { stage: 3, name: "Young Phoenix",    emoji: "🔥", level: 7,  quest: null,        themes: 1, bestStreak: 0, flavor: "Wings of flame spread wide!" },
+        { stage: 4, name: "Rising Phoenix",   emoji: "🦅", level: 15, quest: null,        themes: 2, bestStreak: 7, flavor: "Soaring higher with every word!" },
+        { stage: 5, name: "Blazing Phoenix",  emoji: "🌟", level: 25, quest: "ascension", themes: 4, bestStreak: 0, flavor: "Immortal fire lights the sky!" },
+      ];
+
+      const PHOENIX_QUESTS = {
+        hatching:  { title: "Hatching Quest",  sub: "Prove you're ready to hatch!", count: 15, threshold: 13 },
+        ascension: { title: "Ascension Quest",  sub: "The final trial of fire!",     count: 30, threshold: 25 },
       };
 
-      const DEFAULT_CREATURE = {
-        name: "Creature",
-        stages: [
-          {
-            pct: 0,
-            label: "???",
-            emoji: "🥚",
-            flavor: "Something is stirring inside...",
-          },
-          {
-            pct: 10,
-            label: "Hatchling",
-            emoji: "🐣",
-            flavor: "A new creature has hatched!",
-          },
-          {
-            pct: 25,
-            label: "Youngling",
-            emoji: "🐾",
-            flavor: "Growing stronger every day!",
-          },
-          {
-            pct: 50,
-            label: "Apprentice",
-            emoji: "⚡",
-            flavor: "Powers awakening!",
-          },
-          {
-            pct: 75,
-            label: "Champion",
-            emoji: "🛡️",
-            flavor: "A true champion emerges!",
-          },
-          {
-            pct: 95,
-            label: "Legendary",
-            emoji: "👑",
-            flavor: "The stuff of legends!",
-          },
-        ],
-      };
+      const REBIRTH_QUEST = { title: "Rebirth Quest", sub: "Rise from the ashes!", count: 10, threshold: 10 };
 
-      function getCreatureDef(themeId) {
-        return THEME_CREATURES[themeId] || DEFAULT_CREATURE;
+      function getPhoenixStage(p) {
+        const idx = Math.max(0, Math.min((p.phoenixStage || 1) - 1, PHOENIX_STAGES.length - 1));
+        return PHOENIX_STAGES[idx];
       }
 
-      function getCreatureStage(themeId) {
-        const theme = THEMES_BY_ID[themeId];
-        if (!theme) return null;
-        const c = themeStatusCounts(theme);
-        const total = theme.words.length;
-        const weighted = weightedProgress(c);
-        const pctVal = total > 0 ? (weighted / total) * 100 : 0;
-        const def = getCreatureDef(themeId);
-        let stage = def.stages[0];
-        for (const s of def.stages) {
-          if (pctVal >= s.pct) stage = s;
-        }
-        return {
-          emoji: stage.emoji,
-          label: stage.label,
-          flavor: stage.flavor,
-          pct: pctVal,
-          pctThreshold: stage.pct,
-          creatureName: def.name,
-          mastered: c.mastered,
-          weightedMastered: weighted,
-          total: total,
-        };
+      function getPhoenixState(p) {
+        if (!p.lastVisit) return "active";
+        const last = new Date(p.lastVisit + "T00:00:00");
+        const missed = Math.floor((Date.now() - last.getTime()) / 86400000);
+        if (missed <= 0) return "active";
+        if (missed === 1) return "cooling";
+        if (missed <= 3) return "dormant";
+        return "ash";
       }
 
-      function getNextCreatureStage(themeId) {
-        const theme = THEMES_BY_ID[themeId];
-        if (!theme) return null;
-        const pctVal = weightedPct(theme);
-        const def = getCreatureDef(themeId);
-        for (const s of def.stages) {
-          if (s.pct > pctVal) return s;
+      function countMasteredThemes() {
+        let count = 0;
+        const p = progress();
+        for (const t of THEMES) {
+          let allMastered = t.words.length > 0;
+          for (const w of t.words) {
+            const s = p.wordStatus[w.en];
+            if (!s || statusStage(s) !== "mastered") { allMastered = false; break; }
+          }
+          if (allMastered) count++;
         }
-        return null;
+        return count;
+      }
+
+      function getNextEvolutionRequirements(p) {
+        const cur = p.phoenixStage || 1;
+        if (cur >= PHOENIX_STAGES.length) return null; // max stage
+        const next = PHOENIX_STAGES[cur]; // next stage (0-indexed: cur is already +1)
+        const li = getLevel(p.xp);
+        const themes = countMasteredThemes();
+        const reqs = [];
+        reqs.push({ label: "Level " + next.level, met: li.level >= next.level });
+        if (next.themes > 0) reqs.push({ label: next.themes + " theme" + (next.themes > 1 ? "s" : "") + " mastered", met: themes >= next.themes });
+        if (next.bestStreak > 0) reqs.push({ label: next.bestStreak + "-day best streak", met: (p.bestStreak || 0) >= next.bestStreak });
+        if (next.quest) reqs.push({ label: "Complete " + PHOENIX_QUESTS[next.quest].title, met: (p.completedQuests || []).includes(next.quest) });
+        return { nextStage: next, requirements: reqs };
+      }
+
+      function isEvolutionQuestUnlocked(p) {
+        const cur = p.phoenixStage || 1;
+        if (cur >= PHOENIX_STAGES.length) return false;
+        const next = PHOENIX_STAGES[cur];
+        if (!next.quest) return false;
+        if ((p.completedQuests || []).includes(next.quest)) return false;
+        const li = getLevel(p.xp);
+        const themes = countMasteredThemes();
+        if (li.level < next.level) return false;
+        if (next.themes > 0 && themes < next.themes) return false;
+        if (next.bestStreak > 0 && (p.bestStreak || 0) < next.bestStreak) return false;
+        return true;
+      }
+
+      function checkPhoenixEvolution(p) {
+        const cur = p.phoenixStage || 1;
+        if (cur >= PHOENIX_STAGES.length) return false;
+        const next = PHOENIX_STAGES[cur];
+        const li = getLevel(p.xp);
+        const themes = countMasteredThemes();
+        if (li.level < next.level) return false;
+        if (next.themes > 0 && themes < next.themes) return false;
+        if (next.bestStreak > 0 && (p.bestStreak || 0) < next.bestStreak) return false;
+        if (next.quest && !(p.completedQuests || []).includes(next.quest)) return false;
+        // All conditions met — evolve!
+        p.phoenixStage = next.stage;
+        saveProgress(state.profile, p);
+        return next;
       }
 
       function getFeaturedTheme() {
         return THEMES.find((t) => t.status === "current") || THEMES[0];
       }
 
-      function refreshCreatures() {
-        const featured = getFeaturedTheme();
-        if (!featured) return;
-        const info = getCreatureStage(featured.id);
-        if (!info) return;
-        const next = getNextCreatureStage(featured.id);
-        const p = progress();
-        const streak = p.streak || 0;
-
-        document.getElementById("creatureEmoji").textContent = info.emoji;
-        document.getElementById("creatureName").textContent = info.label;
-        document.getElementById("creatureThemeLabel").textContent =
-          featured.short || featured.title;
-
-        // Sidebar emoji
-        const sideEmoji = document.getElementById("creatureSidebarEmoji");
-        if (sideEmoji) sideEmoji.textContent = info.emoji;
-
-        // Streak glow on home screen
-        const homeScreen = document.getElementById("homeScreen");
-        if (homeScreen) {
-          if (streak >= 3) homeScreen.classList.add("streak-glow");
-          else homeScreen.classList.remove("streak-glow");
-        }
-
-        // Update hero subtitle creature name
-        const heroName = document.getElementById("heroCreatureName");
-        if (heroName) heroName.textContent = info.label;
-
-        // Level card — evolution text + progress
-        const evoTextEl = document.getElementById("levelEvoText");
-        const evoNameEl = document.getElementById("levelEvoName");
-        const levelFill = document.getElementById("levelFill");
-        const levelXP = document.getElementById("levelXP");
-
-        if (evoTextEl && evoNameEl) {
-          if (!next) {
-            evoTextEl.innerHTML = info.flavor;
-            evoNameEl.textContent = info.label;
-          } else {
-            const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
-            evoTextEl.innerHTML = '<span class="evo-count">' + needed + '</span> word' + (needed !== 1 ? 's' : '') + ' until';
-            evoNameEl.textContent = next.label;
-          }
-        }
-        if (levelFill) {
-          const pct = Math.min(100, info.pct);
-          levelFill.style.width = pct + "%";
-        }
-        if (levelXP) {
-          const wLabel = info.weightedMastered % 1 === 0
-            ? info.weightedMastered
-            : info.weightedMastered.toFixed(1);
-          levelXP.textContent = wLabel + " / " + info.total;
-        }
-
-        // Message in sidebar
-        const msgEl = document.getElementById("creatureMsg");
-        if (!next) {
-          msgEl.textContent = info.flavor;
-        } else if (streak >= 3) {
-          msgEl.textContent =
-            "Day " + streak + " streak — glowing!";
-        } else if (info.pctThreshold === 0) {
-          const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
-          msgEl.textContent = "Master " + needed + " word" + (needed !== 1 ? "s" : "") + " to hatch!";
-        } else {
-          const needed = wordsNeeded(next.pct, info.weightedMastered, info.total);
-          msgEl.textContent = needed + " word" + (needed !== 1 ? "s" : "") + " until " + next.label + "!";
-        }
-
-        // Creature progress bar (if present)
-        const fillEl = document.getElementById("creatureProgressFill");
-        const labelEl = document.getElementById("creatureProgressLabel");
-        if (fillEl && labelEl) {
-          const pct = Math.min(100, info.pct);
-          fillEl.style.width = pct + "%";
-          const wLabel =
-            info.weightedMastered % 1 === 0
-              ? info.weightedMastered
-              : info.weightedMastered.toFixed(1);
-          labelEl.textContent = wLabel + " / " + info.total + " words";
-          fillEl.style.background = prof().gradient;
-        }
-
-        renderCreatureCollection(featured.id);
-      }
-
-      function renderCreatureCollection(featuredId) {
-        const row = document.getElementById("creatureCollectionRow");
-        row.innerHTML = "";
-        for (const t of THEMES) {
-          const info = getCreatureStage(t.id);
-          if (!info) continue;
-          const def = getCreatureDef(t.id);
-          const mini = document.createElement("div");
-          mini.className =
-            "creature-mini" +
-            (t.id === featuredId ? " creature-mini-active" : "");
-          mini.innerHTML =
-            '<div class="creature-mini-emoji">' +
-            info.emoji +
-            "</div>" +
-            '<div class="creature-mini-label">' +
-            (info.pctThreshold === 0 ? "???" : def.name) +
-            "</div>";
-          row.appendChild(mini);
-        }
-      }
-
-      function checkCreatureEvolution(themeId, pctBefore) {
-        const theme = THEMES_BY_ID[themeId];
-        if (!theme) return;
-        if (theme.words.length === 0) return;
-        const pctAfter = weightedPct(theme);
-        const def = getCreatureDef(themeId);
-        let stageBefore = def.stages[0];
-        let stageAfter = def.stages[0];
-        for (const s of def.stages) {
-          if (pctBefore >= s.pct) stageBefore = s;
-          if (pctAfter >= s.pct) stageAfter = s;
-        }
-        if (stageAfter.pct > stageBefore.pct) {
-          const isFirstHatch = stageBefore.pct === 0;
-          showCreatureEvolution(stageAfter, def.name, isFirstHatch);
-        }
-      }
-
-      function showCreatureEvolution(stage, creatureName, isFirstHatch) {
-        document.getElementById("evolveEmoji").textContent = stage.emoji;
-        if (isFirstHatch) {
-          document.getElementById("evolveTitle").textContent =
-            stage.label + "!";
-        } else {
-          document.getElementById("evolveTitle").textContent =
-            creatureName + " evolved!";
-        }
-        document.getElementById("evolveFlavor").textContent = stage.flavor;
-        const btn = document
-          .getElementById("evolveOverlay")
-          .querySelector(".evolve-btn");
-        btn.style.background = prof().color;
-        document.getElementById("evolveOverlay").classList.add("show");
-      }
-
       function dismissEvolve() {
         document.getElementById("evolveOverlay").classList.remove("show");
+        refreshHomeStats();
+      }
+
+      function showPhoenixEvolution(newStage) {
+        document.getElementById("evolveEmoji").textContent = newStage.emoji;
+        document.getElementById("evolveTitle").textContent = "Phoenix evolved!";
+        document.getElementById("evolveFlavor").textContent = newStage.flavor;
+        const btn = document.getElementById("evolveOverlay").querySelector(".evolve-btn");
+        btn.style.background = prof().color;
+        document.getElementById("evolveOverlay").classList.add("show");
+        setTimeout(() => spawnConfetti("evolveConfetti", 30, true), 300);
+      }
+
+      /* ============================================================
+   QUEST MODE
+   ============================================================ */
+
+      function collectQuestWords(count) {
+        const words = [];
+        const p = progress();
+        for (const t of THEMES) {
+          for (const w of t.words) {
+            const s = p.wordStatus[w.en];
+            if (s && statusStage(s) !== "new") {
+              words.push({ en: w.en, de: w.de, ex: w.ex, themeId: t.id });
+            }
+          }
+        }
+        // Shuffle
+        for (let i = words.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [words[i], words[j]] = [words[j], words[i]];
+        }
+        return words.slice(0, count);
+      }
+
+      function startEvolutionQuest() {
+        const p = progress();
+        const cur = p.phoenixStage || 1;
+        if (cur >= PHOENIX_STAGES.length) return;
+        const next = PHOENIX_STAGES[cur];
+        if (!next.quest) return;
+        const quest = PHOENIX_QUESTS[next.quest];
+        if (!quest) return;
+        state.questMode = "evolution";
+        state.questId = next.quest;
+        state.questWords = collectQuestWords(quest.count);
+        state.questIndex = 0;
+        state.questCorrect = 0;
+        state.questTotal = quest.count;
+        state.questThreshold = quest.threshold;
+        state.questChecked = false;
+        document.getElementById("questTitle").textContent = quest.title;
+        document.getElementById("questSub").textContent = quest.sub;
+        showScreen("questScreen");
+        renderQuestCard();
+      }
+
+      function startRebirthQuest() {
+        state.questMode = "rebirth";
+        state.questId = null;
+        state.questWords = collectQuestWords(REBIRTH_QUEST.count);
+        state.questIndex = 0;
+        state.questCorrect = 0;
+        state.questTotal = REBIRTH_QUEST.count;
+        state.questThreshold = REBIRTH_QUEST.threshold;
+        state.questChecked = false;
+        document.getElementById("questTitle").textContent = REBIRTH_QUEST.title;
+        document.getElementById("questSub").textContent = REBIRTH_QUEST.sub;
+        showScreen("questScreen");
+        renderQuestCard();
+      }
+
+      function renderQuestCard() {
+        if (state.questIndex >= state.questWords.length) {
+          finishQuest();
+          return;
+        }
+        const w = state.questWords[state.questIndex];
+        document.getElementById("questDe").textContent = w.de;
+        document.getElementById("questSkel").textContent = makeSkeleton(w.en);
+        const inp = document.getElementById("questInput");
+        inp.value = "";
+        inp.disabled = false;
+        inp.classList.remove("right", "wrong");
+        document.getElementById("questFeedback").textContent = "";
+        document.getElementById("questFeedback").className = "tp-feedback";
+        const btn = document.getElementById("questCheckBtn");
+        btn.textContent = "Check";
+        btn.disabled = true;
+        state.questChecked = false;
+        updateQuestCounter();
+        const pct = (state.questIndex / state.questTotal) * 100;
+        document.getElementById("questProgress").style.width = pct + "%";
+        setTimeout(() => inp.focus(), 50);
+      }
+
+      function updateQuestCounter() {
+        const mistakes = state.questIndex - state.questCorrect;
+        document.getElementById("questCounter").innerHTML =
+          '<span class="qc-correct">✓ ' + state.questCorrect + ' correct</span>' +
+          '<span class="qc-wrong">✗ ' + mistakes + ' mistake' + (mistakes !== 1 ? 's' : '') + '</span>';
+      }
+
+      function checkQuestAnswer() {
+        if (state.questChecked) {
+          advanceQuest();
+          return;
+        }
+        const w = state.questWords[state.questIndex];
+        if (!w) return;
+        const inp = document.getElementById("questInput");
+        if (!inp.value.trim()) return;
+        const guess = normaliseAnswer(inp.value);
+        const truth = normaliseAnswer(w.en);
+        const fb = document.getElementById("questFeedback");
+
+        if (guess === truth) {
+          state.questCorrect++;
+          inp.classList.remove("wrong");
+          inp.classList.add("right");
+          fb.className = "tp-feedback right";
+          fb.innerHTML = "✓ Correct!";
+          spawnConfetti("questConfetti", 8);
+        } else {
+          inp.classList.remove("right");
+          inp.classList.add("wrong");
+          fb.className = "tp-feedback wrong";
+          fb.innerHTML = 'Answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
+        }
+        state.questChecked = true;
+        updateQuestCounter();
+        const btn = document.getElementById("questCheckBtn");
+        btn.textContent = "Next";
+        btn.disabled = false;
+      }
+
+      function advanceQuest() {
+        state.questIndex++;
+        renderQuestCard();
+      }
+
+      function finishQuest() {
+        const passed = state.questCorrect >= state.questThreshold;
+        const resultEmoji = document.getElementById("questResultEmoji");
+        const resultTitle = document.getElementById("questResultTitle");
+        const resultSub = document.getElementById("questResultSub");
+        const resultBtn = document.getElementById("questResultBtn");
+
+        if (passed) {
+          if (state.questMode === "rebirth") {
+            const p = progress();
+            p.rebirthPending = false;
+            p.streak = 1;
+            p.lastVisit = new Date().toISOString().slice(0, 10);
+            saveProgress(state.profile, p);
+            _progressCache = null;
+            resultEmoji.textContent = "🔥";
+            resultTitle.textContent = "Risen from the ashes!";
+            resultSub.textContent = "The flame burns again. Welcome back!";
+            resultBtn.textContent = "Continue";
+            resultBtn.onclick = exitQuest;
+          } else {
+            // Evolution quest passed — mark quest complete
+            const p = progress();
+            if (state.questId && !(p.completedQuests || []).includes(state.questId)) {
+              p.completedQuests = p.completedQuests || [];
+              p.completedQuests.push(state.questId);
+              saveProgress(state.profile, p);
+              _progressCache = null;
+            }
+            // Try to evolve
+            const evolved = checkPhoenixEvolution(progress());
+            if (evolved) {
+              resultEmoji.textContent = evolved.emoji;
+              resultTitle.textContent = "The flame awakens!";
+              resultSub.textContent = evolved.name + " — " + evolved.flavor;
+            } else {
+              resultEmoji.textContent = "✓";
+              resultTitle.textContent = "Quest Complete!";
+              resultSub.textContent = "Well done! Your phoenix grows stronger.";
+            }
+            resultBtn.textContent = "Awesome!";
+            resultBtn.onclick = exitQuest;
+          }
+          showScreen("questResultScreen");
+          setTimeout(() => spawnConfetti("questResultConfetti", 24, true), 200);
+        } else {
+          resultEmoji.textContent = "💪";
+          resultTitle.textContent = "Not quite yet...";
+          resultSub.textContent = "You got " + state.questCorrect + " of " + state.questThreshold + " needed. Practice more and try again!";
+          resultBtn.textContent = "Practice more";
+          resultBtn.onclick = exitQuest;
+          showScreen("questResultScreen");
+        }
+      }
+
+      function exitQuest() {
+        state.questMode = null;
+        state.questId = null;
+        state.questWords = [];
+        state.questIndex = 0;
+        state.questCorrect = 0;
+        state.questChecked = false;
+        showScreen("homeScreen");
+        refreshHomeStats();
       }
 
       function refreshWelcomeCreatures() {
@@ -4244,26 +4569,161 @@
           const saved = state.profile;
           state.profile = id;
           _progressCache = null;
-          for (const t of THEMES) {
-            const info = getCreatureStage(t.id);
-            if (!info) continue;
-            const span = document.createElement("span");
-            span.className = "creature-welcome-mini";
-            span.textContent = info.emoji;
-            container.appendChild(span);
-          }
+          const pr = progress();
+          const stage = getPhoenixStage(pr);
+          const span = document.createElement("span");
+          span.className = "creature-welcome-mini";
+          span.textContent = stage.emoji;
+          container.appendChild(span);
           state.profile = saved;
           _progressCache = null;
         }
       }
 
+      function refreshPhoenix() {
+        const p = progress();
+        const stage = getPhoenixStage(p);
+        const pState = getPhoenixState(p);
+        const streak = p.streak || 0;
+
+        // Hero subtitle
+        const heroName = document.getElementById("heroCreatureName");
+        if (heroName) heroName.textContent = stage.name;
+
+        // Phoenix image state
+        const phoenixImg = document.querySelector(".hero-phoenix");
+        if (phoenixImg) {
+          phoenixImg.classList.remove("phoenix-active", "phoenix-cooling", "phoenix-dormant", "phoenix-ash");
+          phoenixImg.classList.add("phoenix-" + pState);
+        }
+
+        // Streak glow
+        const homeScreen = document.getElementById("homeScreen");
+        if (homeScreen) {
+          if (streak >= 3) homeScreen.classList.add("streak-glow");
+          else homeScreen.classList.remove("streak-glow");
+        }
+
+        // Level card — evolution requirements
+        const evoTextEl = document.getElementById("levelEvoText");
+        const evoNameEl = document.getElementById("levelEvoName");
+        const levelFill = document.getElementById("levelFill");
+        const levelXP = document.getElementById("levelXP");
+        const li = getLevel(p.xp);
+
+        const evo = getNextEvolutionRequirements(p);
+        if (evoTextEl && evoNameEl) {
+          if (!evo) {
+            evoTextEl.innerHTML = stage.flavor;
+            evoNameEl.textContent = stage.name;
+          } else {
+            evoTextEl.innerHTML = "Next evolution:";
+            evoNameEl.textContent = evo.nextStage.name;
+          }
+        }
+        if (levelFill) levelFill.style.width = li.pct + "%";
+        if (levelXP) levelXP.textContent = li.xpCurrent + " / " + li.xpNext + " XP";
+
+        // Rebirth banner
+        const rebirthBanner = document.getElementById("rebirthBanner");
+        if (rebirthBanner) {
+          rebirthBanner.style.display = p.rebirthPending ? "" : "none";
+        }
+
+        // Quest CTA
+        const questCTA = document.getElementById("questCTA");
+        if (questCTA) {
+          const unlocked = isEvolutionQuestUnlocked(p);
+          questCTA.style.display = unlocked ? "" : "none";
+          if (unlocked) {
+            const cur = p.phoenixStage || 1;
+            const next = PHOENIX_STAGES[cur];
+            const qDef = next && next.quest ? PHOENIX_QUESTS[next.quest] : null;
+            const ctaBtn = questCTA.querySelector(".quest-cta-btn");
+            if (ctaBtn && qDef) ctaBtn.textContent = "🔥 " + qDef.title;
+          }
+        }
+
+        // Phoenix Status card
+        const psStage = document.getElementById("psStage");
+        const psStageHint = document.getElementById("psStageHint");
+        const psStreak = document.getElementById("psStreak");
+        const psStreakHint = document.getElementById("psStreakHint");
+        const psGoal = document.getElementById("psGoal");
+        const psGoalHint = document.getElementById("psGoalHint");
+        const psGoalIcon = document.getElementById("psGoalIcon");
+
+        if (psStage) {
+          psStage.textContent = stage.emoji + " " + stage.name;
+          const stateLabels = { active: "Burning bright", cooling: "Flame cooling...", dormant: "Sleeping...", ash: "Needs rebirth" };
+          psStageHint.textContent = stateLabels[pState] || "Current form";
+        }
+
+        if (psStreak) {
+          if (streak === 0) {
+            psStreak.textContent = "Start your streak";
+            psStreakHint.textContent = "Practice today!";
+          } else if (streak === 1) {
+            psStreak.textContent = "1 day";
+            psStreakHint.textContent = "Come back tomorrow!";
+          } else {
+            psStreak.textContent = streak + " days";
+            psStreakHint.textContent = streak >= 7 ? "On fire!" : "Keep it going!";
+          }
+        }
+
+        if (psGoal) {
+          const evo = getNextEvolutionRequirements(p);
+          if (p.rebirthPending) {
+            psGoalIcon.textContent = "🪶";
+            psGoal.textContent = "Rebirth ready";
+            psGoalHint.textContent = "Complete the quest!";
+          } else if (!evo) {
+            psGoalIcon.textContent = "🌟";
+            psGoal.textContent = "Max stage!";
+            psGoalHint.textContent = "Legendary Phoenix";
+          } else if (isEvolutionQuestUnlocked(p)) {
+            psGoalIcon.textContent = "🔥";
+            psGoal.textContent = "Quest ready!";
+            psGoalHint.textContent = "Evolve to " + evo.nextStage.name;
+          } else {
+            const unmet = evo.requirements.find(function(r) { return !r.met; });
+            psGoalIcon.textContent = "🎯";
+            psGoal.textContent = "Evolve at Lv. " + evo.nextStage.level;
+            psGoalHint.textContent = unmet ? unmet.label : "Almost there!";
+          }
+        }
+      }
+
+      function renderPhoenixChecklist() {
+        const row = document.getElementById("creatureCollectionRow");
+        if (!row) return;
+        row.innerHTML = "";
+        const p = progress();
+        const curStage = p.phoenixStage || 1;
+        for (const s of PHOENIX_STAGES) {
+          const mini = document.createElement("div");
+          mini.className = "creature-mini" + (s.stage === curStage ? " creature-mini-active" : "");
+          const isDone = s.stage < curStage;
+          const isCurrent = s.stage === curStage;
+          const emoji = isDone || isCurrent ? s.emoji : "❓";
+          const label = isDone ? "✓" : isCurrent ? s.name : "???";
+          mini.innerHTML =
+            '<div class="creature-mini-emoji">' + emoji + '</div>' +
+            '<div class="creature-mini-label">' + label + '</div>';
+          row.appendChild(mini);
+        }
+      }
+
       function stageLabel(s) {
         const stage = statusStage(s);
-        if (stage === "new") return "new";
-        if (stage === "red") return "mistake";
-        if (stage === "mastered") return "mastered";
+        if (stage === "new") return "🌱 New word";
+        if (stage === "red") return "❌ Repeat";
+        if (stage === "mastered") return "🌳 Mastered!";
         const threshold = masteryThreshold(s.difficulty || 0);
-        return (s.streak || 0) + " of " + threshold;
+        const streak = s.streak || 0;
+        const emoji = stage === "s2" ? "🌿" : "🌱";
+        return emoji + " " + streak + " of " + threshold + " correct";
       }
 
       function dotsHTML(stage, status) {
@@ -4322,11 +4782,11 @@
         const p = progress();
         const today = new Date().toISOString().slice(0, 10);
         if (p.lastVisit === today) return p;
-        // simple: any visit on a new day increments streak (gap-tolerant could come later)
         const yesterday = new Date(Date.now() - 86400000)
           .toISOString()
           .slice(0, 10);
         p.streak = p.lastVisit === yesterday ? p.streak + 1 : 1;
+        p.bestStreak = Math.max(p.bestStreak || 0, p.streak);
         p.lastVisit = today;
         saveProgress(state.profile, p);
         return p;
@@ -4419,26 +4879,8 @@
         el.classList.remove("visible", "level2", "level3");
       }
 
-      function reactCreature(isCorrect) {
-        const emojiEl = document.getElementById("tpCreatureEmoji");
-        if (!emojiEl) return;
-        const miniEl = document.getElementById("tpCreatureMini");
-        emojiEl.classList.remove("creature-bounce", "creature-shake");
-        void emojiEl.offsetWidth;
-        if (isCorrect) {
-          emojiEl.classList.add("creature-bounce");
-          if (state.answerStreak >= 3 && miniEl) {
-            const thoughts = ["Yay!", "Wow!", "Go go!", "Yes!", "Super!"];
-            const bubble = document.createElement("div");
-            bubble.className = "creature-thought";
-            bubble.textContent =
-              thoughts[Math.floor(Math.random() * thoughts.length)];
-            miniEl.appendChild(bubble);
-            setTimeout(() => bubble.remove(), 1600);
-          }
-        } else {
-          emojiEl.classList.add("creature-shake");
-        }
+      function reactPhoenix(isCorrect) {
+        // No-op: creature mini removed from card
       }
 
       function showXP(containerId, points, type) {
@@ -4585,6 +5027,16 @@
         _progressCache = null;
         _subjectsCache = null;
         document.body.dataset.profile = id;
+        // Detect ash state BEFORE updateStreak resets lastVisit
+        const pre = progress();
+        if (pre.lastVisit) {
+          const missed = Math.floor((Date.now() - new Date(pre.lastVisit + 'T00:00:00').getTime()) / 86400000);
+          if (missed >= 4 && !pre.rebirthPending) {
+            pre.rebirthPending = true;
+            saveProgress(id, pre);
+            _progressCache = null;
+          }
+        }
         const p = updateStreak();
         document.getElementById("profilePill").style.display = "inline-flex";
         document.getElementById("profilePill").dataset.profile = id;
@@ -4614,23 +5066,77 @@
    ============================================================ */
 
       function refreshHomeStats() {
+        updateLevelBar();
+        refreshPhoenix();
+        refreshQuestRows();
+      }
+
+      function generateWorldStatus(worldId) {
         const p = progress();
         const ws = p.wordStatus || {};
-        let mastered = 0,
-          redCount = 0;
-        for (const en in ws) {
-          const stage = statusStage(ws[en]);
-          if (stage === "mastered") mastered++;
-          if (stage === "red") redCount++;
+        if (worldId === "english") {
+          let total = 0, masteredW = 0, redW = 0, newW = 0;
+          for (const t of THEMES) {
+            for (const w of t.words) {
+              total++;
+              const stage = statusStage(ws[w.en] || null);
+              if (stage === "mastered") masteredW++;
+              else if (stage === "red") redW++;
+              else if (stage === "new") newW++;
+            }
+          }
+          const due = redW;
+          const dot = due > 0 ? "dot-red" : (newW > total * 0.5 ? "dot-warn" : "dot-good");
+          const status = due > 0 ? due + " words to review" : (masteredW + "/" + total + " mastered");
+          const worldMeta = masteredW + " mastered · " + (p.streak || 0) + " day streak";
+          return { dot, status, worldMeta };
         }
-        document.getElementById("statKnown").textContent = mastered;
-        document.getElementById("statSpell").textContent = redCount;
-        const streak = p.streak || 0;
-        document.getElementById("statStreak").textContent = streak;
-        document.getElementById("streakFlames").textContent = '🔥'.repeat(Math.min(streak, 7));
-        document.getElementById("statXP").textContent = p.xp || 0;
-        updateLevelBar();
-        refreshCreatures();
+        if (worldId === "sail") {
+          const c = sailStatusCounts();
+          const total = c.mastered + c.s2 + c.s1 + c.red + c.new;
+          const due = c.red;
+          const dot = due > 0 ? "dot-red" : (c.new > 0 ? "dot-warn" : "dot-good");
+          const status = c.new > 0 ? c.new + " new questions ready" : (c.mastered + "/" + total + " mastered");
+          const worldMeta = c.mastered + "/" + total + " mastered";
+          return { dot, status, worldMeta };
+        }
+        if (worldId === "math") {
+          const sub = typeof SUBJECTS_BY_ID !== "undefined" && SUBJECTS_BY_ID["math"];
+          if (!sub || !sub.topics.length) return { dot: "dot-muted", status: "Explore", worldMeta: "Explore topics" };
+          let totalEx = 0, masteredEx = 0;
+          for (const t of sub.topics) {
+            const tp = topicProgress(t);
+            totalEx += tp.total;
+            masteredEx += tp.mastered;
+          }
+          const dot = masteredEx === 0 ? "dot-muted" : (masteredEx < totalEx ? "dot-warn" : "dot-good");
+          const status = masteredEx > 0 ? masteredEx + "/" + totalEx + " mastered" : "Explore";
+          const worldMeta = sub.topics.length + " topics · " + masteredEx + "/" + totalEx + " mastered";
+          return { dot, status, worldMeta };
+        }
+        return { dot: "dot-muted", status: "Coming soon", worldMeta: "Coming soon" };
+      }
+
+      function refreshQuestRows() {
+        for (const id of ["english", "sail", "math", "deutsch"]) {
+          const s = generateWorldStatus(id);
+          const dotEl = document.getElementById("qdot-" + id);
+          const statusEl = document.getElementById("qstatus-" + id);
+          const metaEl = document.getElementById("worldmeta-" + id);
+          if (dotEl) dotEl.className = "quest-dot " + s.dot;
+          if (statusEl) statusEl.textContent = s.status;
+          if (metaEl) metaEl.textContent = s.worldMeta;
+        }
+      }
+
+      function openEnglishWorld() {
+        showScreen("englishWorldScreen");
+      }
+
+      function openMathWorld() {
+        state.subjectId = "math";
+        renderSubjectTopics();
+        showScreen("subjectHomeScreen");
       }
 
       function refreshWelcomeMeta() {
@@ -4838,32 +5344,12 @@
         document.getElementById("tpDontKnowBtn").disabled = false;
         state.cardPhase = "input";
         updateSchoolUI();
-        updateMiniCreature();
+        updateMiniPhoenix();
         setTimeout(() => inp.focus(), 50);
       }
 
-      function updateMiniCreature() {
-        const themeId = state.schoolTopic;
-        if (!themeId) return;
-        const info = getCreatureStage(themeId);
-        if (!info) return;
-        document.getElementById("tpCreatureEmoji").textContent = info.emoji;
-        const next = getNextCreatureStage(themeId);
-        const hintEl = document.getElementById("tpCreatureHint");
-        if (!next) {
-          hintEl.textContent = ""; // max stage
-        } else {
-          const needed = wordsNeeded(
-            next.pct,
-            info.weightedMastered,
-            info.total,
-          );
-          if (info.pctThreshold === 0) {
-            hintEl.textContent = needed + " to hatch!";
-          } else {
-            hintEl.textContent = needed + " to evolve!";
-          }
-        }
+      function updateMiniPhoenix() {
+        // No-op: creature mini removed from card
       }
 
       function checkSchoolAnswer() {
@@ -4889,9 +5375,6 @@
         state.sessionAnswered++;
         saveSchoolSession();
 
-        const theme = THEMES_BY_ID[w.themeId];
-        const pctBefore = theme ? weightedPct(theme) : 0;
-
         if (guess === truth) {
           state.answerStreak++;
           inp.classList.remove("wrong");
@@ -4912,15 +5395,17 @@
             flash.className = "mastery-flash";
             card.appendChild(flash);
             setTimeout(() => flash.remove(), 900);
+            // Check phoenix evolution on mastery
+            const evolved = checkPhoenixEvolution(progress());
+            if (evolved) showPhoenixEvolution(evolved);
           } else {
             fb.innerHTML = "✓ Right! " + STAGE_EMOJI[stage];
             spawnConfetti("tpConfetti", 8 + state.answerStreak * 2);
             showXP("tpCard", 10);
             addXP(10);
           }
-          reactCreature(true);
+          reactPhoenix(true);
           updateStreakDisplay("tpStreak");
-          checkCreatureEvolution(w.themeId, pctBefore);
           document.getElementById("tpDots").innerHTML = dotsHTML(stage, sAfter);
           const pill = document.getElementById("tpPill");
           pill.className = "stage-pill " + stage;
@@ -4934,7 +5419,7 @@
             escapeHtml(w.en) +
             "</span>";
           showStreakLost("tpStreak");
-          reactCreature(false);
+          reactPhoenix(false);
           const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
           document.getElementById("tpDots").innerHTML = dotsHTML("red", sAfter);
           const pill = document.getElementById("tpPill");
@@ -4947,7 +5432,7 @@
         checkBtn.textContent = "Next";
         checkBtn.disabled = false;
         updateSchoolUI();
-        updateMiniCreature();
+        updateMiniPhoenix();
         refreshHomeStats();
       }
 
@@ -4961,7 +5446,7 @@
         saveSchoolSession();
 
         showStreakLost("tpStreak");
-        reactCreature(false);
+        reactPhoenix(false);
         const sAfter = bumpWrong(w.en, w.themeId, state.schoolStep);
         document.getElementById("tpDots").innerHTML = dotsHTML("red", sAfter);
         const pill = document.getElementById("tpPill");
@@ -4988,7 +5473,7 @@
         checkBtn.disabled = true;
         state.cardPhase = "dontKnow";
         updateSchoolUI();
-        updateMiniCreature();
+        updateMiniPhoenix();
         refreshHomeStats();
       }
 
@@ -5024,15 +5509,11 @@
 
       function showSummary(theme, opts) {
         const c = themeStatusCounts(theme);
-        // Summary creature
+        // Summary phoenix
         const creatureEl = document.getElementById("summaryCreature");
-        const info = getCreatureStage(theme.id);
-        if (info) {
-          creatureEl.textContent = info.emoji;
-          creatureEl.style.display = "";
-        } else {
-          creatureEl.style.display = "none";
-        }
+        const phoenixStg = getPhoenixStage(progress());
+        creatureEl.textContent = phoenixStg.emoji;
+        creatureEl.style.display = "";
         creatureEl.classList.remove("dancing");
         document.getElementById("sumTitle").textContent = opts.title;
         document.getElementById("sumSub").textContent = opts.sub;
@@ -5273,6 +5754,13 @@
         card.classList.toggle("tricky-flag", !!w.tricky);
         document.getElementById("spDe").textContent = w.de;
         document.getElementById("spSkel").textContent = makeSkeleton(w.en);
+        // Word status pill
+        const s = getStatus(w.en);
+        const stage = statusStage(s);
+        document.getElementById("spDots").innerHTML = dotsHTML(stage, s);
+        const spPill = document.getElementById("spPill");
+        spPill.className = "stage-pill " + stage;
+        spPill.textContent = stageLabel(s);
         const inp = document.getElementById("spInput");
         inp.value = "";
         inp.disabled = false;
@@ -5294,6 +5782,27 @@
         return (s || "").trim().toLowerCase().replace(/\s+/g, " ");
       }
 
+      function levenshtein(a, b) {
+        if (a === b) return 0;
+        const m = a.length, n = b.length;
+        const d = Array.from({length: m + 1}, (_, i) => i);
+        for (let j = 1; j <= n; j++) {
+          let prev = d[0]; d[0] = j;
+          for (let i = 1; i <= m; i++) {
+            const tmp = d[i];
+            d[i] = a[i-1] === b[j-1] ? prev : 1 + Math.min(prev, d[i], d[i-1]);
+            prev = tmp;
+          }
+        }
+        return d[m];
+      }
+
+      function fuzzyMatch(guess, target) {
+        if (guess === target) return true;
+        const maxDist = target.length <= 4 ? 1 : 2;
+        return levenshtein(guess, target) <= maxDist;
+      }
+
       function checkSpelling() {
         if (state.spellingChecked) {
           nextSpelling();
@@ -5309,9 +5818,6 @@
         const fb = document.getElementById("spFeedback");
         const ex = document.getElementById("spEx");
 
-        const theme = THEMES_BY_ID[w.themeId];
-        const pctBefore = theme ? weightedPct(theme) : 0;
-
         if (guess === truth) {
           state.answerStreak++;
           inp.classList.remove("wrong");
@@ -5325,6 +5831,8 @@
             spawnConfetti("spConfetti", 16, true);
             showXP("spCard", 25, "gold");
             addXP(25);
+            const evolved = checkPhoenixEvolution(progress());
+            if (evolved) showPhoenixEvolution(evolved);
           } else {
             fb.innerHTML = "✓ Right! " + (stage === "s2" ? "🌿" : "🌱");
             spawnConfetti("spConfetti", 8 + state.answerStreak * 2);
@@ -5332,7 +5840,11 @@
             addXP(10);
           }
           updateStreakDisplay("spStreak");
-          checkCreatureEvolution(w.themeId, pctBefore);
+          // Update pill
+          const spPill = document.getElementById("spPill");
+          spPill.className = "stage-pill " + stage;
+          spPill.textContent = stageLabel(sAfter);
+          document.getElementById("spDots").innerHTML = dotsHTML(stage, sAfter);
         } else {
           inp.classList.remove("right");
           inp.classList.add("wrong");
@@ -5342,7 +5854,12 @@
             escapeHtml(w.en) +
             "</span>";
           showStreakLost("spStreak");
-          bumpWrong(w.en, w.themeId);
+          const sAfterWrong = bumpWrong(w.en, w.themeId);
+          // Update pill
+          const spPill = document.getElementById("spPill");
+          spPill.className = "stage-pill red";
+          spPill.textContent = stageLabel(sAfterWrong);
+          document.getElementById("spDots").innerHTML = dotsHTML("red", sAfterWrong);
         }
         if (w.ex) ex.textContent = "«" + w.ex + "»";
         state.spellingChecked = true;
@@ -5394,6 +5911,20 @@
           document.getElementById("spCheckBtn").disabled = !document
             .getElementById("spInput")
             .value.trim();
+        }
+      });
+
+      /* Quest Enter key + input enable */
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter") return;
+        if (!document.getElementById("questScreen").classList.contains("active")) return;
+        e.preventDefault();
+        if (state.questChecked) advanceQuest();
+        else if (document.getElementById("questInput").value.trim()) checkQuestAnswer();
+      });
+      document.getElementById("questInput").addEventListener("input", () => {
+        if (!state.questChecked) {
+          document.getElementById("questCheckBtn").disabled = !document.getElementById("questInput").value.trim();
         }
       });
 
@@ -5771,7 +6302,7 @@
         const labelW = w + " cm";
         const labelH = h + " cm";
         return `<svg viewBox="0 0 ${boxW} ${boxH}" xmlns="http://www.w3.org/2000/svg" style="width:260px;max-width:100%">
-    <rect x="${x}" y="${y}" width="${dw}" height="${dh}" fill="#1c2a4a" stroke="#4a8af4" stroke-width="2" rx="2"/>
+    <rect x="${x}" y="${y}" width="${dw}" height="${dh}" fill="#1c2a4a" stroke="#f06810" stroke-width="2" rx="2"/>
     <text x="${x + dw / 2}" y="${y - 8}" text-anchor="middle" font-size="13" fill="#8b90a5" font-family="Nunito, sans-serif" font-weight="600">${labelW}</text>
     ${!isSquare ? `<text x="${x + dw + 10}" y="${y + dh / 2 + 4}" text-anchor="start" font-size="13" fill="#8b90a5" font-family="Nunito, sans-serif" font-weight="600">${labelH}</text>` : ""}
   </svg>`;
@@ -6212,6 +6743,573 @@
             btn.textContent = "Sign in →";
           }
         });
+
+      /* ============================================================
+   SEGELSCHEIN — Jugendsegelschein Prüfungsfragen
+   ============================================================ */
+
+      const SAILING_QUESTIONS = [
+        {id:1, q:"Wo ist Steuerbord?", a:"Mit Blick zum Bug rechts im Boot", accept:["rechts","rechts im boot","mit blick zum bug rechts"], category:"spatial", ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["rechts","bug"]},
+        {id:2, q:"Welchen Begriff haben die Segler für rechts?", a:"Steuerbord", accept:["steuerbord"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["steuerbord"]},
+        {id:3, q:"Welchen Begriff haben die Segler für links?", a:"Backbord", accept:["backbord"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["backbord"]},
+        {id:4, q:"Welche Farbe hat die Backbordseite?", a:"Rot", accept:["rot"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["rot"]},
+        {id:5, q:"Welche Farbe steht für Steuerbord?", a:"Grün", accept:["grün","gruen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["grün"]},
+        {id:6, q:"Wie nennt man die Vorderseite des Bootes?", a:"Bug", accept:["bug"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["bug"]},
+        {id:7, q:"Wie nennt man die Rückseite am Boot?", a:"Heck", accept:["heck"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["heck"]},
+        {id:8, q:"Hinten im Schiff heißt ...", a:"Achtern", accept:["achtern"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["achtern"]},
+        {id:9, q:"In der Seemannssprache sagt man für das Boot aufbauen was?", a:"Aufriggen / Auftakeln", accept:["aufriggen","auftakeln"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["aufrigg","auftak"]},
+        {id:10, q:"Dein Boot musst du auf dem Slipwagen ins Wasser ...", a:"Slippen", accept:["slippen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["slipp"]},
+        {id:11, q:"Was rufst du, wenn du nicht ausweichen musst?", a:"RAUM!", accept:["raum"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["raum"]},
+        {id:12, q:"Dein Boot kannst du mit einem ... zum Wasser fahren.", a:"Slipwagen", accept:["slipwagen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["slipwagen"]},
+        {id:13, q:"Wo wird das Schwert reingesteckt?", a:"Schwertkasten", accept:["schwertkasten"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["schwertkasten"]},
+        {id:14, q:"Wie heißt die senkrechte Stange?", a:"Mast", accept:["mast"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["mast"]},
+        {id:15, q:"Wie heißt die waagerechte Stange am Mast?", a:"Baum", accept:["baum"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["baum"]},
+        {id:16, q:"Wie heißt die Stange, welche die oberste Ecke des Opti-Segels hochhält?", a:"Spriet", accept:["spriet"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["spriet"]},
+        {id:17, q:"Womit stellst du die Spriet ein?", a:"Spriettalje", accept:["spriettalje"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["spriettalje"]},
+        {id:18, q:"Welches Teil brauchst du zum Lenken?", a:"Ruder / Ruderanlage", accept:["ruder","ruderanlage"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["ruder"]},
+        {id:19, q:"Wie lang ist dein Boot? (Opti; RS Feva)", a:"Opti: 2,3 m / RS Feva: 3,64 m", accept:["2,3","2,3 m","3,64","3,64 m","2,3 m / 3,64 m"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["2,3"]},
+        {id:20, q:"Worin steht der Mast?", a:"Mastbank", accept:["mastbank"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["mastbank"]},
+        {id:21, q:"Welches Gummi wird oberhalb der Mastbank am Mast eingehakt?", a:"Mastsicherung", accept:["mastsicherung"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["mastsicherung"]},
+        {id:22, q:"Damit kannst du dein Boot wieder leer schöpfen.", a:"Pütz", accept:["pütz","puetz"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["pütz"]},
+        {id:23, q:"Wie heißen die Kanten des Segels?", a:"Lieken", accept:["lieken"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["lieken"]},
+        {id:24, q:"Die untere Kante des Segels heißt ...", a:"Unterliek", accept:["unterliek"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["unterliek"]},
+        {id:25, q:"Die hintere Kante des Segels heißt ...", a:"Achterliek", accept:["achterliek"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["achterliek"]},
+        {id:26, q:"Wenn zwei Boote mit dem Segel auf der gleichen Seite segeln, dann heißt die Ausweichregel: ...", a:"Lee vor Luv", accept:["lee vor luv"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["lee","luv"]},
+        {id:27, q:"Ein Boot decke ich mit einer ... ab.", a:"Persenning", accept:["persenning"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["persenning"]},
+        {id:28, q:"Wie heißen die Ösen im Segel?", a:"Kauschen", accept:["kauschen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["kauschen"]},
+        {id:29, q:"Was bedeuten die Buchstaben im Segel? z. B. GER", a:"Länderkennzeichen", accept:["länderkennzeichen","laenderkennzeichen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["länderkennzeichen","land"]},
+        {id:30, q:"Wie heißen die Rollen, durch die die Schot läuft?", a:"Blöcke", accept:["blöcke","bloecke","block"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["blöcke","block"]},
+        {id:31, q:"Welche Leine verhindert, dass der Baum auf raumen Kursen aufsteigt?", a:"Baumniederholer", accept:["baumniederholer"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["baumniederholer"]},
+        {id:32, q:"Den Mast stecke ich in die ...", a:"Mastducht", accept:["mastducht"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["mastducht"]},
+        {id:33, q:"Warum brauchen Segelboote ein Schwert?", a:"Um seitliches Abtreiben zu verhindern", accept:["seitliches abtreiben verhindern","um seitliches abtreiben zu verhindern","gegen abtreiben"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["seitlich","abtreib"]},
+        {id:34, q:"Eine Leine in gleich große Schlaufen legen heißt ...", a:"Aufschießen", accept:["aufschießen","aufschiessen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["aufschieß","aufschies"]},
+        {id:35, q:"Wie groß ist die Segelfläche deines Bootes (Opti; RS Feva)?", a:"Opti: 3,5 m² / RS Feva XL Rigg: 6,5 m²", accept:["3,5","3,5 m","6,5","6,5 m"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["3,5"]},
+        {id:36, q:"Was hat der Opti für eine Takelung?", a:"Spriettakelung", accept:["spriettakelung"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["spriettakelung"]},
+        {id:37, q:"Wozu gibt es Segellatten?", a:"Um die Form des Segels zu verbessern", accept:["form des segels verbessern","segelform verbessern","um die form des segels zu verbessern"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["form","segel","verbess"]},
+        {id:38, q:"Damit kann dich dein Trainer ziehen.", a:"Schleppleine", accept:["schleppleine"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["schleppleine"]},
+        {id:39, q:"Wo ist die Backbordseite des Bootes?", a:"Links mit Blick zum Bug", accept:["links","links mit blick zum bug"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["links","bug"]},
+        {id:40, q:"Wo kannst du deine Füße runterstellen, um dich rauszuhängen?", a:"Ausreitgurte", accept:["ausreitgurte","ausreitgurt"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["ausreitgurt"]},
+        {id:41, q:"Was kommt auf das Ende der Großschot?", a:"Achtknoten", accept:["achtknoten","achterknoten"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["achtknoten","achterknoten"]},
+        {id:42, q:"Mit welchem Knoten verbinde ich zwei gleich dicke Tampen?", a:"Kreuzknoten", accept:["kreuzknoten"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["kreuzknoten"]},
+        {id:43, q:"Welcher Knoten bildet eine Schlaufe, welche sich nicht zuzieht?", a:"Palstek", accept:["palstek"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["palstek"]},
+        {id:44, q:"Mit welchem Knoten verbinde ich zwei verschieden dicke Tampen?", a:"Schotstek", accept:["schotstek"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["schotstek"]},
+        {id:45, q:"Mit welchem Knoten kann ich an einem Ring festmachen?", a:"Rundtörn mit zwei halben Schlägen", accept:["rundtörn mit zwei halben schlägen","rundtörn","rundtoern"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["rundtörn","rundtoern"]},
+        {id:46, q:"Eine Leine auf einer Klampe festmachen heißt ...", a:"Klampe belegen", accept:["klampe belegen","belegen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["klampe","beleg"]},
+        {id:47, q:"Wenn ich anlege, dann muss ich die Schot ...", a:"lösen", accept:["lösen","loesen","loslassen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["lösen","loes","loslass"]},
+        {id:48, q:"Wie heißt die Seite, von der der Wind kommt?", a:"Luv", accept:["luv"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["luv"]},
+        {id:49, q:"Wie heißt die Seite, wo der Wind hinweht?", a:"Lee", accept:["lee"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["lee"]},
+        {id:50, q:"Welches Teil zeigt an, woher der Wind weht?", a:"Verklicker", accept:["verklicker"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["verklicker"]},
+        {id:51, q:"Wenn ich an der Schot ziehe, dann heißt das ...", a:"dichtholen", accept:["dichtholen","dicht holen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["dichthol","dicht hol"]},
+        {id:52, q:"Wie heißt das Gegenteil von dichtholen?", a:"auffieren", accept:["auffieren","fieren"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["fier"]},
+        {id:53, q:"Der Wind kommt von vorn, du liegst ...", a:"im Wind", accept:["im wind"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["im wind"]},
+        {id:54, q:"Kommt der Wind von hinten, dann segelst du ...", a:"vor dem Wind", accept:["vor dem wind","vorwindkurs","mit achterlichem wind"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["vor dem wind"]},
+        {id:55, q:"Wenn der Wind schräg von vorn kommt, dann ...", a:"segle ich am Wind", accept:["am wind","segle ich am wind"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["am wind"]},
+        {id:56, q:"Wie nennt man Zickzack-Segeln zu einem Ziel in Luv?", a:"Kreuzen", accept:["kreuzen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["kreuz"]},
+        {id:57, q:"Wozu dient der Achterknoten?", a:"Er verhindert das Ausrauschen einer Leine/Schot aus einem Block oder einer Klemme", accept:["verhindert ausrauschen","ausrauschen verhindern","dass die schot durchrutscht"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["ausrausch","durchrutsch","verhinder"]},
+        {id:58, q:"Darfst du mit dem Jugendsegelschein alleine und überall segeln?", a:"Nein, nur unter fachkundiger Aufsicht und in einem festgelegtem Gebiet", accept:["nein","nein nur unter aufsicht","unter fachkundiger aufsicht"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["nein","aufsicht"]},
+        {id:59, q:"Wenn ich die Pinne zu mir ranziehe, dann mache ich was?", a:"Abfallen", accept:["abfallen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["abfall"]},
+        {id:60, q:"Wenn ich die Pinne von mir wegdrücke, dann mache ich was?", a:"Anluven", accept:["anluven"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["anluv"]},
+        {id:61, q:"Das Schiff schnell in den Wind stellen heißt ...", a:"Aufschießen", accept:["aufschießen","aufschiessen"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["aufschieß","aufschies"]},
+        {id:62, q:"Segelst du mit halbem Wind, dann kommt der Wind ...", a:"genau von der Seite", accept:["von der seite","genau von der seite"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["seite"]},
+        {id:63, q:"Dreht das Boot bei der Halse mit dem Bug oder dem Heck durch den Wind?", a:"Heck", accept:["heck","mit dem heck"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["heck"]},
+        {id:64, q:"Wo übergibst du bei der Halse von der einen Hand in die andere Schot und Ausleger?", a:"Hinter dem Rücken, nach dem Überkommen des Segels", accept:["hinter dem rücken","hinter dem ruecken"], ui:"reveal", cloze:null, clozeKey:null, illustration:null, keywords:["hinter","rücken","rueck"]},
+        {id:65, q:"Wohin sollst du immer gucken, wenn du eine Wende oder Halse machst?", a:"Nach vorne", accept:["nach vorne","vorne","nach vorn"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["vorn"]},
+        {id:66, q:"Wenn ich hoch am Wind segle, dann stelle ich den Baum ...", a:"Auf eine Ecke am Heck des Bootes", accept:["auf eine ecke am heck","ecke am heck"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["ecke","heck"]},
+        {id:67, q:"Wie heißt die vordere Kante des Segels?", a:"Vorliek", accept:["vorliek"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["vorliek"]},
+        {id:68, q:"Wie heißt die wichtigste Regel nach dem Kentern?", a:"Beim Boot bleiben", accept:["beim boot bleiben","am boot bleiben"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["boot","bleiben"]},
+        {id:69, q:"Steigst du auf das Schwert oder auf das Ruder, um dein Boot nach einer Kenterung aufzurichten?", a:"Auf das Schwert", accept:["schwert","auf das schwert"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["schwert"]},
+        {id:70, q:"Wann sammelst du schwimmende Teile ein, wenn du gekentert bist?", a:"Wenn ich wieder im Boot bin", accept:["wenn ich wieder im boot bin","im boot"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["im boot"]},
+        {id:71, q:"Schaust du dir vor dem Segeln den Wetterbericht an? Wenn ja warum?", a:"Ja — um die Segelkleidung dem Wetter entsprechend zu wählen", accept:["ja","segelkleidung","wetter"], ui:"reveal", cloze:null, clozeKey:null, illustration:null, keywords:["ja","segelkleidung","wetter"]},
+        {id:72, q:"Dreht das Boot bei der Wende mit dem Bug oder dem Heck durch den Wind?", a:"Mit dem Bug", accept:["bug","mit dem bug"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["bug"]},
+        {id:73, q:"Wer muss ausweichen, wenn ein Schiff ein anderes überholt?", a:"Wer überholt muss sich freihalten", accept:["der überholer","wer überholt","überholer"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["überhol"]},
+        {id:74, q:"Wenn ich das Segel gegen den Wind drücke, dann heißt das ...", a:"Back halten", accept:["back halten","backhalten"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["back"]},
+        {id:75, q:"Wenn ich zu einer Tonne hinkreuze, dann ist es die ...", a:"Luvtonne", accept:["luvtonne"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["luvtonne"]},
+        {id:76, q:"Was musst du immer anziehen? Und wo?", a:"Schwimmweste / Rettungsweste im Boot und auf dem Steg!", accept:["schwimmweste","rettungsweste","weste"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["schwimmweste","rettungsweste","weste"]},
+        {id:77, q:"Von wo steigst du nach einer Kenterung wieder in dein Boot ein?", a:"Von hinten auf der Luvseite", accept:["von hinten","luvseite","hinten auf der luvseite"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["hinten","luv"]},
+        {id:78, q:"Eine starke Böe erwischt dich — was tust du, um nicht zu kentern?", a:"Ausreiten / Schot fieren / Anluven", accept:["ausreiten","schot fieren","anluven"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["ausreit","schot fier","anluv"]},
+        {id:79, q:"Beim Anluven fährst du ....", a:"Mit dem Boot in den Wind", accept:["in den wind","mit dem boot in den wind"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["in den wind"]},
+        {id:80, q:"Wenn die Segel zweier entgegenkommender Boote auf verschiedenen Seiten stehen, dann heißt die Ausweichregel: ...", a:"Backbordbug vor Steuerbordbug", accept:["backbordbug vor steuerbordbug","backbord vor steuerbord"], ui:"input", cloze:null, clozeKey:null, illustration:null, keywords:["backbordbug","steuerbordbug"]},
+      ];
+
+      // SVG illustrations for sailing questions
+      const SAIL_ILLUSTRATIONS = {
+        "boat-top": `<svg viewBox="0 0 300 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M150 20 L130 200 L170 200 Z" fill="#1a3a4a" stroke="#4ab8e8" stroke-width="1.5"/>
+          <line x1="150" y1="20" x2="150" y2="200" stroke="#4ab8e8" stroke-width="2" stroke-dasharray="4"/>
+          <rect x="146" y="40" width="8" height="120" rx="2" fill="#4ab8e8" opacity="0.7"/>
+          <text x="150" y="35" text-anchor="middle" fill="#8b90a5" font-size="11">Mast</text>
+          <line x1="150" y1="110" x2="200" y2="110" stroke="#e88a55" stroke-width="2"/>
+          <text x="205" y="113" fill="#8b90a5" font-size="11">Baum</text>
+          <rect x="145" y="88" width="10" height="14" rx="1" fill="#3fc47f" opacity="0.5"/>
+          <text x="126" y="99" text-anchor="end" fill="#8b90a5" font-size="11">Mastbank</text>
+          <rect x="147" y="155" width="6" height="40" rx="1" fill="#e55b6a" opacity="0.6"/>
+          <text x="126" y="178" text-anchor="end" fill="#8b90a5" font-size="11">Schwert</text>
+          <rect x="146" y="196" width="8" height="18" rx="1" fill="#f0c644" opacity="0.6"/>
+          <text x="176" y="208" fill="#8b90a5" font-size="11">Ruder</text>
+          <text x="150" y="15" text-anchor="middle" fill="#4ab8e8" font-size="11" font-weight="600">Bug</text>
+          <text x="150" y="215" text-anchor="middle" fill="#4ab8e8" font-size="11" font-weight="600">Heck</text>
+          <text x="126" y="60" text-anchor="end" fill="#8b90a5" font-size="10">Pinne →</text>
+        </svg>`,
+        "boat-sides": `<svg viewBox="0 0 300 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M80 80 L150 40 L220 80 L200 120 L100 120 Z" fill="#1a3a4a" stroke="#4ab8e8" stroke-width="1.5"/>
+          <text x="150" y="35" text-anchor="middle" fill="#4ab8e8" font-size="11" font-weight="600">Bug</text>
+          <rect x="60" y="60" width="50" height="40" rx="8" fill="none" stroke="#3fc47f" stroke-width="2"/>
+          <text x="85" y="83" text-anchor="middle" fill="#3fc47f" font-size="12" font-weight="600">Stb</text>
+          <text x="85" y="115" text-anchor="middle" fill="#3fc47f" font-size="10">grün · rechts</text>
+          <rect x="190" y="60" width="50" height="40" rx="8" fill="none" stroke="#e55b6a" stroke-width="2"/>
+          <text x="215" y="83" text-anchor="middle" fill="#e55b6a" font-size="12" font-weight="600">Bb</text>
+          <text x="215" y="115" text-anchor="middle" fill="#e55b6a" font-size="10">rot · links</text>
+          <text x="150" y="150" text-anchor="middle" fill="#8b90a5" font-size="10">Blick zum Bug →</text>
+        </svg>`,
+        "wind": `<svg viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="150" y="20" text-anchor="middle" fill="#4ab8e8" font-size="13" font-weight="600">WIND ↓</text>
+          <line x1="150" y1="25" x2="150" y2="55" stroke="#4ab8e8" stroke-width="2" marker-end="url(#arrowS)"/>
+          <defs><marker id="arrowS" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#4ab8e8"/></marker></defs>
+          <circle cx="150" cy="110" r="8" fill="#e88a55"/>
+          <text x="150" y="75" text-anchor="middle" fill="#e55b6a" font-size="11">✕ Toter Winkel</text>
+          <text x="80" y="80" text-anchor="middle" fill="#8b90a5" font-size="11">Am Wind</text>
+          <text x="220" y="80" text-anchor="middle" fill="#8b90a5" font-size="11">Am Wind</text>
+          <text x="55" y="115" text-anchor="middle" fill="#8b90a5" font-size="11">Halb-</text>
+          <text x="55" y="127" text-anchor="middle" fill="#8b90a5" font-size="11">wind</text>
+          <text x="245" y="115" text-anchor="middle" fill="#8b90a5" font-size="11">Halb-</text>
+          <text x="245" y="127" text-anchor="middle" fill="#8b90a5" font-size="11">wind</text>
+          <text x="80" y="155" text-anchor="middle" fill="#8b90a5" font-size="11">Raum</text>
+          <text x="220" y="155" text-anchor="middle" fill="#8b90a5" font-size="11">Raum</text>
+          <text x="150" y="175" text-anchor="middle" fill="#8b90a5" font-size="11">Vor dem Wind</text>
+          <text x="60" y="42" text-anchor="middle" fill="#3fc47f" font-size="11" font-weight="600">Luv</text>
+          <text x="240" y="42" text-anchor="middle" fill="#e55b6a" font-size="11" font-weight="600">Lee</text>
+          <line x1="100" y1="68" x2="130" y2="85" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+          <line x1="200" y1="68" x2="170" y2="85" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+          <line x1="75" y1="105" x2="120" y2="105" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+          <line x1="225" y1="105" x2="180" y2="105" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+          <line x1="95" y1="145" x2="130" y2="125" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+          <line x1="205" y1="145" x2="170" y2="125" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+          <line x1="150" y1="165" x2="150" y2="130" stroke="#8b90a5" stroke-width="1" stroke-dasharray="3"/>
+        </svg>`,
+        "sail-parts": `<svg viewBox="0 0 260 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M80 200 L80 30 L220 200 Z" fill="#1a3a4a" stroke="#4ab8e8" stroke-width="1.5"/>
+          <line x1="80" y1="30" x2="80" y2="200" stroke="#4ab8e8" stroke-width="2.5"/>
+          <text x="60" y="120" text-anchor="end" fill="#4ab8e8" font-size="11" font-weight="600" transform="rotate(-90,60,120)">Vorliek</text>
+          <line x1="80" y1="200" x2="220" y2="200" stroke="#e88a55" stroke-width="2.5"/>
+          <text x="150" y="218" text-anchor="middle" fill="#e88a55" font-size="11" font-weight="600">Unterliek</text>
+          <line x1="80" y1="30" x2="220" y2="200" stroke="#3fc47f" stroke-width="2.5"/>
+          <text x="170" y="105" fill="#3fc47f" font-size="11" font-weight="600" transform="rotate(45,170,105)">Achterliek</text>
+          <circle cx="80" cy="30" r="4" fill="#f0c644"/>
+          <text x="82" y="22" fill="#f0c644" font-size="10">Kopf</text>
+          <circle cx="80" cy="200" r="4" fill="#f0c644"/>
+          <text x="60" y="198" text-anchor="end" fill="#f0c644" font-size="10">Hals</text>
+          <circle cx="220" cy="200" r="4" fill="#f0c644"/>
+          <text x="230" y="198" fill="#f0c644" font-size="10">Schothorn</text>
+        </svg>`
+      };
+
+      // Sailing state
+      state.sailQueue = [];
+      state.sailIndex = 0;
+      state.sailStep = 0;
+      state.sailPhase = "input"; // "input" | "dontKnow" | "answered" | "reveal"
+      state.sailCorrect = 0;
+      state.sailMastered = 0;
+      state.sailMistakes = 0;
+
+      function sailKey(id) { return "sail_q" + id; }
+
+      function loadSailSession() {
+        try {
+          const key = "lango.sail." + state.profile;
+          const raw = localStorage.getItem(key);
+          if (raw) return JSON.parse(raw);
+        } catch(e) {}
+        return { step: 0 };
+      }
+      function saveSailSession() {
+        try {
+          const key = "lango.sail." + state.profile;
+          localStorage.setItem(key, JSON.stringify({ step: state.sailStep }));
+        } catch(e) {}
+      }
+
+      function sailStatusCounts() {
+        const p = progress();
+        const c = { mastered: 0, s2: 0, s1: 0, red: 0, new: 0 };
+        for (const q of SAILING_QUESTIONS) {
+          const s = p.wordStatus[sailKey(q.id)];
+          const stage = statusStage(s || null);
+          c[stage]++;
+        }
+        return c;
+      }
+
+      function buildSailQueue() {
+        const step = state.sailStep;
+        const due = [], notDue = [], fresh = [];
+        for (const q of SAILING_QUESTIONS) {
+          const key = sailKey(q.id);
+          const s = progress().wordStatus[key];
+          const stage = statusStage(s || null);
+          if (stage === "mastered") continue;
+          if (!s || stage === "new") {
+            fresh.push({ q, status: s || null });
+          } else if ((s.nextShowStep || 0) <= step) {
+            due.push({ q, status: s });
+          } else {
+            notDue.push({ q, status: s });
+          }
+        }
+        const sortFn = (a, b) => {
+          const ar = a.status && a.status.red ? 1 : 0;
+          const br = b.status && b.status.red ? 1 : 0;
+          if (ar !== br) return br - ar;
+          return ((b.status && b.status.difficulty) || 0) - ((a.status && a.status.difficulty) || 0);
+        };
+        due.sort(sortFn);
+        notDue.sort(sortFn);
+        let pool = [...due, ...fresh, ...notDue];
+        return pool.slice(0, 15).map(item => item.q);
+      }
+
+      function openSailing() {
+        const sess = loadSailSession();
+        state.sailStep = sess.step;
+        state.sailQueue = buildSailQueue();
+        state.sailIndex = 0;
+        state.sailCorrect = 0;
+        state.sailMastered = 0;
+        state.sailMistakes = 0;
+        state.answerStreak = 0;
+        state.bestStreak = 0;
+        if (state.sailQueue.length === 0) {
+          showSailSummary();
+          return;
+        }
+        showScreen("sailScreen");
+        renderSailCard();
+      }
+
+      function updateSailUI() {
+        const total = SAILING_QUESTIONS.length;
+        const c = sailStatusCounts();
+        document.getElementById("sailSegRed").style.width = (c.red / total) * 100 + "%";
+        document.getElementById("sailSegOrange").style.width = (c.s1 / total) * 100 + "%";
+        document.getElementById("sailSegYellow").style.width = (c.s2 / total) * 100 + "%";
+        document.getElementById("sailSegGreen").style.width = (c.mastered / total) * 100 + "%";
+        const remaining = total - c.mastered;
+        const meta = remaining > 0
+          ? "Question " + (state.sailIndex + 1) + " of " + state.sailQueue.length + " · " + remaining + " to master"
+          : "All 80 questions mastered!";
+        document.getElementById("sailMeta").textContent = meta;
+      }
+
+      function renderSailCard() {
+        const q = state.sailQueue[state.sailIndex];
+        if (!q) { showSailSummary(); return; }
+
+        state.sailPhase = q.ui === "reveal" ? "reveal" : "input";
+
+        // Question text
+        document.getElementById("sailQ").textContent = q.q;
+        document.getElementById("sailLabel").textContent = "Frage " + q.id;
+        document.getElementById("sailFeedback").innerHTML = "";
+        document.getElementById("sailFeedback").className = "sail-feedback";
+
+        // Status dots + pill + creature
+        const key = sailKey(q.id);
+        const s = getStatus(key);
+        const stage = statusStage(s);
+        document.getElementById("sailDots").innerHTML = dotsHTML(stage, s);
+        const pill = document.getElementById("sailPill");
+        pill.className = "stage-pill " + stage;
+        pill.textContent = stageLabel(s);
+        const ce = document.getElementById("sailCreatureEmoji");
+        if (ce) { const ps = getPhoenixStage(progress()); ce.textContent = ps.emoji; }
+
+        // Illustration — hidden, answers only
+        const illEl = document.getElementById("sailIllustration");
+        illEl.innerHTML = "";
+
+        // Answer area
+        const area = document.getElementById("sailAnswerArea");
+        const actions = document.getElementById("sailActions");
+
+        const dkHtml = '<button class="sail-dk-btn" id="sailDontKnowBtn" onclick="sailDontKnow()"><span class="sail-dk-icon">💡</span><span class="sail-dk-text"><span class="sail-dk-title">Don\'t know — show me</span><span class="sail-dk-sub">I\'ll show you the answer</span></span></button>';
+
+        if (q.ui === "input") {
+          area.innerHTML = '<input class="sail-input" id="sailInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Deine Antwort">';
+          actions.innerHTML = dkHtml + '<button class="btn primary" id="sailCheckBtn" onclick="sailCheck()">Check</button>';
+          setTimeout(() => { const inp = document.getElementById("sailInput"); if (inp) inp.focus(); }, 100);
+        } else if (q.ui === "cloze") {
+          const clozeHtml = escapeHtml(q.cloze).replace("_____", '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+          area.innerHTML = '<div class="sail-cloze-text">' + clozeHtml + '</div><input class="sail-input" id="sailInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Fehlendes Wort">';
+          actions.innerHTML = dkHtml + '<button class="btn primary" id="sailCheckBtn" onclick="sailCheck()">Check</button>';
+          setTimeout(() => { const inp = document.getElementById("sailInput"); if (inp) inp.focus(); }, 100);
+        } else {
+          // reveal mode
+          area.innerHTML = '';
+          actions.innerHTML = '<button class="btn primary" onclick="revealSailAnswer()" id="sailRevealBtn">Antwort zeigen</button>';
+        }
+        updateSailUI();
+      }
+
+      function sailCheckInput(q) {
+        const inp = document.getElementById("sailInput");
+        if (!inp || !inp.value.trim()) return;
+        const guess = normaliseAnswer(inp.value);
+        // Check accept match (fuzzy)
+        for (const acc of q.accept) {
+          if (fuzzyMatch(guess, normaliseAnswer(acc))) return true;
+        }
+        // Check keywords — all must be present
+        if (q.keywords && q.keywords.length > 0) {
+          const allFound = q.keywords.every(kw => guess.includes(kw.toLowerCase()));
+          if (allFound) return true;
+        }
+        return false;
+      }
+
+      function sailCheckCloze(q) {
+        const inp = document.getElementById("sailInput");
+        if (!inp || !inp.value.trim()) return;
+        const guess = normaliseAnswer(inp.value);
+        const key = normaliseAnswer(q.clozeKey);
+        if (fuzzyMatch(guess, key)) return true;
+        // Also check accept array for cloze (fuzzy)
+        for (const acc of q.accept) {
+          if (fuzzyMatch(guess, normaliseAnswer(acc))) return true;
+        }
+        return false;
+      }
+
+      function sailCheck() {
+        const q = state.sailQueue[state.sailIndex];
+        if (!q) return;
+
+        if (state.sailPhase === "dontKnow") { sailConfirmDontKnow(); return; }
+        if (state.sailPhase === "answered") { advanceSail(); return; }
+
+        const inp = document.getElementById("sailInput");
+        if (!inp || !inp.value.trim()) return;
+        const fb = document.getElementById("sailFeedback");
+        const card = document.getElementById("sailCard");
+        const key = sailKey(q.id);
+
+        state.sailStep++;
+        saveSailSession();
+
+        const correct = q.ui === "cloze" ? sailCheckCloze(q) : sailCheckInput(q);
+
+        if (correct) {
+          state.answerStreak++;
+          state.sailCorrect++;
+          inp.classList.remove("wrong");
+          inp.classList.add("right");
+          fb.className = "sail-feedback right";
+          const sBefore = getStatus(key);
+          const sAfter = bumpCorrect(key, "sail", state.sailStep);
+          const stage = statusStage(sAfter);
+          if (stage === "mastered" && statusStage(sBefore) !== "mastered") {
+            state.sailMastered++;
+            fb.innerHTML = "🌳 Mastered!";
+            card.classList.remove("celebrate");
+            void card.offsetWidth;
+            card.classList.add("celebrate");
+            spawnConfetti("sailConfetti", 16, true);
+            showXP("sailCard", 25, "gold");
+            addXP(25);
+            const flash = document.createElement("div");
+            flash.className = "mastery-flash";
+            card.appendChild(flash);
+            setTimeout(() => flash.remove(), 900);
+          } else {
+            fb.innerHTML = "✓ Richtig! " + STAGE_EMOJI[stage];
+            spawnConfetti("sailConfetti", 8 + state.answerStreak * 2);
+            showXP("sailCard", 10);
+            addXP(10);
+          }
+          updateStreakDisplay("sailStreak");
+          document.getElementById("sailDots").innerHTML = dotsHTML(stage, sAfter);
+          const spill = document.getElementById("sailPill");
+          spill.className = "stage-pill " + stage;
+          spill.textContent = stageLabel(sAfter);
+        } else {
+          state.sailMistakes++;
+          inp.classList.remove("right");
+          inp.classList.add("wrong");
+          fb.className = "sail-feedback wrong";
+          fb.innerHTML = 'Antwort: <span class="correct">' + escapeHtml(q.ui === "cloze" ? q.clozeKey : q.a) + '</span>';
+          showStreakLost("sailStreak");
+          const sAfterW = bumpWrong(key, "sail", state.sailStep);
+          document.getElementById("sailDots").innerHTML = dotsHTML("red", sAfterW);
+          const spill = document.getElementById("sailPill");
+          spill.className = "stage-pill red";
+          spill.textContent = "mistake";
+        }
+        inp.disabled = true;
+        state.sailPhase = "answered";
+        const checkBtn = document.getElementById("sailCheckBtn");
+        if (checkBtn) { checkBtn.textContent = "Next"; checkBtn.disabled = false; }
+        const dkBtn = document.getElementById("sailDontKnowBtn");
+        if (dkBtn) dkBtn.disabled = true;
+        updateSailUI();
+        refreshHomeStats();
+      }
+
+      function revealSailAnswer() {
+        const q = state.sailQueue[state.sailIndex];
+        if (!q) return;
+        const area = document.getElementById("sailAnswerArea");
+        area.innerHTML = '<div class="sail-answer-box">' + escapeHtml(q.a) + '</div>';
+        const actions = document.getElementById("sailActions");
+        actions.innerHTML = '<button class="btn ghost" onclick="sailRevealRate(false)">Hadn\'t got it</button><button class="btn good" onclick="sailRevealRate(true)">Got it!</button>';
+      }
+
+      function sailRevealRate(ok) {
+        const q = state.sailQueue[state.sailIndex];
+        if (!q) return;
+        const key = sailKey(q.id);
+
+        state.sailStep++;
+        saveSailSession();
+
+        if (ok) {
+          state.sailCorrect++;
+          state.answerStreak++;
+          const sBefore = getStatus(key);
+          const sAfter = bumpCorrect(key, "sail", state.sailStep);
+          const stage = statusStage(sAfter);
+          if (stage === "mastered" && statusStage(sBefore) !== "mastered") {
+            state.sailMastered++;
+            showXP("sailCard", 25, "gold");
+            addXP(25);
+            spawnConfetti("sailConfetti", 16, true);
+          } else {
+            showXP("sailCard", 10);
+            addXP(10);
+            spawnConfetti("sailConfetti", 8);
+          }
+          updateStreakDisplay("sailStreak");
+        } else {
+          state.sailMistakes++;
+          showStreakLost("sailStreak");
+          bumpWrong(key, "sail", state.sailStep);
+        }
+        state.sailPhase = "answered";
+        updateSailUI();
+        refreshHomeStats();
+        setTimeout(advanceSail, 400);
+      }
+
+      function sailDontKnow() {
+        if (state.sailPhase !== "input") return;
+        const q = state.sailQueue[state.sailIndex];
+        if (!q) return;
+        const key = sailKey(q.id);
+
+        state.sailStep++;
+        state.sailMistakes++;
+        saveSailSession();
+        showStreakLost("sailStreak");
+        bumpWrong(key, "sail", state.sailStep);
+
+        const fb = document.getElementById("sailFeedback");
+        fb.className = "sail-feedback wrong";
+        const correctText = q.ui === "cloze" ? q.clozeKey : q.a;
+        fb.innerHTML = 'Type it: <span class="correct">' + escapeHtml(correctText) + '</span>';
+
+        const inp = document.getElementById("sailInput");
+        if (inp) { inp.value = ""; inp.disabled = false; inp.placeholder = "Type the answer here"; inp.focus(); }
+        const dkBtn = document.getElementById("sailDontKnowBtn");
+        if (dkBtn) dkBtn.style.display = "none";
+        const checkBtn = document.getElementById("sailCheckBtn");
+        if (checkBtn) { checkBtn.textContent = "Check"; checkBtn.disabled = false; }
+        state.sailPhase = "dontKnow";
+        updateSailUI();
+        refreshHomeStats();
+      }
+
+      function sailConfirmDontKnow() {
+        const q = state.sailQueue[state.sailIndex];
+        if (!q) return;
+        const inp = document.getElementById("sailInput");
+        if (!inp || !inp.value.trim()) return;
+        const fb = document.getElementById("sailFeedback");
+        const guess = normaliseAnswer(inp.value);
+        const correctText = q.ui === "cloze" ? q.clozeKey : q.a;
+        // For cloze, just check the key word. For input, check all accepts.
+        let ok = false;
+        if (q.ui === "cloze") {
+          ok = guess === normaliseAnswer(q.clozeKey);
+        } else {
+          for (const acc of q.accept) {
+            if (guess === normaliseAnswer(acc)) { ok = true; break; }
+          }
+          if (!ok && guess === normaliseAnswer(q.a)) ok = true;
+        }
+        if (ok) {
+          inp.classList.remove("wrong");
+          inp.classList.add("right");
+          fb.className = "sail-feedback right";
+          fb.innerHTML = "✓ Gut — jetzt weißt du es!";
+          showXP("sailCard", 5, "small");
+          addXP(5);
+          inp.disabled = true;
+          state.sailPhase = "answered";
+          const checkBtn = document.getElementById("sailCheckBtn");
+          if (checkBtn) { checkBtn.textContent = "Next"; checkBtn.disabled = false; }
+        } else {
+          inp.classList.remove("right");
+          inp.classList.add("wrong");
+          fb.className = "sail-feedback wrong";
+          fb.innerHTML = 'Nochmal: <span class="correct">' + escapeHtml(correctText) + '</span>';
+        }
+      }
+
+      function advanceSail() {
+        state.sailIndex++;
+        if (state.sailIndex >= state.sailQueue.length) {
+          showSailSummary();
+          return;
+        }
+        renderSailCard();
+      }
+
+      function showSailSummary() {
+        const c = sailStatusCounts();
+        const creatureEl = document.getElementById("sailSumCreature");
+        const phoenixStg = getPhoenixStage(progress());
+        creatureEl.textContent = phoenixStg.emoji;
+
+        const allMastered = c.mastered === SAILING_QUESTIONS.length;
+        document.getElementById("sailSumTitle").textContent = allMastered ? "Alle 80 gemeistert! ⛵🌳" : "Gut gemacht! ⛵";
+        document.getElementById("sailSumSub").textContent = c.mastered + " of " + SAILING_QUESTIONS.length + " mastered. " + (allMastered ? "Prüfung bestanden!" : (SAILING_QUESTIONS.length - c.mastered) + " still need practice.");
+        document.getElementById("sailSumMastered").textContent = c.mastered;
+        document.getElementById("sailSumProgress").textContent = c.s1 + c.s2;
+        document.getElementById("sailSumRed").textContent = c.red;
+        showScreen("sailSummaryScreen");
+        refreshHomeStats();
+      }
+
+      // Enter key handler for sailing screen
+      document.addEventListener("keydown", function(e) {
+        if (e.key !== "Enter") return;
+        if (!document.getElementById("sailScreen").classList.contains("active")) return;
+        e.preventDefault();
+        if (state.sailPhase === "answered") { advanceSail(); return; }
+        if (state.sailPhase === "dontKnow") { sailConfirmDontKnow(); return; }
+        if (state.sailPhase === "input") {
+          const inp = document.getElementById("sailInput");
+          if (inp && inp.value.trim()) sailCheck();
+        }
+      });
+
+      // Enable check button when user types in sail input
+      document.addEventListener("input", function(e) {
+        if (e.target.id !== "sailInput") return;
+        const checkBtn = document.getElementById("sailCheckBtn");
+        if (!checkBtn) return;
+        if (state.sailPhase === "dontKnow") {
+          checkBtn.disabled = !e.target.value.trim();
+        }
+      });
 
       /* ============================================================
    INIT
