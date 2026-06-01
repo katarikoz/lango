@@ -420,7 +420,22 @@
 
       /* Mobile */
       @media (max-width: 600px) {
-        .hero-phoenix { opacity: 0.5; }
+        .pill { padding: 0; border-radius: 50%; background: transparent; border: none; }
+        .pill-right { display: none; }
+        .hero-columns {
+          flex-direction: column;
+        }
+        .hero-text {
+          width: 33vw;
+        }
+        .hero-row {
+          flex-direction: column;
+          margin-top: 4rem;
+        }
+        .hero-level,
+        .phoenix-status {
+          width: 66vw;
+        }
       }
       .sub {
         color: var(--ink-soft);
