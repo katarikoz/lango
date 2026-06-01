@@ -628,16 +628,15 @@
       }
       .quest-card {
         position: relative;
-        background: rgba(24, 27, 46, 0.85);
+        background: transparent;
         border: none;
         border-radius: 1.125rem;
-        padding: 1rem 1rem 0;
+        padding: 1rem 1rem 1rem;
         cursor: pointer;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         gap: 0.375rem;
-        min-height: 13rem;
       }
       /* Gradient border */
       .quest-card::before {
@@ -654,26 +653,22 @@
         pointer-events: none;
         z-index: 3;
       }
-      /* Dark gradient fade at bottom */
-      .quest-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(to bottom, transparent 25%, rgba(10, 14, 26, 0.6) 55%, rgba(10, 14, 26, 1) 100%);
-        pointer-events: none;
-        z-index: 1;
-      }
       .quest-card > * {
         position: relative;
         z-index: 2;
       }
-      #qcLearn {
-        background: url('assets/quest-learn.png') center top/cover no-repeat, rgba(24, 27, 46, 1);
+      /* Cards with bg images: gradient baked into background, fades image to dark */
+      #qcLearn::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('assets/quest-learn.png') center top / contain no-repeat;
+        -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 80%);
+        mask-image: linear-gradient(to bottom, black 40%, transparent 80%);
+        z-index: 0;
+        pointer-events: none;
       }
       .qc-badge {
-        font-size: 1.125rem;
-        line-height: 1;
         width: 2.5rem;
         height: 2.75rem;
         clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -682,25 +677,27 @@
         justify-content: center;
         background: linear-gradient(135deg, color-mix(in srgb, var(--qc-color) 40%, transparent), color-mix(in srgb, var(--qc-color) 15%, transparent));
         flex-shrink: 0;
+        filter: drop-shadow(0 0 8px color-mix(in srgb, var(--qc-color) 40%, transparent));
+        color: var(--qc-color);
       }
       .qc-title {
         font-weight: 700;
-        font-size: 1.125rem;
+        font-size: 1.25rem;
+        margin-top: auto;
       }
       .qc-sub {
         font-size: 0.8125rem;
         color: var(--ink-soft);
-        min-height: 1.125rem;
       }
       .qc-progress {
-        margin-top: auto;
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.375rem;
       }
       .qc-progress-bar {
-        height: 0.3125rem;
-        background: rgba(255,255,255,0.08);
+        width: 60%;
+        height: 0.375rem;
+        background: rgba(255,255,255,0.1);
         border-radius: 999px;
         overflow: hidden;
       }
@@ -711,21 +708,11 @@
         transition: width 0.3s ease;
       }
       .qc-progress-text {
-        font-size: 0.875rem;
+        font-size: 0.9375rem;
         font-weight: 700;
         color: var(--qc-color);
         white-space: nowrap;
         order: -1;
-      }
-      .qc-go {
-        font-size: 0.8125rem;
-        font-weight: 600;
-        color: var(--ink-soft);
-        text-align: center;
-        margin: 0.5rem -1rem 0;
-        padding: 0.625rem 1rem;
-        background: rgba(255, 255, 255, 0.04);
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
       }
       @media (max-width: 520px) {
         .quest-cards { grid-template-columns: 1fr; }
@@ -1976,46 +1963,195 @@
       }
 
       /* OBSERVATORY */
-      .obs-stats {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        font-size: 0.875rem;
-        color: var(--ink-soft);
+
+      /* Starfield background atmosphere */
+      #observatoryScreen { position: relative; }
+      #observatoryScreen::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 20rem;
+        background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.06) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
       }
-      .obs-stats span { font-weight: 600; color: var(--ink); }
-      .obs-tabs {
-        display: flex;
-        gap: 0.5rem;
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
-        -webkit-overflow-scrolling: touch;
+      #observatoryScreen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0.5px, transparent 0.5px);
+        background-size: 2rem 2rem;
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 0;
       }
-      .obs-tabs::-webkit-scrollbar { display: none; }
-      .obs-tab {
-        flex-shrink: 0;
-        padding: 0.4rem 0.875rem;
-        border-radius: 1rem;
-        border: 1px solid var(--line);
+      #observatoryScreen > * { position: relative; z-index: 1; }
+
+      /* Explorer rank + progress */
+      .obs-progression {
+        text-align: center;
+        margin-bottom: 1.25rem;
+        padding: 1rem 1.25rem;
         background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+      }
+      .obs-progression .obs-rank-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+      .obs-progression .obs-rank-name {
+        font-size: 1.125rem;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 0.125rem;
+      }
+      .obs-progression .obs-disc-count {
+        font-size: 0.8125rem;
         color: var(--ink-soft);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .obs-prog-bar {
+        height: 0.375rem;
+        background: rgba(99,102,241,0.1);
+        border-radius: 0.1875rem;
+        overflow: hidden;
+        max-width: 18rem;
+        margin: 0 auto 0.25rem;
+      }
+      .obs-prog-bar div {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 0.1875rem;
+        transition: width 0.4s;
+      }
+      .obs-prog-label {
+        font-size: 0.6875rem;
+        color: var(--ink-soft);
+        font-weight: 600;
+      }
+
+      /* Next Discovery hero card */
+      .obs-next-hero {
+        background: var(--card);
+        border: 1px solid rgba(99,102,241,0.25);
+        border-radius: 1rem;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.25rem;
+        text-align: center;
+      }
+      .obs-next-hero .obs-hero-label {
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #fbbf24;
+        margin-bottom: 0.5rem;
+      }
+      .obs-next-hero .obs-hero-icon { font-size: 1.75rem; margin-bottom: 0.25rem; }
+      .obs-next-hero .obs-hero-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 0.375rem;
+      }
+      .obs-next-hero .obs-hero-status {
         font-size: 0.8125rem;
         font-weight: 600;
+      }
+      .obs-next-hero .obs-hero-status.ready { color: var(--good); animation: obsPulseText 2s ease-in-out infinite; }
+      @keyframes obsPulseText {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.55; }
+      }
+      .obs-next-hero .obs-hero-status.locked-hint { color: var(--ink-soft); }
+      .obs-next-hero.ready {
+        border-color: rgba(99,102,241,0.4);
+        box-shadow: 0 0 16px rgba(99,102,241,0.12);
         cursor: pointer;
-        transition: background 0.15s, color 0.15s, border-color 0.15s;
       }
-      .obs-tab.active {
+      .obs-next-hero.ready:active { transform: scale(0.98); }
+      .obs-next-hero.all-done {
+        border-color: rgba(251,191,36,0.4);
+        background: rgba(251,191,36,0.04);
+      }
+      .obs-hero-prog {
+        height: 0.3rem;
+        background: rgba(99,102,241,0.1);
+        border-radius: 0.15rem;
+        overflow: hidden;
+        max-width: 12rem;
+        margin: 0.5rem auto 0;
+      }
+      .obs-hero-prog div {
+        height: 100%;
         background: var(--accent);
-        color: white;
-        border-color: var(--accent);
+        border-radius: 0.15rem;
       }
-      .obs-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.875rem;
+
+      .obs-row { margin-bottom: 1.25rem; }
+      .obs-row-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        padding: 0 0.125rem;
       }
+      .obs-row-header .obs-row-icon { font-size: 1.125rem; }
+      .obs-row-header .obs-row-label {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .obs-row-header .obs-row-count {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--ink-soft);
+        background: rgba(255,255,255,0.06);
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.75rem;
+        margin-left: auto;
+      }
+      .obs-row-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.75rem;
+        padding-bottom: 0.25rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .obs-row-scroll::-webkit-scrollbar { display: none; }
+
+      /* Category progress bar */
+      .obs-row-progress {
+        height: 0.2rem;
+        background: rgba(255,255,255,0.06);
+        border-radius: 0.1rem;
+        overflow: hidden;
+        margin: 0.25rem 0.125rem 0.5rem;
+      }
+      .obs-row-progress div {
+        height: 100%;
+        border-radius: 0.1rem;
+        transition: width 0.4s;
+      }
+      /* Category completion */
+      .obs-row.complete .obs-row-count {
+        background: rgba(251,191,36,0.15);
+        color: #fbbf24;
+        font-weight: 700;
+      }
+      .obs-row.complete .obs-row-header {
+        background: rgba(251,191,36,0.03);
+        border-radius: 0.5rem;
+        padding: 0.25rem 0.125rem;
+        margin-bottom: 0.25rem;
+      }
+      .obs-row.complete .obs-row-progress div { background: #fbbf24 !important; }
+
       .obs-card {
+        flex-shrink: 0;
+        width: 9.5rem;
         background: var(--card);
         border: 1px solid var(--line);
         border-radius: 1rem;
@@ -2081,7 +2217,8 @@
         50% { box-shadow: 0 0 18px rgba(99,102,241,0.3); }
       }
       .obs-card.revealed {
-        border-color: rgba(99,102,241,0.2);
+        border-color: rgba(34,197,94,0.3);
+        opacity: 0.78;
       }
       .obs-card.revealed::after {
         content: "✓";
@@ -2097,13 +2234,74 @@
       .obs-epic .obs-card-rarity { color: #a78bfa; background: rgba(167,139,250,0.12); }
       .obs-legendary .obs-card-rarity { color: #fbbf24; background: rgba(251,191,36,0.12); }
       .obs-legendary.available {
-        border-color: rgba(251,191,36,0.4);
+        border-color: rgba(251,191,36,0.5);
+        border-top: 2px solid rgba(251,191,36,0.6);
         animation: obsGlowGold 2s ease-in-out infinite;
       }
+      .obs-legendary.available .obs-card-rarity { animation: obsShimmer 2.5s ease-in-out infinite; }
       @keyframes obsGlowGold {
-        0%, 100% { box-shadow: 0 0 8px rgba(251,191,36,0.15); }
-        50% { box-shadow: 0 0 18px rgba(251,191,36,0.35); }
+        0%, 100% { box-shadow: 0 0 12px rgba(251,191,36,0.2); }
+        50% { box-shadow: 0 0 24px rgba(251,191,36,0.45); }
       }
+      @keyframes obsShimmer {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; filter: brightness(1.3); }
+      }
+      /* Legendary locked — hint at importance */
+      .obs-legendary.locked {
+        opacity: 0.55;
+        border-color: rgba(251,191,36,0.15);
+      }
+      /* Lesson card left accent */
+      .obs-card.obs-lesson-accent { border-left: 3px solid rgba(99,102,241,0.5); }
+
+      /* Available card — sparkle "NEW" badge */
+      .obs-card.available::before {
+        content: "✦ NEW";
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.5625rem;
+        font-weight: 700;
+        color: #818cf8;
+        letter-spacing: 0.04em;
+        animation: obsSparkle 1.5s ease-in-out infinite;
+      }
+      .obs-legendary.available::before { color: #fbbf24; }
+      @keyframes obsSparkle {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.92); }
+      }
+
+      /* Hero card sparkle decorations */
+      .obs-next-hero.ready::before {
+        content: "✦";
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+        font-size: 0.875rem;
+        color: var(--accent);
+        animation: obsSparkle 2s ease-in-out infinite;
+      }
+      .obs-next-hero.ready::after {
+        content: "✦";
+        position: absolute;
+        bottom: 0.75rem;
+        left: 1rem;
+        font-size: 0.625rem;
+        color: var(--accent);
+        opacity: 0.5;
+        animation: obsSparkle 2s ease-in-out 0.7s infinite;
+      }
+      .obs-next-hero { position: relative; overflow: hidden; }
+
+      /* Entrance animations */
+      .obs-entrance { animation: obsSlideIn 0.35s ease-out both; }
+      @keyframes obsSlideIn {
+        from { opacity: 0; transform: translateY(0.75rem); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
       /* Observatory detail */
       .obs-detail-card {
         background: var(--card);
@@ -2203,15 +2401,105 @@
       }
       @media (hover: hover) {
         .obs-card.available:hover { transform: translateY(-2px); }
-        .obs-card.revealed:hover { transform: translateY(-1px); }
+        .obs-card.revealed:hover { transform: translateY(-1px); opacity: 0.9; }
         .obs-choices .opt:hover:not(.disabled) {
           background: rgba(99,102,241,0.15);
           transform: translateY(-1px);
         }
       }
-      @media (max-width: 520px) {
-        .obs-grid { grid-template-columns: 1fr; }
+      /* Observatory — type badge */
+      .obs-card-type {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        font-size: 0.5625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.1rem 0.3rem;
+        border-radius: 0.25rem;
+        line-height: 1.4;
       }
+      .obs-card-type.type-fact { color: #9ca3af; background: rgba(156,163,175,0.12); }
+      .obs-card-type.type-lesson { color: #818cf8; background: rgba(129,140,248,0.15); }
+      .obs-card.revealed .obs-card-type { top: 0.5rem; left: 1.5rem; }
+      /* Observatory — lesson text */
+      .obs-lesson-text {
+        font-size: 0.9375rem;
+        line-height: 1.7;
+        color: var(--ink);
+        margin-bottom: 1.25rem;
+        white-space: pre-line;
+      }
+      .obs-lesson-text b { color: var(--accent); font-weight: 700; }
+      .obs-lesson-text i { font-style: italic; color: var(--ink-soft); }
+      /* Observatory — quiz progress */
+      .obs-quiz-progress {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        margin-bottom: 1rem;
+      }
+      .obs-quiz-progress-bar {
+        flex: 1;
+        height: 0.375rem;
+        background: rgba(99,102,241,0.1);
+        border-radius: 0.1875rem;
+        overflow: hidden;
+      }
+      .obs-quiz-progress-bar div {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 0.1875rem;
+        transition: width 0.3s;
+      }
+      .obs-quiz-progress-label {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        color: var(--ink-soft);
+        flex-shrink: 0;
+      }
+      /* Observatory — lesson results */
+      .obs-quiz-score {
+        text-align: center;
+        margin-bottom: 1.25rem;
+      }
+      .obs-quiz-score-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        background: rgba(99,102,241,0.1);
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+      }
+      .obs-quiz-score h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin: 0;
+      }
+      .obs-quiz-summary {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.25rem 0;
+      }
+      .obs-quiz-summary li {
+        display: flex;
+        gap: 0.5rem;
+        align-items: flex-start;
+        padding: 0.625rem 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.875rem;
+        line-height: 1.4;
+        color: var(--ink);
+      }
+      .obs-quiz-summary li:last-child { border-bottom: none; }
+      .obs-quiz-summary .mark { flex-shrink: 0; font-size: 1rem; }
 
       .empty-state {
         text-align: center;
@@ -3053,6 +3341,7 @@
     </style>
     <!-- Supabase: cloud progress sync + login -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
     <div class="app">
@@ -3277,34 +3566,31 @@
         <div class="section-title">Today's Quests</div>
         <div class="quest-cards">
           <div class="quest-card" style="--qc-color:#8b5cf6" id="qcLearn" onclick="openTopic(getFeaturedTheme().id)">
-            <div class="qc-badge">📖</div>
+            <div class="qc-badge"><i data-lucide="book-open" stroke-width="2"></i></div>
             <div class="qc-title">Learn</div>
             <div class="qc-sub" id="qcLearnSub">—</div>
             <div class="qc-progress">
               <div class="qc-progress-bar"><div class="qc-progress-fill" id="qcLearnBar" style="width:0"></div></div>
               <div class="qc-progress-text" id="qcLearnFrac">—</div>
             </div>
-            <div class="qc-go">Continue ›</div>
           </div>
           <div class="quest-card" style="--qc-color:#e55b6a" id="qcFix" onclick="openSpelling()">
-            <div class="qc-badge">🔍</div>
+            <div class="qc-badge"><i data-lucide="crosshair" stroke-width="2"></i></div>
             <div class="qc-title">Fix</div>
             <div class="qc-sub" id="qcFixSub">—</div>
             <div class="qc-progress">
               <div class="qc-progress-bar"><div class="qc-progress-fill" id="qcFixBar" style="width:0"></div></div>
               <div class="qc-progress-text" id="qcFixFrac">—</div>
             </div>
-            <div class="qc-go">Continue ›</div>
           </div>
           <div class="quest-card" style="--qc-color:#38bdf8" id="qcUse" onclick="openConnectors()">
-            <div class="qc-badge">🔗</div>
+            <div class="qc-badge"><i data-lucide="link" stroke-width="2"></i></div>
             <div class="qc-title">Use</div>
             <div class="qc-sub" id="qcUseSub">—</div>
             <div class="qc-progress">
               <div class="qc-progress-bar"><div class="qc-progress-fill" id="qcUseBar" style="width:0"></div></div>
               <div class="qc-progress-text" id="qcUseFrac">—</div>
             </div>
-            <div class="qc-go">Continue ›</div>
           </div>
         </div>
 
@@ -3730,12 +4016,9 @@
           <button class="back-btn" onclick="goHome()">←</button>
           <h2>🔭 Observatory</h2>
         </div>
-        <div class="obs-stats">
-          <div><span id="obsRevealed">0</span> / <span id="obsTotal">20</span> discovered</div>
-          <div><span id="obsCats">0</span> / 5 categories</div>
-        </div>
-        <div class="obs-tabs" id="obsTabs"></div>
-        <div class="obs-grid" id="obsGrid"></div>
+        <div class="obs-progression" id="obsProgression"></div>
+        <div id="obsNextHero"></div>
+        <div id="obsGrid"></div>
       </section>
 
       <!-- OBSERVATORY — DETAIL -->
@@ -4501,6 +4784,117 @@
         { id: "bo3", category: "body", title: "Bone vs Steel", question: "Which is stronger per weight — human bone or steel?", options: ["Steel", "They're equal", "Bone"], correctIndex: 2, explanation: "Ounce for ounce, bone is stronger than steel. A cubic cm of bone can bear ~170 kg before crushing.", mindBlowingFact: "Your skeleton completely replaces itself every 10 years — you don't have a single bone cell from a decade ago.", xpCost: 150 },
         { id: "bo4", category: "body", title: "DNA Library", question: "If you uncoiled all the DNA in your body, how far would it stretch?", options: ["To the Moon", "To the Sun and back", "To Pluto and back"], correctIndex: 1, explanation: "Each cell has ~2 meters of DNA. Multiply by 37 trillion cells = enough DNA to stretch to the Sun and back about 600 times.", mindBlowingFact: "All of humanity's DNA information could fit on a few grams of DNA molecules — the ultimate hard drive.", xpCost: 250 },
       ];
+
+      const OBSERVATORY_LESSONS = [
+        {
+          id: "ls-star-life", category: "space", title: "How Stars Live and Die",
+          xpCost: 75,
+          lesson: "Stars are born inside huge clouds of gas and dust called <b>nebulae</b>. Gravity pulls the gas together until it gets incredibly hot — so hot that hydrogen atoms smash together and fuse into helium. This is called <b>nuclear fusion</b>, and it's what makes a star shine.\n\nA star like our Sun will burn steadily for about 10 billion years. But all stars eventually run out of fuel.\n\nWhen a medium-sized star (like the Sun) runs out of hydrogen, it swells up into a <b>red giant</b> — big enough to swallow Mercury and Venus. Then it gently puffs off its outer layers, leaving behind a tiny, super-dense core called a <b>white dwarf</b>.\n\nMassive stars die far more dramatically. They explode in a <b>supernova</b> — one of the most powerful events in the universe. What's left behind can become a <b>neutron star</b> (incredibly dense) or even a <b>black hole</b> (so dense that not even light can escape).\n\nHere's the amazing part: the explosion scatters elements like carbon, oxygen, and iron into space. These elements eventually form new stars, planets — and even you. As Carl Sagan said: <i>\"We are made of star stuff.\"</i>",
+          questions: [
+            { question: "What process makes a star shine?", options: ["Chemical burning", "Nuclear fusion", "Electrical sparks"], correctIndex: 1, explanation: "Stars shine because hydrogen atoms fuse into helium in their cores, releasing enormous energy." },
+            { question: "What is a nebula?", options: ["A dying star", "A cloud of gas and dust where stars are born", "A type of galaxy"], correctIndex: 1, explanation: "Nebulae are huge clouds of gas and dust — the nurseries where new stars form." },
+            { question: "What happens to a medium-sized star when it runs out of fuel?", options: ["It becomes a black hole", "It swells into a red giant, then becomes a white dwarf", "It just turns off instantly"], correctIndex: 1, explanation: "Medium stars expand into red giants, shed their outer layers, and leave behind a dense white dwarf." },
+            { question: "What can a massive star become after a supernova?", options: ["A red giant or a nebula", "A neutron star or a black hole", "A white dwarf or a comet"], correctIndex: 1, explanation: "After a massive star explodes in a supernova, the core can collapse into a neutron star or a black hole." },
+            { question: "Why did Carl Sagan say 'We are made of star stuff'?", options: ["Because we can see stars", "Because elements in our bodies were forged inside stars", "Because humans named the stars"], correctIndex: 1, explanation: "The carbon, oxygen, and iron in your body were created inside stars and spread through space by supernovae." }
+          ]
+        },
+        {
+          id: "ls-ecosystem", category: "nature", title: "How Ecosystems Work",
+          xpCost: 75,
+          lesson: "An <b>ecosystem</b> is a community of living things (plants, animals, fungi, bacteria) interacting with each other and their environment (water, soil, sunlight, air).\n\nEvery ecosystem runs on energy. It starts with the <b>Sun</b>. Plants capture sunlight through <b>photosynthesis</b> and turn it into food. That's why plants are called <b>producers</b>.\n\nAnimals that eat plants are <b>primary consumers</b> (like rabbits and deer). Animals that eat other animals are <b>secondary consumers</b> (like foxes) or <b>tertiary consumers</b> (like eagles). This chain of eating is called a <b>food chain</b>.\n\nBut real ecosystems aren't simple chains — they're tangled <b>food webs</b> where everything connects. A fox eats rabbits, but also berries and mice. An eagle eats fish, snakes, and small birds.\n\nWhen anything dies, <b>decomposers</b> (bacteria, fungi, worms) break it down and return nutrients to the soil. Plants use those nutrients to grow — and the cycle starts again.\n\nIf you remove one species, the whole web can wobble. For example, when wolves were removed from Yellowstone Park, deer overgrazed the riverbanks, trees disappeared, and even the rivers changed course! Bringing wolves back restored the balance.",
+          questions: [
+            { question: "Where does the energy in an ecosystem start?", options: ["In the soil", "From the Sun", "From animals"], correctIndex: 1, explanation: "Nearly all ecosystem energy comes from the Sun — plants capture it through photosynthesis." },
+            { question: "What are producers in an ecosystem?", options: ["Animals that hunt", "Plants that make food from sunlight", "Bacteria that decompose"], correctIndex: 1, explanation: "Producers (mostly plants) use photosynthesis to convert sunlight into food energy." },
+            { question: "What is the difference between a food chain and a food web?", options: ["They are the same thing", "A food web is many interconnected food chains", "A food chain is bigger"], correctIndex: 1, explanation: "A food web shows the complex, interconnected feeding relationships in an ecosystem — much more realistic than a simple chain." },
+            { question: "What role do decomposers play?", options: ["They eat living plants", "They break down dead things and return nutrients to the soil", "They produce oxygen"], correctIndex: 1, explanation: "Decomposers like fungi and bacteria recycle dead material back into nutrients that plants can use." },
+            { question: "What happened when wolves were removed from Yellowstone?", options: ["Nothing changed", "Deer overgrazed, trees vanished, and rivers changed", "Other predators took over immediately"], correctIndex: 1, explanation: "Without wolves, deer populations exploded, overgrazed vegetation, and the whole ecosystem — even the rivers — was affected." }
+          ]
+        },
+        {
+          id: "ls-bridges", category: "engineering", title: "How Bridges Hold Weight",
+          xpCost: 100,
+          lesson: "Every bridge has one job: get something from one side to the other without falling down. But how it does this depends on the forces involved.\n\nThe two main forces in bridges are <b>compression</b> (pushing/squeezing) and <b>tension</b> (pulling/stretching). Every bridge design manages these forces differently.\n\n<b>Beam bridges</b> are the simplest — a flat surface resting on supports at each end (think: a plank across a stream). The top of the beam gets compressed and the bottom gets stretched. Simple, but limited in length.\n\n<b>Arch bridges</b> are ancient and brilliant. The curved shape takes the downward weight and redirects it outward into the supports (called abutments). Arches work almost entirely in compression, which is why they can be made from stone — a material that's strong under compression. Roman arches still stand after 2,000 years!\n\n<b>Suspension bridges</b> (like the Golden Gate) hang the road from cables that drape over tall towers. The cables are in tension — they pull. The towers are in compression — they push down. This design can span enormous distances.\n\n<b>Truss bridges</b> use triangles — the strongest shape in engineering. A triangle can't be deformed without breaking a side, which makes truss structures incredibly rigid.\n\nModern engineers use computers to simulate millions of force scenarios before a single beam is placed.",
+          questions: [
+            { question: "What are the two main forces in bridge engineering?", options: ["Gravity and magnetism", "Compression and tension", "Friction and momentum"], correctIndex: 1, explanation: "Compression (squeezing) and tension (stretching) are the fundamental forces every bridge must handle." },
+            { question: "Why are arch bridges so durable?", options: ["They use modern steel", "They redirect weight into compression through their curved shape", "They are very thick"], correctIndex: 1, explanation: "The arch shape converts downward force into outward compression, which materials like stone handle very well." },
+            { question: "How do suspension bridges work?", options: ["The road floats on water", "Cables in tension hold up the road, towers in compression support the cables", "Magnets hold everything up"], correctIndex: 1, explanation: "Suspension bridges use cables (tension) draped over towers (compression) to support the road deck over very long spans." },
+            { question: "Why are triangles used in truss bridges?", options: ["They look nice", "Triangles can't be deformed without breaking a side", "Triangles use less material"], correctIndex: 1, explanation: "A triangle is the strongest geometric shape — it can't change shape under load without one of its sides breaking." },
+            { question: "What is a beam bridge's main weakness?", options: ["It can only span short distances", "It only works with wood", "It can't carry cars"], correctIndex: 0, explanation: "Beam bridges are simple but limited in span — the longer the beam, the more it bends in the middle." }
+          ]
+        },
+        {
+          id: "ls-states-matter", category: "chemistry", title: "States of Matter",
+          xpCost: 100,
+          lesson: "Everything around you — air, water, your desk, your body — is made of tiny particles (atoms or molecules). The <b>state of matter</b> depends on how these particles behave.\n\nIn a <b>solid</b>, particles are packed tightly in a fixed pattern. They vibrate in place but don't move around. That's why solids have a definite shape and volume. Think of a block of ice — the water molecules are locked in a crystal grid.\n\nIn a <b>liquid</b>, particles are close together but can slide past each other. Liquids have a definite volume but take the shape of their container. Pour water into a glass — it fills the bottom, not the top.\n\nIn a <b>gas</b>, particles fly freely in all directions at high speed. Gases have no fixed shape or volume — they expand to fill any container. The air in your room is gas molecules zooming around at hundreds of meters per second!\n\nWhat makes particles change state? <b>Energy</b> (usually heat). Add heat to ice → it melts into water (<b>melting</b>). Add more heat → water boils into steam (<b>evaporation/boiling</b>). Cool steam → it condenses back to water (<b>condensation</b>). Cool water → it freezes back to ice (<b>freezing</b>).\n\nThere's also a fourth state: <b>plasma</b>. Heat a gas to extreme temperatures and electrons get ripped from atoms. Plasma makes up 99% of the visible universe — stars, lightning, and neon signs are all plasma!",
+          questions: [
+            { question: "Why do solids have a definite shape?", options: ["Because they are heavy", "Because their particles are locked in fixed positions", "Because of gravity"], correctIndex: 1, explanation: "In solids, particles vibrate in fixed positions within a rigid structure, giving them a definite shape." },
+            { question: "What happens to particles when a solid melts?", options: ["They stop moving", "They gain energy and start sliding past each other", "They fly apart completely"], correctIndex: 1, explanation: "When a solid melts, added heat energy lets particles break free from their fixed positions and move around — becoming a liquid." },
+            { question: "How do gas particles behave?", options: ["They vibrate in place", "They fly freely in all directions at high speed", "They slide slowly past each other"], correctIndex: 1, explanation: "Gas particles move freely and rapidly in all directions, which is why gases expand to fill any container." },
+            { question: "What is plasma?", options: ["A very cold liquid", "An extremely hot gas where electrons are stripped from atoms", "A type of solid crystal"], correctIndex: 1, explanation: "Plasma forms when gas gets so hot that electrons are ripped from atoms — it's the most common state of matter in the universe." },
+            { question: "What is the process called when a gas turns back into a liquid?", options: ["Evaporation", "Condensation", "Freezing"], correctIndex: 1, explanation: "Condensation is when gas particles lose energy, slow down, and come together as a liquid — like water droplets forming on a cold glass." }
+          ]
+        },
+        {
+          id: "ls-heart", category: "body", title: "How Your Heart Works",
+          xpCost: 75,
+          lesson: "Your heart is a muscular pump about the size of your fist. It beats roughly <b>100,000 times per day</b>, pushing blood through a network of vessels that, laid end to end, would wrap around the Earth more than twice.\n\nThe heart has <b>four chambers</b>: two on top (left and right <b>atria</b>) and two on the bottom (left and right <b>ventricles</b>). The atria receive blood; the ventricles pump it out.\n\nHere's the journey of your blood:\n\n1. Blood that has delivered oxygen to your body returns to the <b>right atrium</b> — it's now low on oxygen and looks dark red.\n2. It flows into the <b>right ventricle</b>, which pumps it to the <b>lungs</b>.\n3. In the lungs, blood drops off carbon dioxide and picks up fresh oxygen. Now it's bright red!\n4. Oxygen-rich blood returns to the <b>left atrium</b>.\n5. It flows into the <b>left ventricle</b> — the strongest chamber — which pumps it out to the entire body through the <b>aorta</b>.\n\nThis creates two loops: the <b>pulmonary circuit</b> (heart → lungs → heart) and the <b>systemic circuit</b> (heart → body → heart).\n\nValves between the chambers act like one-way doors — they open to let blood through, then snap shut to prevent backflow. The \"lub-dub\" sound of your heartbeat is actually the sound of these valves closing!\n\nYour heart adjusts its rate automatically. Exercise? It speeds up to deliver more oxygen. Sleeping? It slows down to save energy. An average resting heart rate is 60–100 beats per minute.",
+          questions: [
+            { question: "How many chambers does the heart have?", options: ["Two", "Four", "Six"], correctIndex: 1, explanation: "The heart has four chambers: two atria (top) that receive blood and two ventricles (bottom) that pump it out." },
+            { question: "What happens to blood in the lungs?", options: ["It gets filtered by the liver", "It drops off CO₂ and picks up fresh oxygen", "It gets stored for later"], correctIndex: 1, explanation: "In the lungs, blood releases carbon dioxide (waste) and absorbs oxygen — that's why you breathe in and out." },
+            { question: "Which chamber pumps blood to the entire body?", options: ["Right atrium", "Left ventricle", "Right ventricle"], correctIndex: 1, explanation: "The left ventricle is the strongest chamber — it pumps oxygen-rich blood through the aorta to your whole body." },
+            { question: "What makes the 'lub-dub' sound of a heartbeat?", options: ["Blood hitting the ribs", "Heart valves closing", "Muscles contracting"], correctIndex: 1, explanation: "The lub-dub sound comes from heart valves snapping shut — first the atrial valves (lub), then the ventricle valves (dub)." },
+            { question: "What are the two blood circulation loops called?", options: ["Upper and lower circuits", "Pulmonary and systemic circuits", "Arterial and venous circuits"], correctIndex: 1, explanation: "The pulmonary circuit goes heart → lungs → heart. The systemic circuit goes heart → body → heart." }
+          ]
+        },
+        {
+          id: "ls-acids-bases", category: "chemistry", title: "Acids, Bases & the pH Scale",
+          xpCost: 75,
+          lesson: "You've probably heard of acids — they sound dangerous! But you eat and drink them every day. Lemon juice, vinegar, and fizzy drinks are all <b>acids</b>. What makes them acidic is that they release <b>hydrogen ions (H⁺)</b> when dissolved in water.\n\nThe opposite of an acid is a <b>base</b> (also called an alkali when dissolved in water). Soap, baking soda, and bleach are bases. They release <b>hydroxide ions (OH⁻)</b> in water and often feel slippery.\n\nScientists measure how acidic or basic something is using the <b>pH scale</b>, which goes from 0 to 14:\n\n• <b>pH 0–6</b> = acidic (lower = stronger acid)\n• <b>pH 7</b> = neutral (pure water)\n• <b>pH 8–14</b> = basic (higher = stronger base)\n\nStomach acid has a pH of about 1.5 — strong enough to dissolve metal! Your blood is slightly basic at pH 7.4, and even a tiny change can be dangerous.\n\nWhen an acid meets a base, they <b>neutralize</b> each other, producing water and a <b>salt</b>. This isn't just table salt — in chemistry, a \"salt\" is any compound formed from this reaction. For example, hydrochloric acid + sodium hydroxide → water + sodium chloride (table salt).\n\nThis is why antacid tablets work: they're mild bases that neutralize excess stomach acid!",
+          questions: [
+            { question: "What do acids release in water?", options: ["Oxygen atoms", "Hydrogen ions (H⁺)", "Carbon dioxide"], correctIndex: 1, explanation: "Acids dissolve in water and release hydrogen ions (H⁺), which is what gives them their acidic properties." },
+            { question: "What pH value is neutral?", options: ["0", "7", "14"], correctIndex: 1, explanation: "pH 7 is neutral — pure water. Below 7 is acidic, above 7 is basic." },
+            { question: "What happens when an acid meets a base?", options: ["An explosion", "They neutralize each other, making water and a salt", "They become stronger"], correctIndex: 1, explanation: "Neutralization: the H⁺ from the acid combines with the OH⁻ from the base to form water, plus a salt." },
+            { question: "Which of these is a base?", options: ["Lemon juice", "Vinegar", "Baking soda"], correctIndex: 2, explanation: "Baking soda (sodium bicarbonate) is a mild base with a pH around 8.3. Lemon juice and vinegar are both acids." },
+            { question: "Why do antacid tablets help with heartburn?", options: ["They cool down your stomach", "They're mild bases that neutralize excess stomach acid", "They absorb the food"], correctIndex: 1, explanation: "Antacids are bases — they neutralize the extra hydrochloric acid in your stomach, relieving the burning feeling." }
+          ]
+        },
+        {
+          id: "ls-chem-reactions", category: "chemistry", title: "How Chemical Reactions Work",
+          xpCost: 100,
+          lesson: "A <b>chemical reaction</b> happens when substances interact and transform into completely new substances. The starting materials are called <b>reactants</b>, and what they become are called <b>products</b>.\n\nHow do you know a reaction happened? Look for clues:\n• Color change (like iron turning orange when it rusts)\n• Gas bubbles (like vinegar + baking soda fizzing)\n• Temperature change (like hand warmers getting hot)\n• A new substance forms (like ash after burning wood)\n\nFor a reaction to happen, particles need to <b>collide</b> with enough energy. This minimum energy is called the <b>activation energy</b> — think of it like pushing a boulder over a hill. Once it's over, the reaction rolls on its own.\n\nSome reactions are <b>exothermic</b> — they release energy (heat, light, sound). Burning fuel, fireworks, and your body digesting food are all exothermic. Other reactions are <b>endothermic</b> — they absorb energy. Ice packs and photosynthesis are endothermic.\n\nYou can speed up a reaction by:\n• <b>Heating it</b> (particles move faster, collide more)\n• <b>Increasing concentration</b> (more particles = more collisions)\n• <b>Adding a catalyst</b> (lowers activation energy without being used up)\n\nYour body uses biological catalysts called <b>enzymes</b> to run thousands of reactions every second. Without them, digesting a single meal would take weeks!",
+          questions: [
+            { question: "What are the starting materials in a chemical reaction called?", options: ["Products", "Reactants", "Catalysts"], correctIndex: 1, explanation: "Reactants are the substances you start with. They get rearranged into products during the reaction." },
+            { question: "What is activation energy?", options: ["The energy released by a reaction", "The minimum energy needed to start a reaction", "The energy stored in food"], correctIndex: 1, explanation: "Activation energy is the energy 'push' needed to get a reaction going — like the spark that lights a fire." },
+            { question: "What type of reaction releases heat?", options: ["Endothermic", "Exothermic", "Catalytic"], correctIndex: 1, explanation: "Exothermic reactions release energy as heat, light, or sound — like burning wood or an explosion." },
+            { question: "What does a catalyst do?", options: ["It gets used up in the reaction", "It lowers the activation energy without being consumed", "It always makes reactions hotter"], correctIndex: 1, explanation: "A catalyst speeds up a reaction by lowering the activation energy — and it's still there unchanged at the end." },
+            { question: "What are biological catalysts in your body called?", options: ["Vitamins", "Enzymes", "Hormones"], correctIndex: 1, explanation: "Enzymes are proteins that act as catalysts — they speed up chemical reactions in your body by millions of times." }
+          ]
+        },
+        {
+          id: "ls-periodic-table", category: "chemistry", title: "The Periodic Table",
+          xpCost: 150,
+          lesson: "The <b>periodic table</b> is chemistry's greatest cheat sheet. It organizes all known <b>elements</b> — the 118 fundamental building blocks of everything in the universe.\n\nEach element has a box showing its <b>symbol</b> (like O for oxygen, Fe for iron), <b>atomic number</b> (how many protons it has), and <b>atomic mass</b>.\n\nThe table is arranged by atomic number (left to right, top to bottom). But the real genius is in the <b>columns</b> (called <b>groups</b>). Elements in the same group behave similarly because they have the same number of <b>outer electrons</b>.\n\nKey groups:\n• <b>Group 1 — Alkali metals</b> (lithium, sodium, potassium): soft, reactive metals that explode in water. The further down, the more violent!\n• <b>Group 17 — Halogens</b> (fluorine, chlorine, bromine): reactive non-metals. Chlorine disinfects pools; fluorine is in toothpaste.\n• <b>Group 18 — Noble gases</b> (helium, neon, argon): almost never react. Used in balloons, neon signs, and welding.\n\nThe rows are called <b>periods</b>. Moving across a period, elements change from metals on the left to non-metals on the right, with <b>metalloids</b> (like silicon) in between.\n\nDmitri Mendeleev created the first version in 1869. He was so confident in the pattern that he left <b>gaps</b> for elements that hadn't been discovered yet — and predicted their properties! When gallium and germanium were found years later, they matched his predictions almost exactly.",
+          questions: [
+            { question: "What does the atomic number tell you?", options: ["How heavy the atom is", "How many protons it has", "How many electrons it shares"], correctIndex: 1, explanation: "The atomic number is the number of protons in an atom's nucleus — it's what makes each element unique." },
+            { question: "Why do elements in the same group behave similarly?", options: ["They have the same color", "They have the same number of outer electrons", "They were discovered at the same time"], correctIndex: 1, explanation: "Chemical behavior depends mainly on outer (valence) electrons. Same group = same number of outer electrons = similar reactions." },
+            { question: "What are the noble gases known for?", options: ["They explode in water", "They almost never react with other elements", "They are the heaviest elements"], correctIndex: 1, explanation: "Noble gases have full outer electron shells, so they have no need to form bonds — making them extremely unreactive." },
+            { question: "What did Mendeleev do that was remarkable about his periodic table?", options: ["He discovered all the elements", "He left gaps and correctly predicted undiscovered elements", "He invented the atom"], correctIndex: 1, explanation: "Mendeleev predicted the properties of missing elements based on patterns — and was proven right when they were discovered." },
+            { question: "Where are metals and non-metals found on the periodic table?", options: ["Metals right, non-metals left", "Metals left, non-metals right", "They are mixed randomly"], correctIndex: 1, explanation: "Metals are on the left and center, non-metals on the right, with metalloids forming a zigzag border between them." }
+          ]
+        },
+        {
+          id: "ls-atoms-bonding", category: "chemistry", title: "Atoms and How They Bond",
+          xpCost: 200,
+          lesson: "Everything is made of <b>atoms</b> — unimaginably tiny particles. An atom has a <b>nucleus</b> (containing <b>protons</b> and <b>neutrons</b>) surrounded by a cloud of <b>electrons</b>.\n\nProtons have a positive charge (+), electrons have a negative charge (−), and neutrons are neutral. In a normal atom, the number of protons equals the number of electrons, so the charges balance out.\n\nElectrons orbit in <b>shells</b> (energy levels). The first shell holds up to 2 electrons, the second holds up to 8, the third up to 8 (in simple chemistry). Atoms are happiest when their outer shell is <b>full</b> — and they'll bond with other atoms to achieve this.\n\nThere are three main types of bonding:\n\n<b>Ionic bonding:</b> One atom gives electrons to another. Sodium (Na) has 1 outer electron it wants to lose. Chlorine (Cl) needs 1 electron to fill its shell. Na gives its electron to Cl → both become ions (Na⁺ and Cl⁻) that attract each other. Result: table salt (NaCl)!\n\n<b>Covalent bonding:</b> Atoms share electrons. Two hydrogen atoms each have 1 electron but need 2. They share their electrons → H₂ molecule. Water (H₂O) works the same way: oxygen shares electrons with two hydrogens.\n\n<b>Metallic bonding:</b> Metal atoms release their outer electrons into a shared \"sea\" of electrons that flows freely between them. This is why metals conduct electricity and can be bent without breaking.\n\nEvery material you touch — water, air, plastic, your own skin — exists because of these bonds holding atoms together.",
+          questions: [
+            { question: "What particles are found in an atom's nucleus?", options: ["Electrons and neutrons", "Protons and neutrons", "Only protons"], correctIndex: 1, explanation: "The nucleus contains protons (positive) and neutrons (neutral). Electrons orbit in shells outside the nucleus." },
+            { question: "What is an ionic bond?", options: ["Atoms share electrons equally", "One atom transfers electrons to another, creating charged ions", "Electrons flow freely between atoms"], correctIndex: 1, explanation: "In ionic bonding, one atom gives electrons to another — they become oppositely charged ions that attract each other." },
+            { question: "How does covalent bonding work?", options: ["Atoms transfer electrons", "Atoms share electrons", "Atoms repel each other"], correctIndex: 1, explanation: "In covalent bonding, atoms share electron pairs so both can achieve full outer shells — like H₂O or CO₂." },
+            { question: "Why do metals conduct electricity?", options: ["They are heavy", "They have a sea of free-flowing electrons", "They contain special batteries"], correctIndex: 1, explanation: "Metallic bonding creates a 'sea' of delocalized electrons that can move freely — carrying electrical current." },
+            { question: "Why do atoms form bonds?", options: ["To become heavier", "To fill their outer electron shell and become more stable", "Because they are magnetic"], correctIndex: 1, explanation: "Atoms bond to achieve a full outer electron shell — the most stable, lowest-energy arrangement." }
+          ]
+        }
+      ];
     </script>
     <script>
       /* ============================================================
@@ -4832,9 +5226,11 @@
         connMistakes: 0,
         connAnswered: false,
         // Observatory
-        obsFilter: "all",
         obsCurrentCard: null,
         obsAnswered: false,
+        obsLessonStep: null,
+        obsLessonCorrect: 0,
+        obsLessonAnswers: [],
         // WordDots instances
         dotsTP: null,
         dotsSP: null,
@@ -5189,7 +5585,7 @@
         updateQuestCounter();
         const pct = (state.questIndex / state.questTotal) * 100;
         document.getElementById("questProgress").style.width = pct + "%";
-        setTimeout(() => state.dotsQuest.focus(), 50);
+        state.dotsQuest.focus();
       }
 
       function updateQuestCounter() {
@@ -5820,11 +6216,12 @@
         if (worldId === "observatory") {
           const revealed = (p.observatory && p.observatory.revealed) || [];
           const xp = p.xp || 0;
-          const total = OBSERVATORY_DISCOVERIES.length;
-          const avail = OBSERVATORY_DISCOVERIES.filter(c => !revealed.includes(c.id) && xp >= c.xpCost).length;
+          const all = OBSERVATORY_DISCOVERIES.concat(OBSERVATORY_LESSONS);
+          const total = all.length;
+          const avail = all.filter(c => !revealed.includes(c.id) && xp >= c.xpCost).length;
           if (revealed.length === total) return { dot: "dot-good", status: "All found!", worldMeta: "All discoveries found!" };
-          if (avail > 0) return { dot: "dot-warn", status: avail + " available", worldMeta: avail + " discoveries available" };
-          const next = OBSERVATORY_DISCOVERIES.filter(c => !revealed.includes(c.id)).sort((a, b) => a.xpCost - b.xpCost)[0];
+          if (avail > 0) return { dot: "dot-warn", status: avail + " available", worldMeta: avail + " available" };
+          const next = all.filter(c => !revealed.includes(c.id)).sort((a, b) => a.xpCost - b.xpCost)[0];
           const needed = next ? next.xpCost - xp : 0;
           return { dot: "dot-muted", status: needed + " XP to next", worldMeta: revealed.length + "/" + total + " · " + needed + " XP to next" };
         }
@@ -6116,7 +6513,7 @@
         state.cardPhase = "input";
         updateSchoolUI();
         updateMiniPhoenix();
-        setTimeout(() => state.dotsTP.focus(), 50);
+        state.dotsTP.focus();
       }
 
       function updateMiniPhoenix() {
@@ -6231,7 +6628,7 @@
           document.getElementById("tpEx").textContent = "«" + w.ex + "»";
 
         state.dotsTP.reset(w.en);
-        setTimeout(() => state.dotsTP.focus(), 50);
+        state.dotsTP.focus();
         document.getElementById("tpDontKnowBtn").disabled = true;
 
         // Replace Check button with confirm-typing logic
@@ -6756,7 +7153,7 @@
         state.spellingChecked = false;
         const pct = (state.spellingIndex / q.length) * 100;
         document.getElementById("spellingProgress").style.width = pct + "%";
-        setTimeout(() => state.dotsSP.focus(), 50);
+        state.dotsSP.focus();
       }
 
       function normaliseAnswer(s) {
@@ -8456,81 +8853,187 @@
         return "locked";
       }
 
+      function obsAllCards() {
+        return OBSERVATORY_DISCOVERIES.concat(OBSERVATORY_LESSONS);
+      }
+
+      function obsFindCard(id) {
+        return obsAllCards().find(c => c.id === id);
+      }
+
+      function obsIsLesson(card) {
+        return !!card.lesson;
+      }
+
       function openObservatory() {
-        state.obsFilter = "all";
         state.obsCurrentCard = null;
         state.obsAnswered = false;
         renderObservatory();
         showScreen("observatoryScreen");
       }
 
+      // Observatory explorer ranks
+      const OBS_RANKS = [
+        { threshold: 0, name: "Stargazer", icon: "🔭" },
+        { threshold: 3, name: "Apprentice", icon: "📡" },
+        { threshold: 7, name: "Seeker", icon: "🧭" },
+        { threshold: 13, name: "Scholar", icon: "📜" },
+        { threshold: 20, name: "Sage", icon: "⭐" },
+        { threshold: 29, name: "Astronomer", icon: "🌟" }
+      ];
+
+      function obsGetRank(count) {
+        let rank = OBS_RANKS[0];
+        for (const r of OBS_RANKS) {
+          if (count >= r.threshold) rank = r;
+        }
+        return rank;
+      }
+
+      function obsGetNextRank(count) {
+        for (const r of OBS_RANKS) {
+          if (r.threshold > count) return r;
+        }
+        return null;
+      }
+
       function renderObservatory() {
         const p = progress();
         const xp = p.xp || 0;
         const revealed = (p.observatory && p.observatory.revealed) || [];
+        const all = obsAllCards();
+        const discCount = revealed.length;
 
-        // Stats
-        document.getElementById("obsRevealed").textContent = revealed.length;
-        document.getElementById("obsTotal").textContent = OBSERVATORY_DISCOVERIES.length;
-        const catsExplored = new Set(OBSERVATORY_DISCOVERIES.filter(c => revealed.includes(c.id)).map(c => c.category)).size;
-        document.getElementById("obsCats").textContent = catsExplored;
-
-        // Tabs
-        const tabsEl = document.getElementById("obsTabs");
-        let tabsHtml = '<button class="obs-tab' + (state.obsFilter === "all" ? " active" : "") + '" onclick="obsFilterCat(\'all\')">All</button>';
-        for (const cat of OBS_CATEGORIES) {
-          tabsHtml += '<button class="obs-tab' + (state.obsFilter === cat.id ? " active" : "") + '" style="' + (state.obsFilter === cat.id ? "background:" + cat.color + ";border-color:" + cat.color : "") + '" onclick="obsFilterCat(\'' + cat.id + '\')">' + cat.icon + " " + cat.label + "</button>";
+        // 1. Explorer Rank + Progress Bar
+        const rank = obsGetRank(discCount);
+        const nextRank = obsGetNextRank(discCount);
+        let progHtml = '<div class="obs-rank-icon">' + rank.icon + '</div>';
+        progHtml += '<div class="obs-rank-name">' + rank.name + '</div>';
+        progHtml += '<div class="obs-disc-count">' + discCount + (discCount !== 1 ? ' Discoveries' : ' Discovery') + ' Found</div>';
+        if (nextRank) {
+          const pct = Math.round(((discCount - rank.threshold) / (nextRank.threshold - rank.threshold)) * 100);
+          progHtml += '<div class="obs-prog-bar"><div style="width:' + pct + '%"></div></div>';
+          progHtml += '<div class="obs-prog-label">' + discCount + '/' + nextRank.threshold + ' to ' + nextRank.name + '</div>';
+        } else {
+          progHtml += '<div class="obs-prog-bar"><div style="width:100%"></div></div>';
+          progHtml += '<div class="obs-prog-label">All ranks achieved!</div>';
         }
-        tabsEl.innerHTML = tabsHtml;
+        document.getElementById("obsProgression").innerHTML = progHtml;
 
-        // Filter + sort: available → revealed → locked
-        let cards = OBSERVATORY_DISCOVERIES.slice();
-        if (state.obsFilter !== "all") cards = cards.filter(c => c.category === state.obsFilter);
+        // 2. Next Discovery Hero Card
+        const heroEl = document.getElementById("obsNextHero");
+        const available = all.filter(c => obsCardState(c, xp, revealed) === "available")
+          .sort((a, b) => a.xpCost - b.xpCost);
+        const locked = all.filter(c => obsCardState(c, xp, revealed) === "locked")
+          .sort((a, b) => a.xpCost - b.xpCost);
 
-        const order = { available: 0, revealed: 1, locked: 2 };
-        cards.sort((a, b) => {
-          const sa = obsCardState(a, xp, revealed), sb = obsCardState(b, xp, revealed);
-          if (order[sa] !== order[sb]) return order[sa] - order[sb];
-          return a.xpCost - b.xpCost;
-        });
+        if (discCount >= all.length) {
+          // All discovered
+          heroEl.innerHTML = '<div class="obs-next-hero all-done">' +
+            '<div class="obs-hero-label">OBSERVATORY COMPLETE</div>' +
+            '<div class="obs-hero-icon">🌟</div>' +
+            '<div class="obs-hero-title">All Discovered!</div>' +
+            '<div class="obs-hero-status ready">' + all.length + ' / ' + all.length + ' discoveries</div>' +
+            '</div>';
+        } else if (available.length > 0) {
+          // Next available — ready to reveal
+          const next = available[0];
+          const cat = OBS_CATEGORIES.find(c => c.id === next.category);
+          heroEl.innerHTML = '<div class="obs-next-hero ready" onclick="obsRevealCard(\'' + next.id + '\')">' +
+            '<div class="obs-hero-label">NEXT DISCOVERY</div>' +
+            '<div class="obs-hero-icon">' + cat.icon + '</div>' +
+            '<div class="obs-hero-title">' + next.title + '</div>' +
+            '<div class="obs-hero-status ready">Ready to Reveal!</div>' +
+            '</div>';
+        } else if (locked.length > 0) {
+          // Next locked — show XP remaining
+          const next = locked[0];
+          const remaining = next.xpCost - xp;
+          const pct = Math.round((xp / next.xpCost) * 100);
+          heroEl.innerHTML = '<div class="obs-next-hero">' +
+            '<div class="obs-hero-label">NEXT DISCOVERY</div>' +
+            '<div class="obs-hero-icon">🔒</div>' +
+            '<div class="obs-hero-title">???</div>' +
+            '<div class="obs-hero-status locked-hint">' + remaining + ' XP remaining</div>' +
+            '<div class="obs-hero-prog"><div style="width:' + pct + '%"></div></div>' +
+            '</div>';
+        }
 
-        // Render grid
+        // 3–4. Render category rows with progress bars + completion
         const gridEl = document.getElementById("obsGrid");
+        const order = { available: 0, locked: 1, revealed: 2 };
         let html = "";
-        for (const card of cards) {
-          const st = obsCardState(card, xp, revealed);
-          const rarity = obsGetRarity(card.xpCost);
-          const cat = OBS_CATEGORIES.find(c => c.id === card.category);
-          const rarityLabel = rarity.charAt(0).toUpperCase() + rarity.slice(1);
 
-          let onclick = "";
-          if (st === "available") onclick = 'onclick="obsRevealCard(\'' + card.id + '\')"';
-          else if (st === "revealed") onclick = 'onclick="obsOpenRevealed(\'' + card.id + '\')"';
+        for (const cat of OBS_CATEGORIES) {
+          const cards = all.filter(c => c.category === cat.id);
+          if (!cards.length) continue;
 
-          html += '<div class="obs-card obs-' + rarity + " " + st + '" ' + onclick + ">";
-          html += '<div class="obs-card-rarity">' + rarityLabel + "</div>";
-          html += '<div class="obs-card-icon">' + (st === "locked" ? "🔒" : cat.icon) + "</div>";
-          html += '<div class="obs-card-title">' + (st === "locked" ? "???" : card.title) + "</div>";
-          html += '<div class="obs-card-cat">' + cat.icon + " " + cat.label + "</div>";
+          cards.sort((a, b) => {
+            const sa = obsCardState(a, xp, revealed), sb = obsCardState(b, xp, revealed);
+            if (order[sa] !== order[sb]) return order[sa] - order[sb];
+            return a.xpCost - b.xpCost;
+          });
 
-          if (st === "locked") {
-            const pct = Math.min(100, Math.round(xp / card.xpCost * 100));
-            html += '<div class="obs-card-lock">' + xp + " / " + card.xpCost + " XP</div>";
-            html += '<div class="obs-progress-mini"><div style="width:' + pct + '%"></div></div>';
+          const revealedCount = cards.filter(c => revealed.includes(c.id)).length;
+          const isComplete = revealedCount === cards.length;
+          const catPct = Math.round((revealedCount / cards.length) * 100);
+
+          html += '<div class="obs-row' + (isComplete ? ' complete' : '') + '">';
+          html += '<div class="obs-row-header">';
+          html += '<span class="obs-row-icon">' + cat.icon + '</span>';
+          html += '<span class="obs-row-label">' + cat.label + '</span>';
+          html += '<span class="obs-row-count">' + (isComplete ? '★ Complete' : revealedCount + ' / ' + cards.length) + '</span>';
+          html += '</div>';
+          // Category progress bar
+          html += '<div class="obs-row-progress"><div style="width:' + catPct + '%;background:' + cat.color + '"></div></div>';
+          html += '<div class="obs-row-scroll">';
+
+          for (const card of cards) {
+            const st = obsCardState(card, xp, revealed);
+            const rarity = obsGetRarity(card.xpCost);
+            const rarityLabel = rarity.charAt(0).toUpperCase() + rarity.slice(1);
+            const isLesson = obsIsLesson(card);
+            const typeClass = isLesson ? "type-lesson" : "type-fact";
+            const typeLabel = isLesson ? "LESSON" : "FACT";
+            // 5. Lesson accent class
+            const lessonAccent = isLesson ? " obs-lesson-accent" : "";
+
+            let onclick = "";
+            if (st === "available") onclick = 'onclick="obsRevealCard(\'' + card.id + '\')"';
+            else if (st === "revealed") onclick = 'onclick="obsOpenRevealed(\'' + card.id + '\')"';
+
+            html += '<div class="obs-card obs-' + rarity + " " + st + lessonAccent + '" ' + onclick + ">";
+            html += '<div class="obs-card-type ' + typeClass + '">' + typeLabel + "</div>";
+            html += '<div class="obs-card-rarity">' + rarityLabel + "</div>";
+            const lockIcon = rarity === "legendary" ? "🔐" : "🔒";
+            html += '<div class="obs-card-icon">' + (st === "locked" ? lockIcon : cat.icon) + "</div>";
+            html += '<div class="obs-card-title">' + (st === "locked" ? "???" : card.title) + "</div>";
+            html += '<div class="obs-card-cat">' + (isLesson && st !== "locked" ? "5 questions" : cat.icon + " " + cat.label) + "</div>";
+
+            if (st === "locked") {
+              const pct = Math.min(100, Math.round(xp / card.xpCost * 100));
+              html += '<div class="obs-card-lock">' + xp + " / " + card.xpCost + " XP</div>";
+              html += '<div class="obs-progress-mini"><div style="width:' + pct + '%"></div></div>';
+            }
+
+            html += "</div>";
           }
 
-          html += "</div>";
+          html += '</div></div>';
         }
         gridEl.innerHTML = html;
+
+        // Entrance animations — staggered cascade
+        const animTargets = document.querySelectorAll("#observatoryScreen .obs-progression, #obsNextHero > *, #obsGrid .obs-row");
+        animTargets.forEach(function(el, i) {
+          el.classList.add("obs-entrance");
+          el.style.animationDelay = (i * 0.07) + "s";
+        });
       }
 
-      function obsFilterCat(cat) {
-        state.obsFilter = cat;
-        renderObservatory();
-      }
 
       function obsRevealCard(id) {
-        const card = OBSERVATORY_DISCOVERIES.find(c => c.id === id);
+        const card = obsFindCard(id);
         if (!card) return;
         const p = progress();
         if ((p.xp || 0) < card.xpCost) return;
@@ -8541,18 +9044,33 @@
         }
         state.obsCurrentCard = card;
         state.obsAnswered = false;
-        renderObsDetail(card, false);
+        state.obsLessonStep = null;
+        state.obsLessonCorrect = 0;
+        state.obsLessonAnswers = [];
+        if (obsIsLesson(card)) {
+          state.obsLessonStep = "reading";
+          renderObsLessonReading(card);
+        } else {
+          renderObsDetail(card, false);
+        }
         showScreen("obsDetailScreen");
-        // Confetti burst
         spawnConfetti("obsDetailCard", 20, obsGetRarity(card.xpCost) === "legendary");
       }
 
       function obsOpenRevealed(id) {
-        const card = OBSERVATORY_DISCOVERIES.find(c => c.id === id);
+        const card = obsFindCard(id);
         if (!card) return;
         state.obsCurrentCard = card;
-        state.obsAnswered = true;
-        renderObsDetail(card, true);
+        state.obsLessonStep = null;
+        state.obsLessonCorrect = 0;
+        state.obsLessonAnswers = [];
+        if (obsIsLesson(card)) {
+          state.obsLessonStep = "reading";
+          renderObsLessonReading(card, true);
+        } else {
+          state.obsAnswered = true;
+          renderObsDetail(card, true);
+        }
         showScreen("obsDetailScreen");
       }
 
@@ -8604,6 +9122,135 @@
         }
       }
 
+      // ---- Lesson flow ----
+
+      function renderObsLessonReading(card, isReread) {
+        const cat = OBS_CATEGORIES.find(c => c.id === card.category);
+        const rarity = obsGetRarity(card.xpCost);
+        const rarityLabel = rarity.charAt(0).toUpperCase() + rarity.slice(1);
+        const rarityColors = { common: "#9ca3af", rare: "#60a5fa", epic: "#a78bfa", legendary: "#fbbf24" };
+
+        document.getElementById("obsDetailHeading").textContent = cat.icon + " " + cat.label;
+
+        const cardEl = document.getElementById("obsDetailCard");
+        cardEl.innerHTML =
+          '<div class="obs-detail-cat" style="background:' + cat.color + "22;color:" + cat.color + '">' + cat.icon + " " + cat.label + "</div>" +
+          '<div class="obs-detail-title">' + card.title + "</div>" +
+          '<div class="obs-detail-rarity" style="color:' + rarityColors[rarity] + '">' + rarityLabel + " Lesson</div>";
+
+        const contentEl = document.getElementById("obsDetailContent");
+        contentEl.innerHTML = '<div class="obs-lesson-text">' + card.lesson.replace(/\n/g, "<br>") + "</div>";
+
+        const actEl = document.getElementById("obsDetailActions");
+        const quizLabel = isReread ? "Review Questions" : "Ready for Questions!";
+        actEl.innerHTML =
+          '<button class="btn ghost" onclick="showScreen(\'observatoryScreen\'); renderObservatory()">Back to Vault</button>' +
+          ' <button class="btn primary" onclick="obsStartLessonQuiz()">' + quizLabel + '</button>';
+      }
+
+      function obsStartLessonQuiz() {
+        state.obsLessonStep = 0;
+        state.obsLessonCorrect = 0;
+        state.obsLessonAnswers = [];
+        renderObsLessonQ();
+      }
+
+      function renderObsLessonQ() {
+        const card = state.obsCurrentCard;
+        const idx = state.obsLessonStep;
+        const q = card.questions[idx];
+        const total = card.questions.length;
+
+        const contentEl = document.getElementById("obsDetailContent");
+        const pct = Math.round(((idx) / total) * 100);
+        let html = '<div class="obs-quiz-progress">' +
+          '<div class="obs-quiz-progress-bar"><div style="width:' + pct + '%"></div></div>' +
+          '<div class="obs-quiz-progress-label">' + (idx + 1) + "/" + total + "</div></div>";
+
+        html += '<div class="obs-question">' + q.question + "</div>";
+        html += '<div class="obs-choices" id="obsLessonChoices">';
+        for (let i = 0; i < q.options.length; i++) {
+          html += '<button class="opt" onclick="obsLessonPick(' + i + ')">' + q.options[i] + "</button>";
+        }
+        html += "</div>";
+        html += '<div id="obsLessonReveal"></div>';
+        contentEl.innerHTML = html;
+
+        document.getElementById("obsDetailActions").innerHTML = "";
+      }
+
+      function obsLessonPick(idx) {
+        const card = state.obsCurrentCard;
+        const qIdx = state.obsLessonStep;
+        if (typeof qIdx !== "number") return;
+        const q = card.questions[qIdx];
+
+        // Prevent double-tap
+        const btns = document.querySelectorAll("#obsLessonChoices .opt");
+        if (btns[0] && btns[0].classList.contains("disabled")) return;
+
+        const correct = idx === q.correctIndex;
+        if (correct) state.obsLessonCorrect++;
+        state.obsLessonAnswers.push({ qIdx: qIdx, picked: idx, correct: correct });
+
+        btns.forEach((btn, i) => {
+          btn.classList.add("disabled");
+          if (i === q.correctIndex) btn.classList.add("correct-pick");
+          if (i === idx && !correct) btn.classList.add("wrong-pick");
+        });
+
+        document.getElementById("obsLessonReveal").innerHTML =
+          '<div class="obs-explanation" style="margin-top:1rem">' + q.explanation + "</div>";
+
+        const isLast = qIdx >= card.questions.length - 1;
+        document.getElementById("obsDetailActions").innerHTML =
+          '<button class="btn primary" onclick="obsLessonNext()">' + (isLast ? "See Results" : "Next →") + "</button>";
+      }
+
+      function obsLessonNext() {
+        const card = state.obsCurrentCard;
+        const next = state.obsLessonStep + 1;
+        if (next >= card.questions.length) {
+          state.obsLessonStep = "results";
+          renderObsLessonResults();
+        } else {
+          state.obsLessonStep = next;
+          renderObsLessonQ();
+        }
+      }
+
+      function renderObsLessonResults() {
+        const card = state.obsCurrentCard;
+        const total = card.questions.length;
+        const correct = state.obsLessonCorrect;
+
+        const contentEl = document.getElementById("obsDetailContent");
+        let html = '<div class="obs-quiz-score">' +
+          '<div class="obs-quiz-score-circle">' + correct + "/" + total + "</div>" +
+          "<h3>" + correct + " of " + total + " correct!</h3></div>";
+
+        html += '<ul class="obs-quiz-summary">';
+        for (let i = 0; i < total; i++) {
+          const q = card.questions[i];
+          const ans = state.obsLessonAnswers.find(a => a.qIdx === i);
+          const mark = ans && ans.correct ? "✓" : "✗";
+          const markColor = ans && ans.correct ? "var(--good)" : "var(--red)";
+          html += '<li><span class="mark" style="color:' + markColor + '">' + mark + "</span><span>" + q.question + "</span></li>";
+        }
+        html += "</ul>";
+        contentEl.innerHTML = html;
+
+        document.getElementById("obsDetailActions").innerHTML =
+          '<button class="btn ghost" onclick="showScreen(\'observatoryScreen\'); renderObservatory()">Back to Vault</button>' +
+          ' <button class="btn ghost" onclick="obsLessonReadAgain()">Read Again</button>' +
+          obsNextBtn();
+      }
+
+      function obsLessonReadAgain() {
+        state.obsLessonStep = "reading";
+        renderObsLessonReading(state.obsCurrentCard, true);
+      }
+
       function obsPickAnswer(idx) {
         if (state.obsAnswered) return;
         state.obsAnswered = true;
@@ -8644,7 +9291,7 @@
         const p = progress();
         const xp = p.xp || 0;
         const revealed = (p.observatory && p.observatory.revealed) || [];
-        const next = OBSERVATORY_DISCOVERIES.find(c => !revealed.includes(c.id) && xp >= c.xpCost);
+        const next = obsAllCards().find(c => !revealed.includes(c.id) && xp >= c.xpCost);
         if (next) return ' <button class="btn primary" onclick="obsRevealCard(\'' + next.id + '\')">Next Discovery →</button>';
         return "";
       }
@@ -8686,6 +9333,7 @@
       }
 
       initApp();
+      lucide.createIcons();
     </script>
   </body>
 </html>
