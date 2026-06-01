@@ -46,6 +46,11 @@
         --yellow-highlight: #3a3018;
         --yellow-text: #f0c644;
         --shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.25);
+        --stage-new: #4a5068;
+        --stage-mistake: #e84057;
+        --stage-s1: #e8b020;
+        --stage-s2: #8cc840;
+        --stage-mastered: #30b8a0;
       }
       * {
         box-sizing: border-box;
@@ -299,6 +304,18 @@
         margin: 0 0 0.625rem;
       }
       .hero-accent { color: var(--accent); }
+      .rise-glow {
+        background: linear-gradient(90deg, #f06810, #ff4020, #f0a030, #f06810);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: riseShimmer 6s ease-in-out infinite;
+      }
+      @keyframes riseShimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
       .hero-sub {
         font-size: 1rem;
         color: var(--ink-soft);
@@ -321,56 +338,69 @@
         display: flex;
         gap: 0.875rem;
         align-items: center;
-        background: rgba(14, 16, 30, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: transparent;
         border-radius: 1.5rem;
         padding: 1rem;
         overflow: hidden;
         width: 30vw;
         flex-shrink: 0;
-        border: 1px solid rgba(240, 104, 16, 0.15);
-        box-shadow: 0 0 20px rgba(240, 104, 16, 0.06);
+        border: none;
+        box-shadow: none;
+      }
+      .hero-level::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 0.75px;
+        background: linear-gradient(135deg, rgba(240,104,16,0.6), rgba(240,160,60,0.4) 30%, transparent 60%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        pointer-events: none;
       }
 
       /* Hex badge */
       .level-hex-wrap {
         flex-shrink: 0;
-        text-align: center;
-        width: 4.25rem;
+        position: relative;
+        width: 5rem;
+        height: 7.5rem;
+        background: url('assets/hex-frame.png') center/contain no-repeat;
       }
       .level-hex {
-        width: 3.75rem;
-        height: 4.25rem;
-        margin: 0 auto;
-        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        background: linear-gradient(180deg, var(--accent), #6b3a00);
+        position: absolute;
+        top: 5%;
+        left: 0;
+        right: 0;
+        height: 58%;
         display: flex;
         align-items: center;
         justify-content: center;
-        filter: drop-shadow(0 0 12px rgba(240, 104, 16, 0.3)) drop-shadow(0 0 24px rgba(240, 104, 16, 0.1));
       }
       .level-hex-inner {
-        width: 3.375rem;
-        height: 3.875rem;
-        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-        background: linear-gradient(180deg, #141828, #0a0e1a);
         display: flex;
         align-items: center;
         justify-content: center;
       }
       .level-hex-num {
-        font-size: 1.5rem;
+        font-size: 2.125rem;
         font-weight: 700;
-        color: var(--ink);
+        color: var(--accent);
+        text-shadow: 0 0 12px rgba(240, 104, 16, 0.5);
       }
       .level-hex-label {
-        display: block;
-        font-size: 0.5625rem;
+        position: absolute;
+        bottom: 17%;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.75rem;
         font-weight: 600;
         letter-spacing: 0.12em;
         color: var(--accent);
-        margin-top: 0.1875rem;
+        text-shadow: 0 0 8px rgba(240, 104, 16, 0.4);
       }
 
       /* Level card info */
@@ -410,20 +440,30 @@
         min-width: 0;
       }
       .phoenix-status {
+        position: relative;
         flex-shrink: 0;
         width: 10.5rem;
-        background: rgba(24, 27, 46, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: transparent;
+        border: none;
+        box-shadow: none;
         border-radius: 1rem;
         padding: 0.875rem 1rem;
         display: flex;
         flex-direction: column;
         gap: 0.625rem;
-        box-shadow:
-          0 8px 24px rgba(0, 0, 0, 0.3),
-          inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      }
+      .phoenix-status::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 0.75px;
+        background: linear-gradient(135deg, rgba(240,104,16,0.6), rgba(240,160,60,0.4) 30%, transparent 60%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        pointer-events: none;
       }
       .ps-title {
         font-size: 0.6875rem;
@@ -476,10 +516,7 @@
         margin: 1.75rem 0 0.875rem;
       }
       .section-title::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: linear-gradient(90deg, var(--line), transparent);
+        content: none;
       }
       .modes {
         display: grid;
@@ -831,34 +868,71 @@
         letter-spacing: -0.01em;
       }
       .progress-bar {
-        height: 0.75rem;
-        background: #1a1d2e;
-        border-radius: 999px;
-        overflow: hidden;
+        height: 1.125rem;
+        background: #111325;
+        border-radius: 0.625rem;
         margin-bottom: 1.375rem;
         display: flex;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+        padding: 0.1875rem;
+        gap: 0.1875rem;
+        box-shadow:
+          inset 0 1px 4px rgba(0,0,0,0.5),
+          0 0 6px rgba(100,80,160,0.08);
+        overflow: hidden;
       }
       .progress-bar > div {
         height: 100%;
         transition: width 0.3s ease;
         position: relative;
+        border-radius: 0.4375rem;
       }
-      .seg-red {
-        background: linear-gradient(90deg, #e84057, #ff6b7a) !important;
-        box-shadow: 0 0 8px rgba(232,64,87,0.5);
+      .seg-new {
+        background: linear-gradient(180deg,
+          color-mix(in srgb, var(--stage-new), white 15%) 0%,
+          var(--stage-new) 50%,
+          color-mix(in srgb, var(--stage-new), black 15%) 100%);
+        box-shadow: inset 0 1px 1px rgba(255,255,255,0.08);
       }
-      .seg-orange {
-        background: linear-gradient(90deg, #f0a040, #f0c850) !important;
-        box-shadow: 0 0 8px rgba(240,168,64,0.5);
+      .seg-mistake {
+        background: linear-gradient(180deg,
+          color-mix(in srgb, var(--stage-mistake), white 20%) 0%,
+          var(--stage-mistake) 50%,
+          color-mix(in srgb, var(--stage-mistake), black 20%) 100%);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--stage-mistake), transparent 55%),
+                    inset 0 1px 1px rgba(255,255,255,0.2);
       }
-      .seg-yellow {
-        background: linear-gradient(90deg, #d070e0, #a855f7) !important;
-        box-shadow: 0 0 8px rgba(168,85,247,0.45);
+      .seg-s1 {
+        background: linear-gradient(180deg,
+          color-mix(in srgb, var(--stage-s1), white 20%) 0%,
+          var(--stage-s1) 50%,
+          color-mix(in srgb, var(--stage-s1), black 20%) 100%);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--stage-s1), transparent 55%),
+                    inset 0 1px 1px rgba(255,255,255,0.2);
       }
-      .seg-green {
-        background: linear-gradient(90deg, #34d399, #22c55e) !important;
-        box-shadow: 0 0 8px rgba(52,211,153,0.5);
+      .seg-s2 {
+        background: linear-gradient(180deg,
+          color-mix(in srgb, var(--stage-s2), white 20%) 0%,
+          var(--stage-s2) 50%,
+          color-mix(in srgb, var(--stage-s2), black 20%) 100%);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--stage-s2), transparent 55%),
+                    inset 0 1px 1px rgba(255,255,255,0.2);
+      }
+      .seg-mastered {
+        background: linear-gradient(180deg,
+          color-mix(in srgb, var(--stage-mastered), white 20%) 0%,
+          var(--stage-mastered) 50%,
+          color-mix(in srgb, var(--stage-mastered), black 20%) 100%);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--stage-mastered), transparent 55%),
+                    inset 0 1px 1px rgba(255,255,255,0.2);
+      }
+      /* default fill for bars without a seg-* class */
+      .progress-bar > div:not([class*="seg-"]) {
+        background: linear-gradient(180deg,
+          color-mix(in srgb, var(--stage-mastered), white 20%) 0%,
+          var(--stage-mastered) 50%,
+          color-mix(in srgb, var(--stage-mastered), black 20%) 100%);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--stage-mastered), transparent 55%),
+                    inset 0 1px 1px rgba(255,255,255,0.2);
       }
       /* SCHOOL WORDS */
       .topic-grid {
@@ -925,16 +999,16 @@
           transform 0.25s ease;
       }
       .dots.s1 .dot.filled {
-        background: #f0a868;
+        background: var(--stage-s1);
       }
       .dots.s2 .dot.filled {
-        background: #f09050;
+        background: var(--stage-s2);
       }
       .dots.mastered .dot {
-        background: var(--good);
+        background: var(--stage-mastered);
       }
       .dots.red .dot {
-        background: var(--red);
+        background: var(--stage-mistake);
       }
       .dots.red .dot:not(:first-child) {
         opacity: 0.4;
@@ -952,24 +1026,24 @@
         color: var(--ink-soft);
       }
       .stage-pill.new {
-        background: var(--surface);
-        color: var(--ink-soft);
+        color: var(--stage-new);
+        background: color-mix(in srgb, var(--stage-new), black 70%);
       }
       .stage-pill.red {
-        background: var(--red-soft);
-        color: var(--red);
+        color: var(--stage-mistake);
+        background: color-mix(in srgb, var(--stage-mistake), black 80%);
       }
       .stage-pill.s1 {
-        background: #3a2518;
-        color: #f09050;
+        color: var(--stage-s1);
+        background: color-mix(in srgb, var(--stage-s1), black 80%);
       }
       .stage-pill.s2 {
-        background: #3a2a1a;
-        color: #e88a55;
+        color: var(--stage-s2);
+        background: color-mix(in srgb, var(--stage-s2), black 80%);
       }
       .stage-pill.mastered {
-        background: var(--good-soft);
-        color: var(--good);
+        color: var(--stage-mastered);
+        background: color-mix(in srgb, var(--stage-mastered), black 80%);
       }
 
       /* TOPIC SUMMARY (theme card) */
@@ -2594,11 +2668,11 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 0.625rem;
+        gap: 1.25rem;
       }
       .wd-group {
         display: flex;
-        gap: 0.25rem;
+        gap: 0.375rem;
       }
       .wd-cell {
         width: 2rem;
@@ -2884,8 +2958,7 @@
         <div class="hero-columns">
           <div class="hero-left">
             <div class="hero-text">
-              <h2 class="hero-title">Rise every day.</h2>
-              <p class="hero-sub">Your Phoenix grows with every word.</p>
+              <h2 class="hero-title rise-glow">Rise every day.</h2>
                 </div>
             <div class="hero-row">
               <div class="hero-level" id="levelBar">
@@ -2919,17 +2992,17 @@
               </div>
             </div>
             <div class="ps-row">
-              <span class="ps-icon">⚡</span>
+              <span class="ps-icon">📅</span>
               <div class="ps-info">
                 <div class="ps-value" id="psStreak">Start your streak</div>
                 <div class="ps-hint" id="psStreakHint">Come back tomorrow</div>
               </div>
             </div>
             <div class="ps-row">
-              <span class="ps-icon" id="psGoalIcon">🎯</span>
+              <span class="ps-icon">⚡</span>
               <div class="ps-info">
-                <div class="ps-value" id="psGoal">Evolve at Lv. 3</div>
-                <div class="ps-hint" id="psGoalHint">Keep gaining XP</div>
+                <div class="ps-value" id="psEnergy">High</div>
+                <div class="ps-hint" id="psEnergyHint">Burning bright</div>
               </div>
             </div>
           </div>
@@ -3082,10 +3155,11 @@
         </div>
         <p class="sub" id="schoolSessionMeta">Type in English.</p>
         <div class="progress-bar">
-          <div class="seg-red" id="schoolSegRed" style="width: 0"></div>
-          <div class="seg-orange" id="schoolSegOrange" style="width: 0"></div>
-          <div class="seg-yellow" id="schoolSegYellow" style="width: 0"></div>
-          <div class="seg-green" id="schoolSegGreen" style="width: 0"></div>
+          <div class="seg-mistake" id="schoolSegMistake" style="width: 0"></div>
+          <div class="seg-s1" id="schoolSegS1" style="width: 0"></div>
+          <div class="seg-s2" id="schoolSegS2" style="width: 0"></div>
+          <div class="seg-mastered" id="schoolSegMastered" style="width: 0"></div>
+          <div class="seg-new" id="schoolSegNew" style="width: 0"></div>
         </div>
 
         <div class="tp-card" id="tpCard">
@@ -3213,10 +3287,11 @@
           <h2>⛵ Segelschein</h2>
         </div>
         <div class="progress-bar">
-          <div id="sailSegRed" class="seg-red" style="width:0"></div>
-          <div id="sailSegOrange" class="seg-orange" style="width:0"></div>
-          <div id="sailSegYellow" class="seg-yellow" style="width:0"></div>
-          <div id="sailSegGreen" class="seg-green" style="width:0"></div>
+          <div id="sailSegMistake" class="seg-mistake" style="width:0"></div>
+          <div id="sailSegS1" class="seg-s1" style="width:0"></div>
+          <div id="sailSegS2" class="seg-s2" style="width:0"></div>
+          <div id="sailSegMastered" class="seg-mastered" style="width:0"></div>
+          <div id="sailSegNew" class="seg-new" style="width:0"></div>
         </div>
         <p class="sub" id="sailMeta">Question 1 — 80 to master</p>
 
@@ -3332,7 +3407,7 @@
           <h2>Connectors</h2>
         </div>
         <p class="sub">
-          Pick the right connector to join the two sentences.
+          Pick the right connector to complete the sentence.
         </p>
         <div class="progress-bar">
           <div id="connProgress" style="width: 0"></div>
@@ -3473,7 +3548,7 @@
           <span class="qc-wrong">✗ 0 mistakes</span>
         </div>
         <div class="progress-bar">
-          <div class="seg-green" id="questProgress" style="width: 0%"></div>
+          <div class="seg-mastered" id="questProgress" style="width: 0%"></div>
         </div>
         <div class="tp-card" id="questCard">
           <div class="confetti-container" id="questConfetti"></div>
@@ -4381,16 +4456,16 @@
    ============================================================ */
 
       const CONNECTOR_EXERCISES = [
-        { id: 1, a: "I stayed up late.", b: "I was tired in the morning.", correct: ["so", "therefore"], options: ["so", "however", "although", "for example"] },
-        { id: 2, a: "She studied every day.", b: "She got a great grade.", correct: ["so", "therefore"], options: ["therefore", "but", "although", "also"] },
-        { id: 3, a: "The weather was terrible.", b: "We still went to the park.", correct: ["however", "but"], options: ["however", "so", "therefore", "for example"] },
-        { id: 4, a: "He loves animals.", b: "He has three cats and a dog.", correct: ["for example"], options: ["for example", "however", "although", "but"] },
-        { id: 5, a: "I like swimming.", b: "I enjoy cycling.", correct: ["also"], options: ["also", "but", "therefore", "although"] },
-        { id: 6, a: "The film was long.", b: "It was never boring.", correct: ["but", "however"], options: ["but", "so", "therefore", "for example"] },
-        { id: 7, a: "She was scared of the dark.", b: "She slept with the light on.", correct: ["so", "therefore"], options: ["so", "also", "however", "for example"] },
-        { id: 8, a: "He practises piano every day.", b: "He wants to join the school band.", correct: ["because"], options: ["because", "but", "also", "for example"] },
-        { id: 9, a: "We packed warm clothes.", b: "It was going to snow.", correct: ["because"], options: ["because", "however", "so", "also"] },
-        { id: 10, a: "The test was difficult.", b: "Most students passed it.", correct: ["although", "however"], options: ["although", "so", "because", "for example"] },
+        { id: 1, a: "I stayed up late,", b: "I was tired in the morning.", correct: ["so", "therefore"], options: ["so", "however", "although", "for example"] },
+        { id: 2, a: "She studied every day,", b: "she got a great grade.", correct: ["so", "therefore"], options: ["therefore", "but", "although", "also"] },
+        { id: 3, a: "The weather was terrible,", b: "we still went to the park.", correct: ["however", "but"], options: ["however", "so", "therefore", "for example"] },
+        { id: 4, a: "He loves animals,", b: "he has three cats and a dog.", correct: ["for example"], options: ["for example", "however", "although", "but"] },
+        { id: 5, a: "I like swimming,", b: "I enjoy cycling.", correct: ["also"], options: ["also", "but", "therefore", "although"] },
+        { id: 6, a: "The film was long,", b: "it was never boring.", correct: ["but", "however"], options: ["but", "so", "therefore", "for example"] },
+        { id: 7, a: "She was scared of the dark,", b: "she slept with the light on.", correct: ["so", "therefore"], options: ["so", "also", "however", "for example"] },
+        { id: 8, a: "He practises piano every day,", b: "he wants to join the school band.", correct: ["because"], options: ["because", "but", "also", "for example"] },
+        { id: 9, a: "We packed warm clothes,", b: "it was going to snow.", correct: ["because"], options: ["because", "however", "so", "also"] },
+        { id: 10, a: "The test was difficult,", b: "most students passed it.", correct: ["although", "however"], options: ["although", "so", "because", "for example"] },
       ];
 
       /* ============================================================
@@ -4567,6 +4642,7 @@
       function statusStage(s) {
         if (!s || (!s.streak && !s.red && !s.hits && !s.misses)) return "new";
         if (s.red) return "red";
+        if (!s.streak && (s.totalMisses > 0 || s.misses > 0)) return "red";
         const threshold = masteryThreshold(s.difficulty || 0);
         if (s.streak >= threshold) return "mastered";
         if (s.streak >= Math.ceil(threshold / 2)) return "s2";
@@ -4991,18 +5067,18 @@
         }
 
         // Phoenix Status card
+        const phoenixStatusEl = document.getElementById("phoenixStatus");
+        if (phoenixStatusEl) phoenixStatusEl.style.display = "";
         const psStage = document.getElementById("psStage");
         const psStageHint = document.getElementById("psStageHint");
         const psStreak = document.getElementById("psStreak");
         const psStreakHint = document.getElementById("psStreakHint");
-        const psGoal = document.getElementById("psGoal");
-        const psGoalHint = document.getElementById("psGoalHint");
-        const psGoalIcon = document.getElementById("psGoalIcon");
+        const psEnergy = document.getElementById("psEnergy");
+        const psEnergyHint = document.getElementById("psEnergyHint");
 
         if (psStage) {
           psStage.textContent = stage.emoji + " " + stage.name;
-          const stateLabels = { active: "Burning bright", cooling: "Flame cooling...", dormant: "Sleeping...", ash: "Needs rebirth" };
-          psStageHint.textContent = stateLabels[pState] || "Current form";
+          psStageHint.textContent = "Current form";
         }
 
         if (psStreak) {
@@ -5018,26 +5094,16 @@
           }
         }
 
-        if (psGoal) {
-          const evo = getNextEvolutionRequirements(p);
-          if (p.rebirthPending) {
-            psGoalIcon.textContent = "🪶";
-            psGoal.textContent = "Rebirth ready";
-            psGoalHint.textContent = "Complete the quest!";
-          } else if (!evo) {
-            psGoalIcon.textContent = "🌟";
-            psGoal.textContent = "Max stage!";
-            psGoalHint.textContent = "Legendary Phoenix";
-          } else if (isEvolutionQuestUnlocked(p)) {
-            psGoalIcon.textContent = "🔥";
-            psGoal.textContent = "Quest ready!";
-            psGoalHint.textContent = "Evolve to " + evo.nextStage.name;
-          } else {
-            const unmet = evo.requirements.find(function(r) { return !r.met; });
-            psGoalIcon.textContent = "🎯";
-            psGoal.textContent = "Evolve at Lv. " + evo.nextStage.level;
-            psGoalHint.textContent = unmet ? unmet.label : "Almost there!";
-          }
+        if (psEnergy) {
+          var energyMap = {
+            active:  { energy: "High",   hint: "Burning bright" },
+            cooling: { energy: "Medium", hint: "Flame cooling..." },
+            dormant: { energy: "Low",    hint: "Sleeping..." },
+            ash:     { energy: "Empty",  hint: "Needs rebirth" }
+          };
+          var e = energyMap[pState] || energyMap.active;
+          psEnergy.textContent = e.energy;
+          psEnergyHint.textContent = e.hint;
         }
       }
 
@@ -5549,6 +5615,7 @@
           const orangePct = (c.s1 / total) * 100;
           const yellowPct = (c.s2 / total) * 100;
           const greenPct = (c.mastered / total) * 100;
+          const newPct = (c.new / total) * 100;
           const badge =
             t.status === "current"
               ? '<span class="t-badge t-badge-now">Now learning</span>'
@@ -5570,10 +5637,11 @@
         <span>⚪ ${c.new}</span>
       </div>
       <div class="progress-bar" style="margin-bottom:0;margin-top:10px">
-        <div class="seg-red" style="width:${redPct}%"></div>
-        <div class="seg-orange" style="width:${orangePct}%"></div>
-        <div class="seg-yellow" style="width:${yellowPct}%"></div>
-        <div class="seg-green" style="width:${greenPct}%"></div>
+        <div class="seg-mistake" style="width:${redPct}%"></div>
+        <div class="seg-s1" style="width:${orangePct}%"></div>
+        <div class="seg-s2" style="width:${yellowPct}%"></div>
+        <div class="seg-mastered" style="width:${greenPct}%"></div>
+        <div class="seg-new" style="width:${newPct}%"></div>
       </div>
     `;
           grid.appendChild(card);
@@ -5966,14 +6034,16 @@
         if (!t) return;
         const total = t.words.length;
         const c = themeStatusCounts(t);
-        document.getElementById("schoolSegRed").style.width =
+        document.getElementById("schoolSegMistake").style.width =
           (c.red / total) * 100 + "%";
-        document.getElementById("schoolSegOrange").style.width =
+        document.getElementById("schoolSegS1").style.width =
           (c.s1 / total) * 100 + "%";
-        document.getElementById("schoolSegYellow").style.width =
+        document.getElementById("schoolSegS2").style.width =
           (c.s2 / total) * 100 + "%";
-        document.getElementById("schoolSegGreen").style.width =
+        document.getElementById("schoolSegMastered").style.width =
           (c.mastered / total) * 100 + "%";
+        document.getElementById("schoolSegNew").style.width =
+          (c.new / total) * 100 + "%";
         const remaining = total - c.mastered;
         const qNum = Math.min(state.sessionAnswered + 1, state.sessionLimit);
         const meta =
@@ -6925,7 +6995,7 @@
       </div>
       <div class="t-meta">${tp.mastered} von ${tp.total} gemeistert (${pct}%)</div>
       <div class="progress-bar" style="margin-top:10px;margin-bottom:0">
-        <div class="seg-green" style="width:${pct}%"></div>
+        <div class="seg-mastered" style="width:${pct}%"></div>
       </div>
     `;
           grid.appendChild(card);
@@ -7701,10 +7771,11 @@
       function updateSailUI() {
         const total = SAILING_QUESTIONS.length;
         const c = sailStatusCounts();
-        document.getElementById("sailSegRed").style.width = (c.red / total) * 100 + "%";
-        document.getElementById("sailSegOrange").style.width = (c.s1 / total) * 100 + "%";
-        document.getElementById("sailSegYellow").style.width = (c.s2 / total) * 100 + "%";
-        document.getElementById("sailSegGreen").style.width = (c.mastered / total) * 100 + "%";
+        document.getElementById("sailSegMistake").style.width = (c.red / total) * 100 + "%";
+        document.getElementById("sailSegS1").style.width = (c.s1 / total) * 100 + "%";
+        document.getElementById("sailSegS2").style.width = (c.s2 / total) * 100 + "%";
+        document.getElementById("sailSegMastered").style.width = (c.mastered / total) * 100 + "%";
+        document.getElementById("sailSegNew").style.width = (c.new / total) * 100 + "%";
         const remaining = total - c.mastered;
         const meta = remaining > 0
           ? "Question " + (state.sailIndex + 1) + " of " + state.sailQueue.length + " · " + remaining + " to master"

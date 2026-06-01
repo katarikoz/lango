@@ -115,7 +115,19 @@ Based on days since last visit:
 
 ### Phoenix status card (home screen sidebar)
 
-Shows current streak, phoenix state label, evolution stage emoji. Visible through glassmorphism card on the home screen.
+Shows 3 rows: Stage (🔥), Streak (📅), Energy (⚡). Transparent background with gradient border matching level card. Energy reflects phoenix state (High / Medium / Low / Empty).
+
+### Creature collection & prestige system (planned)
+
+**Level cap: 99.** At level 99 the current creature "retires" to a permanent collection showcase and the player receives a new egg.
+
+- Each creature goes through the full evolution cycle (egg → blazing) within 1–99 levels
+- Retired creatures stay in a visible collection / trophy case — kids see their history
+- New egg can be a different creature type or a different phoenix variant
+- Potential creature types tied to worlds: phoenix (English), kraken (Sailing), golem (Math), etc.
+- **Math:** Lv.99 ≈ 73,700 XP ≈ 1 school year at daily practice — natural annual rhythm
+
+This is a future mechanic. Current implementation uses infinite Immortal II, III… progression as placeholder.
 
 ---
 
@@ -133,7 +145,7 @@ Shows current streak, phoenix state label, evolution stage emoji. Visible throug
 | 8 | Legend | 1,350 |
 | 9 | Mythic | 1,850 |
 | 10 | Immortal | 2,500 |
-| 11+ | Immortal II, III… | +800 each |
+| 11+ | Immortal II, III… | +800 each (placeholder until prestige system) |
 
 **XP rewards:**
 - Correct answer: +10 XP
