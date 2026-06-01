@@ -11,16 +11,16 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <meta name="apple-mobile-web-app-title" content="LanGo" />
-    <title>LanGo — Build Better English</title>
+    <meta name="apple-mobile-web-app-title" content="PhoenGo" />
+    <title>PhoenGo — Build Better English</title>
     <link
       rel="icon"
       type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
     />
     <link
       rel="apple-touch-icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f1123'/%3E%3Ctext x='50%25' y='62%25' font-size='130' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230f1123'/%3E%3Ctext x='50%25' y='62%25' font-size='130' text-anchor='middle' dominant-baseline='middle'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -45,7 +45,7 @@
         --red-soft: #3a1520;
         --yellow-highlight: #3a3018;
         --yellow-text: #f0c644;
-        --shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+        --shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.25);
       }
       * {
         box-sizing: border-box;
@@ -99,8 +99,10 @@
         gap: 0.375rem;
         line-height: 1;
       }
-      .brand .logo .logo-emoji {
-        font-size: 1.75rem;
+      .brand .logo .logo-img {
+        height: 1.75rem;
+        width: auto;
+        object-fit: contain;
       }
       .brand .tag {
         font-size: 0.8125rem;
@@ -231,7 +233,7 @@
         padding: 1.75rem 1.25rem;
         text-align: center;
         cursor: pointer;
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         transition:
           transform 0.15s ease,
           box-shadow 0.15s ease;
@@ -319,27 +321,17 @@
         display: flex;
         gap: 0.875rem;
         align-items: center;
-        background: transparent;
-        border-radius: 1rem;
+        background: rgba(14, 16, 30, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 1.5rem;
         padding: 1rem;
-        cursor: pointer;
         overflow: hidden;
-        flex: 0 1 auto;
-        max-width: 50%;
+        width: 30vw;
+        flex-shrink: 0;
+        border: 1px solid rgba(240, 104, 16, 0.15);
+        box-shadow: 0 0 20px rgba(240, 104, 16, 0.06);
       }
-      .hero-level::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: 1rem;
-        padding: 0.0625rem;
-        background: linear-gradient(135deg, var(--accent) 0%, rgba(240,133,10,0.3) 40%, transparent 70%);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        pointer-events: none;
-      }
-      .hero-level:active { opacity: 0.85; }
 
       /* Hex badge */
       .level-hex-wrap {
@@ -356,6 +348,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        filter: drop-shadow(0 0 12px rgba(240, 104, 16, 0.3)) drop-shadow(0 0 24px rgba(240, 104, 16, 0.1));
       }
       .level-hex-inner {
         width: 3.375rem;
@@ -382,21 +375,17 @@
 
       /* Level card info */
       .hero-level-info { flex: 1; min-width: 0; }
-      .level-evo-text {
-        font-size: 0.875rem;
-        color: var(--ink-soft);
-        margin-bottom: 0.0625rem;
-      }
-      .level-evo-text .evo-count {
+      .level-title {
         font-size: 1rem;
         font-weight: 700;
         color: var(--ink);
+        margin-bottom: 0.375rem;
       }
-      .level-evo-name {
-        font-size: 1.0625rem;
-        font-weight: 700;
-        color: var(--accent);
-        margin-bottom: 0.5rem;
+      .level-hint {
+        font-size: 0.6875rem;
+        color: var(--ink-soft);
+        opacity: 0.7;
+        margin-top: 0.25rem;
       }
 
       /* Mobile */
@@ -423,13 +412,18 @@
       .phoenix-status {
         flex-shrink: 0;
         width: 10.5rem;
-        background: var(--card);
-        border: 1px solid var(--line);
+        background: rgba(24, 27, 46, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 1rem;
         padding: 0.875rem 1rem;
         display: flex;
         flex-direction: column;
         gap: 0.625rem;
+        box-shadow:
+          0 8px 24px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.04);
       }
       .ps-title {
         font-size: 0.6875rem;
@@ -446,8 +440,14 @@
       .ps-icon {
         font-size: 1.125rem;
         flex-shrink: 0;
-        width: 1.5rem;
-        text-align: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(240,104,16,0.3), rgba(240,104,16,0.1));
+        box-shadow: 0 0 8px rgba(240,104,16,0.25);
         filter: drop-shadow(0 0 4px rgba(240, 104, 16, 0.4));
       }
       .ps-info {
@@ -466,11 +466,20 @@
       }
 
       .section-title {
-        font-size: 0.8125rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.12em;
         color: var(--ink-soft);
-        margin: 1.5rem 0 0.625rem;
+        margin: 1.75rem 0 0.875rem;
+      }
+      .section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--line), transparent);
       }
       .modes {
         display: grid;
@@ -486,7 +495,7 @@
         transition:
           transform 0.15s,
           box-shadow 0.15s;
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         min-height: 8.125rem;
         display: flex;
         flex-direction: column;
@@ -510,6 +519,7 @@
         background: var(--accent-soft);
         color: var(--accent);
         margin-bottom: 0.75rem;
+        box-shadow: 0 0 12px rgba(240, 104, 16, 0.15);
       }
       .mode.m-power .icon {
         background: #3a2518;
@@ -573,63 +583,106 @@
         font-weight: 600;
       }
 
-      /* QUEST LIST */
-      .quest-list {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 1.125rem;
-        overflow: hidden;
+      /* QUEST CARDS */
+      .quest-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.875rem;
       }
-      .quest-row {
+      .quest-card {
+        position: relative;
+        background: rgba(24, 27, 46, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid color-mix(in srgb, var(--qc-color) 25%, transparent);
+        border-radius: 1.125rem;
+        padding: 1.25rem 1rem 1rem;
+        cursor: pointer;
+        overflow: hidden;
+        box-shadow: var(--shadow), 0 0 12px color-mix(in srgb, var(--qc-color) 20%, transparent), inset 0 0 12px color-mix(in srgb, var(--qc-color) 6%, transparent);
+        transition: transform 0.15s, box-shadow 0.15s;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        animation: cardGlow 4s ease-in-out infinite;
+      }
+      .quest-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--qc-color);
+        border-radius: 1.125rem 1.125rem 0 0;
+        box-shadow: 0 0 8px 1px var(--qc-color);
+      }
+      .quest-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--qc-color) 8%, transparent), transparent 60%);
+        pointer-events: none;
+      }
+      .quest-card:active { transform: scale(0.98); }
+      .qc-badge {
+        font-size: 1.25rem;
+        line-height: 1;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        padding: 0.875rem 1rem;
-        cursor: pointer;
-        transition: background 0.15s;
-        border-bottom: 1px solid var(--line);
-      }
-      .quest-row:last-child { border-bottom: none; }
-      .quest-row:active { background: var(--surface); }
-      .quest-row.locked {
-        opacity: 0.45;
-        cursor: not-allowed;
-      }
-      .quest-row.locked:active { background: transparent; }
-      .quest-dot {
-        width: 0.625rem;
-        height: 0.625rem;
-        border-radius: 50%;
+        justify-content: center;
+        background: linear-gradient(135deg, color-mix(in srgb, var(--qc-color) 30%, transparent), color-mix(in srgb, var(--qc-color) 12%, transparent));
+        box-shadow: 0 0 10px color-mix(in srgb, var(--qc-color) 25%, transparent);
         flex-shrink: 0;
       }
-      .dot-good { background: var(--good); }
-      .dot-warn { background: var(--warn); }
-      .dot-red { background: var(--red); }
-      .dot-muted { background: var(--ink-soft); opacity: 0.4; }
-      .quest-icon {
-        font-size: 1.125rem;
-        flex-shrink: 0;
-        width: 1.5rem;
-        text-align: center;
+      .qc-title {
+        font-weight: 700;
+        font-size: 1rem;
       }
-      .quest-name {
-        font-weight: 600;
-        font-size: 0.9375rem;
-        white-space: nowrap;
-      }
-      .quest-status {
-        margin-left: auto;
+      .qc-sub {
         font-size: 0.8125rem;
         color: var(--ink-soft);
-        text-align: right;
+        min-height: 1.125rem;
+      }
+      .qc-progress {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .qc-progress-bar {
+        flex: 1;
+        height: 0.375rem;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .qc-progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: var(--qc-color);
+        transition: width 0.3s ease;
+      }
+      .qc-progress-text {
+        font-size: 0.6875rem;
+        color: var(--ink-soft);
         white-space: nowrap;
       }
-      .quest-arrow {
-        color: var(--ink-soft);
-        font-size: 0.875rem;
-        flex-shrink: 0;
-        opacity: 0.5;
+      .qc-go {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--qc-color);
+        margin-top: 0.25rem;
       }
+      @media (max-width: 520px) {
+        .quest-cards { grid-template-columns: 1fr; }
+      }
+      .dot-good { background: var(--good); box-shadow: 0 0 6px rgba(63, 196, 127, 0.5); }
+      .dot-warn { background: var(--warn); box-shadow: 0 0 6px rgba(232, 138, 85, 0.5); }
+      .dot-red { background: var(--red); }
+      .dot-muted { background: var(--ink-soft); opacity: 0.4; }
 
       /* WORLDS GRID */
       .worlds-grid {
@@ -650,14 +703,38 @@
         position: relative;
         overflow: hidden;
       }
+      .world-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%);
+        pointer-events: none;
+      }
       .world-card:active { transform: scale(0.97); }
       .world-card.locked {
         opacity: 0.45;
         cursor: not-allowed;
         box-shadow: none;
       }
+      .world-card.locked::after { display: none; }
       .world-card.locked:active { transform: none; }
-      .world-icon { font-size: 1.75rem; margin-bottom: 0.625rem; }
+      .world-icon {
+        font-size: 1.75rem;
+        margin-bottom: 0.625rem;
+        position: relative;
+        z-index: 1;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .w-english .world-icon { text-shadow: 0 0 12px rgba(140,80,220,0.5); background: linear-gradient(135deg, rgba(140,80,220,0.3), rgba(140,80,220,0.1)); box-shadow: 0 0 10px rgba(140,80,220,0.3); }
+      .w-sail .world-icon    { text-shadow: 0 0 12px rgba(40,180,200,0.5); background: linear-gradient(135deg, rgba(40,180,200,0.3), rgba(40,180,200,0.1)); box-shadow: 0 0 10px rgba(40,180,200,0.3); }
+      .w-math .world-icon    { text-shadow: 0 0 12px rgba(52,211,153,0.5); background: linear-gradient(135deg, rgba(52,211,153,0.3), rgba(52,211,153,0.1)); box-shadow: 0 0 10px rgba(52,211,153,0.3); }
+      .w-deutsch .world-icon { text-shadow: 0 0 12px rgba(240,180,60,0.5); background: linear-gradient(135deg, rgba(240,180,60,0.3), rgba(240,180,60,0.1)); box-shadow: 0 0 10px rgba(240,180,60,0.3); }
       .world-title {
         font-size: 1.0625rem;
         font-weight: 700;
@@ -679,26 +756,56 @@
         text-transform: uppercase;
       }
 
+      /* per-card inner glow + vignette */
+      .w-english::after { background: radial-gradient(circle at 30% 20%, rgba(140,80,220,0.22), transparent 60%), radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%); }
+      .w-sail::after    { background: radial-gradient(circle at 30% 20%, rgba(40,180,200,0.18), transparent 60%), radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%); }
+      .w-math::after    { background: radial-gradient(circle at 30% 20%, rgba(52,211,153,0.18), transparent 60%), radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%); }
+      .w-deutsch::after { background: radial-gradient(circle at 30% 20%, rgba(240,180,60,0.18), transparent 60%), radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%); }
+
       /* world color themes */
       .w-english {
-        background: linear-gradient(135deg, #5b2d9e 0%, #3a1d66 100%);
-        border: 1px solid rgba(91,45,158,0.4);
+        --world-glow: rgba(140,80,220,0.25);
+        background: linear-gradient(135deg, #6b35b8 0%, #5b2d9e 40%, #3a1d66 100%);
+        border: 1px solid rgba(107,53,184,0.35);
+        box-shadow: var(--shadow), 0 0 14px var(--world-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       }
       .w-sail {
-        background: linear-gradient(135deg, #0e2a3a 0%, #1a4a5e 100%);
-        border: 1px solid rgba(26,74,94,0.5);
+        --world-glow: rgba(40,180,200,0.25);
+        background: linear-gradient(135deg, #134a60 0%, #0e2a3a 40%, #1a4a5e 100%);
+        border: 1px solid rgba(26,74,94,0.35);
+        box-shadow: var(--shadow), 0 0 14px var(--world-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       }
       .w-math {
-        background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
-        border: 1px solid rgba(6,95,70,0.5);
+        --world-glow: rgba(52,211,153,0.25);
+        background: linear-gradient(135deg, #0a7a5a 0%, #065f46 40%, #064e3b 100%);
+        border: 1px solid rgba(6,95,70,0.35);
+        box-shadow: var(--shadow), 0 0 14px var(--world-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       }
       .w-deutsch {
-        background: linear-gradient(135deg, #78350f 0%, #5c2a0e 100%);
-        border: 1px solid rgba(120,53,15,0.4);
+        --world-glow: rgba(240,180,60,0.25);
+        background: linear-gradient(135deg, #8f4010 0%, #78350f 40%, #5c2a0e 100%);
+        border: 1px solid rgba(143,64,16,0.35);
+        box-shadow: var(--shadow), 0 0 14px var(--world-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       }
 
       @media (max-width: 520px) {
         .worlds-grid { grid-template-columns: 1fr; }
+      }
+
+      /* Desktop hover micro-interactions */
+      @media (hover: hover) {
+        .world-card:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow), 0 0 22px var(--world-glow, rgba(255,255,255,0.1)), 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+        .quest-card:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow), 0 0 24px color-mix(in srgb, var(--qc-color) 35%, transparent), 0 8px 30px rgba(0, 0, 0, 0.4);
+          animation: none;
+        }
+        .mode:hover {
+          transform: translateY(-2px);
+        }
       }
 
       /* GENERIC MODE SCREEN */
@@ -924,43 +1031,6 @@
         font-weight: 600;
         margin-bottom: 0.5rem;
         line-height: 1.3;
-      }
-      .tp-card .tp-skel {
-        font-size: 1.375rem;
-        letter-spacing: 0.35em;
-        color: var(--ink-soft);
-        margin-bottom: 1.125rem;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      }
-      .tp-card .tp-input {
-        width: 100%;
-        max-width: 22.5rem;
-        font-size: 1.625rem;
-        text-align: center;
-        padding: 0.875rem 1rem;
-        border: 2px solid var(--line);
-        border-radius: 0.875rem;
-        background: var(--surface);
-        color: var(--ink);
-        margin: 0 auto;
-        display: block;
-        outline: none;
-        transition:
-          border-color 0.15s ease,
-          box-shadow 0.15s ease;
-        text-transform: lowercase;
-      }
-      .tp-card .tp-input:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 10px rgba(240, 104, 16, 0.3);
-      }
-      .tp-card .tp-input.right {
-        border-color: var(--good);
-        background: var(--good-soft);
-      }
-      .tp-card .tp-input.wrong {
-        border-color: var(--red);
-        background: var(--red-soft);
       }
       .tp-card .tp-feedback {
         margin-top: 1rem;
@@ -1292,43 +1362,6 @@
         font-weight: 600;
         margin-bottom: 0.625rem;
         line-height: 1.3;
-      }
-      .sp-card .sp-skel {
-        font-size: 1.375rem;
-        letter-spacing: 0.35em;
-        color: var(--ink-soft);
-        margin-bottom: 1.125rem;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      }
-      .sp-card .sp-input {
-        width: 100%;
-        max-width: 22.5rem;
-        font-size: 1.625rem;
-        text-align: center;
-        padding: 0.875rem 1rem;
-        border: 2px solid var(--line);
-        border-radius: 0.875rem;
-        background: var(--surface);
-        color: var(--ink);
-        margin: 0 auto;
-        display: block;
-        outline: none;
-        transition:
-          border-color 0.15s ease,
-          box-shadow 0.15s ease;
-        text-transform: lowercase;
-      }
-      .sp-card .sp-input:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 10px rgba(240, 104, 16, 0.3);
-      }
-      .sp-card .sp-input.right {
-        border-color: var(--good);
-        background: var(--good-soft);
-      }
-      .sp-card .sp-input.wrong {
-        border-color: var(--red);
-        background: var(--red-soft);
       }
       .sp-card .sp-feedback {
         margin-top: 1.125rem;
@@ -1748,6 +1781,107 @@
         vertical-align: middle;
       }
 
+      /* CONNECTORS */
+      .conn-card {
+        position: relative;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1.375rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+      .conn-card .confetti-container {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        border-radius: 1.375rem;
+      }
+      .conn-card .streak-counter {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.875rem;
+      }
+      .conn-sentence {
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 1.6;
+        margin-bottom: 0.25rem;
+      }
+      .conn-blank {
+        display: inline-block;
+        min-width: 7rem;
+        padding: 0.375rem 0.75rem;
+        margin: 0.75rem 0;
+        border: 2px dashed #38bdf8;
+        border-radius: 0.75rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #38bdf8;
+        background: rgba(56, 189, 248, 0.08);
+        transition: border-color 0.3s, color 0.3s, background 0.3s;
+      }
+      .conn-blank.right {
+        border-color: var(--good);
+        color: var(--good);
+        background: var(--good-soft);
+      }
+      .conn-blank.wrong {
+        border-color: var(--red);
+        color: var(--red);
+        background: var(--red-soft);
+      }
+      .conn-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.625rem;
+        margin-top: 1rem;
+      }
+      .conn-options .opt {
+        background: rgba(56, 189, 248, 0.1);
+        color: #38bdf8;
+        border: 1px solid transparent;
+        border-radius: 0.875rem;
+        padding: 0.875rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        transition: transform 0.12s ease, background 0.12s ease, opacity 0.2s;
+      }
+      .conn-options .opt:active {
+        transform: scale(0.97);
+      }
+      .conn-options .opt.correct-pick {
+        background: var(--good);
+        color: white;
+        border-color: var(--good);
+      }
+      .conn-options .opt.wrong-pick {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+      }
+      .conn-options .opt.disabled {
+        pointer-events: none;
+        opacity: 0.35;
+      }
+      .conn-feedback {
+        margin-top: 1rem;
+        min-height: 1.5rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+      }
+      .conn-feedback.right { color: var(--good); }
+      .conn-feedback.wrong { color: var(--red); }
+      @media (hover: hover) {
+        .conn-options .opt:hover:not(.disabled) {
+          background: rgba(56, 189, 248, 0.2);
+          transform: translateY(-1px);
+        }
+      }
+
       .empty-state {
         text-align: center;
         padding: 2.5rem 1.25rem;
@@ -1780,6 +1914,9 @@
         .topic-grid,
         .profile-row {
           grid-template-columns: 1fr;
+        }
+        .hero-level {
+          width: 100%;
         }
         .phoenix-status {
           width: 9rem;
@@ -1965,8 +2102,8 @@
         border-radius: 1.5rem;
         padding: 2.25rem 2rem 1.75rem;
         text-align: center;
-        max-width: 20rem;
-        width: 90%;
+        max-width: 50vw;
+        width: calc(100% - 2.5rem);
         box-shadow:
           0 12px 40px rgba(0, 0, 0, 0.4),
           0 0 20px rgba(240, 104, 16, 0.2);
@@ -2024,7 +2161,7 @@
       /* Level progress */
       .level-progress {
         height: 0.625rem;
-        background: var(--line);
+        background: rgba(80, 60, 120, 0.3);
         border-radius: 99px;
         overflow: hidden;
         margin-bottom: 0.375rem;
@@ -2034,6 +2171,7 @@
         background: linear-gradient(90deg, #e87a10, #f0b040);
         border-radius: 99px;
         transition: width 0.4s ease;
+        box-shadow: 0 0 10px rgba(240, 133, 10, 0.5);
       }
       .level-xp {
         font-size: 0.75rem;
@@ -2049,53 +2187,6 @@
         color: var(--accent);
         margin-top: 0.5rem;
         font-weight: 700;
-      }
-      .level-info-card {
-        max-width: 21.25rem;
-        padding: 1.75rem 1.5rem 1.375rem;
-      }
-      .level-info-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-      }
-      .level-info-table {
-        text-align: left;
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 0.375rem 0.75rem;
-        align-items: center;
-        margin-bottom: 1rem;
-      }
-      .level-info-table .li-num {
-        font-size: 0.75rem;
-        color: var(--ink-soft);
-        font-weight: 600;
-      }
-      .level-info-table .li-title {
-        font-size: 0.875rem;
-        font-weight: 700;
-      }
-      .level-info-table .li-title.li-current {
-        color: var(--accent);
-      }
-      .level-info-table .li-xp {
-        font-size: 0.75rem;
-        color: var(--ink-soft);
-      }
-      .level-info-table .li-row-done .li-title {
-        color: var(--good);
-      }
-      .level-info-table .li-row-done .li-num,
-      .level-info-table .li-row-done .li-xp {
-        color: var(--good);
-        opacity: 0.6;
-      }
-      .level-info-hint {
-        font-size: 0.75rem;
-        color: var(--ink-soft);
-        margin-bottom: 0.875rem;
-        line-height: 1.4;
       }
       /* ============================================================
      SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
@@ -2480,6 +2571,154 @@
         padding: 0.5rem 0.75rem;
         margin-top: 0.125rem;
       }
+
+      /* WordDotsInput */
+      .wd-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: text;
+        padding: 0.75rem 0;
+        margin-bottom: 0.5rem;
+        position: relative;
+        min-height: 3.5rem;
+      }
+      .wd-hidden-input {
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+      .wd-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.625rem;
+      }
+      .wd-group {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .wd-cell {
+        width: 2rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.375rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        background: rgba(255,255,255,0.04);
+        color: var(--ink);
+        transition: all 0.15s ease;
+      }
+      .wd-cell.wd-dot::after {
+        content: '';
+        width: 0.1875rem;
+        height: 0.1875rem;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.22);
+      }
+      .wd-cell.wd-fixed {
+        color: var(--ink-soft);
+        font-weight: 400;
+      }
+      .wd-cell.wd-filled {
+        animation: wd-pop 150ms ease-out;
+      }
+      .wd-cell.wd-active {
+        background: linear-gradient(135deg, rgba(240,104,16,0.12), rgba(255,180,60,0.10));
+        border: 1px solid rgba(240,104,16,0.35);
+        box-shadow: 0 0 8px rgba(240,104,16,0.25);
+        animation: wd-pulse 1.8s ease-in-out infinite;
+      }
+      .wd-container.wd-right .wd-cell.wd-filled {
+        color: var(--good);
+        text-shadow: 0 0 8px rgba(63,196,127,0.4);
+      }
+      .wd-container.wd-wrong .wd-cell.wd-filled {
+        color: var(--red);
+      }
+      @keyframes wd-pop {
+        0% { transform: scale(0.6); opacity: 0.3; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      @keyframes wd-pulse {
+        0%, 100% { box-shadow: 0 0 6px rgba(240,104,16,0.18); border-color: rgba(240,104,16,0.25); }
+        50% { box-shadow: 0 0 10px rgba(240,104,16,0.35); border-color: rgba(240,104,16,0.45); }
+      }
+      @media (max-width: 480px) {
+        .wd-cell {
+          width: 1.625rem;
+          height: 2rem;
+          font-size: 1.125rem;
+          border-radius: 0.375rem;
+        }
+        .wd-group { gap: 0.1875rem; }
+        .wd-row { gap: 0.5rem; }
+      }
+      /* ===== EMBER PARTICLES ===== */
+      .ember-field {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+      .ember {
+        position: absolute;
+        bottom: -1rem;
+        left: var(--x);
+        width: var(--s);
+        height: var(--s);
+        border-radius: 50%;
+        background: radial-gradient(circle, #f08030, transparent);
+        animation: emberRise var(--d) var(--dl) infinite;
+        will-change: transform, opacity;
+      }
+      @keyframes emberRise {
+        0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+        10%  { opacity: 0.8; }
+        80%  { opacity: 0.4; }
+        100% { transform: translateY(-100vh) translateX(var(--drift)) scale(0.3); opacity: 0; }
+      }
+
+      /* ===== AMBIENT SCREEN GLOW ===== */
+      #homeScreen::before {
+        content: '';
+        position: absolute;
+        top: -10rem;
+        left: 0;
+        right: 0;
+        height: 50rem;
+        background: radial-gradient(ellipse at 55% 0%, rgba(240,104,16,0.08), transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      #homeScreen.streak-glow::before {
+        background: radial-gradient(ellipse at 55% 0%, rgba(240,104,16,0.14), transparent 70%);
+        animation: ambientPulse 4s ease-in-out infinite;
+      }
+      @keyframes ambientPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+
+      /* ===== CARD GLOW KEYFRAMES ===== */
+      @keyframes cardGlow {
+        0%, 100% { box-shadow: var(--shadow), 0 0 12px color-mix(in srgb, var(--qc-color) 20%, transparent), inset 0 0 12px color-mix(in srgb, var(--qc-color) 6%, transparent); }
+        50% { box-shadow: var(--shadow), 0 0 20px color-mix(in srgb, var(--qc-color) 30%, transparent), inset 0 0 12px color-mix(in srgb, var(--qc-color) 6%, transparent); }
+      }
+
+      /* ===== REDUCED MOTION ===== */
+      @media (prefers-reduced-motion: reduce) {
+        .ember { animation: none; display: none; }
+        .quest-card { animation: none; }
+        #homeScreen.streak-glow::before { animation: none; }
+        #homeScreen.streak-glow .hero-phoenix { animation: none; }
+        #homeScreen.streak-glow .creature-emoji { animation: none; }
+      }
     </style>
     <!-- Supabase: cloud progress sync + login -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2488,7 +2727,7 @@
     <div class="app">
       <div class="topbar">
         <div class="brand">
-          <div class="logo"><span class="logo-emoji">😜</span>LanGo</div>
+          <div class="logo"><img class="logo-img" src="assets/logo-phoenix.png" alt="">PhoenGo</div>
         </div>
         <div class="top-right">
           <div class="pill" id="profilePill" style="display: none">
@@ -2512,7 +2751,7 @@
       <!-- LOGIN -->
       <section class="screen active" id="loginScreen">
         <div class="login-inner">
-          <div class="login-brand">😜 LanGo</div>
+          <div class="login-brand"><img src="assets/logo-phoenix.png" alt="" style="height:1.75rem;vertical-align:middle;margin-right:0.375rem">PhoenGo</div>
           <div class="login-hero">Welcome back 👋</div>
           <div class="login-sub">
             Time to get a little smarter than yesterday
@@ -2619,14 +2858,37 @@
       <!-- HOME -->
       <section class="screen" id="homeScreen">
         <img class="hero-phoenix" src="assets/phoenix.png" alt="" />
+        <div class="ember-field">
+          <div class="ember" style="--x:5%;--s:3px;--d:7s;--dl:0s;--drift:30px"></div>
+          <div class="ember" style="--x:12%;--s:2px;--d:9s;--dl:1.2s;--drift:-20px"></div>
+          <div class="ember" style="--x:20%;--s:4px;--d:6s;--dl:0.5s;--drift:40px"></div>
+          <div class="ember" style="--x:28%;--s:2px;--d:11s;--dl:3s;--drift:-35px"></div>
+          <div class="ember" style="--x:35%;--s:3px;--d:8s;--dl:2s;--drift:25px"></div>
+          <div class="ember" style="--x:42%;--s:2px;--d:10s;--dl:4.5s;--drift:-15px"></div>
+          <div class="ember" style="--x:48%;--s:5px;--d:7s;--dl:1s;--drift:45px"></div>
+          <div class="ember" style="--x:53%;--s:2px;--d:9s;--dl:3.5s;--drift:-25px"></div>
+          <div class="ember" style="--x:58%;--s:3px;--d:6s;--dl:0.8s;--drift:20px"></div>
+          <div class="ember" style="--x:63%;--s:4px;--d:8s;--dl:2.5s;--drift:-40px"></div>
+          <div class="ember" style="--x:68%;--s:2px;--d:11s;--dl:5s;--drift:30px"></div>
+          <div class="ember" style="--x:73%;--s:3px;--d:7s;--dl:1.5s;--drift:-20px"></div>
+          <div class="ember" style="--x:78%;--s:2px;--d:9s;--dl:4s;--drift:35px"></div>
+          <div class="ember" style="--x:82%;--s:4px;--d:6s;--dl:0.3s;--drift:-30px"></div>
+          <div class="ember" style="--x:87%;--s:2px;--d:10s;--dl:2.8s;--drift:15px"></div>
+          <div class="ember" style="--x:15%;--s:3px;--d:8s;--dl:5.5s;--drift:-45px"></div>
+          <div class="ember" style="--x:38%;--s:2px;--d:12s;--dl:3.2s;--drift:20px"></div>
+          <div class="ember" style="--x:55%;--s:3px;--d:7s;--dl:6s;--drift:-25px"></div>
+          <div class="ember" style="--x:70%;--s:2px;--d:9s;--dl:1.8s;--drift:35px"></div>
+          <div class="ember" style="--x:90%;--s:4px;--d:8s;--dl:4.2s;--drift:-20px"></div>
+        </div>
 
         <div class="hero-columns">
           <div class="hero-left">
             <div class="hero-text">
-              <h2 class="hero-title">Rise every day.<br><span class="hero-accent">Speak stronger.</span></h2>
+              <h2 class="hero-title">Rise every day.</h2>
+              <p class="hero-sub">Your Phoenix grows with every word.</p>
                 </div>
             <div class="hero-row">
-              <div class="hero-level" id="levelBar" onclick="showLevelInfo()">
+              <div class="hero-level" id="levelBar">
                 <div class="level-hex-wrap">
                   <div class="level-hex">
                     <div class="level-hex-inner">
@@ -2636,20 +2898,18 @@
                   <span class="level-hex-label">LEVEL</span>
                 </div>
                 <div class="hero-level-info">
-                  <div class="level-evo-text" id="levelEvoText">0 words until</div>
-                  <div class="level-evo-name" id="levelEvoName">???</div>
+                  <div class="level-title" id="levelTitle">Rookie</div>
                   <div class="level-progress">
                     <div class="level-progress-fill" id="levelFill" style="width: 0%"></div>
                   </div>
-                  <div class="level-xp" id="levelXP">0 / 50</div>
+                  <div class="level-xp" id="levelXP">0 / 50 XP</div>
+                  <div class="level-hint" id="levelHint"></div>
                 </div>
-                <span id="levelRank" style="display:none">Newbie</span>
-                <div class="creature-emoji" id="creatureEmoji" style="display:none">🥚</div>
               </div>
             </div>
           </div>
 
-          <div class="phoenix-status" id="phoenixStatus">
+          <div class="phoenix-status" id="phoenixStatus" style="display:none">
             <div class="ps-title">Phoenix Status</div>
             <div class="ps-row">
               <span class="ps-icon">🔥</span>
@@ -2685,38 +2945,40 @@
         </div>
 
         <div class="section-title">Today's Quests</div>
-        <div class="quest-list">
-          <div class="quest-row" onclick="openEnglishWorld()">
-            <div class="quest-dot dot-good" id="qdot-english"></div>
-            <div class="quest-icon">📚</div>
-            <div class="quest-name">English Kingdom</div>
-            <div class="quest-status" id="qstatus-english">—</div>
-            <div class="quest-arrow">›</div>
+        <div class="quest-cards">
+          <div class="quest-card" style="--qc-color:#8b5cf6" id="qcLearn" onclick="openTopic(getFeaturedTheme().id)">
+            <div class="qc-badge">📖</div>
+            <div class="qc-title">Learn</div>
+            <div class="qc-sub" id="qcLearnSub">—</div>
+            <div class="qc-progress">
+              <div class="qc-progress-bar"><div class="qc-progress-fill" id="qcLearnBar" style="width:0"></div></div>
+              <div class="qc-progress-text" id="qcLearnFrac">—</div>
+            </div>
+            <div class="qc-go">Continue ›</div>
           </div>
-          <div class="quest-row" onclick="openSailing()">
-            <div class="quest-dot dot-good" id="qdot-sail"></div>
-            <div class="quest-icon">⛵</div>
-            <div class="quest-name">Sailing Harbor</div>
-            <div class="quest-status" id="qstatus-sail">—</div>
-            <div class="quest-arrow">›</div>
+          <div class="quest-card" style="--qc-color:#e55b6a" id="qcFix" onclick="openSpelling()">
+            <div class="qc-badge">🔍</div>
+            <div class="qc-title">Fix</div>
+            <div class="qc-sub" id="qcFixSub">—</div>
+            <div class="qc-progress">
+              <div class="qc-progress-bar"><div class="qc-progress-fill" id="qcFixBar" style="width:0"></div></div>
+              <div class="qc-progress-text" id="qcFixFrac">—</div>
+            </div>
+            <div class="qc-go">Continue ›</div>
           </div>
-          <div class="quest-row" onclick="openMathWorld()">
-            <div class="quest-dot dot-muted" id="qdot-math"></div>
-            <div class="quest-icon">📐</div>
-            <div class="quest-name">Math Citadel</div>
-            <div class="quest-status" id="qstatus-math">—</div>
-            <div class="quest-arrow">›</div>
-          </div>
-          <div class="quest-row locked">
-            <div class="quest-dot dot-muted" id="qdot-deutsch"></div>
-            <div class="quest-icon">📖</div>
-            <div class="quest-name">Deutsch Academy</div>
-            <div class="quest-status" id="qstatus-deutsch">Coming soon</div>
-            <div class="quest-arrow">›</div>
+          <div class="quest-card" style="--qc-color:#38bdf8" id="qcUse" onclick="openConnectors()">
+            <div class="qc-badge">🔗</div>
+            <div class="qc-title">Use</div>
+            <div class="qc-sub" id="qcUseSub">—</div>
+            <div class="qc-progress">
+              <div class="qc-progress-bar"><div class="qc-progress-fill" id="qcUseBar" style="width:0"></div></div>
+              <div class="qc-progress-text" id="qcUseFrac">—</div>
+            </div>
+            <div class="qc-go">Continue ›</div>
           </div>
         </div>
 
-        <div class="section-title">Explore Worlds</div>
+        <div class="section-title">Worlds</div>
         <div class="worlds-grid">
           <div class="world-card w-english" onclick="openEnglishWorld()">
             <div>
@@ -2787,13 +3049,12 @@
             </div>
             <div class="ribbon">Soon</div>
           </div>
-          <div class="mode m-connect locked">
+          <div class="mode m-connect" onclick="openConnectors()">
             <div>
               <div class="icon">↔</div>
               <div class="ttl">Connectors</div>
               <div class="desc">because, however, for example, therefore.</div>
             </div>
-            <div class="ribbon">Soon</div>
           </div>
         </div>
       </section>
@@ -2836,18 +3097,7 @@
           </div>
           <div class="tp-label">How to write in English</div>
           <div class="tp-de" id="tpDe">—</div>
-          <div class="tp-skel" id="tpSkel">_ _ _ _</div>
-          <input
-            class="tp-input"
-            id="tpInput"
-            type="text"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            inputmode="text"
-            placeholder="type here"
-          />
+          <div class="wd-container" id="tpDotsContainer"></div>
           <div class="tp-feedback" id="tpFeedback"></div>
           <div class="tp-ex" id="tpEx"></div>
         </div>
@@ -2941,18 +3191,7 @@
           </div>
           <div class="sp-label">How to write in English</div>
           <div class="sp-de" id="spDe">—</div>
-          <div class="sp-skel" id="spSkel">_ _ _ _</div>
-          <input
-            class="sp-input"
-            id="spInput"
-            type="text"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            inputmode="text"
-            placeholder="type here"
-          />
+          <div class="wd-container" id="spDotsContainer"></div>
           <div class="sp-feedback" id="spFeedback"></div>
           <div class="sp-ex" id="spEx"></div>
         </div>
@@ -3086,6 +3325,66 @@
         </div>
       </section>
 
+      <!-- CONNECTORS — PRACTICE -->
+      <section class="screen" id="connectorsScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="showScreen('englishWorldScreen')">←</button>
+          <h2>Connectors</h2>
+        </div>
+        <p class="sub">
+          Pick the right connector to join the two sentences.
+        </p>
+        <div class="progress-bar">
+          <div id="connProgress" style="width: 0"></div>
+        </div>
+
+        <div class="conn-card" id="connCard">
+          <div class="confetti-container" id="connConfetti"></div>
+          <div class="streak-counter" id="connStreak"></div>
+          <div class="conn-sentence" id="connSentenceA">—</div>
+          <div class="conn-blank" id="connBlank">?</div>
+          <div class="conn-sentence" id="connSentenceB">—</div>
+          <div class="conn-options" id="connOptions"></div>
+          <div class="conn-feedback" id="connFeedback"></div>
+        </div>
+
+        <div class="row-actions">
+          <button class="btn ghost" id="connSkipBtn" onclick="skipConnector()">Skip</button>
+          <button class="btn primary" id="connNextBtn" onclick="nextConnector()" style="display:none">Next</button>
+        </div>
+      </section>
+
+      <!-- CONNECTORS — SUMMARY -->
+      <section class="screen" id="connSummaryScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="goHome()">←</button>
+          <h2>Session done</h2>
+        </div>
+        <div class="summary">
+          <div class="summary-creature" id="connSumCreature"></div>
+          <h3 id="connSumTitle">Nice work!</h3>
+          <div class="sub-line" id="connSumSub">—</div>
+          <div class="summary-row">
+            <div class="cell">
+              <div class="n" id="connSumMastered">0</div>
+              <div class="l">🌳 mastered</div>
+            </div>
+            <div class="cell">
+              <div class="n" id="connSumCorrect">0</div>
+              <div class="l">✅ correct</div>
+            </div>
+            <div class="cell">
+              <div class="n" id="connSumRed">0</div>
+              <div class="l">🔴 mistakes</div>
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="btn ghost" onclick="goHome()">Home</button>
+            <button class="btn primary" onclick="openConnectors()">Again</button>
+          </div>
+        </div>
+      </section>
+
       <!-- SUBJECTS — PICKER (Mathe, Deutsch, Erdkunde, NaWi) -->
       <section class="screen" id="subjectsScreen">
         <div class="mode-head">
@@ -3180,18 +3479,7 @@
           <div class="confetti-container" id="questConfetti"></div>
           <div class="tp-label">How to write in English</div>
           <div class="tp-de" id="questDe">—</div>
-          <div class="tp-skel" id="questSkel">_ _ _ _</div>
-          <input
-            class="tp-input"
-            id="questInput"
-            type="text"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            inputmode="text"
-            placeholder="type here"
-          />
+          <div class="wd-container" id="questDotsContainer"></div>
           <div class="tp-feedback" id="questFeedback"></div>
         </div>
         <div class="row-actions">
@@ -3241,18 +3529,6 @@
         </div>
       </div>
 
-      <div
-        class="creature-evolve-overlay"
-        id="levelInfoOverlay"
-        onclick="this.classList.remove('show')"
-      >
-        <div class="creature-evolve-card level-info-card" onclick="event.stopPropagation()">
-          <div class="level-info-title">Ranks</div>
-          <div class="level-info-table" id="levelInfoTable"></div>
-          <div class="level-info-hint">+10 correct · +25 mastery · +5 don't-know</div>
-          <button class="evolve-btn" onclick="document.getElementById('levelInfoOverlay').classList.remove('show')">Got it</button>
-        </div>
-      </div>
 
       <div class="toast" id="toast"></div>
     </div>
@@ -3878,6 +4154,27 @@
         { xp: 2500, title: "Immortal" },
       ];
 
+      const TITLES = [
+        { minLevel: 1, title: "Rookie" },
+        { minLevel: 5, title: "Learner" },
+        { minLevel: 10, title: "Explorer" },
+        { minLevel: 15, title: "Adventurer" },
+        { minLevel: 20, title: "Pathfinder" },
+        { minLevel: 25, title: "Champion" },
+        { minLevel: 30, title: "Master" },
+        { minLevel: 35, title: "Legend" },
+        { minLevel: 40, title: "Immortal" },
+      ];
+
+      function getUserTitle(level) {
+        let result = TITLES[0].title;
+        for (const t of TITLES) {
+          if (level >= t.minLevel) result = t.title;
+          else break;
+        }
+        return result;
+      }
+
       /* School Words — берём из window.LANGO_THEMES (data/themes.js) */
       const THEMES = window.LANGO_THEMES || [];
       const THEMES_BY_ID = Object.fromEntries(THEMES.map((t) => [t.id, t]));
@@ -4080,6 +4377,23 @@
       ];
 
       /* ============================================================
+   CONNECTOR EXERCISES
+   ============================================================ */
+
+      const CONNECTOR_EXERCISES = [
+        { id: 1, a: "I stayed up late.", b: "I was tired in the morning.", correct: ["so", "therefore"], options: ["so", "however", "although", "for example"] },
+        { id: 2, a: "She studied every day.", b: "She got a great grade.", correct: ["so", "therefore"], options: ["therefore", "but", "although", "also"] },
+        { id: 3, a: "The weather was terrible.", b: "We still went to the park.", correct: ["however", "but"], options: ["however", "so", "therefore", "for example"] },
+        { id: 4, a: "He loves animals.", b: "He has three cats and a dog.", correct: ["for example"], options: ["for example", "however", "although", "but"] },
+        { id: 5, a: "I like swimming.", b: "I enjoy cycling.", correct: ["also"], options: ["also", "but", "therefore", "although"] },
+        { id: 6, a: "The film was long.", b: "It was never boring.", correct: ["but", "however"], options: ["but", "so", "therefore", "for example"] },
+        { id: 7, a: "She was scared of the dark.", b: "She slept with the light on.", correct: ["so", "therefore"], options: ["so", "also", "however", "for example"] },
+        { id: 8, a: "He practises piano every day.", b: "He wants to join the school band.", correct: ["because"], options: ["because", "but", "also", "for example"] },
+        { id: 9, a: "We packed warm clothes.", b: "It was going to snow.", correct: ["because"], options: ["because", "however", "so", "also"] },
+        { id: 10, a: "The test was difficult.", b: "Most students passed it.", correct: ["although", "however"], options: ["although", "so", "because", "for example"] },
+      ];
+
+      /* ============================================================
    СОСТОЯНИЕ
    ============================================================ */
 
@@ -4107,6 +4421,17 @@
         questTotal: 0,
         questThreshold: 0,
         questChecked: false,
+        // Connectors
+        connQueue: [],
+        connIndex: 0,
+        connCorrect: 0,
+        connMastered: 0,
+        connMistakes: 0,
+        connAnswered: false,
+        // WordDots instances
+        dotsTP: null,
+        dotsSP: null,
+        dotsQuest: null,
       };
 
       const STORAGE_KEY = (p) => `lango.profile.${p}`;
@@ -4125,6 +4450,7 @@
             if (d.bestStreak === undefined) d.bestStreak = d.streak || 0;
             if (d.completedQuests === undefined) d.completedQuests = [];
             if (d.rebirthPending === undefined) d.rebirthPending = false;
+            if (d.connectorStatus === undefined) d.connectorStatus = {};
             // Migration: add adaptive difficulty fields to old word records
             for (const en in d.wordStatus) {
               const s = d.wordStatus[en];
@@ -4152,6 +4478,7 @@
           bestStreak: 0,
           completedQuests: [],
           rebirthPending: false,
+          connectorStatus: {},
         };
       }
 
@@ -4433,11 +4760,16 @@
         }
         const w = state.questWords[state.questIndex];
         document.getElementById("questDe").textContent = w.de;
-        document.getElementById("questSkel").textContent = makeSkeleton(w.en);
-        const inp = document.getElementById("questInput");
-        inp.value = "";
-        inp.disabled = false;
-        inp.classList.remove("right", "wrong");
+        if (!state.dotsQuest) {
+          state.dotsQuest = createWordDots("questDotsContainer", {
+            onChange: (val) => {
+              if (!state.questChecked) {
+                document.getElementById("questCheckBtn").disabled = !val.trim();
+              }
+            }
+          });
+        }
+        state.dotsQuest.reset(w.en);
         document.getElementById("questFeedback").textContent = "";
         document.getElementById("questFeedback").className = "tp-feedback";
         const btn = document.getElementById("questCheckBtn");
@@ -4447,7 +4779,7 @@
         updateQuestCounter();
         const pct = (state.questIndex / state.questTotal) * 100;
         document.getElementById("questProgress").style.width = pct + "%";
-        setTimeout(() => inp.focus(), 50);
+        setTimeout(() => state.dotsQuest.focus(), 50);
       }
 
       function updateQuestCounter() {
@@ -4464,25 +4796,23 @@
         }
         const w = state.questWords[state.questIndex];
         if (!w) return;
-        const inp = document.getElementById("questInput");
-        if (!inp.value.trim()) return;
-        const guess = normaliseAnswer(inp.value);
+        if (!state.dotsQuest.getValue().trim()) return;
+        const guess = normaliseAnswer(state.dotsQuest.getValue());
         const truth = normaliseAnswer(w.en);
         const fb = document.getElementById("questFeedback");
 
         if (guess === truth) {
           state.questCorrect++;
-          inp.classList.remove("wrong");
-          inp.classList.add("right");
+          state.dotsQuest.setRight();
           fb.className = "tp-feedback right";
           fb.innerHTML = "✓ Correct!";
           spawnConfetti("questConfetti", 8);
         } else {
-          inp.classList.remove("right");
-          inp.classList.add("wrong");
+          state.dotsQuest.setWrong();
           fb.className = "tp-feedback wrong";
           fb.innerHTML = 'Answer: <span class="correct">' + escapeHtml(w.en) + '</span>';
         }
+        state.dotsQuest.disable();
         state.questChecked = true;
         updateQuestCounter();
         const btn = document.getElementById("questCheckBtn");
@@ -4604,21 +4934,37 @@
           else homeScreen.classList.remove("streak-glow");
         }
 
-        // Level card — evolution requirements
-        const evoTextEl = document.getElementById("levelEvoText");
-        const evoNameEl = document.getElementById("levelEvoName");
+        // Level card — evolution hint
+        const levelHint = document.getElementById("levelHint");
         const levelFill = document.getElementById("levelFill");
         const levelXP = document.getElementById("levelXP");
         const li = getLevel(p.xp);
 
         const evo = getNextEvolutionRequirements(p);
-        if (evoTextEl && evoNameEl) {
+        if (levelHint) {
           if (!evo) {
-            evoTextEl.innerHTML = stage.flavor;
-            evoNameEl.textContent = stage.name;
+            levelHint.textContent = stage.name;
           } else {
-            evoTextEl.innerHTML = "Next evolution:";
-            evoNameEl.textContent = evo.nextStage.name;
+            const nextLevel = evo.nextStage.level;
+            const nextName = evo.nextStage.name;
+            if (li.level < nextLevel) {
+              // XP short — show XP needed to reach required level
+              let targetXP;
+              if (nextLevel <= LEVELS.length) {
+                targetXP = LEVELS[nextLevel - 1].xp;
+              } else {
+                targetXP = LEVELS[LEVELS.length - 1].xp + (nextLevel - LEVELS.length) * 800;
+              }
+              const xpNeeded = targetXP - p.xp;
+              levelHint.textContent = xpNeeded + " XP until " + nextName;
+            } else {
+              const unmet = evo.requirements.filter(r => !r.met);
+              if (unmet.length > 0) {
+                levelHint.textContent = unmet.length + " req" + (unmet.length > 1 ? "s" : "") + " until " + nextName;
+              } else {
+                levelHint.textContent = nextName + " awaits";
+              }
+            }
           }
         }
         if (levelFill) levelFill.style.width = li.pct + "%";
@@ -4942,12 +5288,13 @@
 
       function updateLevelBar() {
         const li = getLevel(progress().xp);
-        const rank = document.getElementById("levelRank");
-        if (rank) rank.textContent = li.title;
         document.getElementById("levelNum").textContent = li.level;
+        const levelTitle = document.getElementById("levelTitle");
+        if (levelTitle) levelTitle.textContent = getUserTitle(li.level);
         // Update pill
+        const userTitle = getUserTitle(li.level);
         const pillLv = document.getElementById("pillLv");
-        if (pillLv) pillLv.textContent = "Lv. " + li.level;
+        if (pillLv) pillLv.textContent = userTitle + " · Lv. " + li.level;
         const pillFill = document.getElementById("pillXpFill");
         if (pillFill) pillFill.style.width = li.pct + "%";
       }
@@ -4955,7 +5302,7 @@
       function showLevelUp(li) {
         const overlay = document.getElementById("levelUpOverlay");
         if (!overlay) return;
-        document.getElementById("levelUpRank").textContent = li.title;
+        document.getElementById("levelUpRank").textContent = getUserTitle(li.level);
         document.getElementById("levelUpNum").textContent = "Level " + li.level;
         overlay.classList.add("show");
         spawnConfetti("levelUpCard", 20, true);
@@ -4964,50 +5311,6 @@
         setTimeout(dismiss, 3000);
       }
 
-      function showLevelInfo() {
-        const cur = getLevel(progress().xp);
-        const table = document.getElementById("levelInfoTable");
-        let html = "";
-        for (let i = 0; i < LEVELS.length; i++) {
-          const lv = i + 1;
-          const done = cur.level > lv;
-          const active = cur.level === lv;
-          const cls = done ? "li-row-done" : "";
-          const titleCls = active ? "li-current" : "";
-          const check = done ? "✓ " : "";
-          const arrow = active ? "► " : "";
-          const title = (done || active) ? LEVELS[i].title : "???";
-          html += '<span class="li-num ' + cls + '">' + check + arrow + "Lv. " + lv + "</span>";
-          html += '<span class="li-title ' + titleCls + " " + cls + '">' + title + "</span>";
-          html += '<span class="li-xp ' + cls + '">' + LEVELS[i].xp + " XP</span>";
-        }
-        // Immortal+ rows
-        if (cur.level > LEVELS.length) {
-          for (let extra = 1; extra <= cur.level - LEVELS.length; extra++) {
-            const lv = LEVELS.length + extra;
-            const xp = LEVELS[LEVELS.length - 1].xp + extra * 800;
-            const done = cur.level > lv;
-            const active = cur.level === lv;
-            const cls = done ? "li-row-done" : "";
-            const titleCls = active ? "li-current" : "";
-            const check = done ? "✓ " : "";
-            const arrow = active ? "► " : "";
-            html += '<span class="li-num ' + cls + '">' + check + arrow + "Lv. " + lv + "</span>";
-            html += '<span class="li-title ' + titleCls + " " + cls + '">Immortal ' + toRoman(extra + 1) + "</span>";
-            html += '<span class="li-xp ' + cls + '">' + xp + " XP</span>";
-          }
-        }
-        // Show next level if beyond listed
-        if (cur.level >= LEVELS.length) {
-          const nextExtra = cur.level - LEVELS.length + 1;
-          const nextXp = LEVELS[LEVELS.length - 1].xp + nextExtra * 800;
-          html += '<span class="li-num">Lv. ' + (cur.level + 1) + "</span>";
-          html += '<span class="li-title">Immortal ' + toRoman(nextExtra + 1) + "</span>";
-          html += '<span class="li-xp">' + nextXp + " XP</span>";
-        }
-        table.innerHTML = html;
-        document.getElementById("levelInfoOverlay").classList.add("show");
-      }
 
       /* ============================================================
    НАВИГАЦИЯ
@@ -5068,7 +5371,7 @@
       function refreshHomeStats() {
         updateLevelBar();
         refreshPhoenix();
-        refreshQuestRows();
+        refreshQuestCards();
       }
 
       function generateWorldStatus(worldId) {
@@ -5117,16 +5420,66 @@
         return { dot: "dot-muted", status: "Coming soon", worldMeta: "Coming soon" };
       }
 
-      function refreshQuestRows() {
+      function refreshQuestCards() {
+        // Update world metas (for Explore Worlds grid)
         for (const id of ["english", "sail", "math", "deutsch"]) {
           const s = generateWorldStatus(id);
-          const dotEl = document.getElementById("qdot-" + id);
-          const statusEl = document.getElementById("qstatus-" + id);
           const metaEl = document.getElementById("worldmeta-" + id);
-          if (dotEl) dotEl.className = "quest-dot " + s.dot;
-          if (statusEl) statusEl.textContent = s.status;
           if (metaEl) metaEl.textContent = s.worldMeta;
         }
+        const p = progress();
+        const ws = p.wordStatus || {};
+        // LEARN card — featured theme stats
+        const theme = getFeaturedTheme();
+        let tNew = 0, tDue = 0, tMastered = 0, tTotal = 0;
+        if (theme) {
+          for (const w of theme.words) {
+            tTotal++;
+            const stage = statusStage(ws[w.en] || null);
+            if (stage === "mastered") tMastered++;
+            else if (stage === "red") tDue++;
+            else if (stage === "new") tNew++;
+          }
+        }
+        const learnSub = tDue > 0 ? tDue + " to review" : tNew + " new words";
+        document.getElementById("qcLearnSub").textContent = learnSub;
+        const learnPct = tTotal > 0 ? (tMastered / tTotal * 100) : 0;
+        document.getElementById("qcLearnBar").style.width = learnPct + "%";
+        document.getElementById("qcLearnFrac").textContent = tMastered + "/" + tTotal;
+        // FIX card — count weak words
+        let weakCount = 0;
+        for (const t of THEMES) {
+          for (const w of t.words) {
+            const s = ws[w.en];
+            if (!s) continue;
+            const stage = statusStage(s);
+            if (stage === "mastered") continue;
+            if (s.red || w.tricky) weakCount++;
+          }
+        }
+        document.getElementById("qcFixSub").textContent =
+          weakCount > 0 ? weakCount + " weak words" : "All clean!";
+        let totalWords = 0, totalMasteredWords = 0;
+        for (const t of THEMES) {
+          for (const w of t.words) {
+            totalWords++;
+            if (statusStage(ws[w.en] || null) === "mastered") totalMasteredWords++;
+          }
+        }
+        const fixPct = totalWords > 0 ? ((totalWords - weakCount) / totalWords * 100) : 0;
+        document.getElementById("qcFixBar").style.width = fixPct + "%";
+        document.getElementById("qcFixFrac").textContent = (totalWords - weakCount) + "/" + totalWords;
+        // USE card — connectors
+        const cs = p.connectorStatus || {};
+        let connMastered = 0;
+        for (const id in cs) if (cs[id].mastered) connMastered++;
+        const connTotal = CONNECTOR_EXERCISES.length;
+        const connRemaining = connTotal - connMastered;
+        document.getElementById("qcUseSub").textContent =
+          connRemaining > 0 ? connRemaining + " remaining" : "All mastered!";
+        const usePct = connTotal > 0 ? (connMastered / connTotal * 100) : 0;
+        document.getElementById("qcUseBar").style.width = usePct + "%";
+        document.getElementById("qcUseFrac").textContent = connMastered + "/" + connTotal;
       }
 
       function openEnglishWorld() {
@@ -5299,7 +5652,7 @@
         showScreen("schoolCardsScreen");
         updateSchoolUI();
         renderSchoolCard();
-        setTimeout(() => document.getElementById("tpInput").focus(), 250);
+        setTimeout(() => { if (state.dotsTP) state.dotsTP.focus(); }, 250);
       }
 
       function advanceSchoolWord() {
@@ -5329,11 +5682,16 @@
         pill.className = "stage-pill " + stage;
         pill.textContent = stageLabel(s);
         document.getElementById("tpDe").textContent = w.de;
-        document.getElementById("tpSkel").textContent = makeSkeleton(w.en);
-        const inp = document.getElementById("tpInput");
-        inp.value = "";
-        inp.disabled = false;
-        inp.classList.remove("right", "wrong");
+        if (!state.dotsTP) {
+          state.dotsTP = createWordDots("tpDotsContainer", {
+            onChange: (val) => {
+              if (state.cardPhase === "input" || state.cardPhase === "dontKnow") {
+                document.getElementById("tpCheckBtn").disabled = !val.trim();
+              }
+            }
+          });
+        }
+        state.dotsTP.reset(w.en);
         document.getElementById("tpFeedback").textContent = "";
         document.getElementById("tpFeedback").className = "tp-feedback";
         document.getElementById("tpEx").textContent = "";
@@ -5345,7 +5703,7 @@
         state.cardPhase = "input";
         updateSchoolUI();
         updateMiniPhoenix();
-        setTimeout(() => inp.focus(), 50);
+        setTimeout(() => state.dotsTP.focus(), 50);
       }
 
       function updateMiniPhoenix() {
@@ -5363,9 +5721,8 @@
         }
         const w = state.schoolCurrentWord;
         if (!w) return;
-        const inp = document.getElementById("tpInput");
-        if (!inp.value.trim()) return;
-        const guess = normaliseAnswer(inp.value);
+        if (!state.dotsTP.getValue().trim()) return;
+        const guess = normaliseAnswer(state.dotsTP.getValue());
         const truth = normaliseAnswer(w.en);
         const fb = document.getElementById("tpFeedback");
         const ex = document.getElementById("tpEx");
@@ -5377,8 +5734,7 @@
 
         if (guess === truth) {
           state.answerStreak++;
-          inp.classList.remove("wrong");
-          inp.classList.add("right");
+          state.dotsTP.setRight();
           fb.className = "tp-feedback right";
           const sBefore = getStatus(w.en);
           const sAfter = bumpCorrect(w.en, w.themeId, state.schoolStep);
@@ -5411,8 +5767,7 @@
           pill.className = "stage-pill " + stage;
           pill.textContent = stageLabel(sAfter);
         } else {
-          inp.classList.remove("right");
-          inp.classList.add("wrong");
+          state.dotsTP.setWrong();
           fb.className = "tp-feedback wrong";
           fb.innerHTML =
             'Almost. Right answer: <span class="correct">' +
@@ -5427,6 +5782,7 @@
           pill.textContent = "mistake";
         }
         if (w.ex) ex.textContent = "«" + w.ex + "»";
+        state.dotsTP.disable();
         state.cardPhase = "answered";
         const checkBtn = document.getElementById("tpCheckBtn");
         checkBtn.textContent = "Next";
@@ -5461,10 +5817,8 @@
         if (w.ex)
           document.getElementById("tpEx").textContent = "«" + w.ex + "»";
 
-        const inp = document.getElementById("tpInput");
-        inp.value = "";
-        inp.disabled = false;
-        inp.focus();
+        state.dotsTP.reset(w.en);
+        setTimeout(() => state.dotsTP.focus(), 50);
         document.getElementById("tpDontKnowBtn").disabled = true;
 
         // Replace Check button with confirm-typing logic
@@ -5480,25 +5834,24 @@
       function confirmDontKnow() {
         const w = state.schoolCurrentWord;
         if (!w) return;
-        const guess = normaliseAnswer(document.getElementById("tpInput").value);
+        const guess = normaliseAnswer(state.dotsTP.getValue());
         const truth = normaliseAnswer(w.en);
-        const inp = document.getElementById("tpInput");
         const fb = document.getElementById("tpFeedback");
         if (guess === truth) {
-          inp.classList.remove("wrong");
-          inp.classList.add("right");
+          state.dotsTP.clearState();
+          state.dotsTP.setRight();
           fb.className = "tp-feedback right";
           fb.innerHTML = "✓ Good — now you know it!";
           showXP("tpCard", 5, "small");
           addXP(5);
-          inp.disabled = true;
+          state.dotsTP.disable();
           state.cardPhase = "answered";
           const checkBtn = document.getElementById("tpCheckBtn");
           checkBtn.textContent = "Next";
           checkBtn.disabled = false;
         } else {
-          inp.classList.remove("right");
-          inp.classList.add("wrong");
+          state.dotsTP.clearState();
+          state.dotsTP.setWrong();
           fb.className = "tp-feedback wrong";
           fb.innerHTML =
             'Not quite. Type: <span class="correct">' +
@@ -5653,15 +6006,8 @@
           return;
         }
         if (state.cardPhase === "answered") advanceSchoolWord();
-        else if (document.getElementById("tpInput").value.trim())
+        else if (state.dotsTP && state.dotsTP.getValue().trim())
           checkSchoolAnswer();
-      });
-      document.getElementById("tpInput").addEventListener("input", () => {
-        if (state.cardPhase === "input" || state.cardPhase === "dontKnow") {
-          document.getElementById("tpCheckBtn").disabled = !document
-            .getElementById("tpInput")
-            .value.trim();
-        }
       });
 
       /* ============================================================
@@ -5678,6 +6024,222 @@
             return ch; // апострофы, дефисы, цифры — оставляем
           })
           .join(" ");
+      }
+
+      function createWordDots(containerId, options) {
+        const container = document.getElementById(containerId);
+        let slots = [];
+        let fillableCount = 0;
+        let chars = [];
+        let cursorPos = 0;
+
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "text";
+        hiddenInput.className = "wd-hidden-input";
+        hiddenInput.autocomplete = "off";
+        hiddenInput.setAttribute("autocorrect", "off");
+        hiddenInput.setAttribute("autocapitalize", "off");
+        hiddenInput.spellcheck = false;
+        hiddenInput.inputMode = "text";
+        container.appendChild(hiddenInput);
+
+        const row = document.createElement("div");
+        row.className = "wd-row";
+        container.appendChild(row);
+
+        container.addEventListener("click", () => {
+          if (!hiddenInput.disabled) hiddenInput.focus();
+        });
+
+        // Character input / delete
+        hiddenInput.addEventListener("beforeinput", (e) => {
+          e.preventDefault();
+          if (hiddenInput.disabled) return;
+
+          if (e.inputType === "insertText" && e.data) {
+            const ch = e.data.toLowerCase();
+            if (/^[a-z]$/.test(ch) && cursorPos < fillableCount) {
+              chars[cursorPos] = ch;
+              cursorPos++;
+              syncAll();
+            }
+          } else if (e.inputType === "deleteContentBackward") {
+            if (cursorPos > 0 && cursorPos <= fillableCount) {
+              // If cursor is on a filled cell, delete that cell
+              // If cursor is past a filled cell (just typed), delete previous
+              const delPos = (cursorPos < fillableCount && chars[cursorPos]) ? cursorPos : cursorPos - 1;
+              chars[delPos] = "";
+              cursorPos = delPos;
+              syncAll();
+            }
+          } else if (e.inputType === "deleteContentForward") {
+            if (cursorPos < fillableCount) {
+              chars[cursorPos] = "";
+              syncAll();
+            }
+          }
+        });
+
+        // Arrow keys for cursor movement
+        hiddenInput.addEventListener("keydown", (e) => {
+          if (hiddenInput.disabled) return;
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            if (cursorPos > 0) { cursorPos--; syncDOM(); }
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            if (cursorPos < fillableCount) { cursorPos++; syncDOM(); }
+          }
+        });
+
+        function parseAnswer(answer) {
+          slots = [];
+          fillableCount = 0;
+          for (const ch of answer.split("")) {
+            if (ch === " ") {
+              slots.push({ char: " ", fillable: false, type: "space" });
+            } else if (/[a-zA-Z]/.test(ch)) {
+              slots.push({ char: ch, fillable: true, type: "letter" });
+              fillableCount++;
+            } else {
+              slots.push({ char: ch, fillable: false, type: "fixed" });
+            }
+          }
+          chars = new Array(fillableCount).fill("");
+          cursorPos = 0;
+        }
+
+        function fillableIndexOf(slotIdx) {
+          let fIdx = 0;
+          for (let j = 0; j < slots.length; j++) {
+            if (!slots[j].fillable) continue;
+            if (j === slotIdx) return fIdx;
+            fIdx++;
+          }
+          return -1;
+        }
+
+        function buildDOM() {
+          row.innerHTML = "";
+          let group = document.createElement("div");
+          group.className = "wd-group";
+
+          for (let i = 0; i < slots.length; i++) {
+            const slot = slots[i];
+            if (slot.type === "space") {
+              if (group.children.length) {
+                row.appendChild(group);
+                group = document.createElement("div");
+                group.className = "wd-group";
+              }
+              continue;
+            }
+            const cell = document.createElement("div");
+            cell.className = "wd-cell";
+            cell.dataset.index = i;
+
+            if (slot.type === "fixed") {
+              cell.classList.add("wd-fixed");
+              cell.textContent = slot.char;
+            } else {
+              cell.classList.add("wd-dot");
+              // Tap to move cursor here
+              cell.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (hiddenInput.disabled) return;
+                const fIdx = fillableIndexOf(parseInt(cell.dataset.index));
+                if (fIdx >= 0) { cursorPos = fIdx; syncDOM(); }
+                hiddenInput.focus();
+              });
+            }
+
+            group.appendChild(cell);
+          }
+          if (group.children.length) row.appendChild(group);
+          syncDOM();
+        }
+
+        function syncAll() {
+          hiddenInput.value = chars.join("");
+          syncDOM();
+          if (options && options.onChange) options.onChange(getValue());
+        }
+
+        function syncDOM() {
+          let fillIdx = 0;
+          for (let i = 0; i < slots.length; i++) {
+            if (!slots[i].fillable) continue;
+            const cell = row.querySelector('[data-index="' + i + '"]');
+            if (!cell) { fillIdx++; continue; }
+
+            cell.classList.remove("wd-active");
+
+            if (chars[fillIdx]) {
+              if (!cell.classList.contains("wd-filled")) {
+                cell.className = "wd-cell wd-filled";
+              }
+              cell.textContent = chars[fillIdx];
+            } else {
+              if (!cell.classList.contains("wd-dot")) {
+                cell.className = "wd-cell wd-dot";
+                cell.textContent = "";
+              }
+            }
+
+            if (fillIdx === cursorPos && !hiddenInput.disabled) {
+              cell.classList.add("wd-active");
+            }
+
+            fillIdx++;
+          }
+        }
+
+        function getValue() {
+          let result = "";
+          let fillIdx = 0;
+          for (const slot of slots) {
+            if (slot.type === "space") {
+              result += " ";
+            } else if (slot.fillable) {
+              result += chars[fillIdx] || "";
+              fillIdx++;
+            } else {
+              result += slot.char;
+            }
+          }
+          return result;
+        }
+
+        function reset(answer) {
+          container.classList.remove("wd-right", "wd-wrong");
+          hiddenInput.value = "";
+          hiddenInput.disabled = false;
+          parseAnswer(answer);
+          buildDOM();
+        }
+
+        function disable() {
+          hiddenInput.disabled = true;
+          const active = row.querySelector(".wd-active");
+          if (active) active.classList.remove("wd-active");
+        }
+
+        function enable() {
+          hiddenInput.disabled = false;
+          syncDOM();
+          hiddenInput.focus();
+        }
+
+        function focus() {
+          if (!hiddenInput.disabled) hiddenInput.focus();
+        }
+
+        function setRight() { container.classList.add("wd-right"); }
+        function setWrong() { container.classList.add("wd-wrong"); }
+        function clearState() { container.classList.remove("wd-right", "wd-wrong"); }
+        function getRawInput() { return hiddenInput; }
+
+        return { reset, getValue, getRawInput, disable, enable, focus, setRight, setWrong, clearState };
       }
 
       function shuffle(arr) {
@@ -5731,16 +6293,14 @@
         showScreen("spellingScreen");
         renderSpelling();
         // фокус с задержкой, чтобы iPad не дёргал клавиатуру до анимации
-        setTimeout(() => document.getElementById("spInput").focus(), 250);
+        setTimeout(() => { if (state.dotsSP) state.dotsSP.focus(); }, 250);
       }
 
       function renderSpelling() {
         const q = state.spellingQueue;
         if (!q.length || state.spellingIndex >= q.length) {
           document.getElementById("spDe").textContent = "Done!";
-          document.getElementById("spSkel").textContent = "";
-          document.getElementById("spInput").value = "";
-          document.getElementById("spInput").disabled = true;
+          document.getElementById("spDotsContainer").style.display = "none";
           document.getElementById("spFeedback").textContent =
             "All tricky words for today are done.";
           document.getElementById("spEx").textContent = "";
@@ -5753,7 +6313,17 @@
         const card = document.getElementById("spCard");
         card.classList.toggle("tricky-flag", !!w.tricky);
         document.getElementById("spDe").textContent = w.de;
-        document.getElementById("spSkel").textContent = makeSkeleton(w.en);
+        document.getElementById("spDotsContainer").style.display = "";
+        if (!state.dotsSP) {
+          state.dotsSP = createWordDots("spDotsContainer", {
+            onChange: (val) => {
+              if (!state.spellingChecked) {
+                document.getElementById("spCheckBtn").disabled = !val.trim();
+              }
+            }
+          });
+        }
+        state.dotsSP.reset(w.en);
         // Word status pill
         const s = getStatus(w.en);
         const stage = statusStage(s);
@@ -5761,10 +6331,6 @@
         const spPill = document.getElementById("spPill");
         spPill.className = "stage-pill " + stage;
         spPill.textContent = stageLabel(s);
-        const inp = document.getElementById("spInput");
-        inp.value = "";
-        inp.disabled = false;
-        inp.classList.remove("right", "wrong");
         document.getElementById("spFeedback").textContent = "";
         document.getElementById("spFeedback").className = "sp-feedback";
         document.getElementById("spEx").textContent = "";
@@ -5775,7 +6341,7 @@
         state.spellingChecked = false;
         const pct = (state.spellingIndex / q.length) * 100;
         document.getElementById("spellingProgress").style.width = pct + "%";
-        setTimeout(() => inp.focus(), 50);
+        setTimeout(() => state.dotsSP.focus(), 50);
       }
 
       function normaliseAnswer(s) {
@@ -5811,17 +6377,15 @@
         const q = state.spellingQueue;
         const w = q[state.spellingIndex];
         if (!w) return;
-        if (!document.getElementById("spInput").value.trim()) return;
-        const guess = normaliseAnswer(document.getElementById("spInput").value);
+        if (!state.dotsSP.getValue().trim()) return;
+        const guess = normaliseAnswer(state.dotsSP.getValue());
         const truth = normaliseAnswer(w.en);
-        const inp = document.getElementById("spInput");
         const fb = document.getElementById("spFeedback");
         const ex = document.getElementById("spEx");
 
         if (guess === truth) {
           state.answerStreak++;
-          inp.classList.remove("wrong");
-          inp.classList.add("right");
+          state.dotsSP.setRight();
           fb.className = "sp-feedback right";
           const sBefore = getStatus(w.en);
           const sAfter = bumpCorrect(w.en, w.themeId);
@@ -5846,8 +6410,7 @@
           spPill.textContent = stageLabel(sAfter);
           document.getElementById("spDots").innerHTML = dotsHTML(stage, sAfter);
         } else {
-          inp.classList.remove("right");
-          inp.classList.add("wrong");
+          state.dotsSP.setWrong();
           fb.className = "sp-feedback wrong";
           fb.innerHTML =
             'Almost. Right answer: <span class="correct">' +
@@ -5862,6 +6425,7 @@
           document.getElementById("spDots").innerHTML = dotsHTML("red", sAfterWrong);
         }
         if (w.ex) ex.textContent = "«" + w.ex + "»";
+        state.dotsSP.disable();
         state.spellingChecked = true;
         document.getElementById("spCheckBtn").textContent = "Next";
         refreshHomeStats();
@@ -5903,29 +6467,17 @@
           return;
         e.preventDefault();
         if (state.spellingChecked) nextSpelling();
-        else if (document.getElementById("spInput").value.trim())
+        else if (state.dotsSP && state.dotsSP.getValue().trim())
           checkSpelling();
       });
-      document.getElementById("spInput").addEventListener("input", () => {
-        if (!state.spellingChecked) {
-          document.getElementById("spCheckBtn").disabled = !document
-            .getElementById("spInput")
-            .value.trim();
-        }
-      });
 
-      /* Quest Enter key + input enable */
+      /* Quest Enter key */
       document.addEventListener("keydown", (e) => {
         if (e.key !== "Enter") return;
         if (!document.getElementById("questScreen").classList.contains("active")) return;
         e.preventDefault();
         if (state.questChecked) advanceQuest();
-        else if (document.getElementById("questInput").value.trim()) checkQuestAnswer();
-      });
-      document.getElementById("questInput").addEventListener("input", () => {
-        if (!state.questChecked) {
-          document.getElementById("questCheckBtn").disabled = !document.getElementById("questInput").value.trim();
-        }
+        else if (state.dotsQuest && state.dotsQuest.getValue().trim()) checkQuestAnswer();
       });
 
       /* ============================================================
@@ -6001,6 +6553,166 @@
           state.powerIndex--;
           renderPower();
         }
+      }
+
+      /* ============================================================
+   CONNECTORS
+   ============================================================ */
+
+      function buildConnQueue() {
+        const p = progress();
+        const cs = p.connectorStatus || {};
+        const due = [];
+        const fresh = [];
+        for (const ex of CONNECTOR_EXERCISES) {
+          const s = cs[ex.id];
+          if (s && s.mastered) continue;
+          if (s && s.red) due.push(ex);
+          else if (s) due.push(ex);
+          else fresh.push(ex);
+        }
+        return [...shuffle(due), ...shuffle(fresh)];
+      }
+
+      function openConnectors() {
+        state.connQueue = buildConnQueue();
+        state.connIndex = 0;
+        state.connCorrect = 0;
+        state.connMastered = 0;
+        state.connMistakes = 0;
+        state.connAnswered = false;
+        if (state.connQueue.length === 0) {
+          toast("All connectors mastered!");
+          return;
+        }
+        showScreen("connectorsScreen");
+        renderConnector();
+      }
+
+      function renderConnector() {
+        const ex = state.connQueue[state.connIndex];
+        if (!ex) { showConnSummary(); return; }
+        state.connAnswered = false;
+        document.getElementById("connSentenceA").textContent = ex.a;
+        document.getElementById("connSentenceB").textContent = ex.b;
+        const blank = document.getElementById("connBlank");
+        blank.textContent = "?";
+        blank.className = "conn-blank";
+        document.getElementById("connFeedback").textContent = "";
+        document.getElementById("connFeedback").className = "conn-feedback";
+        document.getElementById("connSkipBtn").style.display = "";
+        document.getElementById("connNextBtn").style.display = "none";
+        // Progress bar
+        const pct = state.connQueue.length > 0 ? ((state.connIndex) / state.connQueue.length * 100) : 0;
+        document.getElementById("connProgress").style.width = pct + "%";
+        // Streak
+        const streakEl = document.getElementById("connStreak");
+        streakEl.textContent = state.connCorrect > 1 ? ("🔥 " + state.connCorrect) : "";
+        // Options — shuffle
+        const opts = shuffle([...ex.options]);
+        const grid = document.getElementById("connOptions");
+        grid.innerHTML = "";
+        for (const w of opts) {
+          const btn = document.createElement("button");
+          btn.className = "opt";
+          btn.textContent = w;
+          btn.onclick = () => pickConnector(w);
+          grid.appendChild(btn);
+        }
+      }
+
+      function pickConnector(word) {
+        if (state.connAnswered) return;
+        state.connAnswered = true;
+        const ex = state.connQueue[state.connIndex];
+        const isCorrect = ex.correct.includes(word);
+        const p = progress();
+        const cs = p.connectorStatus || {};
+        if (!cs[ex.id]) cs[ex.id] = { streak: 0, mastered: false, red: false };
+        const s = cs[ex.id];
+        // Mark options
+        document.querySelectorAll("#connOptions .opt").forEach(btn => {
+          if (btn.textContent === word) {
+            btn.classList.add(isCorrect ? "correct-pick" : "wrong-pick");
+          }
+          if (ex.correct.includes(btn.textContent) && !isCorrect) {
+            btn.classList.add("correct-pick");
+          }
+          btn.classList.add("disabled");
+        });
+        const blank = document.getElementById("connBlank");
+        const fb = document.getElementById("connFeedback");
+        if (isCorrect) {
+          blank.textContent = word;
+          blank.classList.add("right");
+          s.streak++;
+          s.red = false;
+          state.connCorrect++;
+          fb.textContent = "Correct!";
+          fb.className = "conn-feedback right";
+          addXP(10);
+          spawnConfetti("connConfetti", state.connCorrect >= 3 ? 18 : 8, false);
+          if (s.streak >= 3 && !s.mastered) {
+            s.mastered = true;
+            state.connMastered++;
+            addXP(15);
+            fb.textContent = "Mastered! 🌳";
+          }
+        } else {
+          blank.textContent = ex.correct[0];
+          blank.classList.add("wrong");
+          s.streak = 0;
+          s.red = true;
+          state.connMistakes++;
+          fb.textContent = "Not quite — " + ex.correct.join(" / ");
+          fb.className = "conn-feedback wrong";
+        }
+        p.connectorStatus = cs;
+        saveProgress(state.profile, p);
+        checkPhoenixEvolution(p);
+        // Show Next button
+        document.getElementById("connSkipBtn").style.display = "none";
+        document.getElementById("connNextBtn").style.display = "";
+      }
+
+      function nextConnector() {
+        state.connIndex++;
+        if (state.connIndex >= state.connQueue.length) {
+          showConnSummary();
+        } else {
+          renderConnector();
+        }
+      }
+
+      function skipConnector() {
+        state.connIndex++;
+        if (state.connIndex >= state.connQueue.length) {
+          showConnSummary();
+        } else {
+          renderConnector();
+        }
+      }
+
+      function showConnSummary() {
+        document.getElementById("connProgress").style.width = "100%";
+        const p = progress();
+        const cs = p.connectorStatus || {};
+        let totalMastered = 0;
+        for (const id in cs) if (cs[id].mastered) totalMastered++;
+        document.getElementById("connSumMastered").textContent = totalMastered;
+        document.getElementById("connSumCorrect").textContent = state.connCorrect;
+        document.getElementById("connSumRed").textContent = state.connMistakes;
+        document.getElementById("connSumTitle").textContent =
+          state.connMistakes === 0 ? "Perfect!" : "Nice work!";
+        document.getElementById("connSumSub").textContent =
+          totalMastered + " / " + CONNECTOR_EXERCISES.length + " connectors mastered";
+        const cEmoji = document.getElementById("connSumCreature");
+        if (cEmoji) {
+          const stage = PHOENIX_STAGES.find(s => s.stage === p.phoenixStage) || PHOENIX_STAGES[0];
+          cEmoji.textContent = stage.emoji;
+        }
+        showScreen("connSummaryScreen");
+        refreshHomeStats();
       }
 
       /* ============================================================

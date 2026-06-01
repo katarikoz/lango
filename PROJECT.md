@@ -1,16 +1,14 @@
 # LanGo — vision, decisions, roadmap
 
-This is the source-of-truth document for what LanGo is, why it exists, what we've built, what we've decided not to build, and what's parked for later.
-
-If something here drifts from the code — fix the doc.
+Source-of-truth document. If something here drifts from the code — fix the doc.
 
 ## What it is
 
-A family English-learning mini-app for two specific kids. Their school programme is slow and gives weak vocabulary, so school exposure alone produces short, generic English ("I like football. It is cool."). LanGo fills that gap.
-
-The kids attend a **German-language school** and learn English as a third language from a German textbook. That's why card translations are in German, not Russian — they match what the kids see in class.
+A family learning app for two kids (9–13) and one pre-schooler. The older two attend a German-language school and learn English as a third language from a German textbook. Their school programme is slow and produces short, generic English ("I like football. It is cool."). LanGo fills that gap — and has expanded beyond English into sailing, maths, and (soon) German.
 
 **Live:** [lango.milxi.fun](https://lango.milxi.fun)
+
+**Target audience:** pre-teens / early teens. The UI tone, gamification layer, and phoenix companion are designed to feel like a game, not a homework tool. Language in the UI: "On fire!", "Awesome!", "Keep it going!" — not "Correct answer. Proceed."
 
 ## Pedagogy
 
@@ -21,9 +19,28 @@ Build Better English, not "learn a language". The aim isn't basic ESL — they h
 - Answering with full structure (opinion + reason + example + conclusion) instead of one-line answers.
 - Spelling cleanly enough to ace dictations.
 
-Daily session shape: about 7 minutes. ~2 minutes school words, ~2 minutes spelling, ~2 minutes better answers / power words, ~1 minute speaking challenge.
+Daily session shape: about 7 minutes. ~2 min school words, ~2 min spelling, ~2 min power words, ~1 min stretch.
 
-## Built modes
+---
+
+## Worlds
+
+The home screen is organized around **worlds** — subject areas, each with its own card, gradient, and icon. Worlds appear in the "Today's Quests" list (quick access with status dots) and in the 2×2 "Explore Worlds" grid.
+
+| World | Icon | Status | Content |
+|---|---|---|---|
+| **English Kingdom** | 📚 | Active | School Words, Power Words, Spelling Trainer (+ planned modes) |
+| **Sailing Harbor** | ⛵ | Active | 80 Jugendsegelschein questions (German sailing theory) |
+| **Math Citadel** | 📐 | Active | Subjects system — currently 1 topic (Umfang & Fläche, 5 exercises) |
+| **Deutsch Academy** | 📖 | Locked | Placeholder, "Coming soon" |
+
+### Subjects system (Math Citadel and future worlds)
+
+`LANGO_SUBJECTS` is a generic array of subjects (math, deutsch, erdkunde, nawi). Each subject has topics, each topic has exercises with types: `info`, `numeric`, `choice`. Math Citadel reads from `SUBJECTS_BY_ID["math"]`. Other subjects have empty topic arrays — ready for content.
+
+---
+
+## English Kingdom — built modes
 
 ### School Words — adaptive spaced repetition
 
@@ -32,7 +49,7 @@ Type-it-yourself practice on the current textbook theme. Show the German prompt,
 Each word carries adaptive difficulty (`status.difficulty`, range 0–5):
 
 - Difficulty drops by 0.3 on a correct answer.
-- Difficulty rises by 1.0 on a wrong answer; +0.5 extra if the previous attempt was also wrong (consecutive errors); +0.5 extra if the pattern was "right twice then wrong" (false knowledge — looked solid, wasn't).
+- Difficulty rises by 1.0 on a wrong answer; +0.5 extra if the previous attempt was also wrong (consecutive errors); +0.5 extra if the pattern was "right twice then wrong" (false knowledge).
 - Last 20 attempts are stored as a binary string in `status.history`.
 
 Difficulty drives two things:
@@ -43,77 +60,133 @@ Difficulty drives two things:
 | 1–2.5 (medium) | 4 correct | 4, 8, 20, 40 |
 | 2.5+ (hard) | 5 correct | 3, 6, 12, 25, 40 |
 
-A "step" is one word presentation in the session. After a correct answer, the word's `nextShowStep` is set forward by the interval; after a wrong answer, it's set just 5 steps ahead, so it loops back fast.
+Session state persisted to `localStorage` under `lango.session.{profile}.{themeId}` — closing the app mid-session resumes exactly where they left off.
 
-Session state (current step, queue) is persisted to `localStorage` under `lango.session.{profile}.{themeId}`, so closing the app mid-session and coming back later resumes exactly where they left off.
+UI: status pills (`new` → `1 of N` → `mastered`), multi-segment progress dots, confetti on mastery.
 
-UI status pill: `new` → `1 of N` → `... of N` → `mastered`. Multi-segment progress dots fill in as the kid progresses through the threshold. A wrong answer shows red dots and resets streak to 0 (but keeps the difficulty raise).
-
-There's a "Don't know — show me" button that reveals the answer without penalty and queues the word again later in the session.
+"Don't know — show me" button reveals the answer without penalty and queues the word again.
 
 ### Power Words
 
-A weak word is shown crossed out (cool, good, bad, big, sad, like, etc.). Kid taps one of four stronger replacements and sees the strong word inside a real sentence. Below: a Better Answer preview pair (weak vs strong full sentence) so the upgrade lands as speech, not just vocabulary.
+A weak word is shown crossed out (cool, good, bad, big, etc.). Kid taps one of four stronger replacements and sees the strong word inside a real sentence. Below: a Better Answer preview pair (weak vs strong full sentence) so the upgrade lands as speech, not just vocabulary.
 
-13 weak→strong sets shipping in v0.5.
+13 weak→strong sets.
 
 ### Spelling Trainer
 
-Same typing engine as School Words, fed a different word pool: words flagged `tricky:true` in the theme data, plus any word the kid has recently gotten wrong (`status.red === true`). Drains the riskiest words across all themes regardless of which theme is "current".
+Same typing engine as School Words, fed a different word pool: words flagged `tricky:true` in the theme data + any word the kid has recently gotten wrong (`status.red === true`). Drains the riskiest words across all themes.
 
-## Planned modes
+---
 
-These three are not built yet. We have the concept, an early UX sketch, and a list of open questions. None of these is a finished design — each needs a proper design pass before implementation. Keeping the sketches here so they don't dissolve back into chat history.
+## Sailing Harbor
 
-### Better Answers
+80 German sailing theory questions for the Jugendsegelschein. Same spaced-repetition engine adapted for Q&A format with fuzzy answer matching (accepts multiple valid answers per question). Session queue: up to 15 questions per round (due → fresh → not-due).
 
-**Goal:** train the *structure* of a strong answer, not just stronger vocabulary. Take a flat short reply ("I like football. It is cool.") and turn it into a full one ("I really enjoy football because it is exciting. For example, the result can change at any moment.").
+---
 
-**UX sketch:** show a weak answer at the top. Below it, build-up buttons for each upgrade: *add a reason*, *add an example*, *add a connector*, *swap the weak word*. Each button reveals the right template ("because ___", "For example, ___"), the kid fills in their own content. At the end, the whole strong answer is visible — their own version, structurally correct.
+## Phoenix Companion System
 
-**Open questions:**
-- Where does the weak-answer prompt come from? Hand-curated list, generated from textbook themes, or kid-typed?
-- Free-form text or fill-in-the-blanks? Free-form is real practice; blanks are easier to grade.
-- How do we score progress here? It's not a vocabulary set — there's no "mastered". Maybe sessions completed + variety of structures used.
-- How sharp is the line between this mode and Speaking Builder? Probably: Better Answers = upgrading a given weak reply (reactive). Speaking Builder = composing a strong answer from scratch on a topic (generative).
+The phoenix is the central engagement mechanic — a creature that evolves as the kid progresses.
 
-### Connectors
+### Evolution stages
 
-**Goal:** internalise the "small bridges" of English so sentences stop being staccato. because, however, for example, therefore, although, as a result, in addition, also, but, so.
+| Stage | Name | Emoji | Level req | Themes mastered | Best streak | Quest |
+|---|---|---|---|---|---|---|
+| 1 | Ember Egg | 🥚 | 1 | 0 | 0 | — |
+| 2 | Hatchling Phoenix | 🐣 | 3 | 0 | 0 | Hatching (15 words, 13 correct) |
+| 3 | Young Phoenix | 🔥 | 7 | 1 | 0 | — |
+| 4 | Rising Phoenix | 🦅 | 15 | 2 | 7 days | — |
+| 5 | Blazing Phoenix | 🌟 | 25 | 4 | 0 | Ascension (30 words, 25 correct) |
 
-**UX sketch:** two simple sentences shown stacked. Kid taps the right connector to link them, or types it. Start with multiple choice while the connector inventory is small; graduate to free typing once they're confident. Bonus level: kid is given one sentence and a connector, has to write the second half themselves.
+Evolution is automatic when ALL conditions are met (level + themes + streak + quest).
 
-**Open questions:**
-- How wide is the connector vocabulary? Start with 6, expand to 10+?
-- Should examples come from the actual textbook themes, so kids practise on familiar topic vocab?
-- Is there a "wrong but understandable" path — i.e., multiple connectors fit, do we accept all valid ones?
+### Phoenix states (engagement tracking)
 
-### Speaking Builder
+Based on days since last visit:
 
-**Goal:** the most structural mode. A four-step opinion template that makes "say something interesting in English" mechanical: Opinion → Reason → Example → Conclusion.
+| State | Missed days | Visual | Streak |
+|---|---|---|---|
+| Active 🔥 | 0 (today) | brightness(1.1) | Maintained |
+| Cooling 💨 | 1 | desaturated | Resets to 1 |
+| Dormant 😴 | 2–3 | dim, 0.6 opacity | Resets to 1 |
+| Ash ⚫ | 4+ | sepia, 0.4 opacity | Resets to 1, rebirth required |
 
-**UX sketch:** a topic at the top ("My favourite animal", "Best lunch ever", "A teacher I like"). Four labelled boxes below for the four parts of the answer. Kid fills each in. At the end, the four lines are stitched into a single paragraph — their own structured answer. They've just composed a strong English mini-essay without knowing it.
+**Ash recovery:** kid must complete a Rebirth Quest (10 words, 100% correct) to restore the phoenix.
 
-Audio is the eventual stretch goal: Web Speech API for them to *speak* each part instead of typing. Then play it back.
+### Phoenix status card (home screen sidebar)
 
-**Open questions:**
-- Where do topics come from? A bank we hand-write? Tied to current school theme?
-- How much help do we give per box? Just the label, or also a sentence-starter ("I think...", "For example...")?
-- Recording audio is a big step — do we ship it text-only first, then layer audio when text version proves itself?
-- Same overlap question as above: precisely how does this differ from Better Answers? See note in Better Answers section.
+Shows current streak, phoenix state label, evolution stage emoji. Visible through glassmorphism card on the home screen.
 
-### Overlap note
+---
 
-Better Answers and Speaking Builder are *cousins*, not duplicates:
+## XP & Level System
 
-- **Better Answers** = take a *given* weak reply and rebuild it. Reactive. The kid sees what was wrong and what's better.
-- **Speaking Builder** = compose a strong reply *from a topic*. Generative. The kid produces from scratch using the four-part template.
+| Level | Rank | XP needed |
+|---|---|---|
+| 1 | Newbie | 0 |
+| 2 | Rookie | 50 |
+| 3 | Explorer | 130 |
+| 4 | Warrior | 250 |
+| 5 | Knight | 420 |
+| 6 | Champion | 650 |
+| 7 | Master | 950 |
+| 8 | Legend | 1,350 |
+| 9 | Mythic | 1,850 |
+| 10 | Immortal | 2,500 |
+| 11+ | Immortal II, III… | +800 each |
 
-Both end up reinforcing the same structure (opinion + reason + example + conclusion), but from opposite directions.
+**XP rewards:**
+- Correct answer: +10 XP
+- Word mastered: +25 XP (gold animation)
+- Self-correct after "don't know": +5 XP
+
+Level-up triggers a modal overlay with rank name, confetti, and auto-dismiss.
+
+---
+
+## Streaks
+
+Two kinds:
+
+- **Daily streak** — consecutive days of practice. Drives phoenix state and evolution requirements. Shown on home screen. Glow effects at streak ≥ 3.
+- **Session streak** — consecutive correct answers within a session. Drives confetti intensity (8 + streak × 2 particles). Resets on wrong answer.
+
+---
+
+## Profiles
+
+Three profiles, separate progress in localStorage:
+
+| Internal ID | Name | Emoji |
+|---|---|---|
+| `max` | Cat | 🐱 |
+| `alex` | Fox | 🦊 |
+| `rhino` | Rhino | 🦏 |
+
+Same content, separate `wordStatus`, XP, streak, phoenix stage per profile. Storage key: `lango.profile.{id}`.
+
+Per-profile data:
+```js
+{
+  wordStatus: {},           // word mastery tracking
+  learnedPowerWords: [],    // completed power word sets
+  streak: 0,                // current daily streak
+  bestStreak: 0,            // longest streak ever
+  xp: 0,                    // total XP
+  lastVisit: "YYYY-MM-DD",  // last active date
+  phoenixStage: 1,          // evolution stage (1–5)
+  completedQuests: [],      // ["hatching", "ascension"]
+  rebirthPending: false     // true if missed ≥4 days
+}
+```
+
+---
 
 ## Content pipeline
 
-Themes come from the school textbook as the kids progress. Each theme is one object pushed onto the `LANGO_THEMES` array near the top of `index.html`:
+### English themes
+
+Themes from the school textbook, added to `LANGO_THEMES` array:
 
 ```js
 {
@@ -121,63 +194,113 @@ Themes come from the school textbook as the kids progress. Each theme is one obj
   title: 'Theme X — Topic name',
   status: 'current' | 'review',
   words: [
-    { en: 'word', de: 'das Wort', ex: '(optional) Example sentence.', tricky: true|undefined }
+    { en: 'word', de: 'das Wort', ex: 'Example sentence.', tricky: true|undefined }
   ]
 }
 ```
 
-`status: 'current'` is what's being taught right now; `status: 'review'` is past themes still worth revisiting. Both are visible in the theme list with different badges.
+Delivered themes:
+- **Theme 4** — Free time (96 words) — `review`
+- **Theme 5** — A birthday party (100 words) — `current`
+- **Theme 5a** — Test prep (subset of Theme 5 + months + ordinals) — `current`
 
-Delivered themes so far: **4 — Free time** (96 words), **5 — A birthday party** (100 words).
+When a new theme arrives: paste it into `LANGO_THEMES`, mark old themes as `review`, push, done.
 
-When a new theme arrives: paste it into `LANGO_THEMES`, mark old `current` themes as `review`, push, done.
+### Sailing questions
 
-## Profiles
+80 questions in `SAILING_QUESTIONS`, each with `q`, `a`, `accept` (array of valid answers), `keywords`, and `category`.
 
-Two profiles, separate progress in localStorage.
+### Math exercises
 
-- 🐱 Cat
-- 🦊 Fox
+Topics in `LANGO_SUBJECTS` → math → topics array. Exercise types: `info` (explanatory), `numeric` (type a number), `choice` (multiple choice). Currently 1 topic: Umfang & Fläche (5 exercises).
 
-Same content, separate `wordStatus` map per profile. Streak counter is also per-profile.
-
-Storage key: `lango.profile.{cat|fox}` (or whatever the profile id is — currently `max` / `aleks` internally for backward compat with v0.3 saves).
+---
 
 ## Architecture
 
-- **One file: `index.html`.** No subfolders, no bundler, no framework. iPad Safari opens it from `file://` and from `https://` identically.
-- **Inline data.** `LANGO_THEMES` lives in a `<script>` block at the top. Earlier we tried `data/themes.js`, but Safari blocks relative `<script src>` over `file://` — single file is the durable answer.
-- **localStorage for everything user-side.** Profile progress, session resume state, last-visit date for streaks. No server, no database.
+- **One file: `index.html`.** No subfolders, no bundler, no framework. iPad Safari opens it from `file://` and `https://` identically.
+- **Inline data.** `LANGO_THEMES`, `LANGO_SUBJECTS`, `SAILING_QUESTIONS` live in `<script>` blocks. Safari blocks relative `<script src>` over `file://` — single file is the durable answer.
+- **localStorage as primary store.** Profile progress, session state, streaks.
+- **Supabase for cloud sync.** Login gate → profile picker → app. localStorage is primary, Supabase syncs on login (heavier side wins on conflict). Gives cross-device continuity.
 - **GitHub Pages from `main`** with custom domain `lango.milxi.fun`. Push to main → live in ~30 seconds.
-- **Nunito** via Google Fonts for friendly, readable type. Fallback to system stack.
-- **UI is English.** Kids learn English; the UI itself becomes part of the immersion. Card translations are German (matches the textbook). This document and `README.md` are English; in-conversation working language with mum is Russian.
+- **Font:** Inter via Google Fonts. Fallback to system stack.
+- **UI is English.** Kids learn English; the UI itself is immersion. Card translations are German (matches the textbook). This document is English; working language with mum is Russian.
+
+---
+
+## Planned modes (not built yet)
+
+These have concept + early UX sketches but no code. Each needs a proper design pass before implementation.
+
+### Better Answers
+
+**Goal:** train the *structure* of a strong answer. Take a flat short reply ("I like football. It is cool.") and turn it into a full one ("I really enjoy football because it is exciting. For example, the result can change at any moment.").
+
+**UX sketch:** show a weak answer at the top. Build-up buttons for each upgrade: *add a reason*, *add an example*, *add a connector*, *swap the weak word*. Each button reveals a template, the kid fills in their own content. At the end — their own full, structurally correct answer.
+
+**Open questions:**
+- Source of weak-answer prompts? Curated, generated from themes, or kid-typed?
+- Free-form or fill-in-the-blanks?
+- How to score progress? (Not a vocabulary set — no "mastered".)
+
+### Connectors
+
+**Goal:** internalise linking words so sentences stop being staccato. because, however, for example, therefore, although, etc.
+
+**UX sketch:** two sentences stacked. Kid taps the right connector to link them, or types it. Start multiple choice, graduate to free typing. Bonus: given one sentence + connector, write the second half.
+
+**Open questions:**
+- Connector vocabulary size? Start with 6, expand to 10+?
+- Tie to textbook themes?
+- Accept multiple valid connectors?
+
+### Speaking Builder
+
+**Goal:** four-step opinion template — Opinion → Reason → Example → Conclusion. Makes "say something interesting in English" mechanical.
+
+**UX sketch:** topic at the top ("My favourite animal"). Four labelled boxes. Kid fills each in. At the end, stitched into a single paragraph — their own structured mini-essay.
+
+**Open questions:**
+- Topic bank source?
+- How much help per box? Just label, or sentence-starters too?
+- Text-only first, audio layer later?
+
+### Overlap note
+
+Better Answers = take a *given* weak reply and rebuild (reactive). Speaking Builder = compose from a *topic* from scratch (generative). Both reinforce opinion + reason + example + conclusion, from opposite directions.
+
+---
 
 ## Conscious "nots"
 
-- **No Supabase / cloud database.** Per-iPad localStorage is enough. We'd reach for a backend only if we needed: cross-device sync of progress, remote content updates without push, mum dashboard with stats from both kids' devices.
-- **No real authentication.** A simple lock-screen with a base64 password used to gate access; we removed it once the URL itself was sufficiently obscure to the audience. If we ever need real auth (email-based), Cloudflare Access on Cloudflare Pages is the cleanest add.
-- **Not a public/class-wide app.** LanGo exists to give two specific kids an edge. Distribution to a wider class or school is not in scope. If circumstances change, opening it up is mostly removing the gate and adding a "What's your name?" screen — half a day of work.
-- **No frameworks.** Vanilla HTML + CSS + JS. Total file under 100KB. Anyone with a text editor can open and edit.
-- **No bundler / build step.** Edit, save, push, refresh. That's the whole pipeline.
+- **Not a public/class-wide app.** Built for two specific kids + one pre-schooler. If circumstances change, opening up is half a day of work.
+- **No frameworks.** Vanilla HTML + CSS + JS. Total file well under 200KB. Anyone with a text editor can edit.
+- **No bundler / build step.** Edit, save, push, refresh.
+
+---
 
 ## Parking lot
 
-Things we've thought about but consciously deferred. Not in any order:
+Things we've thought about but consciously deferred:
 
-- Audio / TTS for English word pronunciation.
-- "Mum's view" — a screen that shows both kids' weak words and progress trends so she knows what to focus on with them at dinner.
-- Daily/weekly progress charts.
-- Custom hand-drawn avatars (a friendly lion was mooted as a logo; emoji is the placeholder).
-- Themes 6, 7, 8+ as they come.
-- The three planned modes above (Better Answers, Connectors, Speaking Builder).
-- Dictation-style mode: phrase audio → kid types the whole sentence.
-- Per-theme "exam mode" for the day before a real dictation.
+- Audio / TTS for pronunciation
+- "Mum's view" — both kids' weak words and progress trends on one screen
+- Daily/weekly progress charts
+- Custom hand-drawn avatars (a lion was mooted; emoji is the placeholder)
+- Themes 6, 7, 8+ as they come in school
+- Deutsch Academy content
+- Erdkunde / NaWi content (subjects exist in data, topics empty)
+- Dictation-style mode: phrase audio → kid types the sentence
+- Per-theme exam mode for the day before a real dictation
+- Theming / dark-mode toggle (currently dark only)
+
+---
 
 ## How updates ship
 
-1. Edit `index.html` (or any other file).
+1. Edit `index.html`.
 2. `git commit -am "what changed"` + `git push`.
 3. GitHub Pages rebuilds, ~30 seconds.
-4. Kids reload `lango.milxi.fun` (or it auto-loads next time they open the home-screen icon).
+4. Kids reload `lango.milxi.fun`.
 
 That's the whole loop.
