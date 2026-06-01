@@ -371,7 +371,7 @@
       }
       .level-hex {
         position: absolute;
-        top: 5%;
+        top: 6%;
         left: 0;
         right: 0;
         height: 58%;
@@ -396,7 +396,7 @@
         left: 0;
         right: 0;
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.625rem;
         font-weight: 600;
         letter-spacing: 0.12em;
         color: var(--accent);
@@ -628,55 +628,64 @@
       }
       .quest-card {
         position: relative;
-        background: rgba(24, 27, 46, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid color-mix(in srgb, var(--qc-color) 25%, transparent);
+        background: rgba(24, 27, 46, 0.85);
+        border: none;
         border-radius: 1.125rem;
-        padding: 1.25rem 1rem 1rem;
+        padding: 1rem 1rem 0;
         cursor: pointer;
         overflow: hidden;
-        box-shadow: var(--shadow), 0 0 12px color-mix(in srgb, var(--qc-color) 20%, transparent), inset 0 0 12px color-mix(in srgb, var(--qc-color) 6%, transparent);
-        transition: transform 0.15s, box-shadow 0.15s;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-        animation: cardGlow 4s ease-in-out infinite;
+        gap: 0.375rem;
+        min-height: 13rem;
       }
+      /* Gradient border */
       .quest-card::before {
-        content: "";
+        content: '';
         position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 3px;
-        background: var(--qc-color);
-        border-radius: 1.125rem 1.125rem 0 0;
-        box-shadow: 0 0 8px 1px var(--qc-color);
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(180deg, color-mix(in srgb, var(--qc-color) 50%, transparent), transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        pointer-events: none;
+        z-index: 3;
       }
+      /* Dark gradient fade at bottom */
       .quest-card::after {
         content: '';
         position: absolute;
         inset: 0;
         border-radius: inherit;
-        background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--qc-color) 8%, transparent), transparent 60%);
+        background: linear-gradient(to bottom, transparent 25%, rgba(10, 14, 26, 0.6) 55%, rgba(10, 14, 26, 1) 100%);
         pointer-events: none;
+        z-index: 1;
       }
-      .quest-card:active { transform: scale(0.98); }
+      .quest-card > * {
+        position: relative;
+        z-index: 2;
+      }
+      #qcLearn {
+        background: url('assets/quest-learn.png') center top/cover no-repeat, rgba(24, 27, 46, 1);
+      }
       .qc-badge {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         line-height: 1;
-        width: 2.75rem;
+        width: 2.5rem;
         height: 2.75rem;
-        border-radius: 50%;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, color-mix(in srgb, var(--qc-color) 30%, transparent), color-mix(in srgb, var(--qc-color) 12%, transparent));
-        box-shadow: 0 0 10px color-mix(in srgb, var(--qc-color) 25%, transparent);
+        background: linear-gradient(135deg, color-mix(in srgb, var(--qc-color) 40%, transparent), color-mix(in srgb, var(--qc-color) 15%, transparent));
         flex-shrink: 0;
       }
       .qc-title {
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 1.125rem;
       }
       .qc-sub {
         font-size: 0.8125rem;
@@ -686,12 +695,11 @@
       .qc-progress {
         margin-top: auto;
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        flex-direction: column;
+        gap: 0.25rem;
       }
       .qc-progress-bar {
-        flex: 1;
-        height: 0.375rem;
+        height: 0.3125rem;
         background: rgba(255,255,255,0.08);
         border-radius: 999px;
         overflow: hidden;
@@ -703,15 +711,21 @@
         transition: width 0.3s ease;
       }
       .qc-progress-text {
-        font-size: 0.6875rem;
-        color: var(--ink-soft);
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--qc-color);
         white-space: nowrap;
+        order: -1;
       }
       .qc-go {
         font-size: 0.8125rem;
         font-weight: 600;
-        color: var(--qc-color);
-        margin-top: 0.25rem;
+        color: var(--ink-soft);
+        text-align: center;
+        margin: 0.5rem -1rem 0;
+        padding: 0.625rem 1rem;
+        background: rgba(255, 255, 255, 0.04);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
       }
       @media (max-width: 520px) {
         .quest-cards { grid-template-columns: 1fr; }
@@ -824,6 +838,15 @@
         border: 1px solid rgba(143,64,16,0.35);
         box-shadow: var(--shadow), 0 0 14px var(--world-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       }
+      .w-observatory {
+        --world-glow: rgba(99,102,241,0.3);
+        background: linear-gradient(135deg, #1a2a5e 0%, #0f1a3d 40%, #0a1230 100%);
+        border: 1px solid rgba(99,102,241,0.25);
+        box-shadow: var(--shadow), 0 0 14px var(--world-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+      .w-observatory .world-icon {
+        text-shadow: 0 0 12px rgba(129,140,248,0.5);
+      }
 
       @media (max-width: 520px) {
         .worlds-grid { grid-template-columns: 1fr; }
@@ -835,11 +858,7 @@
           transform: translateY(-2px);
           box-shadow: var(--shadow), 0 0 22px var(--world-glow, rgba(255,255,255,0.1)), 0 8px 30px rgba(0, 0, 0, 0.4);
         }
-        .quest-card:hover {
-          transform: translateY(-2px);
-          box-shadow: var(--shadow), 0 0 24px color-mix(in srgb, var(--qc-color) 35%, transparent), 0 8px 30px rgba(0, 0, 0, 0.4);
-          animation: none;
-        }
+        .quest-card:hover {}
         .mode:hover {
           transform: translateY(-2px);
         }
@@ -1954,6 +1973,244 @@
           background: rgba(56, 189, 248, 0.2);
           transform: translateY(-1px);
         }
+      }
+
+      /* OBSERVATORY */
+      .obs-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        color: var(--ink-soft);
+      }
+      .obs-stats span { font-weight: 600; color: var(--ink); }
+      .obs-tabs {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .obs-tabs::-webkit-scrollbar { display: none; }
+      .obs-tab {
+        flex-shrink: 0;
+        padding: 0.4rem 0.875rem;
+        border-radius: 1rem;
+        border: 1px solid var(--line);
+        background: var(--card);
+        color: var(--ink-soft);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s, border-color 0.15s;
+      }
+      .obs-tab.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+      .obs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.875rem;
+      }
+      .obs-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+        transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .obs-card .obs-card-icon { font-size: 1.5rem; margin-bottom: 0.375rem; }
+      .obs-card .obs-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+      }
+      .obs-card .obs-card-cat {
+        font-size: 0.6875rem;
+        color: var(--ink-soft);
+        font-weight: 600;
+      }
+      .obs-card .obs-card-rarity {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 0.125rem 0.375rem;
+        border-radius: 0.375rem;
+      }
+      .obs-card.locked {
+        opacity: 0.45;
+        cursor: default;
+      }
+      .obs-card.locked .obs-card-lock {
+        font-size: 0.75rem;
+        color: var(--ink-soft);
+        margin-top: 0.375rem;
+      }
+      .obs-progress-mini {
+        height: 0.25rem;
+        background: rgba(255,255,255,0.08);
+        border-radius: 0.125rem;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+      .obs-progress-mini div {
+        height: 100%;
+        border-radius: 0.125rem;
+        background: var(--accent);
+        transition: width 0.3s;
+      }
+      .obs-card.available {
+        border-color: rgba(99,102,241,0.4);
+        box-shadow: 0 0 12px rgba(99,102,241,0.15);
+        animation: obsGlow 2s ease-in-out infinite;
+      }
+      @keyframes obsGlow {
+        0%, 100% { box-shadow: 0 0 8px rgba(99,102,241,0.15); }
+        50% { box-shadow: 0 0 18px rgba(99,102,241,0.3); }
+      }
+      .obs-card.revealed {
+        border-color: rgba(99,102,241,0.2);
+      }
+      .obs-card.revealed::after {
+        content: "✓";
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--good);
+        font-weight: 700;
+      }
+      .obs-common .obs-card-rarity { color: #9ca3af; background: rgba(156,163,175,0.12); }
+      .obs-rare .obs-card-rarity { color: #60a5fa; background: rgba(96,165,250,0.12); }
+      .obs-epic .obs-card-rarity { color: #a78bfa; background: rgba(167,139,250,0.12); }
+      .obs-legendary .obs-card-rarity { color: #fbbf24; background: rgba(251,191,36,0.12); }
+      .obs-legendary.available {
+        border-color: rgba(251,191,36,0.4);
+        animation: obsGlowGold 2s ease-in-out infinite;
+      }
+      @keyframes obsGlowGold {
+        0%, 100% { box-shadow: 0 0 8px rgba(251,191,36,0.15); }
+        50% { box-shadow: 0 0 18px rgba(251,191,36,0.35); }
+      }
+      /* Observatory detail */
+      .obs-detail-card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .obs-detail-cat {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.2rem 0.625rem;
+        border-radius: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+      .obs-detail-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--ink);
+        margin-bottom: 0.25rem;
+      }
+      .obs-detail-rarity {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 1rem;
+      }
+      .obs-question {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1.5;
+        margin-bottom: 1rem;
+      }
+      .obs-choices {
+        display: grid;
+        gap: 0.625rem;
+        margin-bottom: 1rem;
+      }
+      .obs-choices .opt {
+        background: rgba(99,102,241,0.08);
+        color: #818cf8;
+        border: 1px solid transparent;
+        border-radius: 0.875rem;
+        padding: 0.875rem 1rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: left;
+        transition: transform 0.12s, background 0.12s;
+      }
+      .obs-choices .opt:active { transform: scale(0.97); }
+      .obs-choices .opt.correct-pick {
+        background: var(--good);
+        color: white;
+        border-color: var(--good);
+      }
+      .obs-choices .opt.wrong-pick {
+        background: var(--red);
+        color: white;
+        border-color: var(--red);
+      }
+      .obs-choices .opt.disabled {
+        pointer-events: none;
+        opacity: 0.35;
+      }
+      .obs-explanation {
+        background: rgba(99,102,241,0.06);
+        border-left: 3px solid #6366f1;
+        border-radius: 0 0.75rem 0.75rem 0;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--ink);
+      }
+      .obs-fact {
+        background: rgba(251,191,36,0.08);
+        border: 1px solid rgba(251,191,36,0.2);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+      }
+      .obs-fact-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #fbbf24;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 0.375rem;
+      }
+      @media (hover: hover) {
+        .obs-card.available:hover { transform: translateY(-2px); }
+        .obs-card.revealed:hover { transform: translateY(-1px); }
+        .obs-choices .opt:hover:not(.disabled) {
+          background: rgba(99,102,241,0.15);
+          transform: translateY(-1px);
+        }
+      }
+      @media (max-width: 520px) {
+        .obs-grid { grid-template-columns: 1fr; }
       }
 
       .empty-state {
@@ -3082,6 +3339,13 @@
             </div>
             <div class="ribbon">Soon</div>
           </div>
+          <div class="world-card w-observatory" onclick="openObservatory()">
+            <div>
+              <div class="world-icon">🔭</div>
+              <div class="world-title">Observatory</div>
+              <div class="world-meta" id="worldmeta-observatory">Discover the wonders</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -3458,6 +3722,31 @@
             <button class="btn primary" onclick="openConnectors()">Again</button>
           </div>
         </div>
+      </section>
+
+      <!-- OBSERVATORY — GRID -->
+      <section class="screen" id="observatoryScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="goHome()">←</button>
+          <h2>🔭 Observatory</h2>
+        </div>
+        <div class="obs-stats">
+          <div><span id="obsRevealed">0</span> / <span id="obsTotal">20</span> discovered</div>
+          <div><span id="obsCats">0</span> / 5 categories</div>
+        </div>
+        <div class="obs-tabs" id="obsTabs"></div>
+        <div class="obs-grid" id="obsGrid"></div>
+      </section>
+
+      <!-- OBSERVATORY — DETAIL -->
+      <section class="screen" id="obsDetailScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="showScreen('observatoryScreen'); renderObservatory()">←</button>
+          <h2 id="obsDetailHeading">Discovery</h2>
+        </div>
+        <div class="obs-detail-card" id="obsDetailCard"></div>
+        <div id="obsDetailContent"></div>
+        <div class="row-actions" id="obsDetailActions"></div>
       </section>
 
       <!-- SUBJECTS — PICKER (Mathe, Deutsch, Erdkunde, NaWi) -->
@@ -4173,6 +4462,45 @@
           topics: [],
         },
       ];
+      const OBS_CATEGORIES = [
+        { id: "space", icon: "🌌", label: "Deep Space", color: "#6366f1" },
+        { id: "nature", icon: "🌿", label: "Nature", color: "#22c55e" },
+        { id: "engineering", icon: "⚡", label: "Engineering", color: "#f59e0b" },
+        { id: "chemistry", icon: "🧪", label: "Chemistry", color: "#ec4899" },
+        { id: "body", icon: "🧠", label: "Human Body", color: "#14b8a6" },
+      ];
+
+      const OBSERVATORY_DISCOVERIES = [
+        // SPACE — 4 cards
+        { id: "sp1", category: "space", title: "The Sun's Secret Timer", question: "How long does light from the Sun take to reach Earth?", options: ["8 seconds", "8 minutes", "8 hours"], correctIndex: 1, explanation: "Light travels at ~300,000 km/s, but the Sun is 150 million km away — so it takes about 8 minutes and 20 seconds.", mindBlowingFact: "If the Sun vanished right now, you'd still see it shining for 8 more minutes.", xpCost: 25 },
+        { id: "sp2", category: "space", title: "The Tallest Mountain", question: "What is the tallest mountain in the Solar System?", options: ["Mount Everest", "Olympus Mons on Mars", "Mauna Kea on Earth"], correctIndex: 1, explanation: "Olympus Mons on Mars is about 21.9 km high — nearly 2.5 times taller than Everest!", mindBlowingFact: "Olympus Mons is so wide (600 km) that if you stood on its edge, you couldn't see the summit — it would be beyond the horizon.", xpCost: 50 },
+        { id: "sp3", category: "space", title: "Diamond Rain", question: "On which planets might it rain diamonds?", options: ["Venus and Mars", "Neptune and Uranus", "Jupiter and Mercury"], correctIndex: 1, explanation: "Extreme pressure deep inside Neptune and Uranus can crush carbon atoms into diamond crystals that fall like rain.", mindBlowingFact: "Scientists recreated this in a lab by firing lasers at plastic — and it actually worked.", xpCost: 150 },
+        { id: "sp4", category: "space", title: "The Pale Blue Dot", question: "From how far away did Voyager 1 photograph Earth as a tiny dot?", options: ["The Moon's orbit", "Past Mars", "6 billion km away"], correctIndex: 2, explanation: "In 1990, Voyager 1 turned its camera around from beyond Neptune and captured Earth as a 0.12-pixel speck.", mindBlowingFact: "Carl Sagan said: \"Everyone you love, everyone you know, everyone you ever heard of… lived on a mote of dust suspended in a sunbeam.\"", xpCost: 250 },
+
+        // NATURE — 4 cards
+        { id: "na1", category: "nature", title: "Tree Internet", question: "How do trees in a forest share nutrients?", options: ["Through their leaves", "Through underground fungal networks", "Through the wind"], correctIndex: 1, explanation: "Fungi form vast underground webs (mycorrhizal networks) that connect tree roots, letting them share sugar and water.", mindBlowingFact: "Mother trees can recognize their own seedlings and send them extra nutrients through the network.", xpCost: 25 },
+        { id: "na2", category: "nature", title: "Immortal Jellyfish", question: "What can the jellyfish Turritopsis dohrnii do that no other animal can?", options: ["Glow in 7 colors", "Reverse its aging to become young again", "Survive in space"], correctIndex: 1, explanation: "When stressed or old, it transforms its cells back to a younger state — essentially restarting its life cycle.", mindBlowingFact: "Theoretically it can do this forever. Scientists call it 'biological immortality'.", xpCost: 50 },
+        { id: "na3", category: "nature", title: "Lightning Factories", question: "About how many times does lightning strike Earth every day?", options: ["About 800", "About 8,000", "About 8 million"], correctIndex: 2, explanation: "Earth gets struck by lightning roughly 100 times per second — that's about 8.6 million strikes per day!", mindBlowingFact: "A single lightning bolt is 5 times hotter than the surface of the Sun.", xpCost: 100 },
+        { id: "na4", category: "nature", title: "The Oldest Living Thing", question: "How old is the oldest known living tree?", options: ["About 500 years", "About 2,000 years", "Over 5,000 years"], correctIndex: 2, explanation: "A bristlecone pine named Methuselah in California is over 5,000 years old — it was already growing when the pyramids were built.", mindBlowingFact: "Its exact location is kept secret to protect it from vandals.", xpCost: 200 },
+
+        // ENGINEERING — 4 cards
+        { id: "en1", category: "engineering", title: "Spinning into Space", question: "How fast does a rocket need to go to escape Earth's gravity?", options: ["1,000 km/h", "11,200 m/s", "Speed of sound"], correctIndex: 1, explanation: "Escape velocity from Earth is about 11.2 km/s (40,320 km/h) — that's 33 times the speed of sound.", mindBlowingFact: "At that speed you could fly from Berlin to New York in 10 minutes.", xpCost: 25 },
+        { id: "en2", category: "engineering", title: "The Internet's Weight", question: "How much does all the data on the Internet weigh?", options: ["About the same as a grain of sand", "About the same as a strawberry", "About the same as a car"], correctIndex: 1, explanation: "All the electrons storing Internet data weigh roughly 50 grams — less than a strawberry. Some estimates say as little as a grain of sand for the electrical charge alone.", mindBlowingFact: "The energy needed to run the Internet, however, equals dozens of nuclear power plants.", xpCost: 100 },
+        { id: "en3", category: "engineering", title: "Bridge of Spaghetti", question: "What principle makes arch bridges so strong?", options: ["They bend instead of break", "They turn downward force into outward push", "They use heavier materials"], correctIndex: 1, explanation: "An arch converts vertical load (weight) into compression forces that push outward into the supports — no bending stress.", mindBlowingFact: "Roman arch bridges built 2,000 years ago still carry traffic today.", xpCost: 150 },
+        { id: "en4", category: "engineering", title: "Quantum Tunneling", question: "What weird quantum effect do transistors in your phone rely on?", options: ["Teleportation", "Particles passing through barriers", "Time reversal"], correctIndex: 1, explanation: "In quantum physics, particles can 'tunnel' through energy barriers they shouldn't be able to cross — and modern chips use this effect billions of times per second.", mindBlowingFact: "Your phone's processor has more transistors (~15 billion) than there are stars visible to the naked eye.", xpCost: 250 },
+
+        // CHEMISTRY — 4 cards
+        { id: "ch1", category: "chemistry", title: "Atoms Are Mostly Empty", question: "If an atom's nucleus were the size of a marble, how big would the atom be?", options: ["A basketball", "A football field", "A whole city"], correctIndex: 1, explanation: "The nucleus is tiny compared to the electron cloud. Scaled up, it's like a marble in the center of a football field.", mindBlowingFact: "If you removed all the empty space from atoms, the entire human race would fit in a sugar cube.", xpCost: 25 },
+        { id: "ch2", category: "chemistry", title: "Water's Weird Trick", question: "Why does ice float instead of sink?", options: ["Ice has air bubbles inside", "Water expands when it freezes", "Ice is made of lighter atoms"], correctIndex: 1, explanation: "Water is one of very few substances that expand when freezing. The crystal structure of ice has gaps that make it less dense than liquid water.", mindBlowingFact: "If ice sank, lakes would freeze from the bottom up and kill all the fish. Life on Earth depends on this quirk.", xpCost: 50 },
+        { id: "ch3", category: "chemistry", title: "Explosive Elements", question: "What happens when you drop pure sodium into water?", options: ["Nothing visible", "It dissolves slowly", "It explodes and catches fire"], correctIndex: 2, explanation: "Sodium reacts violently with water, producing hydrogen gas and heat — enough to ignite the hydrogen and cause an explosion.", mindBlowingFact: "Table salt (NaCl) contains sodium — but bonded with chlorine, it becomes perfectly safe to eat.", xpCost: 100 },
+        { id: "ch4", category: "chemistry", title: "Noble Loners", question: "Why are noble gases (helium, neon, argon) called 'noble'?", options: ["They glow gold", "They rarely react with other elements", "They were discovered by nobles"], correctIndex: 1, explanation: "Noble gases have full outer electron shells, so they don't need to bond with other atoms. They're chemically 'aloof' — like nobility.", mindBlowingFact: "Helium was discovered on the Sun (via its light spectrum) 27 years before it was found on Earth.", xpCost: 200 },
+
+        // HUMAN BODY — 4 cards
+        { id: "bo1", category: "body", title: "Your Inner Universe", question: "Roughly how many cells are in the human body?", options: ["37 million", "37 billion", "37 trillion"], correctIndex: 2, explanation: "Your body contains about 37 trillion cells — and each one is a tiny living machine with its own copy of your DNA.", mindBlowingFact: "You also carry about 38 trillion bacteria. You're roughly half human, half microbe.", xpCost: 25 },
+        { id: "bo2", category: "body", title: "Electric Brain", question: "How many electrical signals does your brain send per second?", options: ["About 100", "About 100,000", "Billions"], correctIndex: 2, explanation: "With ~86 billion neurons firing up to 200 times per second, your brain produces billions of electrical impulses every second.", mindBlowingFact: "Your brain generates enough electricity to power a small LED light bulb.", xpCost: 50 },
+        { id: "bo3", category: "body", title: "Bone vs Steel", question: "Which is stronger per weight — human bone or steel?", options: ["Steel", "They're equal", "Bone"], correctIndex: 2, explanation: "Ounce for ounce, bone is stronger than steel. A cubic cm of bone can bear ~170 kg before crushing.", mindBlowingFact: "Your skeleton completely replaces itself every 10 years — you don't have a single bone cell from a decade ago.", xpCost: 150 },
+        { id: "bo4", category: "body", title: "DNA Library", question: "If you uncoiled all the DNA in your body, how far would it stretch?", options: ["To the Moon", "To the Sun and back", "To Pluto and back"], correctIndex: 1, explanation: "Each cell has ~2 meters of DNA. Multiply by 37 trillion cells = enough DNA to stretch to the Sun and back about 600 times.", mindBlowingFact: "All of humanity's DNA information could fit on a few grams of DNA molecules — the ultimate hard drive.", xpCost: 250 },
+      ];
     </script>
     <script>
       /* ============================================================
@@ -4503,6 +4831,10 @@
         connMastered: 0,
         connMistakes: 0,
         connAnswered: false,
+        // Observatory
+        obsFilter: "all",
+        obsCurrentCard: null,
+        obsAnswered: false,
         // WordDots instances
         dotsTP: null,
         dotsSP: null,
@@ -4526,6 +4858,7 @@
             if (d.completedQuests === undefined) d.completedQuests = [];
             if (d.rebirthPending === undefined) d.rebirthPending = false;
             if (d.connectorStatus === undefined) d.connectorStatus = {};
+            if (d.observatory === undefined) d.observatory = { revealed: [] };
             // Migration: add adaptive difficulty fields to old word records
             for (const en in d.wordStatus) {
               const s = d.wordStatus[en];
@@ -4554,6 +4887,7 @@
           completedQuests: [],
           rebirthPending: false,
           connectorStatus: {},
+          observatory: { revealed: [] },
         };
       }
 
@@ -5483,12 +5817,23 @@
           const worldMeta = sub.topics.length + " topics · " + masteredEx + "/" + totalEx + " mastered";
           return { dot, status, worldMeta };
         }
+        if (worldId === "observatory") {
+          const revealed = (p.observatory && p.observatory.revealed) || [];
+          const xp = p.xp || 0;
+          const total = OBSERVATORY_DISCOVERIES.length;
+          const avail = OBSERVATORY_DISCOVERIES.filter(c => !revealed.includes(c.id) && xp >= c.xpCost).length;
+          if (revealed.length === total) return { dot: "dot-good", status: "All found!", worldMeta: "All discoveries found!" };
+          if (avail > 0) return { dot: "dot-warn", status: avail + " available", worldMeta: avail + " discoveries available" };
+          const next = OBSERVATORY_DISCOVERIES.filter(c => !revealed.includes(c.id)).sort((a, b) => a.xpCost - b.xpCost)[0];
+          const needed = next ? next.xpCost - xp : 0;
+          return { dot: "dot-muted", status: needed + " XP to next", worldMeta: revealed.length + "/" + total + " · " + needed + " XP to next" };
+        }
         return { dot: "dot-muted", status: "Coming soon", worldMeta: "Coming soon" };
       }
 
       function refreshQuestCards() {
         // Update world metas (for Explore Worlds grid)
-        for (const id of ["english", "sail", "math", "deutsch"]) {
+        for (const id of ["english", "sail", "math", "deutsch", "observatory"]) {
           const s = generateWorldStatus(id);
           const metaEl = document.getElementById("worldmeta-" + id);
           if (metaEl) metaEl.textContent = s.worldMeta;
@@ -8093,6 +8438,216 @@
           checkBtn.disabled = !e.target.value.trim();
         }
       });
+
+      /* ============================================================
+   OBSERVATORY
+   ============================================================ */
+
+      function obsGetRarity(xpCost) {
+        if (xpCost <= 25) return "common";
+        if (xpCost <= 100) return "rare";
+        if (xpCost <= 200) return "epic";
+        return "legendary";
+      }
+
+      function obsCardState(card, xp, revealed) {
+        if (revealed.includes(card.id)) return "revealed";
+        if (xp >= card.xpCost) return "available";
+        return "locked";
+      }
+
+      function openObservatory() {
+        state.obsFilter = "all";
+        state.obsCurrentCard = null;
+        state.obsAnswered = false;
+        renderObservatory();
+        showScreen("observatoryScreen");
+      }
+
+      function renderObservatory() {
+        const p = progress();
+        const xp = p.xp || 0;
+        const revealed = (p.observatory && p.observatory.revealed) || [];
+
+        // Stats
+        document.getElementById("obsRevealed").textContent = revealed.length;
+        document.getElementById("obsTotal").textContent = OBSERVATORY_DISCOVERIES.length;
+        const catsExplored = new Set(OBSERVATORY_DISCOVERIES.filter(c => revealed.includes(c.id)).map(c => c.category)).size;
+        document.getElementById("obsCats").textContent = catsExplored;
+
+        // Tabs
+        const tabsEl = document.getElementById("obsTabs");
+        let tabsHtml = '<button class="obs-tab' + (state.obsFilter === "all" ? " active" : "") + '" onclick="obsFilterCat(\'all\')">All</button>';
+        for (const cat of OBS_CATEGORIES) {
+          tabsHtml += '<button class="obs-tab' + (state.obsFilter === cat.id ? " active" : "") + '" style="' + (state.obsFilter === cat.id ? "background:" + cat.color + ";border-color:" + cat.color : "") + '" onclick="obsFilterCat(\'' + cat.id + '\')">' + cat.icon + " " + cat.label + "</button>";
+        }
+        tabsEl.innerHTML = tabsHtml;
+
+        // Filter + sort: available → revealed → locked
+        let cards = OBSERVATORY_DISCOVERIES.slice();
+        if (state.obsFilter !== "all") cards = cards.filter(c => c.category === state.obsFilter);
+
+        const order = { available: 0, revealed: 1, locked: 2 };
+        cards.sort((a, b) => {
+          const sa = obsCardState(a, xp, revealed), sb = obsCardState(b, xp, revealed);
+          if (order[sa] !== order[sb]) return order[sa] - order[sb];
+          return a.xpCost - b.xpCost;
+        });
+
+        // Render grid
+        const gridEl = document.getElementById("obsGrid");
+        let html = "";
+        for (const card of cards) {
+          const st = obsCardState(card, xp, revealed);
+          const rarity = obsGetRarity(card.xpCost);
+          const cat = OBS_CATEGORIES.find(c => c.id === card.category);
+          const rarityLabel = rarity.charAt(0).toUpperCase() + rarity.slice(1);
+
+          let onclick = "";
+          if (st === "available") onclick = 'onclick="obsRevealCard(\'' + card.id + '\')"';
+          else if (st === "revealed") onclick = 'onclick="obsOpenRevealed(\'' + card.id + '\')"';
+
+          html += '<div class="obs-card obs-' + rarity + " " + st + '" ' + onclick + ">";
+          html += '<div class="obs-card-rarity">' + rarityLabel + "</div>";
+          html += '<div class="obs-card-icon">' + (st === "locked" ? "🔒" : cat.icon) + "</div>";
+          html += '<div class="obs-card-title">' + (st === "locked" ? "???" : card.title) + "</div>";
+          html += '<div class="obs-card-cat">' + cat.icon + " " + cat.label + "</div>";
+
+          if (st === "locked") {
+            const pct = Math.min(100, Math.round(xp / card.xpCost * 100));
+            html += '<div class="obs-card-lock">' + xp + " / " + card.xpCost + " XP</div>";
+            html += '<div class="obs-progress-mini"><div style="width:' + pct + '%"></div></div>';
+          }
+
+          html += "</div>";
+        }
+        gridEl.innerHTML = html;
+      }
+
+      function obsFilterCat(cat) {
+        state.obsFilter = cat;
+        renderObservatory();
+      }
+
+      function obsRevealCard(id) {
+        const card = OBSERVATORY_DISCOVERIES.find(c => c.id === id);
+        if (!card) return;
+        const p = progress();
+        if ((p.xp || 0) < card.xpCost) return;
+        if (!p.observatory) p.observatory = { revealed: [] };
+        if (!p.observatory.revealed.includes(id)) {
+          p.observatory.revealed.push(id);
+          saveProgress(state.profile, p);
+        }
+        state.obsCurrentCard = card;
+        state.obsAnswered = false;
+        renderObsDetail(card, false);
+        showScreen("obsDetailScreen");
+        // Confetti burst
+        spawnConfetti("obsDetailCard", 20, obsGetRarity(card.xpCost) === "legendary");
+      }
+
+      function obsOpenRevealed(id) {
+        const card = OBSERVATORY_DISCOVERIES.find(c => c.id === id);
+        if (!card) return;
+        state.obsCurrentCard = card;
+        state.obsAnswered = true;
+        renderObsDetail(card, true);
+        showScreen("obsDetailScreen");
+      }
+
+      function renderObsDetail(card, isReread) {
+        const cat = OBS_CATEGORIES.find(c => c.id === card.category);
+        const rarity = obsGetRarity(card.xpCost);
+        const rarityLabel = rarity.charAt(0).toUpperCase() + rarity.slice(1);
+        const rarityColors = { common: "#9ca3af", rare: "#60a5fa", epic: "#a78bfa", legendary: "#fbbf24" };
+
+        document.getElementById("obsDetailHeading").textContent = cat.icon + " " + cat.label;
+
+        // Card header
+        const cardEl = document.getElementById("obsDetailCard");
+        cardEl.innerHTML =
+          '<div class="obs-detail-cat" style="background:' + cat.color + "22;color:" + cat.color + '">' + cat.icon + " " + cat.label + "</div>" +
+          '<div class="obs-detail-title">' + card.title + "</div>" +
+          '<div class="obs-detail-rarity" style="color:' + rarityColors[rarity] + '">' + rarityLabel + " Discovery</div>";
+
+        // Content area
+        const contentEl = document.getElementById("obsDetailContent");
+        let html = '<div class="obs-question">' + card.question + "</div>";
+
+        if (!isReread) {
+          // Quiz mode
+          html += '<div class="obs-choices" id="obsChoices">';
+          for (let i = 0; i < card.options.length; i++) {
+            html += '<button class="opt" onclick="obsPickAnswer(' + i + ')">' + card.options[i] + "</button>";
+          }
+          html += "</div>";
+          html += '<div id="obsRevealArea"></div>';
+        } else {
+          // Re-read mode — show correct answer highlighted + explanation + fact
+          html += '<div class="obs-choices">';
+          for (let i = 0; i < card.options.length; i++) {
+            html += '<button class="opt' + (i === card.correctIndex ? " correct-pick" : "") + ' disabled">' + card.options[i] + "</button>";
+          }
+          html += "</div>";
+          html += '<div class="obs-explanation">' + card.explanation + "</div>";
+          html += '<div class="obs-fact"><div class="obs-fact-label">🤯 Mind-Blowing Fact</div>' + card.mindBlowingFact + "</div>";
+        }
+        contentEl.innerHTML = html;
+
+        // Actions
+        const actEl = document.getElementById("obsDetailActions");
+        if (isReread) {
+          actEl.innerHTML = '<button class="btn ghost" onclick="showScreen(\'observatoryScreen\'); renderObservatory()">Back to Vault</button>' + obsNextBtn();
+        } else {
+          actEl.innerHTML = '<button class="btn ghost" onclick="obsShowAnswer()">Show Answer</button>';
+        }
+      }
+
+      function obsPickAnswer(idx) {
+        if (state.obsAnswered) return;
+        state.obsAnswered = true;
+        const card = state.obsCurrentCard;
+        const btns = document.querySelectorAll("#obsChoices .opt");
+        btns.forEach((btn, i) => {
+          btn.classList.add("disabled");
+          if (i === card.correctIndex) btn.classList.add("correct-pick");
+          if (i === idx && i !== card.correctIndex) btn.classList.add("wrong-pick");
+        });
+        // Show explanation + fact
+        const area = document.getElementById("obsRevealArea");
+        area.innerHTML =
+          '<div class="obs-explanation" style="margin-top:1rem">' + card.explanation + "</div>" +
+          '<div class="obs-fact"><div class="obs-fact-label">🤯 Mind-Blowing Fact</div>' + card.mindBlowingFact + "</div>";
+        // Update actions
+        document.getElementById("obsDetailActions").innerHTML =
+          '<button class="btn ghost" onclick="showScreen(\'observatoryScreen\'); renderObservatory()">Back to Vault</button>' + obsNextBtn();
+      }
+
+      function obsShowAnswer() {
+        state.obsAnswered = true;
+        const card = state.obsCurrentCard;
+        const btns = document.querySelectorAll("#obsChoices .opt");
+        btns.forEach((btn, i) => {
+          btn.classList.add("disabled");
+          if (i === card.correctIndex) btn.classList.add("correct-pick");
+        });
+        const area = document.getElementById("obsRevealArea");
+        area.innerHTML =
+          '<div class="obs-explanation" style="margin-top:1rem">' + card.explanation + "</div>" +
+          '<div class="obs-fact"><div class="obs-fact-label">🤯 Mind-Blowing Fact</div>' + card.mindBlowingFact + "</div>";
+        document.getElementById("obsDetailActions").innerHTML =
+          '<button class="btn ghost" onclick="showScreen(\'observatoryScreen\'); renderObservatory()">Back to Vault</button>' + obsNextBtn();
+      }
+
+      function obsNextBtn() {
+        const p = progress();
+        const xp = p.xp || 0;
+        const revealed = (p.observatory && p.observatory.revealed) || [];
+        const next = OBSERVATORY_DISCOVERIES.find(c => !revealed.includes(c.id) && xp >= c.xpCost);
+        if (next) return ' <button class="btn primary" onclick="obsRevealCard(\'' + next.id + '\')">Next Discovery →</button>';
+        return "";
+      }
 
       /* ============================================================
    INIT
