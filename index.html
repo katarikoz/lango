@@ -6844,6 +6844,7 @@
         let fillableCount = 0;
         let chars = [];
         let cursorPos = 0;
+        let locked = false;
 
         const hiddenInput = document.createElement("input");
         hiddenInput.type = "text";
@@ -6860,13 +6861,13 @@
         container.appendChild(row);
 
         container.addEventListener("click", () => {
-          if (!hiddenInput.disabled) hiddenInput.focus();
+          if (!locked) hiddenInput.focus();
         });
 
         // Character input / delete
         hiddenInput.addEventListener("beforeinput", (e) => {
           e.preventDefault();
-          if (hiddenInput.disabled) return;
+          if (locked) return;
 
           if (e.inputType === "insertText" && e.data) {
             const ch = e.data.toLowerCase();
@@ -6894,7 +6895,7 @@
 
         // Arrow keys for cursor movement
         hiddenInput.addEventListener("keydown", (e) => {
-          if (hiddenInput.disabled) return;
+          if (locked) return;
           if (e.key === "ArrowLeft") {
             e.preventDefault();
             if (cursorPos > 0) { cursorPos--; syncDOM(); }
@@ -7025,25 +7026,25 @@
         function reset(answer) {
           container.classList.remove("wd-right", "wd-wrong");
           hiddenInput.value = "";
-          hiddenInput.disabled = false;
+          locked = false;
           parseAnswer(answer);
           buildDOM();
         }
 
         function disable() {
-          hiddenInput.disabled = true;
+          locked = true;
           const active = row.querySelector(".wd-active");
           if (active) active.classList.remove("wd-active");
         }
 
         function enable() {
-          hiddenInput.disabled = false;
+          locked = false;
           syncDOM();
           hiddenInput.focus();
         }
 
         function focus() {
-          if (!hiddenInput.disabled) hiddenInput.focus();
+          if (!locked) hiddenInput.focus();
         }
 
         function setRight() { container.classList.add("wd-right"); }
