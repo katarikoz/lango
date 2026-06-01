@@ -1,4 +1,4 @@
-# LanGo — Build Better English
+# PhoenGo — Build Better English
 
 Family learning app for kids. School textbook vocabulary, power words, spelling — all in one place.
 

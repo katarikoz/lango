@@ -1,10 +1,10 @@
-# LanGo — vision, decisions, roadmap
+# PhoenGo — vision, decisions, roadmap
 
 Source-of-truth document. If something here drifts from the code — fix the doc.
 
 ## What it is
 
-A family learning app for two kids (9–13) and one pre-schooler. The older two attend a German-language school and learn English as a third language from a German textbook. Their school programme is slow and produces short, generic English ("I like football. It is cool."). LanGo fills that gap — and has expanded beyond English into sailing, maths, and (soon) German.
+A family learning app for two kids (9–13) and one pre-schooler. The older two attend a German-language school and learn English as a third language from a German textbook. Their school programme is slow and produces short, generic English ("I like football. It is cool."). PhoenGo fills that gap — and has expanded beyond English into sailing, maths, and (soon) German.
 
 **Live:** [lango.milxi.fun](https://lango.milxi.fun)
 
