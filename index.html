@@ -8570,17 +8570,16 @@
           '<div class="pl-effect">🔬</div>' +
           '<div class="pl-result-name">How molecules form</div>' +
           '<div class="ml-intro-rule">' +
-            "Each tile shows two things. The small grey number in the corner is the " +
-            "<b>atomic number</b> — the atom's place in the periodic table (Hydrogen is #1, " +
-            "Oxygen #8, Sodium #11). It's the atom's ID.<br><br>" +
-            "What matters for joining atoms is the blue <b>dots</b> — the <b>bonding arms</b>. " +
-            "The golden rule: <b>every arm must be held</b> by another atom.<br><br>" +
-            "• Hydrogen has <b>1</b> arm <span class=\"ml-intro-dot\"></span>, Oxygen <b>2</b>, Nitrogen <b>3</b>, Carbon <b>4</b> (the dots, not the corner number!).<br>" +
-            "• <b>Water:</b> Oxygen has 2 arms, so it grabs <b>2</b> Hydrogens → <b>H₂O</b>.<br>" +
-            "• <b>Carbon dioxide:</b> Carbon has 4 arms; two Oxygens (2 each) fill them → <b>CO₂</b>.<br>" +
-            "• Helium and Neon have <b>0</b> arms, so they never join with anything. " +
-            "Atoms like that are called <b>inert</b> — it means they don't react.<br><br>" +
-            "Count the arms, hold them all, and you'll know how many of each atom to take." +
+            "Atoms join by sharing <b>electrons</b> until each one's <b>outer ring is full</b> — " +
+            "that's when an atom is happy.<br><br>" +
+            "The blue dots <span class=\"ml-intro-dot\"></span> on a tile show how many <b>bonds</b> " +
+            "the atom makes (the sharing-links it still needs). The grey number in the corner is the " +
+            "<b>atomic number</b> — how many electrons the atom has.<br><br>" +
+            "• <b>Water:</b> Oxygen needs <b>2</b> bonds, so it grabs 2 Hydrogens → <b>H₂O</b>.<br>" +
+            "• Carbon makes <b>4</b> bonds, Nitrogen <b>3</b>, Hydrogen <b>1</b>.<br>" +
+            "• Helium and Neon already have a full outer ring → <b>0</b> bonds. They never join up — " +
+            "that's what <b>inert</b> means.<br><br>" +
+            "👉 Tap <b>“How atoms work”</b> to see the electrons and rings yourself. Then match up every bond to build a molecule!" +
           "</div>" +
           '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
             '<button class="btn primary" onclick="closeMolResult()">Let\'s brew ⚛️</button>' +
@@ -8652,10 +8651,10 @@
           btn.onclick = () => molAddAtom(el.id);
           const armsHtml =
             el.arms > 0
-              ? '<span class="mol-tile-arms" title="' + el.arms + ' bonding arms">' +
+              ? '<span class="mol-tile-arms" title="' + el.arms + ' bonds">' +
                 '<span class="mol-arm-dot"></span>'.repeat(el.arms) +
                 "</span>"
-              : '<span class="mol-tile-arms"><span class="mol-arm-zero">no arms</span></span>';
+              : '<span class="mol-tile-arms"><span class="mol-arm-zero">inert</span></span>';
           btn.innerHTML =
             '<span class="mol-tile-z" title="atomic number">' + el.z + "</span>" +
             armsHtml +
@@ -8704,7 +8703,7 @@
         let title, msg;
         if (hasNoble) {
           title = "These atoms won't join";
-          msg = "Helium and Neon have no bonding arms, so they never join with anything (atoms like that are called inert). Try elements that have arms!";
+          msg = "Helium and Neon already have a full outer ring, so they make no bonds and never join with anything — that's what inert means. Try elements that still need bonds!";
         } else {
           const sameSet = MOLECULES.find((m) => molSameSet(m.comp, atoms));
           if (sameSet) {

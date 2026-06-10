@@ -76,7 +76,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     await element(page, "Helium").click();
     await page.locator("#mlReactBtn").click();
     await expect(page.locator("#mlResultCard")).toContainText("inert");
-    await expect(page.locator("#mlResultCard")).toContainText("no bonding arms");
+    await expect(page.locator("#mlResultCard")).toContainText("no bonds");
   });
 
   test("the intro teaches the bonding-arms rule (basics, not guesswork)", async ({
@@ -85,8 +85,9 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     await openLab(page); // helper dismisses the auto-intro
     await page.getByRole("button", { name: /How it works/ }).click();
     const card = page.locator("#mlResultCard");
-    await expect(card).toContainText("bonding arms");
-    await expect(card).toContainText("every arm must be held");
+    await expect(card).toContainText("bonds");
+    await expect(card).toContainText("outer ring");
+    await expect(card).toContainText("inert");
     await expect(card).toContainText("H₂O");
     await page.getByRole("button", { name: /Let's brew/ }).click();
     await expect(page.locator("#mlOverlay")).not.toHaveClass(/show/);
