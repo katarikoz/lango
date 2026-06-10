@@ -35,6 +35,8 @@ const SCREENS = [
   { name: "09-molecule-intro", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.molShowIntro(); } },
   { name: "10-atom-oxygen", go: () => { window.pickProfile("max"); window.openAtomExplorer(); window.atomSelect("O"); } },
   { name: "11-atom-sodium", go: () => { window.pickProfile("max"); window.openAtomExplorer(); window.atomSelect("Na"); } },
+  { name: "12-workshop", go: () => { window.pickProfile("alex"); window.openWorkshop(); window.inventPick("beam"); window.inventPick("block"); } },
+  { name: "13-workshop-result", go: () => { window.pickProfile("alex"); window.openWorkshop(); window.inventPick("beam"); window.inventPick("block"); window.inventBuild(); window.inventRevealSecret(); } },
 ];
 
 async function serverUp() {

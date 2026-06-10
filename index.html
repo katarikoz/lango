@@ -3545,6 +3545,14 @@
       .ae-badge.nonmetal { color: #38bdf8; background: rgba(56,189,248,0.16); }
       .ae-badge.noble { color: #c4b5fd; background: rgba(167,139,250,0.16); }
       #aeShelf .pl-ingredient.selected { border-color: var(--pl-magic); background: var(--pl-magic-soft); }
+
+      /* ===== INVENTOR'S WORKSHOP (amber engineering accent) ===== */
+      #workshopScreen { --pl-magic: #f59e0b; --pl-magic-soft: rgba(245,158,11,0.14); }
+      #workshopScreen .pl-rank { color: #fcd9a0; }
+      #wsOverlay .pl-result-card { border-color: rgba(245,158,11,0.4); }
+      #wsOverlay .pl-result-name { color: #fcd9a0; }
+      #wsOverlay .pl-result-tag { color: #fcd9a0; background: rgba(245,158,11,0.14); }
+      #wsOverlay .pl-result-tag.new { color: var(--bg); background: #f59e0b; }
     </style>
     <!-- Supabase: cloud progress sync + login -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -4318,6 +4326,38 @@
         <div class="pl-shelf-label">Tap an atom to see inside it</div>
         <div class="pl-shelf" id="aeShelf"></div>
       </section>
+
+      <!-- INVENTOR'S WORKSHOP — combine parts into machines (real mechanics) -->
+      <section class="screen" id="workshopScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="showScreen('observatoryScreen'); renderObservatory()">←</button>
+          <h2>⚙️ Inventor's Workshop</h2>
+        </div>
+        <div class="pl-rank" id="wsRank"></div>
+        <div class="pl-cauldron-zone">
+          <div class="pl-cauldron">
+            <div class="pl-cauldron-emoji">🛠️</div>
+            <div class="pl-slots">
+              <div class="pl-slot" id="wsSlot0">?</div>
+              <div class="pl-slot-plus">+</div>
+              <div class="pl-slot" id="wsSlot1">?</div>
+            </div>
+          </div>
+          <div class="row-actions pl-brew-actions">
+            <button class="btn ghost" id="wsClearBtn" onclick="inventClear()" disabled>Clear</button>
+            <button class="btn primary" id="wsBuildBtn" onclick="inventBuild()" disabled>Build it 🔧</button>
+          </div>
+        </div>
+        <div class="pl-shelf-label">Parts — tap two to combine</div>
+        <div class="pl-shelf" id="wsShelf"></div>
+        <div class="pl-spellbook-label">Machines Built</div>
+        <div class="pl-spellbook" id="wsBook"></div>
+      </section>
+
+      <!-- WORKSHOP — result overlay -->
+      <div class="pl-overlay" id="wsOverlay" onclick="if(event.target===this) closeInventResult()">
+        <div class="pl-result-card" id="wsResultCard"></div>
+      </div>
 
       <!-- SUBJECTS — PICKER (Mathe, Deutsch, Erdkunde, NaWi) -->
       <section class="screen" id="subjectsScreen">
@@ -5479,6 +5519,65 @@
           fact: "Here the two carbons hold on twice — a double bond (C=C). Ethene is the gas plants make to ripen fruit." },
         { id: "C3H8", formula: "C₃H₈", name: "Propane", comp: { C: 3, H: 8 },
           fact: "Three carbons in a row, wrapped in hydrogens — the gas in a camping stove. Longer carbon chains build fuels, fats and plastics." },
+      ];
+
+      // INVENTOR'S WORKSHOP (для Алекса) — крафт машин из деталей. Каждая комбинация —
+      // настоящая механика (простые машины + механическое преимущество), показанная как "the secret".
+      const INVENT_ELEMENTS = [
+        // base parts
+        { id: "gear", emoji: "⚙️", name: "Gear", kind: "base" },
+        { id: "beam", emoji: "🪵", name: "Beam", kind: "base" },
+        { id: "wheel", emoji: "🛞", name: "Wheel", kind: "base" },
+        { id: "rod", emoji: "📏", name: "Rod", kind: "base" },
+        { id: "rope", emoji: "🪢", name: "Rope", kind: "base" },
+        { id: "block", emoji: "🧱", name: "Block", kind: "base" },
+        { id: "ramp", emoji: "📐", name: "Ramp", kind: "base" },
+        { id: "spring", emoji: "🌀", name: "Spring", kind: "base" },
+        // simple machines (crafted, then combine further)
+        { id: "lever", emoji: "🎚️", name: "Lever", kind: "item",
+          secret: "A stiff Beam resting on a Block (the pivot). Push down far from the pivot to lift a heavy weight close to it — a lever multiplies your force. It's one of the six simple machines." },
+        { id: "wheelaxle", emoji: "☸️", name: "Wheel-and-Axle", kind: "item",
+          secret: "A Wheel fixed to a Rod. A small turn at the rim moves a big load — the wheel-and-axle, another simple machine." },
+        { id: "pulley", emoji: "🪝", name: "Pulley", kind: "item",
+          secret: "A Rope running over a Wheel changes the direction of your pull: pull down to lift up. Add more wheels and a heavy load feels light." },
+        { id: "geartrain", emoji: "⛓️", name: "Gear Train", kind: "item",
+          secret: "Two meshing Gears pass turning along. A big gear driving a small one speeds things up; a small one driving a big one gives more turning force (torque)." },
+        // machines (the payoff)
+        { id: "screw", emoji: "🔩", name: "The Screw", kind: "machine", effect: "glow",
+          flavor: "The ramp coils into a spiral and bites into the wood — give it a turn and it pulls itself in.",
+          secret: "A screw is just a Ramp (an inclined plane) wrapped around a Rod, so a few easy turns become powerful lifting and gripping. Simple machine number six." },
+        { id: "catapult", emoji: "🪃", name: "Catapult", kind: "machine", effect: "shake",
+          flavor: "THWACK — the arm whips up and hurls the load clear across the room!",
+          secret: "A Lever powered by a Spring: the spring stores up energy as you load it, then lets it all go at once to fling the arm." },
+        { id: "crane", emoji: "🏗️", name: "Tower Crane", kind: "machine", effect: "glow",
+          flavor: "The arm swings out and hoists a boulder as if it were a pebble.",
+          secret: "A tall Beam plus a Pulley lifts loads many times your own strength — pulleys trade a longer pull for a much easier one." },
+        { id: "bicycle", emoji: "🚲", name: "Bicycle", kind: "machine", effect: "glow",
+          flavor: "Two wheels and a chain of gears — hop on and fly!",
+          secret: "A Gear Train linked to a Wheel-and-Axle turns the push of your legs into smooth speed — gears let you pick easy pedalling or fast riding." },
+        { id: "clock", emoji: "🕰️", name: "Clockwork", kind: "machine", effect: "glow",
+          flavor: "Tick… tick… the gears march in perfect time.",
+          secret: "A wound Spring lets its energy out slowly through a Gear Train, tooth by tooth — that steady release is how a clock keeps time." },
+        { id: "wheelbarrow", emoji: "🛒", name: "Wheelbarrow", kind: "machine", effect: "shake",
+          flavor: "Pile it high, lift the handles, and roll the whole load away with ease.",
+          secret: "A Lever joined to a Wheel-and-Axle: the lever lightens the lift and the wheel rolls the weight — two simple machines working together." },
+        { id: "windlass", emoji: "🪣", name: "Windlass", kind: "machine", effect: "glow",
+          flavor: "Crank the handle and the bucket rises smoothly from the deep.",
+          secret: "A Rope wound around a Rod you crank — winding rope onto the rod hauls up a heavy bucket. It's a wheel-and-axle in disguise." },
+      ];
+
+      const INVENT_COMBOS = [
+        { a: "beam", b: "block", r: "lever" },
+        { a: "wheel", b: "rod", r: "wheelaxle" },
+        { a: "rope", b: "wheel", r: "pulley" },
+        { a: "gear", b: "gear", r: "geartrain" },
+        { a: "ramp", b: "rod", r: "screw" },
+        { a: "lever", b: "spring", r: "catapult" },
+        { a: "pulley", b: "beam", r: "crane" },
+        { a: "geartrain", b: "wheelaxle", r: "bicycle" },
+        { a: "geartrain", b: "spring", r: "clock" },
+        { a: "lever", b: "wheelaxle", r: "wheelbarrow" },
+        { a: "rope", b: "rod", r: "windlass" },
       ];
 
       const OBSERVATORY_DISCOVERIES = [
@@ -8860,6 +8959,199 @@
       }
 
       /* ============================================================
+   INVENTOR'S WORKSHOP (Алекс) — крафт машин из деталей.
+   Та же механика, что и Potions Lab; tap добавляет деталь (дубликаты ок),
+   убрать — тап по слоту. Машина = терминал, живёт в коллекции.
+   ============================================================ */
+      state.inventSlots = [];
+
+      const INVENT_BY_ID = Object.fromEntries(
+        INVENT_ELEMENTS.map((e) => [e.id, e]),
+      );
+      const INVENT_LIST = INVENT_ELEMENTS.filter((e) => e.kind === "machine");
+      const INVENT_TOTAL = INVENT_LIST.length;
+      const INVENT_RANKS = [
+        { threshold: 0, name: "Tinkerer", icon: "🔧" },
+        { threshold: 2, name: "Apprentice Engineer", icon: "🔧" },
+        { threshold: 4, name: "Engineer", icon: "⚙️" },
+        { threshold: 6, name: "Master Inventor", icon: "🏆" },
+      ];
+      function inventGetRank(n) {
+        let r = INVENT_RANKS[0];
+        for (const x of INVENT_RANKS) if (n >= x.threshold) r = x;
+        return r;
+      }
+
+      function inventProgress() {
+        const p = progress();
+        if (!p.workshop) p.workshop = { built: [] };
+        if (!Array.isArray(p.workshop.built)) p.workshop.built = [];
+        return p.workshop;
+      }
+      function inventBuilt() {
+        return inventProgress().built;
+      }
+      function inventBuiltMachines() {
+        return inventBuilt().filter(
+          (id) => (INVENT_BY_ID[id] || {}).kind === "machine",
+        );
+      }
+      function inventShelfElements() {
+        const disc = inventBuilt();
+        return INVENT_ELEMENTS.filter(
+          (e) => e.kind === "base" || (e.kind === "item" && disc.includes(e.id)),
+        );
+      }
+      function inventFindCombo(ids) {
+        const [x, y] = ids;
+        return (
+          INVENT_COMBOS.find(
+            (c) => (c.a === x && c.b === y) || (c.a === y && c.b === x),
+          ) || null
+        );
+      }
+
+      function openWorkshop() {
+        state.inventSlots = [];
+        renderWorkshop();
+        showScreen("workshopScreen");
+      }
+      function inventPick(id) {
+        if (state.inventSlots.length < 2) state.inventSlots.push(id); // add-only (дубликаты ок)
+        renderWorkshop();
+      }
+      function inventRemoveSlot(i) {
+        state.inventSlots.splice(i, 1);
+        renderWorkshop();
+      }
+      function inventClear() {
+        state.inventSlots = [];
+        renderWorkshop();
+      }
+
+      function renderWorkshop() {
+        const built = inventBuiltMachines().length;
+        const rank = inventGetRank(built);
+        document.getElementById("wsRank").innerHTML =
+          "<span>" + rank.icon + " " + rank.name + "</span>" +
+          '<span class="pl-rank-count">' + built + " / " + INVENT_TOTAL + " machines built</span>";
+
+        for (let i = 0; i < 2; i++) {
+          const slot = document.getElementById("wsSlot" + i);
+          const el = state.inventSlots[i] ? INVENT_BY_ID[state.inventSlots[i]] : null;
+          slot.className = "pl-slot" + (el ? " filled" : "");
+          slot.textContent = el ? el.emoji : "?";
+          slot.onclick = el ? () => inventRemoveSlot(i) : null;
+        }
+        document.getElementById("wsBuildBtn").disabled = state.inventSlots.length !== 2;
+        document.getElementById("wsClearBtn").disabled = state.inventSlots.length === 0;
+
+        const shelf = document.getElementById("wsShelf");
+        shelf.innerHTML = "";
+        for (const el of inventShelfElements()) {
+          const full = state.inventSlots.length >= 2;
+          const btn = document.createElement("button");
+          btn.className = "pl-ingredient";
+          btn.disabled = full;
+          btn.onclick = () => inventPick(el.id);
+          btn.innerHTML =
+            '<span class="pl-ing-emoji">' + el.emoji + "</span>" +
+            '<span class="pl-ing-name">' + escapeHtml(el.name) + "</span>";
+          shelf.appendChild(btn);
+        }
+
+        const book = document.getElementById("wsBook");
+        book.innerHTML = "";
+        const disc = inventBuilt();
+        for (const m of INVENT_LIST) {
+          const got = disc.includes(m.id);
+          const el = document.createElement("div");
+          el.className = "pl-potion " + (got ? "revealed" : "locked");
+          el.innerHTML = got
+            ? '<div class="pl-potion-name">' + m.emoji + " " + escapeHtml(m.name) + "</div>"
+            : '<div class="pl-potion-name">🔒 ???</div><div class="pl-potion-hint">Not built yet</div>';
+          book.appendChild(el);
+        }
+      }
+
+      function inventBuild() {
+        if (state.inventSlots.length !== 2) return;
+        const combo = inventFindCombo(state.inventSlots);
+        if (!combo) {
+          showInventDud();
+          state.inventSlots = [];
+          return;
+        }
+        const result = INVENT_BY_ID[combo.r];
+        const disc = inventBuilt();
+        const isNew = !disc.includes(result.id);
+        if (isNew) {
+          disc.push(result.id);
+          const p = progress();
+          p.workshop.built = disc;
+          saveProgress(state.profile, p);
+          addXP(result.kind === "machine" ? 20 : 10);
+        }
+        showInventResult(result, isNew);
+        state.inventSlots = [];
+      }
+
+      function showInventResult(el, isNew) {
+        const isMachine = el.kind === "machine";
+        const tag = isNew
+          ? isMachine
+            ? "New Machine! +20 XP"
+            : "New Part! +10 XP"
+          : "Already built";
+        const flavor =
+          el.flavor ||
+          "You built " + el.name + " — it's now on your bench to combine.";
+        document.getElementById("wsResultCard").innerHTML =
+          '<div class="pl-effect ' + (el.effect || "") + '">' + el.emoji + "</div>" +
+          '<div class="pl-result-tag ' + (isNew ? "new" : "") + '">' + tag + "</div>" +
+          '<div class="pl-result-name">' + escapeHtml(el.name) + "</div>" +
+          '<div class="pl-result-flavor">' + escapeHtml(flavor) + "</div>" +
+          (el.secret
+            ? '<div class="pl-secret" id="wsSecret">' +
+                '<div class="pl-secret-title">🔧 How it works</div>' +
+                '<div class="pl-secret-body">' + escapeHtml(el.secret) + "</div>" +
+              "</div>"
+            : "") +
+          '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
+            (el.secret
+              ? '<button class="btn ghost" id="wsSecretBtn" onclick="inventRevealSecret()">How it works 🔧</button>'
+              : "") +
+            '<button class="btn primary" onclick="closeInventResult()">Keep building 🔧</button>' +
+          "</div>";
+        document.getElementById("wsOverlay").classList.add("show");
+        spawnConfetti("wsResultCard", isMachine ? 18 : 10, isNew && isMachine);
+      }
+
+      function showInventDud() {
+        document.getElementById("wsResultCard").innerHTML =
+          '<div class="pl-effect">🔧</div>' +
+          '<div class="pl-result-tag dud">Hmm…</div>' +
+          '<div class="pl-result-name">These parts don\'t fit</div>' +
+          '<div class="pl-result-flavor">Nothing useful comes out of this pair. Try other parts — some machines must be built from simpler ones first!</div>' +
+          '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
+            '<button class="btn primary" onclick="closeInventResult()">Try again</button>' +
+          "</div>";
+        document.getElementById("wsOverlay").classList.add("show");
+      }
+
+      function inventRevealSecret() {
+        const s = document.getElementById("wsSecret");
+        if (s) s.classList.add("show");
+        const b = document.getElementById("wsSecretBtn");
+        if (b) b.style.display = "none";
+      }
+
+      function closeInventResult() {
+        document.getElementById("wsOverlay").classList.remove("show");
+        renderWorkshop();
+      }
+
+      /* ============================================================
    SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
    Универсальный движок упражнений: numeric / choice / info.
    Контент берётся из window.LANGO_SUBJECTS.
@@ -10413,6 +10705,7 @@
           html += '<span class="obs-row-count">' + (isComplete ? '★ Complete' : revealedCount + ' / ' + cards.length) + '</span>';
           if (cat.id === "alchemy") html += '<button class="obs-lab-btn" onclick="openPotionLab()">🧪 Potions Lab</button>';
           if (cat.id === "chemistry") html += '<button class="obs-lab-btn" onclick="openMoleculeLab()">⚛️ Molecule Lab</button>';
+          if (cat.id === "engineering") html += '<button class="obs-lab-btn" onclick="openWorkshop()">⚙️ Workshop</button>';
           html += '</div>';
           // Category progress bar
           html += '<div class="obs-row-progress"><div style="width:' + catPct + '%;background:' + cat.color + '"></div></div>';
