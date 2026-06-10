@@ -1,0 +1,21 @@
+{
+  "name": "phoengo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PhoenGo — gamified learning trainer for kids (vanilla HTML/CSS/JS). Tooling lives here; the app itself stays build-free.",
+  "scripts": {
+    "serve": "http-server -p 5555 -c-1 --silent",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "screenshots": "node scripts/screenshots.mjs",
+    "lint": "eslint . && stylelint \"**/*.html\"",
+    "lint:js": "eslint .",
+    "lint:css": "stylelint \"**/*.html\""
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "http-server": "^14.1.1"
+  }
+}

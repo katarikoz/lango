@@ -16,3 +16,12 @@
 # OS
 Thumbs.db
 desktop.ini
+
+# Node / тестовый тулинг (devDependencies, не нужны для GitHub Pages)
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+.playwright/
+/coverage/
+/screenshots/
