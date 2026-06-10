@@ -4223,7 +4223,7 @@
       </section>
 
       <!-- POTION LAB — brew result overlay -->
-      <div class="pl-overlay" id="plOverlay">
+      <div class="pl-overlay" id="plOverlay" onclick="if(event.target===this) closePotionResult()">
         <div class="pl-result-card" id="plResultCard"></div>
       </div>
 
@@ -4251,7 +4251,7 @@
       </section>
 
       <!-- MOLECULE LAB — result overlay -->
-      <div class="pl-overlay" id="mlOverlay">
+      <div class="pl-overlay" id="mlOverlay" onclick="if(event.target===this) closeMolResult()">
         <div class="pl-result-card" id="mlResultCard"></div>
       </div>
 
@@ -6644,9 +6644,10 @@
       function spawnConfetti(containerId, count, isGold) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        const colors = isGold
-          ? ["#d4a017", "#f0c644", "#e8b82e", "#c49512"]
-          : prof().confetti;
+        const colors =
+          (isGold
+            ? ["#d4a017", "#f0c644", "#e8b82e", "#c49512"]
+            : prof() && prof().confetti) || ["#f0c644", "#e8b82e", "#d4a017"];
         for (let i = 0; i < count; i++) {
           const p = document.createElement("div");
           p.className = "confetti-particle";

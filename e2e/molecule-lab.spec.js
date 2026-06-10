@@ -76,4 +76,20 @@ test.describe("Molecule Lab — atoms into molecules", () => {
       "Noble gases stay aloof",
     );
   });
+
+  test("tapping the backdrop always closes the result — never trapped", async ({
+    page,
+  }) => {
+    await openLab(page);
+    await element(page, "Hydrogen").click();
+    await element(page, "Hydrogen").click();
+    await element(page, "Oxygen").click();
+    await page.locator("#mlReactBtn").click();
+    await expect(page.locator("#mlOverlay")).toHaveClass(/show/);
+
+    // клик по фону (не по карточке) закрывает
+    await page.locator("#mlOverlay").click({ position: { x: 6, y: 6 } });
+    await expect(page.locator("#mlOverlay")).not.toHaveClass(/show/);
+    await expect(page.locator("#moleculeLabScreen")).toBeVisible();
+  });
 });
