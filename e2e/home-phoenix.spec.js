@@ -1,9 +1,9 @@
 /* global pickProfile, progress, saveProgress, state, refreshHomeStats */
 const { test, expect } = require("@playwright/test");
 
-// P0 regression: the phoenix state must come from ONE source. While a rebirth is
-// pending the phoenix is "ash" everywhere — energy, banner, artwork, and CTAs can
-// never disagree (the screenshot bug: "Burning bright" + "ashes" + "Hatching Quest").
+// P0 regression: the phoenix state comes from ONE source (rebirthPending forces
+// "ash"). The visible phoenix status elements were removed for now, but the
+// canonical state still drives the artwork — that's what we lock here.
 
 async function setHome(page, rebirth) {
   await page.goto("/");
@@ -22,27 +22,18 @@ async function setHome(page, rebirth) {
 }
 
 test.describe("Home dashboard — single phoenix state (P0)", () => {
-  test("rebirth pending → ash everywhere, no competing evolution CTA", async ({
+  test("rebirth pending → phoenix renders as ash (one canonical state)", async ({
     page,
   }) => {
     await setHome(page, true);
-
-    await expect(page.locator("#rebirthBanner")).toBeVisible();
-    await expect(page.locator("#psEnergy")).toHaveText("Empty");
-    await expect(page.locator("#psEnergyHint")).toHaveText("Needs rebirth");
-    await expect(page.locator("#questCTA")).toBeHidden(); // one primary action
     const cls = await page.locator(".hero-phoenix").getAttribute("class");
     expect(cls).toContain("phoenix-ash");
   });
 
-  test("active (visited today, no rebirth) → burning bright, no ashes banner", async ({
+  test("active (visited today, no rebirth) → phoenix renders active", async ({
     page,
   }) => {
     await setHome(page, false);
-
-    await expect(page.locator("#rebirthBanner")).toBeHidden();
-    await expect(page.locator("#psEnergy")).toHaveText("High");
-    await expect(page.locator("#psEnergyHint")).toHaveText("Burning bright");
     const cls = await page.locator(".hero-phoenix").getAttribute("class");
     expect(cls).toContain("phoenix-active");
   });
