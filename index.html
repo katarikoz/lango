@@ -8532,9 +8532,12 @@
           '<div class="pl-effect">🔬</div>' +
           '<div class="pl-result-name">How molecules form</div>' +
           '<div class="ml-intro-rule">' +
-            "Every atom has a number of <b>bonding arms</b> — the blue dots on its tile. " +
+            "Each tile shows two things. The small grey number in the corner is the " +
+            "<b>atomic number</b> — the atom's place in the periodic table (Hydrogen is #1, " +
+            "Oxygen #8, Sodium #11). It's the atom's ID.<br><br>" +
+            "What matters for joining atoms is the blue <b>dots</b> — the <b>bonding arms</b>. " +
             "The golden rule: <b>every arm must be held</b> by another atom.<br><br>" +
-            "• Hydrogen has <b>1</b> arm <span class=\"ml-intro-dot\"></span>, Oxygen <b>2</b>, Nitrogen <b>3</b>, Carbon <b>4</b>.<br>" +
+            "• Hydrogen has <b>1</b> arm <span class=\"ml-intro-dot\"></span>, Oxygen <b>2</b>, Nitrogen <b>3</b>, Carbon <b>4</b> (the dots, not the corner number!).<br>" +
             "• <b>Water:</b> Oxygen has 2 arms, so it grabs <b>2</b> Hydrogens → <b>H₂O</b>.<br>" +
             "• <b>Carbon dioxide:</b> Carbon has 4 arms; two Oxygens (2 each) fill them → <b>CO₂</b>.<br>" +
             "• Helium and Neon have <b>0</b> arms, so they never join with anything. " +
@@ -8616,6 +8619,7 @@
                 "</span>"
               : '<span class="mol-tile-arms"><span class="mol-arm-zero">no arms</span></span>';
           btn.innerHTML =
+            '<span class="mol-tile-z" title="atomic number">' + el.z + "</span>" +
             armsHtml +
             '<span class="pl-ing-emoji">' + el.sym + "</span>" +
             '<span class="pl-ing-name">' + escapeHtml(el.name) + "</span>";
