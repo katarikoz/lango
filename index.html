@@ -8383,20 +8383,22 @@
     </div>
   `,
         );
+        // Карточка ещё не в документе — ищем элементы внутри неё (card.querySelector),
+        // иначе document.getElementById вернёт null и слушатели не навесятся,
+        // а кнопка Prüfen останется навсегда disabled.
+        const inp = card.querySelector("#exNumInput");
+        const checkBtn = card.querySelector("#exCheckBtn");
         setTimeout(() => {
-          const inp = document.getElementById("exNumInput");
           if (inp) inp.focus();
         }, 80);
-        // enable Check on input
-        const inp = document.getElementById("exNumInput");
-        if (inp) {
+        if (inp && checkBtn) {
           inp.addEventListener("input", () => {
-            document.getElementById("exCheckBtn").disabled = !inp.value.trim();
+            checkBtn.disabled = !inp.value.trim();
           });
           inp.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              if (!document.getElementById("exCheckBtn").disabled) exCheckNumeric();
+              if (!checkBtn.disabled) exCheckNumeric();
             }
           });
         }
