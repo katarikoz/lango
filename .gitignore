@@ -10,9 +10,12 @@
 .vscode/
 .idea/
 
-# Claude Code local settings (per-machine, не для git) — но skills/ шарим в репо
+# Claude Code: локальные настройки (settings.local.json) остаются вне git,
+# а общие — skills/, hooks/, settings.json — шарим в репозитории
 .claude/*
 !.claude/skills/
+!.claude/hooks/
+!.claude/settings.json
 
 # OS
 Thumbs.db

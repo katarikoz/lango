@@ -36,6 +36,7 @@ module.exports = [
       "e2e/**/*.js",
       "tests/**/*.js",
       "scripts/**/*.{js,mjs}",
+      ".claude/hooks/**/*.{js,mjs}",
       "*.config.{js,mjs}",
     ],
     languageOptions: {
