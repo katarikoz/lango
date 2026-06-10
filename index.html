@@ -73,6 +73,7 @@
         -webkit-font-smoothing: antialiased;
         -webkit-tap-highlight-color: transparent;
         overscroll-behavior: none;
+        overflow-x: hidden;
       }
       body {
         min-height: 100vh;
@@ -422,8 +423,10 @@
       @media (max-width: 600px) {
         .pill { padding: 0; border-radius: 50%; background: transparent; border: none; }
         .pill-right { display: none; }
+        .topbar { position: relative; z-index: 2; }
         .hero-columns {
           flex-direction: column;
+          overflow: hidden;
         }
         .hero-text {
           width: 33vw;
@@ -4738,6 +4741,321 @@
                 },
               ],
             },
+            {
+              id: "math-brueche-grundlagen",
+              title: "Brüche — Grundlagen",
+              short: "Brüche: Grundlagen",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "fg-01",
+                  type: "info",
+                  title: "Was ist ein Bruch?",
+                  figure: "frac:bar:3,4",
+                  text: "Ein Bruch beschreibt einen <b>Teil von einem Ganzen</b>. Der Bruchstrich teilt zwei Zahlen:<br><br>• Der <b>Nenner</b> (unten) sagt, in <b>wie viele gleiche Teile</b> das Ganze geteilt wird.<br>• Der <b>Zähler</b> (oben) sagt, <b>wie viele</b> dieser Teile du nimmst.<br><br>Oben sind <b>3 von 4</b> Teilen gefärbt — das ist <b>3/4</b>.",
+                },
+                {
+                  id: "fg-02",
+                  type: "info",
+                  title: "💡 Eselsbrücke: Zähler & Nenner",
+                  text: "<b>Der Nenner nennt</b>, in wie viele Teile geteilt wird.<br><b>Der Zähler zählt</b>, wie viele du nimmst.<br><br>Und: der <b>Nenner</b> steht unten — wie ein <b>Fundament</b>, auf dem der Bruch steht.",
+                },
+                {
+                  id: "fg-03",
+                  type: "choice",
+                  figure: "frac:bar:2,5",
+                  prompt: "Welcher Bruch ist hier gefärbt?",
+                  options: ["2/5", "5/2", "3/5", "2/3"],
+                  correctIndex: 0,
+                  explanation:
+                    "Das Ganze ist in 5 Teile geteilt (Nenner = 5), 2 davon sind gefärbt (Zähler = 2) → 2/5.",
+                },
+                {
+                  id: "fg-04",
+                  type: "numeric",
+                  figure: "frac:pie:3,8",
+                  prompt:
+                    "In wie viele gleiche Teile ist dieser Kreis geteilt? (Nenner)",
+                  answer: 8,
+                  explanation: "Der Kreis hat 8 gleiche Stücke — der Nenner ist 8.",
+                },
+                {
+                  id: "fg-05",
+                  type: "numeric",
+                  figure: "frac:pie:3,8",
+                  prompt: "Wie viele Teile sind gefärbt? (Zähler)",
+                  answer: 3,
+                  explanation:
+                    "3 Stücke sind gefärbt — der Zähler ist 3. Der Bruch ist also 3/8.",
+                },
+                {
+                  id: "fg-06",
+                  type: "choice",
+                  prompt:
+                    "Eine Pizza hat 8 Stücke. 3 sind schon gegessen. Welcher Anteil ist noch übrig?",
+                  options: ["5/8", "3/8", "8/5", "5/3"],
+                  correctIndex: 0,
+                  explanation:
+                    "8 − 3 = 5 Stücke sind übrig, von 8 insgesamt → 5/8.",
+                },
+                {
+                  id: "fg-07",
+                  type: "choice",
+                  figure: "frac:bar:4,4",
+                  prompt: "Welcher Bruch bedeutet genau 'ein Ganzes'?",
+                  options: ["4/4", "1/4", "4/1", "0/4"],
+                  correctIndex: 0,
+                  explanation:
+                    "Wenn Zähler und Nenner gleich sind (4/4), sind alle Teile da — das ist 1 Ganzes.",
+                },
+                {
+                  id: "fg-08",
+                  type: "info",
+                  title: "💡 Trick: Zähler = Nenner → 1 Ganzes",
+                  text: "Immer wenn <b>Zähler und Nenner gleich</b> sind, ist der Bruch genau <b>1</b>:<br><br>2/2 = 3/3 = 8/8 = <b>1 Ganzes</b>.<br><br>Und 0/5 = <b>0</b> (gar nichts genommen).",
+                },
+              ],
+            },
+            {
+              id: "math-brueche-kuerzen",
+              title: "Kürzen & Erweitern",
+              short: "Kürzen & Erweitern",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "fk-01",
+                  type: "info",
+                  title: "Erweitern & Kürzen",
+                  figure: "frac:bar:1,2;2,4",
+                  text: "Ein Bruch behält seinen <b>Wert</b>, auch wenn er anders aussieht. Oben färben <b>1/2</b> und <b>2/4</b> genau gleich viel!<br><br>• <b>Erweitern</b>: Zähler UND Nenner mit <b>derselben Zahl malnehmen</b>. (1/2 · 2 = 2/4)<br>• <b>Kürzen</b>: Zähler UND Nenner durch <b>dieselbe Zahl teilen</b>. (2/4 : 2 = 1/2)",
+                },
+                {
+                  id: "fk-02",
+                  type: "info",
+                  title: "💡 Trick: gerade Zahlen kürzen",
+                  text: "Sind <b>Zähler und Nenner beide gerade</b>, kannst du immer mindestens <b>durch 2 kürzen</b>.<br><br>Tipp: lieber mehrmals durch kleine Zahlen (2, 3, 5) teilen, bis nichts mehr geht — dann ist der Bruch <b>vollständig gekürzt</b>.",
+                },
+                {
+                  id: "fk-03",
+                  type: "choice",
+                  prompt: "Erweitere 1/2 auf Viertel. Wie heißt der Bruch?",
+                  options: ["2/4", "1/4", "4/2", "3/4"],
+                  correctIndex: 0,
+                  explanation:
+                    "Nenner 2 → 4 heißt 'mal 2'. Also auch Zähler mal 2: 1 · 2 = 2 → 2/4.",
+                },
+                {
+                  id: "fk-04",
+                  type: "numeric",
+                  prompt: "Erweitere 2/3 mit 4. Wie groß ist der neue Nenner?",
+                  answer: 12,
+                  explanation:
+                    "3 · 4 = 12. (Der Zähler wird 2 · 4 = 8, also 8/12.)",
+                },
+                {
+                  id: "fk-05",
+                  type: "numeric",
+                  prompt: "Erweitere 3/5 mit 2. Wie groß ist der neue Zähler?",
+                  answer: 6,
+                  explanation:
+                    "3 · 2 = 6. (Der Nenner wird 5 · 2 = 10, also 6/10.)",
+                },
+                {
+                  id: "fk-06",
+                  type: "choice",
+                  prompt: "Kürze 6/8 vollständig.",
+                  options: ["3/4", "2/4", "6/8", "3/8"],
+                  correctIndex: 0,
+                  explanation:
+                    "6 und 8 sind beide durch 2 teilbar: 6 : 2 = 3, 8 : 2 = 4 → 3/4. Mehr geht nicht.",
+                },
+                {
+                  id: "fk-07",
+                  type: "numeric",
+                  prompt: "Kürze 12/16 durch 4. Wie groß ist der neue Zähler?",
+                  answer: 3,
+                  explanation: "12 : 4 = 3 (und 16 : 4 = 4). Also 3/4.",
+                },
+                {
+                  id: "fk-08",
+                  type: "choice",
+                  prompt: "Welcher Bruch ist schon vollständig gekürzt?",
+                  options: ["3/7", "4/8", "6/9", "10/15"],
+                  correctIndex: 0,
+                  explanation:
+                    "3 und 7 haben keinen gemeinsamen Teiler außer 1. Die anderen kann man noch kürzen (4/8 = 1/2, 6/9 = 2/3, 10/15 = 2/3).",
+                },
+              ],
+            },
+            {
+              id: "math-brueche-addsub",
+              title: "Brüche addieren & subtrahieren",
+              short: "Addieren & Subtrahieren",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "fa-01",
+                  type: "info",
+                  title: "Gleichnamig: gleicher Nenner",
+                  figure: "frac:bar:2,7;3,7",
+                  text: "Haben zwei Brüche <b>denselben Nenner</b> (gleichnamig), ist es leicht:<br><br>➡️ <b>Nur die Zähler</b> addieren (oder subtrahieren). Der <b>Nenner bleibt gleich</b>.<br><br>2/7 + 3/7 = <b>5/7</b>.",
+                },
+                {
+                  id: "fa-02",
+                  type: "numeric",
+                  prompt: "2/7 + 3/7 = ?/7  —  Wie groß ist der Zähler?",
+                  answer: 5,
+                  explanation:
+                    "Gleicher Nenner: nur die Zähler addieren. 2 + 3 = 5 → 5/7.",
+                },
+                {
+                  id: "fa-03",
+                  type: "choice",
+                  prompt: "3/8 + 4/8 = ?",
+                  options: ["7/8", "7/16", "1/8", "12/8"],
+                  correctIndex: 0,
+                  explanation: "Nenner bleibt 8, Zähler: 3 + 4 = 7 → 7/8.",
+                },
+                {
+                  id: "fa-04",
+                  type: "info",
+                  title: "Ungleichnamig: erst gleich machen",
+                  text: "Verschiedene Nenner? Dann <b>zuerst gleichnamig machen</b>:<br><br>1. Gemeinsamen Nenner finden.<br>2. Beide Brüche erweitern.<br>3. Erst dann die Zähler addieren.<br><br>Beispiel: 1/2 + 1/4 → 1/2 = 2/4 → 2/4 + 1/4 = <b>3/4</b>.",
+                },
+                {
+                  id: "fa-05",
+                  type: "info",
+                  title: "💡 Trick: Nenner einfach malnehmen",
+                  text: "Findest du keinen gemeinsamen Nenner? <b>Multipliziere die beiden Nenner</b> — das klappt immer!<br><br>a/b + c/d = (a·d + c·b) / (b·d).<br><br>Danach das Ergebnis noch <b>kürzen</b>, falls möglich.",
+                },
+                {
+                  id: "fa-06",
+                  type: "choice",
+                  prompt: "1/2 + 1/4 = ?",
+                  options: ["3/4", "2/6", "1/6", "2/4"],
+                  correctIndex: 0,
+                  explanation: "1/2 = 2/4. Dann 2/4 + 1/4 = 3/4.",
+                },
+                {
+                  id: "fa-07",
+                  type: "choice",
+                  prompt: "1/3 + 1/6 = ?",
+                  options: ["1/2", "2/9", "2/6", "1/9"],
+                  correctIndex: 0,
+                  explanation:
+                    "Gemeinsamer Nenner 6: 1/3 = 2/6. Dann 2/6 + 1/6 = 3/6 = 1/2.",
+                },
+                {
+                  id: "fa-08",
+                  type: "choice",
+                  prompt: "5/6 − 1/3 = ?",
+                  options: ["1/2", "4/3", "4/6", "2/3"],
+                  correctIndex: 0,
+                  explanation: "1/3 = 2/6. Dann 5/6 − 2/6 = 3/6 = 1/2.",
+                },
+              ],
+            },
+            {
+              id: "math-brueche-misch",
+              title: "Gemischte Zahlen, Vergleich & Dezimal",
+              short: "Gemischt, Vergleich, Dezimal",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "fm-01",
+                  type: "info",
+                  title: "Gemischte Zahlen",
+                  figure: "frac:bar:4,4;3,4",
+                  text: "Ist der Zähler <b>größer als der Nenner</b> (unechter Bruch), steckt mehr als 1 Ganzes drin.<br><br>7/4 = ein voller Streifen (4/4) + 3/4 = <b>1 3/4</b>.<br><br>Umwandeln: <b>Zähler : Nenner</b> rechnen. Das Ergebnis ist die ganze Zahl, der <b>Rest</b> ist der neue Zähler.",
+                },
+                {
+                  id: "fm-02",
+                  type: "numeric",
+                  prompt:
+                    "Wandle 9/4 in eine gemischte Zahl um. Wie groß ist die ganze Zahl?",
+                  answer: 2,
+                  explanation: "9 : 4 = 2 Rest 1. Die ganze Zahl ist 2.",
+                },
+                {
+                  id: "fm-03",
+                  type: "numeric",
+                  prompt:
+                    "9/4 als gemischte Zahl — wie groß ist der Rest (der neue Zähler)?",
+                  answer: 1,
+                  explanation: "9 : 4 = 2 Rest 1. Also 9/4 = 2 1/4.",
+                },
+                {
+                  id: "fm-04",
+                  type: "choice",
+                  prompt: "Welcher unechte Bruch ist gleich 2 1/3?",
+                  options: ["7/3", "6/3", "5/3", "2/3"],
+                  correctIndex: 0,
+                  explanation:
+                    "2 Ganze = 6/3, plus 1/3 = 7/3. (Rechnung: 2 · 3 + 1 = 7.)",
+                },
+                {
+                  id: "fm-05",
+                  type: "info",
+                  title: "💡 Trick: Brüche vergleichen",
+                  text: "• <b>Gleicher Nenner?</b> → Der mit dem <b>größeren Zähler</b> ist größer. (3/5 > 2/5)<br>• <b>Gleicher Zähler?</b> → Der mit dem <b>kleineren Nenner</b> ist größer! (1/4 > 1/6, weil größere Teile)<br>• Sonst: <b>gleichnamig machen</b> und Zähler vergleichen.",
+                },
+                {
+                  id: "fm-06",
+                  type: "choice",
+                  prompt: "Was ist größer: 1/4 oder 1/6?",
+                  options: ["1/4", "1/6", "gleich groß"],
+                  correctIndex: 0,
+                  explanation:
+                    "Gleicher Zähler (1). Bei weniger Teilen ist jedes Teil größer → 1/4 > 1/6.",
+                },
+                {
+                  id: "fm-07",
+                  type: "choice",
+                  prompt: "Was ist größer: 2/3 oder 3/5?",
+                  options: ["2/3", "3/5", "gleich groß"],
+                  correctIndex: 0,
+                  explanation:
+                    "Gleichnamig machen (Nenner 15): 2/3 = 10/15, 3/5 = 9/15. 10/15 > 9/15 → 2/3.",
+                },
+                {
+                  id: "fm-08",
+                  type: "info",
+                  title: "💡 Trick: Brüche als Dezimalzahl",
+                  text: "Diese solltest du auswendig können:<br><br>1/2 = <b>0,5</b><br>1/4 = <b>0,25</b> &nbsp;&nbsp; 3/4 = <b>0,75</b><br>1/5 = <b>0,2</b><br>1/10 = <b>0,1</b><br><br>Sonst gilt: <b>Zähler : Nenner</b> rechnen.",
+                },
+                {
+                  id: "fm-09",
+                  type: "numeric",
+                  prompt: "Schreibe 1/4 als Dezimalzahl.",
+                  answer: 0.25,
+                  explanation: "1 : 4 = 0,25.",
+                },
+                {
+                  id: "fm-10",
+                  type: "numeric",
+                  prompt: "Schreibe 3/4 als Dezimalzahl.",
+                  answer: 0.75,
+                  explanation: "3 : 4 = 0,75. (Oder: 3 · 0,25 = 0,75.)",
+                },
+                {
+                  id: "fm-11",
+                  type: "choice",
+                  prompt: "Welcher Bruch ist gleich 0,2?",
+                  options: ["1/5", "1/2", "1/4", "1/10"],
+                  correctIndex: 0,
+                  explanation:
+                    "1 : 5 = 0,2. (1/2 = 0,5; 1/4 = 0,25; 1/10 = 0,1.)",
+                },
+              ],
+            },
           ],
         },
         {
@@ -4761,6 +5079,7 @@
         },
       ];
       const OBS_CATEGORIES = [
+        { id: "alchemy", icon: "⚗️", label: "Alchemy", color: "#a855f7" },
         { id: "space", icon: "🌌", label: "Deep Space", color: "#6366f1" },
         { id: "nature", icon: "🌿", label: "Nature", color: "#22c55e" },
         { id: "engineering", icon: "⚡", label: "Engineering", color: "#f59e0b" },
@@ -4769,6 +5088,25 @@
       ];
 
       const OBSERVATORY_DISCOVERIES = [
+        // ALCHEMY — potion-brewing wrapper over real chemistry ⚗️✨
+        { id: "al1", category: "alchemy", title: "The Bubbling Potion of Fury", question: "An alchemist stirs baking soda into vinegar and the cauldron erupts with foam. What magical gas is escaping?", options: ["Oxygen", "Carbon dioxide (CO₂)", "Helium"], correctIndex: 1, explanation: "Baking soda is a base, vinegar is an acid. When they meet, the reaction sets free carbon dioxide gas — the very same gas in fizzy drinks. That's your potion's 'fury'.", mindBlowingFact: "This is exactly how a baking-soda volcano works at a science fair — pure acid-base chemistry, no spellbook required.", xpCost: 25 },
+        { id: "al2", category: "alchemy", title: "Invisible Ink of the Secret Order", question: "A message written in lemon juice is invisible — until you warm the paper. Why does it suddenly appear?", options: ["The heat dyes the paper", "Lemon juice browns (oxidises) before the paper does", "Lemon juice is secretly magnetic"], correctIndex: 1, explanation: "Lemon juice soaks into and weakens the paper. When heated, those spots oxidise and turn brown at a lower temperature than the clean paper — revealing the hidden words.", mindBlowingFact: "Spies have used acidic invisible inks like this for over 2,000 years.", xpCost: 25 },
+        { id: "al3", category: "alchemy", title: "Frozen Smoke Potion", question: "Dry ice fills a cauldron with creeping fog — yet there is no fire and no water puddle. What IS dry ice?", options: ["Frozen water", "Frozen carbon dioxide", "Frozen smoke"], correctIndex: 1, explanation: "Dry ice is solid carbon dioxide at about −78 °C. It skips the liquid stage and turns straight into gas — a change called sublimation — which makes that ghostly fog.", mindBlowingFact: "Because it never melts into a liquid, it leaves no puddle — that's why it's called 'dry' ice.", xpCost: 50 },
+        { id: "al4", category: "alchemy", title: "Potion of Eternal Glow", question: "A glow stick shines for hours with no battery, no fire and no heat. What powers the light?", options: ["Tiny hidden LEDs", "A chemical reaction (chemiluminescence)", "Sunlight stored earlier"], correctIndex: 1, explanation: "Bending the stick snaps an inner glass tube, mixing two chemicals. Their reaction releases its energy as cold light — this is called chemiluminescence.", mindBlowingFact: "Fireflies and deep-sea anglerfish use the exact same trick to make their own living light.", xpCost: 75 },
+        { id: "al5", category: "alchemy", title: "Elixir of Colour-Changing Magic", question: "Purple cabbage water turns pink with lemon juice and green with soap. What is the elixir really detecting?", options: ["Temperature", "Whether something is an acid or a base (pH)", "How much sugar is in it"], correctIndex: 1, explanation: "Red cabbage holds a pigment that changes colour with pH. Acids turn it pink/red, bases turn it green/blue. You've brewed a natural pH indicator — a real chemist's tool.", mindBlowingFact: "You can make this 'magic potion' in your own kitchen with one cabbage and hot water.", xpCost: 100 },
+        { id: "al6", category: "alchemy", title: "The Unmixable Potion", question: "No matter how hard you stir, oil and water split back into two layers. What breaks this 'curse'?", options: ["Nothing — it's truly cursed", "A drop of soap", "Adding more oil"], correctIndex: 1, explanation: "Water molecules are 'polar' and cling tightly to each other, pushing the non-polar oil away. A drop of soap has one end that grabs water and one that grabs oil — connecting them and breaking the spell.", mindBlowingFact: "This is exactly how soap washes greasy hands: it links the oil to the water so it can rinse away.", xpCost: 150 },
+        { id: "al7", category: "alchemy", title: "Philosopher's Gold", question: "Real alchemists spent centuries trying to turn lead into gold by mixing and heating. Why was it doomed to fail?", options: ["They used the wrong incantation", "Gold is an element — you can't brew it from other chemicals", "Gold was simply too rare to copy"], correctIndex: 1, explanation: "Gold is a chemical element. Mixing, heating or stirring only rearranges existing atoms — it can never create new gold atoms. Only changing the atom's nucleus could, and that's far beyond any cauldron.", mindBlowingFact: "Modern physicists HAVE made flecks of real gold inside particle accelerators — true transmutation, but it costs vastly more than the gold is worth.", xpCost: 200 },
+        { id: "al8", category: "alchemy", title: "The Potion That Can't Decide", question: "An alchemist mixes cornflour with water. Punch it and it's hard as rock; touch it slowly and it's runny liquid. What kind of potion is this?", options: ["A magic solid", "A non-Newtonian fluid", "A frozen liquid"], correctIndex: 1, explanation: "It's a non-Newtonian fluid. Sudden force jams the cornflour grains together so it acts solid; slow pressure lets them slide past each other, so it flows like a liquid.", mindBlowingFact: "Fill a pool with it and you can run straight across the surface — but stand still and you'll sink. People really do this.", xpCost: 25 },
+        { id: "al9", category: "alchemy", title: "Potion of Dancing Colours", question: "Drop food colouring into milk, then touch it with a soapy cotton bud — the colours burst and swirl on their own. What pushes them?", options: ["Tiny currents made when soap breaks the milk's surface tension", "The colours are alive", "Heat from your finger"], correctIndex: 0, explanation: "Milk's surface is held tight by surface tension, and it's full of fat. Soap breaks that tension and races to grab the fat, stirring up currents that fling the colours around.", mindBlowingFact: "It keeps swirling as long as there's fat for the soap to chase — whole milk gives the wildest show.", xpCost: 25 },
+        { id: "al10", category: "alchemy", title: "The Eruption Elixir", question: "Drop a mint sweet into fizzy cola and a huge foam geyser blasts out. Is this a chemical reaction?", options: ["Yes — the mint reacts with the cola", "No — the rough sweet just lets the trapped gas escape all at once", "Yes — the sugar explodes"], correctIndex: 1, explanation: "It's physical, not chemical. The sweet's bumpy surface gives the dissolved carbon dioxide millions of spots to form bubbles (called nucleation), so all the gas rushes out at once.", mindBlowingFact: "A smooth sweet barely fizzes — it's the rough, pitted surface that makes the geyser shoot metres into the air.", xpCost: 50 },
+        { id: "al11", category: "alchemy", title: "The Curse of Crumbling Iron", question: "An iron sword left in the damp slowly turns orange and flakes apart. What 'curse' is eating it?", options: ["Tiny insects", "Rust — iron reacting with oxygen and water", "The cold air"], correctIndex: 1, explanation: "Iron reacts with oxygen from the air, and water speeds it up. The new substance — rust (iron oxide) — is weak and crumbly, so the metal slowly falls to pieces.", mindBlowingFact: "Painting or oiling iron keeps oxygen and water out. That's exactly how knights stopped their armour from rusting.", xpCost: 50 },
+        { id: "al12", category: "alchemy", title: "Growing the Enchanted Crystal", question: "To grow a giant sugar crystal, an alchemist dissolves sugar in hot water until no more will go in, then lets it cool slowly. Why do crystals appear?", options: ["The water freezes", "Cooling water can't hold all the dissolved sugar, so it rebuilds into crystals", "The sugar evaporates"], correctIndex: 1, explanation: "Hot water dissolves far more sugar than cold water. As it cools, the extra sugar can no longer stay dissolved and the molecules lock together into neat crystals.", mindBlowingFact: "This is how rock candy is made — and how real gemstones grew deep inside the Earth over thousands of years.", xpCost: 75 },
+        { id: "al13", category: "alchemy", title: "The Spell That Dyes Fire", question: "Sprinkle different metal powders into a flame and it burns green, then red, then yellow. What decides the colour?", options: ["How hot the fire is", "Which metal is in the powder", "The time of day"], correctIndex: 1, explanation: "Each metal's atoms give off light at their own special colour when heated — copper burns green, lithium red, sodium yellow. Chemists call this a flame test.", mindBlowingFact: "Fireworks use this exact trick: different metal salts are packed in to paint the sky in colour.", xpCost: 100 },
+        { id: "al14", category: "alchemy", title: "Potion of Sudden Frost", question: "An alchemist mixes two room-temperature ingredients and the flask instantly turns freezing cold on its own. How?", options: ["It secretly hides ice", "The reaction absorbs heat from its surroundings (endothermic)", "Cold is its own kind of magic"], correctIndex: 1, explanation: "Some reactions take energy IN instead of giving it off — they're called endothermic. They pull heat out of the flask (and your hand), so everything feels icy.", mindBlowingFact: "Instant cold packs for injuries work this way: snap them and a reaction starts that turns them freezing in seconds.", xpCost: 150 },
+        { id: "al15", category: "alchemy", title: "The Never-Ending Foam", question: "Add one special ingredient and a small flask erupts into a towering column of foam — yet that ingredient is never used up. What is it?", options: ["A catalyst", "More water", "A magic word"], correctIndex: 0, explanation: "A catalyst speeds a reaction up without being consumed. Here it makes hydrogen peroxide split apart super fast, releasing loads of oxygen that gets trapped as foam — the famous 'elephant toothpaste'.", mindBlowingFact: "Your own body is packed with catalysts called enzymes — they let reactions that would take years happen in a heartbeat.", xpCost: 200 },
+        { id: "al16", category: "alchemy", title: "The Reversible Spell", question: "An alchemist melts a wax charm, then lets it cool — and it hardens again, good as new. What kind of change is this?", options: ["A permanent change", "A reversible (physical) change", "A new substance, forever"], correctIndex: 1, explanation: "Melting and freezing are reversible physical changes — no new substance is made, so you can undo them. Burning the wax would be irreversible: the smoke and ash can never go back.", mindBlowingFact: "Some chemical reactions are reversible too — they can run forwards AND backwards depending on heat and pressure.", xpCost: 100 },
+        { id: "al17", category: "alchemy", title: "Potion of Light", question: "A potion looks bright red even under plain white light. Where did all the other colours go?", options: ["They leak out of the bottom", "The potion soaks them up and reflects only red back to your eyes", "They simply turn invisible"], correctIndex: 1, explanation: "White light is every colour mixed together. The potion absorbs (soaks up) every colour except red, and bounces the red back to your eyes — so red is the only colour you see.", mindBlowingFact: "A black object absorbs almost ALL colours (that's why it heats up in the sun), while a white one reflects them all back.", xpCost: 150 },
+
         // SPACE — 4 cards
         { id: "sp1", category: "space", title: "The Sun's Secret Timer", question: "How long does light from the Sun take to reach Earth?", options: ["8 seconds", "8 minutes", "8 hours"], correctIndex: 1, explanation: "Light travels at ~300,000 km/s, but the Sun is 150 million km away — so it takes about 8 minutes and 20 seconds.", mindBlowingFact: "If the Sun vanished right now, you'd still see it shining for 8 more minutes.", xpCost: 25 },
         { id: "sp2", category: "space", title: "The Tallest Mountain", question: "What is the tallest mountain in the Solar System?", options: ["Mount Everest", "Olympus Mons on Mars", "Mauna Kea on Earth"], correctIndex: 1, explanation: "Olympus Mons on Mars is about 21.9 km high — nearly 2.5 times taller than Everest!", mindBlowingFact: "Olympus Mons is so wide (600 km) that if you stood on its edge, you couldn't see the summit — it would be beyond the horizon.", xpCost: 50 },
@@ -4801,6 +5139,42 @@
       ];
 
       const OBSERVATORY_LESSONS = [
+        {
+          id: "ls-alchemy-matter", category: "alchemy", title: "The Alchemist's Handbook: States of Matter",
+          xpCost: 250,
+          lesson: "Every potion ingredient exists in one of three magical forms — and a true alchemist can command all three.\n\n<b>Solid</b> (a crystal or a powder): the tiny particles are packed tightly together and barely move. The shape stays fixed, like a frozen spell.\n\n<b>Liquid</b> (a bubbling brew): the particles are still close, but now they can slide past one another. So the potion flows and takes the shape of whatever bottle holds it.\n\n<b>Gas</b> (enchanted vapour): the particles break free and zoom around at high speed, spreading out to fill the entire room.\n\nThe real magic is <b>changing between them</b>. Add heat and a solid will <b>melt</b> into a liquid, then <b>evaporate</b> into a gas. Take heat away and the gas will <b>condense</b> back to liquid, then <b>freeze</b> into a solid again.\n\nOne ingredient is special. Dry ice — frozen carbon dioxide — skips the liquid step completely and turns straight from solid into gas. This rare trick is called <b>sublimation</b>, and to an onlooker the cauldron simply smokes as if by magic.\n\nRemember this, young alchemist: through every change it is always the <i>same</i> particles. Heat only decides how wildly they dance.",
+          questions: [
+            { question: "In a SOLID, how do the particles behave?", options: ["They fly around freely", "They are packed tight and barely move", "They disappear"], correctIndex: 1, explanation: "In a solid the particles are locked closely together and only vibrate in place — that's why a solid keeps its shape." },
+            { question: "Why does a liquid take the shape of its bottle?", options: ["Its particles can slide past each other", "Its particles vanish", "It is actually a gas"], correctIndex: 0, explanation: "In a liquid the particles stay close but can flow past one another, so the liquid pours and fills the bottom of any container." },
+            { question: "You heat a solid until it becomes a liquid. What is this change called?", options: ["Freezing", "Melting", "Condensing"], correctIndex: 1, explanation: "Adding heat makes solid particles move enough to break free of their fixed spots — the solid melts into a liquid." },
+            { question: "Dry ice turns straight from solid to gas. What is that special change called?", options: ["Evaporation", "Sublimation", "Condensation"], correctIndex: 1, explanation: "Going directly from solid to gas, skipping liquid, is called sublimation. Dry ice (frozen CO₂) is the classic example." },
+            { question: "During all these changes, what stays the same?", options: ["The temperature", "It's always the same particles", "The shape"], correctIndex: 1, explanation: "Melting, freezing and boiling don't create or destroy anything — it's the same particles throughout. Heat just changes how fast they move." }
+          ]
+        },
+        {
+          id: "ls-alchemy-acids", category: "alchemy", title: "The Alchemist's Handbook: Acids & Bases",
+          xpCost: 300,
+          lesson: "Every potion an alchemist brews sits somewhere on one great scale — the <b>pH scale</b>, running from 0 to 14.\n\n<b>Acids</b> sit low on the scale (0–6). They taste sour — think lemon juice, vinegar, and even the acid in your own stomach. Strong ones can sting and eat through things.\n\n<b>Bases</b> (also called alkalis) sit high (8–14). They often feel slippery and taste bitter — think soap, baking soda, and oven cleaner.\n\nRight in the middle is <b>7 — neutral</b>. Pure water lives here.\n\nHow does an alchemist tell them apart without tasting (never taste an unknown potion!)? With an <b>indicator</b> — a substance that changes colour with pH, like the red-cabbage elixir. Litmus paper does the same job: it turns red in acid and blue in a base.\n\nThe most useful spell of all is <b>neutralising</b>. Mix an acid and a base and they cancel each other out, forming water and a salt. You use this real magic all the time: an antacid tablet neutralises too much stomach acid, and baking soda dabbed on a bee sting calms the acid in the venom.\n\nRemember the golden rule, young alchemist: acid + base → water + salt. Balance restored.",
+          questions: [
+            { question: "Where do ACIDS sit on the pH scale?", options: ["High, 8–14", "Low, 0–6", "Exactly 7"], correctIndex: 1, explanation: "Acids are below 7 — for example lemon juice (about 2) and vinegar." },
+            { question: "Which of these is a BASE?", options: ["Vinegar", "Soap", "Lemon juice"], correctIndex: 1, explanation: "Soap is a base — that's why it feels slippery. Vinegar and lemon juice are acids." },
+            { question: "What does a pH of exactly 7 mean?", options: ["Very acidic", "Neutral", "Very basic"], correctIndex: 1, explanation: "7 is neutral — pure water sits right in the middle of the scale." },
+            { question: "How can you safely tell an acid from a base?", options: ["Taste it", "Use an indicator that changes colour", "Smell it closely"], correctIndex: 1, explanation: "Never taste an unknown potion! Indicators like litmus paper or red-cabbage juice change colour to reveal the pH." },
+            { question: "What do you get when an acid and a base neutralise each other?", options: ["More acid", "Water and a salt", "Only a gas"], correctIndex: 1, explanation: "Acid + base → water + a salt. That's exactly how an antacid calms an upset stomach." }
+          ]
+        },
+        {
+          id: "ls-alchemy-elements", category: "alchemy", title: "The Periodic Table of Magical Elements",
+          xpCost: 350,
+          lesson: "Long ago, alchemists searched for the basic 'building blocks' of everything. They were right that such blocks exist — we call them <b>elements</b>.\n\nAn <b>element</b> is a pure substance made of just one kind of <b>atom</b>. Gold is an element (only gold atoms). Oxygen is an element. So are iron, carbon and helium.\n\nThere are about <b>118 known elements</b>, and EVERYTHING around you — your body, this screen, the air, the stars — is built from them. Imagine a whole universe made from just 118 kinds of LEGO brick.\n\nA chemist named <b>Dmitri Mendeleev</b> arranged them into a chart called the <b>Periodic Table</b>. It isn't random: elements with similar 'powers' are grouped together — soft, reactive metals on the left; the lazy, unreactive noble gases on the far right.\n\nEvery element gets a short <b>symbol</b>: H for hydrogen, O for oxygen, Au for gold (from its old Latin name 'aurum'). Join two hydrogen atoms to one oxygen atom and you get H₂O — water.\n\nHere's the real magic: Mendeleev's table had <b>gaps</b>. He boldly predicted elements that nobody had found yet — and years later they were discovered, with exactly the properties he foretold.",
+          questions: [
+            { question: "What is an element?", options: ["A mixture of many substances", "A pure substance made of one kind of atom", "A type of potion"], correctIndex: 1, explanation: "An element is made of just one kind of atom — like gold, oxygen or carbon." },
+            { question: "About how many elements are known?", options: ["About 12", "About 118", "About 1,000"], correctIndex: 1, explanation: "There are roughly 118 known elements — and everything is built from them." },
+            { question: "Who arranged the elements into the Periodic Table?", options: ["Isaac Newton", "Dmitri Mendeleev", "Albert Einstein"], correctIndex: 1, explanation: "Dmitri Mendeleev created the Periodic Table, grouping elements with similar properties." },
+            { question: "What is the chemical symbol for gold?", options: ["Gd", "Au", "Go"], correctIndex: 1, explanation: "Gold's symbol is Au, from its Latin name 'aurum'." },
+            { question: "Why is Mendeleev's table called a stroke of genius?", options: ["It was very colourful", "It left gaps that correctly predicted undiscovered elements", "It listed every known potion"], correctIndex: 1, explanation: "He left gaps for elements not yet found — and they were later discovered just as he predicted." }
+          ]
+        },
         {
           id: "ls-star-life", category: "space", title: "How Stars Live and Die",
           xpCost: 75,
@@ -7780,7 +8154,9 @@
         const queue = nonMastered.length
           ? nonMastered
           : topic.exercises.slice();
-        state.subjectQueue = shuffle(queue.map((e) => e.id));
+        const ids = queue.map((e) => e.id);
+        // ordered: учебные темы держат инфо-карточки перед заданиями (без перемешивания)
+        state.subjectQueue = topic.ordered ? ids : shuffle(ids);
         state.subjectIndex = 0;
         state.subjectAnswered = 0;
         state.subjectSessionLimit = Math.min(state.subjectQueue.length, 20);
@@ -7811,16 +8187,98 @@
         if (!spec || typeof spec !== "string") return "";
         const colonIdx = spec.indexOf(":");
         const kind = colonIdx >= 0 ? spec.slice(0, colonIdx) : spec;
-        const params =
-          colonIdx >= 0
-            ? spec
-                .slice(colonIdx + 1)
-                .split(",")
-                .map((s) => parseFloat(s.trim()))
-            : [];
+        const rest = colonIdx >= 0 ? spec.slice(colonIdx + 1) : "";
+        if (kind === "frac") return svgFraction(rest);
+        const params = rest
+          ? rest.split(",").map((s) => parseFloat(s.trim()))
+          : [];
         if (kind === "rect") return svgRect(params[0] || 1, params[1] || 1);
         if (kind === "square") return svgRect(params[0] || 1, params[0] || 1);
         return "";
+      }
+
+      /* --- SVG-диаграммы дробей ---
+         frac:bar:3,4        одна полоска, 3 из 4 закрашены
+         frac:pie:2,3        круг, 2 из 3 секторов закрашены
+         frac:bar:1,2;2,4    несколько полосок (через ;) — для сравнения
+      */
+      const FRAC_FILL = "#f06810";
+      const FRAC_EMPTY = "#1c2a4a";
+      const FRAC_DIV = "#0e1630";
+      const FRAC_LABEL = "#8b90a5";
+
+      function svgFraction(rest) {
+        const ci = rest.indexOf(":");
+        const sub = ci >= 0 ? rest.slice(0, ci) : "bar";
+        const body = (ci >= 0 ? rest.slice(ci + 1) : rest).trim();
+        const groups = body
+          .split(";")
+          .map((g) => g.split(",").map((n) => parseInt(n.trim(), 10)))
+          .filter(
+            (g) => g.length >= 2 && !isNaN(g[0]) && !isNaN(g[1]) && g[1] > 0,
+          );
+        if (!groups.length) return "";
+        return sub === "pie" ? svgFracPie(groups) : svgFracBar(groups);
+      }
+
+      function svgFracBar(groups) {
+        const boxW = 260,
+          barW = 168,
+          barH = 46,
+          gap = 26,
+          padTop = 10,
+          x0 = 22;
+        const boxH = padTop + groups.length * (barH + gap);
+        let out = "";
+        groups.forEach((g, gi) => {
+          const total = g[1];
+          const filled = Math.max(0, Math.min(g[0], total));
+          const y = padTop + gi * (barH + gap);
+          const cw = barW / total;
+          for (let i = 0; i < total; i++) {
+            out += `<rect x="${(x0 + i * cw).toFixed(1)}" y="${y}" width="${cw.toFixed(1)}" height="${barH}" fill="${i < filled ? FRAC_FILL : FRAC_EMPTY}" stroke="${FRAC_DIV}" stroke-width="1.5"/>`;
+          }
+          out += `<rect x="${x0}" y="${y}" width="${barW}" height="${barH}" fill="none" stroke="${FRAC_FILL}" stroke-width="2" rx="3"/>`;
+          out += `<text x="${x0 + barW + 12}" y="${y + barH / 2 + 5}" text-anchor="start" font-size="16" fill="${FRAC_LABEL}" font-family="Nunito, sans-serif" font-weight="700">${g[0]}/${total}</text>`;
+        });
+        return `<svg viewBox="0 0 ${boxW} ${boxH}" xmlns="http://www.w3.org/2000/svg" style="width:260px;max-width:100%">${out}</svg>`;
+      }
+
+      function fracPolar(cx, cy, r, deg) {
+        const a = ((deg - 90) * Math.PI) / 180;
+        return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+      }
+      function fracSlice(cx, cy, r, start, end) {
+        const [sx, sy] = fracPolar(cx, cy, r, start);
+        const [ex, ey] = fracPolar(cx, cy, r, end);
+        const large = end - start > 180 ? 1 : 0;
+        return `M${cx} ${cy} L${sx.toFixed(2)} ${sy.toFixed(2)} A${r} ${r} 0 ${large} 1 ${ex.toFixed(2)} ${ey.toFixed(2)} Z`;
+      }
+      function svgFracPie(groups) {
+        const r = 56,
+          pad = 18,
+          labelH = 26;
+        const d = r * 2;
+        const boxW = groups.length * d + (groups.length + 1) * pad;
+        const boxH = d + pad * 2 + labelH;
+        let out = "";
+        groups.forEach((g, gi) => {
+          const total = g[1];
+          const filled = Math.max(0, Math.min(g[0], total));
+          const cx = pad + r + gi * (d + pad);
+          const cy = pad + r;
+          if (total === 1) {
+            out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${filled >= 1 ? FRAC_FILL : FRAC_EMPTY}" stroke="${FRAC_DIV}" stroke-width="1.5"/>`;
+          } else {
+            const step = 360 / total;
+            for (let i = 0; i < total; i++) {
+              out += `<path d="${fracSlice(cx, cy, r, i * step, (i + 1) * step)}" fill="${i < filled ? FRAC_FILL : FRAC_EMPTY}" stroke="${FRAC_DIV}" stroke-width="1.5"/>`;
+            }
+          }
+          out += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${FRAC_FILL}" stroke-width="2"/>`;
+          out += `<text x="${cx}" y="${cy + r + labelH - 4}" text-anchor="middle" font-size="16" fill="${FRAC_LABEL}" font-family="Nunito, sans-serif" font-weight="700">${g[0]}/${total}</text>`;
+        });
+        return `<svg viewBox="0 0 ${boxW} ${boxH}" xmlns="http://www.w3.org/2000/svg" style="width:${Math.min(boxW, 260)}px;max-width:100%">${out}</svg>`;
       }
 
       function svgRect(w, h) {
@@ -7885,10 +8343,14 @@
         const titleHtml = ex.title
           ? `<div class="ex-info-title">${escapeHtml(ex.title)}</div>`
           : "";
+        const figureHtml = ex.figure
+          ? `<div class="ex-figure">${renderFigure(ex.figure)}</div>`
+          : "";
         card.insertAdjacentHTML(
           "beforeend",
           `
     ${titleHtml}
+    ${figureHtml}
     <div class="ex-info-text">${ex.text || ""}</div>
     <div class="row-actions" style="margin-top:18px">
       <button class="btn primary" onclick="exAcknowledgeInfo()">Verstanden — weiter</button>
@@ -7940,10 +8402,14 @@
         options.forEach((opt, i) => {
           optionsHtml += `<button class="ex-option" data-i="${i}" onclick="exChooseOption(${i})">${escapeHtml(opt)}</button>`;
         });
+        const figureHtml = ex.figure
+          ? `<div class="ex-figure">${renderFigure(ex.figure)}</div>`
+          : "";
         card.insertAdjacentHTML(
           "beforeend",
           `
     <div class="ex-prompt">${escapeHtml(ex.prompt || "")}</div>
+    ${figureHtml}
     <div class="ex-options" id="exOptions">${optionsHtml}</div>
     <div class="ex-feedback" id="exFeedback"></div>
     <div class="ex-explanation" id="exExplanation" style="display:none"></div>

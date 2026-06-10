@@ -283,9 +283,65 @@ Better Answers = take a *given* weak reply and rebuild (reactive). Speaking Buil
 
 ---
 
+## Custom Themes (planned, not started)
+
+**Vision:** The app's killer feature for other parents — photograph a textbook page, get beautiful flashcards. No more sitting with kids drilling words manually.
+
+### Architecture
+
+```
+Supabase
+├── custom_themes (owner_id, title, words jsonb, created_at)
+│   └── belongs to parent account, shared across all child profiles
+├── progress (per profile, references words by key)
+│   └── same wordStatus[en] mechanism as built-in themes
+└── Edge Function: photo-to-cards
+    └── receives photo → Claude Vision → returns [{de, en, confident: bool}]
+    └── API key in function secrets, never client-side
+```
+
+### How it works
+
+1. English Kingdom → Topic Grid → "+ Add Theme" button at the bottom
+2. Three input paths:
+   - **Type manually** — add word pairs one by one
+   - **Paste a list** — CSV or plain text (de;en per line)
+   - **Photograph a page** — camera/upload → Edge Function → Vision AI extracts pairs
+3. After photo: review screen with extracted pairs, uncertain ones flagged, inline editing
+4. Save → theme appears in grid alongside built-in themes, works identically
+5. Same spaced repetition, XP, phoenix, progress bars — no difference from built-in
+
+### Subset picker (universal)
+
+Any theme (built-in or custom) can spawn a "drill subset" — e.g. 20 words for this week's dictation. Theme 5a already proved the concept. Make the picker universal: parent selects words from theme → creates a focused drill set → kid masters those before the test.
+
+### Storage
+
+- `custom_themes` table in Supabase, linked to parent (owner_id)
+- Words stored as jsonb array: `[{de, en}, ...]`
+- localStorage caches themes offline, same sync pattern as existing progress
+- Progress per profile references words by `en` key, same as built-in themes
+
+### Implementation order
+
+1. `custom_themes` table in Supabase + CRUD
+2. Frontend: create theme manually + paste list (no photo yet)
+3. Display custom themes in grid alongside built-in ones
+4. Progress on custom themes (should work if keys match existing engine)
+5. Edge Function + photo parsing with review UI
+6. Universal subset picker for any theme
+
+### Photo parsing notes
+
+- Textbook pages have columns, images, exercise numbers — Vision handles it but prompt must be explicit
+- Prompt asks model to return `{de, en, confident}` per pair
+- Direction DE↔EN can confuse models — prompt must specify
+- "Parent reviews/edits" step is mandatory and must be fast (inline edit, delete, reorder)
+
+---
+
 ## Conscious "nots"
 
-- **Not a public/class-wide app.** Built for two specific kids + one pre-schooler. If circumstances change, opening up is half a day of work.
 - **No frameworks.** Vanilla HTML + CSS + JS. Total file well under 200KB. Anyone with a text editor can edit.
 - **No bundler / build step.** Edit, save, push, refresh.
 
