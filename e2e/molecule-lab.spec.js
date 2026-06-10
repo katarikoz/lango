@@ -83,7 +83,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     page,
   }) => {
     await openLab(page); // helper dismisses the auto-intro
-    await page.locator(".ml-help-btn").click();
+    await page.getByRole("button", { name: /How it works/ }).click();
     const card = page.locator("#mlResultCard");
     await expect(card).toContainText("bonding arms");
     await expect(card).toContainText("every arm must be held");

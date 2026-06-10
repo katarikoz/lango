@@ -3525,6 +3525,26 @@
         display: inline-block; width: 7px; height: 7px; border-radius: 50%;
         background: #38bdf8; margin: 0 1px; vertical-align: middle;
       }
+      /* ===== ATOM EXPLORER ===== */
+      #atomExplorerScreen { --pl-magic: #38bdf8; --pl-magic-soft: rgba(56,189,248,0.14); }
+      .ae-stage { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 18px; }
+      .ae-diagram { width: 240px; max-width: 82vw; }
+      .ae-diagram svg { width: 100%; height: auto; display: block; }
+      .ae-readout {
+        width: 100%; max-width: 440px; background: var(--card);
+        border: 1px solid rgba(56,189,248,0.3); border-radius: 16px; padding: 16px;
+      }
+      .ae-readout .ae-r-title { font-weight: 800; font-size: 1.05rem; color: #bae6fd; margin-bottom: 4px; }
+      .ae-readout .ae-r-line { font-size: 0.92rem; line-height: 1.55; margin-top: 7px; color: var(--ink); }
+      .ae-readout b { color: #bae6fd; }
+      .ae-badge {
+        display: inline-block; font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.05em; padding: 3px 9px; border-radius: 999px; margin-left: 6px; vertical-align: middle;
+      }
+      .ae-badge.metal { color: #fbbf24; background: rgba(251,191,36,0.16); }
+      .ae-badge.nonmetal { color: #38bdf8; background: rgba(56,189,248,0.16); }
+      .ae-badge.noble { color: #c4b5fd; background: rgba(167,139,250,0.16); }
+      #aeShelf .pl-ingredient.selected { border-color: var(--pl-magic); background: var(--pl-magic-soft); }
     </style>
     <!-- Supabase: cloud progress sync + login -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -4261,6 +4281,9 @@
           <button class="ml-help-btn" onclick="molShowIntro()">? How it works</button>
         </div>
         <div class="pl-rank" id="mlRank"></div>
+        <div class="row-actions" style="justify-content:center;margin:-4px 0 16px">
+          <button class="ml-help-btn" onclick="openAtomExplorer()">🔬 How atoms work — explore</button>
+        </div>
         <div class="pl-cauldron-zone">
           <div class="pl-cauldron">
             <div class="pl-cauldron-emoji">⚗️</div>
@@ -4281,6 +4304,20 @@
       <div class="pl-overlay" id="mlOverlay" onclick="if(event.target===this) closeMolResult()">
         <div class="pl-result-card" id="mlResultCard"></div>
       </div>
+
+      <!-- ATOM EXPLORER — see electrons in shells, derive the bonds -->
+      <section class="screen" id="atomExplorerScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="showScreen('moleculeLabScreen'); renderMoleculeLab()">←</button>
+          <h2>🔬 How Atoms Work</h2>
+        </div>
+        <div class="ae-stage">
+          <div class="ae-diagram" id="aeDiagram"></div>
+          <div class="ae-readout" id="aeReadout"></div>
+        </div>
+        <div class="pl-shelf-label">Tap an atom to see inside it</div>
+        <div class="pl-shelf" id="aeShelf"></div>
+      </section>
 
       <!-- SUBJECTS — PICKER (Mathe, Deutsch, Erdkunde, NaWi) -->
       <section class="screen" id="subjectsScreen">
@@ -5392,16 +5429,17 @@
       ];
 
       // MOLECULE LAB (для Макса) — настоящая химия: атомы → молекулы со стехиометрией.
-      // arms = связочные «руки» (валентность): сколько связей атому нужно замкнуть.
+      // arms = число связей (валентность). shells = электроны по кольцам (изнутри наружу).
+      // type: nonmetal добирает до полного кольца; metal отдаёт лишние; noble уже полон.
       const MOL_ELEMENTS = [
-        { id: "H", sym: "H", name: "Hydrogen", z: 1, arms: 1 },
-        { id: "O", sym: "O", name: "Oxygen", z: 8, arms: 2 },
-        { id: "C", sym: "C", name: "Carbon", z: 6, arms: 4 },
-        { id: "N", sym: "N", name: "Nitrogen", z: 7, arms: 3 },
-        { id: "Na", sym: "Na", name: "Sodium", z: 11, arms: 1 },
-        { id: "Cl", sym: "Cl", name: "Chlorine", z: 17, arms: 1 },
-        { id: "He", sym: "He", name: "Helium", z: 2, arms: 0, noble: true },
-        { id: "Ne", sym: "Ne", name: "Neon", z: 10, arms: 0, noble: true },
+        { id: "H", sym: "H", name: "Hydrogen", z: 1, arms: 1, shells: [1], type: "nonmetal" },
+        { id: "O", sym: "O", name: "Oxygen", z: 8, arms: 2, shells: [2, 6], type: "nonmetal" },
+        { id: "C", sym: "C", name: "Carbon", z: 6, arms: 4, shells: [2, 4], type: "nonmetal" },
+        { id: "N", sym: "N", name: "Nitrogen", z: 7, arms: 3, shells: [2, 5], type: "nonmetal" },
+        { id: "Na", sym: "Na", name: "Sodium", z: 11, arms: 1, shells: [2, 8, 1], type: "metal" },
+        { id: "Cl", sym: "Cl", name: "Chlorine", z: 17, arms: 1, shells: [2, 8, 7], type: "nonmetal" },
+        { id: "He", sym: "He", name: "Helium", z: 2, arms: 0, shells: [2], type: "noble" },
+        { id: "Ne", sym: "Ne", name: "Neon", z: 10, arms: 0, shells: [2, 8], type: "noble" },
       ];
 
       const MOLECULES = [
@@ -8660,7 +8698,9 @@
         }
         // нет точного совпадения → обучающий фидбэк
         const present = Object.keys(atoms);
-        const hasNoble = present.some((id) => (MOL_BY_ID[id] || {}).noble);
+        const hasNoble = present.some(
+          (id) => (MOL_BY_ID[id] || {}).type === "noble",
+        );
         let title, msg;
         if (hasNoble) {
           title = "These atoms won't join";
@@ -8708,6 +8748,100 @@
       function closeMolResult() {
         document.getElementById("mlOverlay").classList.remove("show");
         renderMoleculeLab();
+      }
+
+      /* ============================================================
+   ATOM EXPLORER — видно электроны на кольцах, ребёнок сам считает связи.
+   nonmetal добирает до полного кольца; metal отдаёт лишние; noble уже полон.
+   ============================================================ */
+      state.atomSel = "O";
+
+      function aeDot(cx, cy, r, deg, kind) {
+        const a = ((deg - 90) * Math.PI) / 180;
+        const x = (cx + r * Math.cos(a)).toFixed(1);
+        const y = (cy + r * Math.sin(a)).toFixed(1);
+        if (kind === "empty")
+          return `<circle cx="${x}" cy="${y}" r="6" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="2.5 2.5"/>`;
+        const fill = kind === "give" ? "#fbbf24" : "#38bdf8";
+        return `<circle cx="${x}" cy="${y}" r="6" fill="${fill}"/>`;
+      }
+
+      function renderAtomDiagram(el) {
+        const cx = 110,
+          cy = 110,
+          radii = [34, 64, 92];
+        const shells = el.shells;
+        let p = "";
+        shells.forEach((c, ri) => {
+          p += `<circle cx="${cx}" cy="${cy}" r="${radii[ri]}" fill="none" stroke="#2a3550" stroke-width="1.5"/>`;
+        });
+        p += `<circle cx="${cx}" cy="${cy}" r="22" fill="#0e1630" stroke="#38bdf8" stroke-width="2"/>`;
+        p += `<text x="${cx}" y="${cy - 1}" text-anchor="middle" dominant-baseline="middle" font-size="18" font-weight="800" fill="#e0f2fe" font-family="Nunito, sans-serif">${el.sym}</text>`;
+        p += `<text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8" fill="#8b90a5" font-family="Nunito, sans-serif">#${el.z}</text>`;
+        shells.forEach((cnt, ri) => {
+          const r = radii[ri];
+          const isOuter = ri === shells.length - 1;
+          const cap = ri === 0 ? 2 : 8;
+          if (!isOuter) {
+            for (let i = 0; i < cnt; i++) p += aeDot(cx, cy, r, (i * 360) / cnt, "filled");
+          } else if (el.type === "metal") {
+            for (let i = 0; i < cnt; i++) p += aeDot(cx, cy, r, (i * 360) / Math.max(cnt, 1), "give");
+          } else {
+            for (let i = 0; i < cap; i++) p += aeDot(cx, cy, r, (i * 360) / cap, i < cnt ? "filled" : "empty");
+          }
+        });
+        return `<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">${p}</svg>`;
+      }
+
+      function aeReadout(el) {
+        const outer = el.shells[el.shells.length - 1];
+        const cap = el.shells.length === 1 ? 2 : 8;
+        let badge, explain;
+        if (el.type === "noble") {
+          badge = '<span class="ae-badge noble">noble gas</span>';
+          explain =
+            `Its outer ring is already <b>full</b> (${outer} of ${cap}). It needs nothing, so it makes <b>0 bonds</b> and never joins with anything — chemists call that <b>inert</b>.`;
+        } else if (el.type === "metal") {
+          badge = '<span class="ae-badge metal">metal</span>';
+          explain =
+            `It has only <b>${outer}</b> electron${outer > 1 ? "s" : ""} in its outer ring (the gold one). A metal finds it easier to <b>give ${outer > 1 ? "them" : "it"} away</b> than to fill all ${cap} spots — so it makes <b>${el.arms} bond${el.arms > 1 ? "s" : ""}</b>.`;
+        } else {
+          const need = cap - outer;
+          badge = '<span class="ae-badge nonmetal">non-metal</span>';
+          explain =
+            `Its outer ring holds <b>${outer}</b> of ${cap}. It needs <b>${need}</b> more to fill up — the dashed empty spots — so it makes <b>${el.arms} bond${el.arms > 1 ? "s" : ""}</b>.`;
+        }
+        return (
+          `<div class="ae-r-title">${escapeHtml(el.name)} ${badge}</div>` +
+          `<div class="ae-r-line">The corner number <b>#${el.z}</b> is how many electrons it has. They sit in rings: <b>${el.shells.join(", ")}</b>.</div>` +
+          `<div class="ae-r-line">${explain}</div>`
+        );
+      }
+
+      function openAtomExplorer() {
+        if (!state.atomSel) state.atomSel = "O";
+        renderAtomExplorer();
+        showScreen("atomExplorerScreen");
+      }
+      function atomSelect(id) {
+        state.atomSel = id;
+        renderAtomExplorer();
+      }
+      function renderAtomExplorer() {
+        const el = MOL_BY_ID[state.atomSel] || MOL_ELEMENTS[0];
+        document.getElementById("aeDiagram").innerHTML = renderAtomDiagram(el);
+        document.getElementById("aeReadout").innerHTML = aeReadout(el);
+        const shelf = document.getElementById("aeShelf");
+        shelf.innerHTML = "";
+        for (const e of MOL_ELEMENTS) {
+          const btn = document.createElement("button");
+          btn.className = "pl-ingredient" + (e.id === el.id ? " selected" : "");
+          btn.onclick = () => atomSelect(e.id);
+          btn.innerHTML =
+            '<span class="pl-ing-emoji">' + e.sym + "</span>" +
+            '<span class="pl-ing-name">' + escapeHtml(e.name) + "</span>";
+          shelf.appendChild(btn);
+        }
       }
 
       /* ============================================================

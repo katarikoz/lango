@@ -33,6 +33,8 @@ const SCREENS = [
   { name: "07-molecule-lab", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.closeMolResult(); window.molAddAtom("H"); window.molAddAtom("H"); window.molAddAtom("O"); } },
   { name: "08-molecule-result", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.closeMolResult(); window.molAddAtom("H"); window.molAddAtom("H"); window.molAddAtom("O"); window.molReact(); } },
   { name: "09-molecule-intro", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.molShowIntro(); } },
+  { name: "10-atom-oxygen", go: () => { window.pickProfile("max"); window.openAtomExplorer(); window.atomSelect("O"); } },
+  { name: "11-atom-sodium", go: () => { window.pickProfile("max"); window.openAtomExplorer(); window.atomSelect("Na"); } },
 ];
 
 async function serverUp() {
