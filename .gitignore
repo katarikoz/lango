@@ -10,8 +10,9 @@
 .vscode/
 .idea/
 
-# Claude Code local settings (per-machine, не для git)
-.claude/
+# Claude Code local settings (per-machine, не для git) — но skills/ шарим в репо
+.claude/*
+!.claude/skills/
 
 # OS
 Thumbs.db
