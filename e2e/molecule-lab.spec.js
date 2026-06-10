@@ -28,7 +28,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
   }) => {
     await openLab(page);
     await expect(page.locator("#mlRank")).toContainText(
-      "0 / 10 molecules discovered",
+      "0 / 13 molecules discovered",
     );
   });
 
@@ -48,9 +48,23 @@ test.describe("Molecule Lab — atoms into molecules", () => {
 
     await page.getByRole("button", { name: /Keep building/ }).click();
     await expect(page.locator("#mlRank")).toContainText(
-      "1 / 10 molecules discovered",
+      "1 / 13 molecules discovered",
     );
     await expect(page.locator("#mlBook .pl-potion.revealed")).toContainText("H₂O");
+  });
+
+  test("carbon chains: 2 C + 6 H build Ethane (the organic branch)", async ({
+    page,
+  }) => {
+    await openLab(page);
+    await element(page, "Carbon").click();
+    await element(page, "Carbon").click();
+    for (let i = 0; i < 6; i++) await element(page, "Hydrogen").click();
+    await page.locator("#mlReactBtn").click();
+    const card = page.locator("#mlResultCard");
+    await expect(card.locator(".pl-result-name")).toContainText("C₂H₆");
+    await expect(card.locator(".pl-result-name")).toContainText("Ethane");
+    await expect(card).toContainText("organic chemistry");
   });
 
   test("wrong amounts give a stoichiometry hint (1 H + 1 O is not water)", async ({
@@ -66,7 +80,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     // ничего не открылось
     await page.getByRole("button", { name: /Got it/ }).click();
     await expect(page.locator("#mlRank")).toContainText(
-      "0 / 10 molecules discovered",
+      "0 / 13 molecules discovered",
     );
   });
 

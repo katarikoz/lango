@@ -31,7 +31,7 @@ async function combine(page, a, b) {
 test.describe("Potion Lab — crafting tree", () => {
   test("entry from the Observatory opens the lab", async ({ page }) => {
     await openLab(page);
-    await expect(page.locator("#plRank")).toContainText("0 / 10 potions brewed");
+    await expect(page.locator("#plRank")).toContainText("0 / 12 potions brewed");
   });
 
   test("combining a real reaction brews a potion with XP and the hidden secret", async ({
@@ -49,7 +49,7 @@ test.describe("Potion Lab — crafting tree", () => {
     await expect(card.locator("#plSecret")).toContainText("carbon-dioxide");
 
     await page.getByRole("button", { name: /Keep brewing/ }).click();
-    await expect(page.locator("#plRank")).toContainText("1 / 10 potions brewed");
+    await expect(page.locator("#plRank")).toContainText("1 / 12 potions brewed");
     await expect(
       page.locator("#plSpellbook .pl-potion.revealed"),
     ).toContainText("Potion of Flight");
@@ -86,6 +86,6 @@ test.describe("Potion Lab — crafting tree", () => {
       "The cauldron sputters",
     );
     await page.getByRole("button", { name: /Try again/ }).click();
-    await expect(page.locator("#plRank")).toContainText("0 / 10 potions brewed");
+    await expect(page.locator("#plRank")).toContainText("0 / 12 potions brewed");
   });
 });

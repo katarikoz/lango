@@ -5374,6 +5374,7 @@
         { id: "sand", emoji: "⛰️", name: "Quartz Sand", kind: "base", real: "sand" },
         { id: "ice", emoji: "❄️", name: "Frost Shard", kind: "base", real: "ice" },
         { id: "soap", emoji: "🫧", name: "Pixie Soap", kind: "base", real: "soap" },
+        { id: "milk", emoji: "🥛", name: "Unicorn Milk", kind: "base", real: "milk" },
         // intermediates (crafted, then combine further)
         { id: "glass", emoji: "🔮", name: "Enchanted Glass", kind: "item",
           secret: "Quartz Sand is mostly silica. Fierce heat melts it into clear glass." },
@@ -5410,6 +5411,12 @@
         { id: "unmix", emoji: "🌀", name: "The Unmixable Curse", kind: "potion", effect: "shake", card: "al6",
           flavor: "Stir as you might, the two layers refuse to ever join.",
           secret: "Basilisk Oil is non-polar; water is polar and clings to itself, pushing the oil away. Like won't mix with unlike." },
+        { id: "petrify", emoji: "🗿", name: "Potion of Stone-Flesh", kind: "potion", effect: "shake",
+          flavor: "The milk thickens into pale, mouldable stone right in your hands.",
+          secret: "Sunfruit is acidic, and acid makes the protein in milk (called casein) clump into a solid lump you can shape — real 'milk plastic'." },
+        { id: "caramel", emoji: "🍯", name: "Potion of Liquid Gold", kind: "potion", effect: "glow",
+          flavor: "The white grains melt and deepen into glowing amber.",
+          secret: "Heating sugar makes it melt and slowly turn golden-brown and sweet-smelling — that change is called caramelisation." },
       ];
 
       // Скрещивания (порядок не важен). r — id результата (item или potion).
@@ -5426,6 +5433,8 @@
         { a: "cabbage", b: "soda", r: "green" },
         { a: "oil", b: "soap", r: "cleanse" },
         { a: "oil", b: "water", r: "unmix" },
+        { a: "milk", b: "lemon", r: "petrify" },
+        { a: "sugar", b: "fire", r: "caramel" },
       ];
 
       // MOLECULE LAB (для Макса) — настоящая химия: атомы → молекулы со стехиометрией.
@@ -5463,6 +5472,13 @@
           fact: "One nitrogen + three hydrogens — a sharp-smelling cleaner." },
         { id: "H2O2", formula: "H₂O₂", name: "Hydrogen peroxide", comp: { H: 2, O: 2 },
           fact: "Water with one extra oxygen — it fizzes and disinfects cuts." },
+        // organic branch — carbon's superpower is linking to itself (C–C chains)
+        { id: "C2H6", formula: "C₂H₆", name: "Ethane", comp: { C: 2, H: 6 },
+          fact: "Two carbons link arm-in-arm (a C–C bond), each also holding 3 hydrogens. Carbon's knack for chaining up is the start of organic chemistry — the chemistry of living things." },
+        { id: "C2H4", formula: "C₂H₄", name: "Ethene", comp: { C: 2, H: 4 },
+          fact: "Here the two carbons hold on twice — a double bond (C=C). Ethene is the gas plants make to ripen fruit." },
+        { id: "C3H8", formula: "C₃H₈", name: "Propane", comp: { C: 3, H: 8 },
+          fact: "Three carbons in a row, wrapped in hydrogens — the gas in a camping stove. Longer carbon chains build fuels, fats and plastics." },
       ];
 
       const OBSERVATORY_DISCOVERIES = [
@@ -8527,9 +8543,9 @@
       const MOL_TOTAL = MOLECULES.length;
       const MOL_RANKS = [
         { threshold: 0, name: "Novice", icon: "🥽" },
-        { threshold: 3, name: "Lab Assistant", icon: "🧫" },
-        { threshold: 6, name: "Chemist", icon: "⚗️" },
-        { threshold: 9, name: "Professor", icon: "🎓" },
+        { threshold: 4, name: "Lab Assistant", icon: "🧫" },
+        { threshold: 8, name: "Chemist", icon: "⚗️" },
+        { threshold: 12, name: "Professor", icon: "🎓" },
       ];
       function molGetRank(n) {
         let r = MOL_RANKS[0];
@@ -8589,7 +8605,7 @@
 
       function molAddAtom(id) {
         const cur = state.molAtoms[id] || 0;
-        if (cur >= 6) return; // разумный потолок
+        if (cur >= 8) return; // потолок (хватает на пропан C₃H₈)
         state.molAtoms[id] = cur + 1;
         renderMoleculeLab();
       }
