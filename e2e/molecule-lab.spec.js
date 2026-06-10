@@ -13,6 +13,9 @@ async function openLab(page) {
   });
   await page.locator(".obs-lab-btn", { hasText: "Molecule Lab" }).click();
   await expect(page.locator("#moleculeLabScreen")).toBeVisible();
+  // первый заход показывает обучающий экран — закрываем его, чтобы добраться до полки
+  const intro = page.getByRole("button", { name: /Let's brew/ });
+  if (await intro.isVisible().catch(() => false)) await intro.click();
 }
 
 function element(page, name) {
@@ -25,7 +28,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
   }) => {
     await openLab(page);
     await expect(page.locator("#mlRank")).toContainText(
-      "0 / 11 molecules discovered",
+      "0 / 10 molecules discovered",
     );
   });
 
@@ -45,7 +48,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
 
     await page.getByRole("button", { name: /Keep building/ }).click();
     await expect(page.locator("#mlRank")).toContainText(
-      "1 / 11 molecules discovered",
+      "1 / 10 molecules discovered",
     );
     await expect(page.locator("#mlBook .pl-potion.revealed")).toContainText("H₂O");
   });
@@ -63,7 +66,7 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     // ничего не открылось
     await page.getByRole("button", { name: /Got it/ }).click();
     await expect(page.locator("#mlRank")).toContainText(
-      "0 / 11 molecules discovered",
+      "0 / 10 molecules discovered",
     );
   });
 
@@ -75,6 +78,19 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     await expect(page.locator("#mlResultCard")).toContainText(
       "Noble gases stay aloof",
     );
+  });
+
+  test("the intro teaches the bonding-arms rule (basics, not guesswork)", async ({
+    page,
+  }) => {
+    await openLab(page); // helper dismisses the auto-intro
+    await page.locator(".ml-help-btn").click();
+    const card = page.locator("#mlResultCard");
+    await expect(card).toContainText("bonding arms");
+    await expect(card).toContainText("every arm must be held");
+    await expect(card).toContainText("H₂O");
+    await page.getByRole("button", { name: /Let's brew/ }).click();
+    await expect(page.locator("#mlOverlay")).not.toHaveClass(/show/);
   });
 
   test("tapping the backdrop always closes the result — never trapped", async ({

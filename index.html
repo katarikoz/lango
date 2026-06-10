@@ -3497,8 +3497,34 @@
         position: absolute; top: 5px; left: 7px;
         font-size: 0.6rem; color: var(--ink-soft); font-weight: 700;
       }
-      #mlShelf .pl-ingredient { position: relative; }
+      #mlShelf .pl-ingredient { position: relative; padding-top: 16px; }
       #mlShelf .pl-ing-emoji { font-weight: 800; }
+      .ml-help-btn {
+        margin-left: auto; padding: 6px 12px; border-radius: 999px;
+        border: 1px solid rgba(56,189,248,0.5); background: rgba(56,189,248,0.14);
+        color: #bae6fd; font: inherit; font-size: 0.78rem; font-weight: 700;
+        cursor: pointer; white-space: nowrap;
+      }
+      .ml-help-btn:hover { background: rgba(56,189,248,0.26); }
+      .ml-help-btn:active { transform: scale(0.96); }
+      .ml-help-btn:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+      /* bonding arms (valence) on element tiles */
+      .mol-tile-arms {
+        display: flex; gap: 3px; justify-content: center;
+        align-items: center; height: 8px; margin-bottom: 2px;
+      }
+      .mol-arm-dot { width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; }
+      .mol-arm-zero { font-size: 0.6rem; color: var(--ink-soft); font-weight: 700; letter-spacing: 0.04em; }
+      /* intro / help card */
+      .ml-intro-rule {
+        text-align: left; background: var(--surface); border: 1px solid var(--line);
+        border-radius: 12px; padding: 14px; margin-top: 12px; line-height: 1.55; font-size: 0.92rem;
+      }
+      .ml-intro-rule b { color: #bae6fd; }
+      .ml-intro-dot {
+        display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+        background: #38bdf8; margin: 0 1px; vertical-align: middle;
+      }
     </style>
     <!-- Supabase: cloud progress sync + login -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -4232,6 +4258,7 @@
         <div class="mode-head">
           <button class="back-btn" onclick="showScreen('observatoryScreen'); renderObservatory()">←</button>
           <h2>⚛️ Molecule Lab</h2>
+          <button class="ml-help-btn" onclick="molShowIntro()">? How it works</button>
         </div>
         <div class="pl-rank" id="mlRank"></div>
         <div class="pl-cauldron-zone">
@@ -5365,15 +5392,16 @@
       ];
 
       // MOLECULE LAB (для Макса) — настоящая химия: атомы → молекулы со стехиометрией.
+      // arms = связочные «руки» (валентность): сколько связей атому нужно замкнуть.
       const MOL_ELEMENTS = [
-        { id: "H", sym: "H", name: "Hydrogen", z: 1 },
-        { id: "O", sym: "O", name: "Oxygen", z: 8 },
-        { id: "C", sym: "C", name: "Carbon", z: 6 },
-        { id: "N", sym: "N", name: "Nitrogen", z: 7 },
-        { id: "Na", sym: "Na", name: "Sodium", z: 11 },
-        { id: "Cl", sym: "Cl", name: "Chlorine", z: 17 },
-        { id: "He", sym: "He", name: "Helium", z: 2, noble: true },
-        { id: "Ne", sym: "Ne", name: "Neon", z: 10, noble: true },
+        { id: "H", sym: "H", name: "Hydrogen", z: 1, arms: 1 },
+        { id: "O", sym: "O", name: "Oxygen", z: 8, arms: 2 },
+        { id: "C", sym: "C", name: "Carbon", z: 6, arms: 4 },
+        { id: "N", sym: "N", name: "Nitrogen", z: 7, arms: 3 },
+        { id: "Na", sym: "Na", name: "Sodium", z: 11, arms: 1 },
+        { id: "Cl", sym: "Cl", name: "Chlorine", z: 17, arms: 1 },
+        { id: "He", sym: "He", name: "Helium", z: 2, arms: 0, noble: true },
+        { id: "Ne", sym: "Ne", name: "Neon", z: 10, arms: 0, noble: true },
       ];
 
       const MOLECULES = [
@@ -5387,8 +5415,6 @@
           fact: "Two hydrogen + one oxygen = water, the only molecule you drink every day." },
         { id: "CO2", formula: "CO₂", name: "Carbon dioxide", comp: { C: 1, O: 2 },
           fact: "You breathe CO₂ out; plants breathe it in. One carbon, two oxygens." },
-        { id: "CO", formula: "CO", name: "Carbon monoxide", comp: { C: 1, O: 1 },
-          fact: "Just one oxygen short of CO₂ — and that one missing atom makes it deadly poisonous." },
         { id: "NaCl", formula: "NaCl", name: "Table salt", comp: { Na: 1, Cl: 1 },
           fact: "Sodium (a metal that explodes in water) + chlorine (a poison gas) make safe table salt!" },
         { id: "HCl", formula: "HCl", name: "Hydrochloric acid", comp: { H: 1, Cl: 1 },
@@ -8463,9 +8489,9 @@
       const MOL_TOTAL = MOLECULES.length;
       const MOL_RANKS = [
         { threshold: 0, name: "Novice", icon: "🥽" },
-        { threshold: 4, name: "Lab Assistant", icon: "🧫" },
-        { threshold: 7, name: "Chemist", icon: "⚗️" },
-        { threshold: 10, name: "Professor", icon: "🎓" },
+        { threshold: 3, name: "Lab Assistant", icon: "🧫" },
+        { threshold: 6, name: "Chemist", icon: "⚗️" },
+        { threshold: 9, name: "Professor", icon: "🎓" },
       ];
       function molGetRank(n) {
         let r = MOL_RANKS[0];
@@ -8490,6 +8516,34 @@
         state.molAtoms = {};
         renderMoleculeLab();
         showScreen("moleculeLabScreen");
+        // первый заход → показываем обучающий экран про "руки"
+        const lab = molProgress();
+        if (!lab.seenIntro) {
+          molShowIntro();
+          lab.seenIntro = true;
+          const p = progress();
+          p.moleculeLab = lab;
+          saveProgress(state.profile, p);
+        }
+      }
+
+      function molShowIntro() {
+        document.getElementById("mlResultCard").innerHTML =
+          '<div class="pl-effect">🔬</div>' +
+          '<div class="pl-result-name">How molecules form</div>' +
+          '<div class="ml-intro-rule">' +
+            "Atoms join using <b>bonding arms</b> — the little dots on each tile. " +
+            "The golden rule: <b>every arm must be held</b>.<br><br>" +
+            "• Hydrogen has <b>1</b> arm <span class=\"ml-intro-dot\"></span>, Oxygen <b>2</b>, Nitrogen <b>3</b>, Carbon <b>4</b>.<br>" +
+            "• <b>Water:</b> Oxygen has 2 arms, so it grabs <b>2</b> Hydrogens → <b>H₂O</b>.<br>" +
+            "• <b>Carbon dioxide:</b> Carbon has 4 arms; two Oxygens (2 each) fill them → <b>CO₂</b>.<br>" +
+            "• Noble gases (He, Ne) have <b>0</b> arms — that's why they never react.<br><br>" +
+            "Count the arms, hold them all, and you'll know how many of each atom to take." +
+          "</div>" +
+          '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
+            '<button class="btn primary" onclick="closeMolResult()">Let\'s brew ⚛️</button>' +
+          "</div>";
+        document.getElementById("mlOverlay").classList.add("show");
       }
 
       function molAddAtom(id) {
@@ -8554,8 +8608,15 @@
           const btn = document.createElement("button");
           btn.className = "pl-ingredient";
           btn.onclick = () => molAddAtom(el.id);
+          const armsHtml =
+            el.arms > 0
+              ? '<span class="mol-tile-arms" title="' + el.arms + ' bonding arms">' +
+                '<span class="mol-arm-dot"></span>'.repeat(el.arms) +
+                "</span>"
+              : '<span class="mol-tile-arms"><span class="mol-arm-zero">INERT</span></span>';
           btn.innerHTML =
             '<span class="mol-tile-z">' + el.z + "</span>" +
+            armsHtml +
             '<span class="pl-ing-emoji">' + el.sym + "</span>" +
             '<span class="pl-ing-name">' + escapeHtml(el.name) + "</span>";
           shelf.appendChild(btn);

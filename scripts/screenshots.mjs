@@ -30,8 +30,9 @@ const SCREENS = [
   { name: "04-observatory", go: () => { window.pickProfile("alex"); window.openObservatory(); } },
   { name: "05-potion-lab", go: () => { window.pickProfile("alex"); window.openPotionLab(); } },
   { name: "06-potion-result", go: () => { window.pickProfile("alex"); window.openPotionLab(); window.potionPick("soda"); window.potionPick("lemon"); window.potionBrew(); window.potionRevealSecret(); } },
-  { name: "07-molecule-lab", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.molAddAtom("H"); window.molAddAtom("H"); window.molAddAtom("O"); } },
-  { name: "08-molecule-result", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.molAddAtom("H"); window.molAddAtom("H"); window.molAddAtom("O"); window.molReact(); } },
+  { name: "07-molecule-lab", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.closeMolResult(); window.molAddAtom("H"); window.molAddAtom("H"); window.molAddAtom("O"); } },
+  { name: "08-molecule-result", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.closeMolResult(); window.molAddAtom("H"); window.molAddAtom("H"); window.molAddAtom("O"); window.molReact(); } },
+  { name: "09-molecule-intro", go: () => { window.pickProfile("max"); window.openMoleculeLab(); window.molShowIntro(); } },
 ];
 
 async function serverUp() {
