@@ -4,7 +4,7 @@
   "private": true,
   "description": "PhoenGo — gamified learning trainer for kids (vanilla HTML/CSS/JS). Tooling lives here; the app itself stays build-free.",
   "scripts": {
-    "serve": "http-server -p 5555 -c-1 --silent",
+    "serve": "http-server -p 9999 -c-1 --silent",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

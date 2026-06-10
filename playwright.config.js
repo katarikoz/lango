@@ -3,7 +3,7 @@ const { defineConfig, devices } = require("@playwright/test");
 
 /**
  * E2E грузит реальный index.html через тот же статический сервер,
- * что и в обычной разработке (http-server на :5555).
+ * что и в обычной разработке: наш канонический порт — 9999 (`npm run serve`).
  */
 module.exports = defineConfig({
   testDir: "./e2e",
@@ -14,18 +14,18 @@ module.exports = defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: "http://localhost:5599",
+    baseURL: "http://localhost:9999",
     trace: "on-first-retry",
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
   ],
-  // Отдельный порт для тестов и НЕ переиспользуем чужой сервер: на 5555 может
-  // висеть другое приложение. Playwright поднимает наш index.html сам.
+  // 9999 — наш закреплённый порт. Локально переиспользуем уже запущенный
+  // `npm run serve`; в CI всегда поднимаем свежий сервер сами.
   webServer: {
-    command: "npx http-server -p 5599 -c-1 --silent",
-    url: "http://localhost:5599",
-    reuseExistingServer: false,
+    command: "npx http-server -p 9999 -c-1 --silent",
+    url: "http://localhost:9999",
+    reuseExistingServer: !process.env.CI,
     timeout: 20_000,
   },
 });
