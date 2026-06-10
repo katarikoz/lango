@@ -3472,6 +3472,33 @@
       .pl-secret-title { font-weight: 700; color: var(--yellow-text); font-size: 0.85rem; margin-bottom: 6px; }
       .pl-secret-body { font-size: 0.9rem; line-height: 1.5; color: var(--ink); }
       .pl-secret-card { margin-top: 8px; font-size: 0.8rem; color: var(--ink-soft); }
+
+      /* ===== MOLECULE LAB (reuses pl- structure; cyan "science" accent) ===== */
+      #moleculeLabScreen { --pl-magic: #38bdf8; --pl-magic-soft: rgba(56,189,248,0.14); }
+      #mlOverlay .pl-result-card { border-color: rgba(56,189,248,0.4); }
+      #mlOverlay .pl-result-name { color: #bae6fd; }
+      #mlOverlay .pl-result-tag { color: #bae6fd; background: rgba(56,189,248,0.14); }
+      #mlOverlay .pl-result-tag.new { color: var(--bg); background: #38bdf8; }
+      #moleculeLabScreen .pl-rank { color: #bae6fd; }
+      .mol-tray {
+        display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+        align-items: center; min-height: 46px; margin-top: 14px;
+      }
+      .mol-tray-empty { color: var(--ink-soft); font-size: 0.85rem; }
+      .mol-chip {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 7px 13px; min-height: 38px; border-radius: 999px;
+        background: var(--pl-magic-soft); border: 1px solid var(--pl-magic);
+        color: #e0f2fe; font-weight: 800; cursor: pointer; font-size: 0.95rem;
+      }
+      .mol-chip:active { transform: scale(0.95); }
+      .mol-chip .mol-chip-x { font-size: 0.85rem; opacity: 0.7; font-weight: 700; }
+      .mol-tile-z {
+        position: absolute; top: 5px; left: 7px;
+        font-size: 0.6rem; color: var(--ink-soft); font-weight: 700;
+      }
+      #mlShelf .pl-ingredient { position: relative; }
+      #mlShelf .pl-ing-emoji { font-weight: 800; }
     </style>
     <!-- Supabase: cloud progress sync + login -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -4198,6 +4225,34 @@
       <!-- POTION LAB — brew result overlay -->
       <div class="pl-overlay" id="plOverlay">
         <div class="pl-result-card" id="plResultCard"></div>
+      </div>
+
+      <!-- MOLECULE LAB (Max) — combine atoms into molecules, real stoichiometry -->
+      <section class="screen" id="moleculeLabScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="showScreen('observatoryScreen'); renderObservatory()">←</button>
+          <h2>⚛️ Molecule Lab</h2>
+        </div>
+        <div class="pl-rank" id="mlRank"></div>
+        <div class="pl-cauldron-zone">
+          <div class="pl-cauldron">
+            <div class="pl-cauldron-emoji">⚗️</div>
+            <div class="mol-tray" id="mlTray"></div>
+          </div>
+          <div class="row-actions pl-brew-actions">
+            <button class="btn ghost" id="mlClearBtn" onclick="molClear()" disabled>Clear</button>
+            <button class="btn primary" id="mlReactBtn" onclick="molReact()" disabled>React! ⚛️</button>
+          </div>
+        </div>
+        <div class="pl-shelf-label">Elements — tap to add atoms</div>
+        <div class="pl-shelf" id="mlShelf"></div>
+        <div class="pl-spellbook-label">Molecules Discovered</div>
+        <div class="pl-spellbook" id="mlBook"></div>
+      </section>
+
+      <!-- MOLECULE LAB — result overlay -->
+      <div class="pl-overlay" id="mlOverlay">
+        <div class="pl-result-card" id="mlResultCard"></div>
       </div>
 
       <!-- SUBJECTS — PICKER (Mathe, Deutsch, Erdkunde, NaWi) -->
@@ -5307,6 +5362,43 @@
         { a: "cabbage", b: "soda", r: "green" },
         { a: "oil", b: "soap", r: "cleanse" },
         { a: "oil", b: "water", r: "unmix" },
+      ];
+
+      // MOLECULE LAB (для Макса) — настоящая химия: атомы → молекулы со стехиометрией.
+      const MOL_ELEMENTS = [
+        { id: "H", sym: "H", name: "Hydrogen", z: 1 },
+        { id: "O", sym: "O", name: "Oxygen", z: 8 },
+        { id: "C", sym: "C", name: "Carbon", z: 6 },
+        { id: "N", sym: "N", name: "Nitrogen", z: 7 },
+        { id: "Na", sym: "Na", name: "Sodium", z: 11 },
+        { id: "Cl", sym: "Cl", name: "Chlorine", z: 17 },
+        { id: "He", sym: "He", name: "Helium", z: 2, noble: true },
+        { id: "Ne", sym: "Ne", name: "Neon", z: 10, noble: true },
+      ];
+
+      const MOLECULES = [
+        { id: "H2", formula: "H₂", name: "Hydrogen gas", comp: { H: 2 },
+          fact: "Two hydrogen atoms bond into H₂ — the lightest gas of all; it once lifted airships." },
+        { id: "O2", formula: "O₂", name: "Oxygen gas", comp: { O: 2 },
+          fact: "The oxygen you breathe is O₂ — two oxygen atoms bonded together." },
+        { id: "N2", formula: "N₂", name: "Nitrogen gas", comp: { N: 2 },
+          fact: "Almost four-fifths of the air is N₂ — a very tough double bond, hard to split." },
+        { id: "H2O", formula: "H₂O", name: "Water", comp: { H: 2, O: 1 },
+          fact: "Two hydrogen + one oxygen = water, the only molecule you drink every day." },
+        { id: "CO2", formula: "CO₂", name: "Carbon dioxide", comp: { C: 1, O: 2 },
+          fact: "You breathe CO₂ out; plants breathe it in. One carbon, two oxygens." },
+        { id: "CO", formula: "CO", name: "Carbon monoxide", comp: { C: 1, O: 1 },
+          fact: "Just one oxygen short of CO₂ — and that one missing atom makes it deadly poisonous." },
+        { id: "NaCl", formula: "NaCl", name: "Table salt", comp: { Na: 1, Cl: 1 },
+          fact: "Sodium (a metal that explodes in water) + chlorine (a poison gas) make safe table salt!" },
+        { id: "HCl", formula: "HCl", name: "Hydrochloric acid", comp: { H: 1, Cl: 1 },
+          fact: "The strong acid in your stomach that helps digest food." },
+        { id: "CH4", formula: "CH₄", name: "Methane", comp: { C: 1, H: 4 },
+          fact: "One carbon hugging four hydrogens — the natural gas that cooks your food." },
+        { id: "NH3", formula: "NH₃", name: "Ammonia", comp: { N: 1, H: 3 },
+          fact: "One nitrogen + three hydrogens — a sharp-smelling cleaner." },
+        { id: "H2O2", formula: "H₂O₂", name: "Hydrogen peroxide", comp: { H: 2, O: 2 },
+          fact: "Water with one extra oxygen — it fizzes and disinfects cuts." },
       ];
 
       const OBSERVATORY_DISCOVERIES = [
@@ -8361,6 +8453,198 @@
       }
 
       /* ============================================================
+   MOLECULE LAB (Макс) — атомы → молекулы со стехиометрией.
+   Та же крафт-идея, но честная химия: считаем атомы, подсказываем формулу.
+   ============================================================ */
+      state.molAtoms = {};
+
+      const MOL_BY_ID = Object.fromEntries(MOL_ELEMENTS.map((e) => [e.id, e]));
+      const MOL_TOTAL = MOLECULES.length;
+      const MOL_RANKS = [
+        { threshold: 0, name: "Novice", icon: "🥽" },
+        { threshold: 4, name: "Lab Assistant", icon: "🧫" },
+        { threshold: 7, name: "Chemist", icon: "⚗️" },
+        { threshold: 10, name: "Professor", icon: "🎓" },
+      ];
+      function molGetRank(n) {
+        let r = MOL_RANKS[0];
+        for (const x of MOL_RANKS) if (n >= x.threshold) r = x;
+        return r;
+      }
+
+      function molProgress() {
+        const p = progress();
+        if (!p.moleculeLab) p.moleculeLab = { discovered: [] };
+        if (!Array.isArray(p.moleculeLab.discovered)) p.moleculeLab.discovered = [];
+        return p.moleculeLab;
+      }
+      function molDiscovered() {
+        return molProgress().discovered;
+      }
+      function molTotalAtoms() {
+        return Object.values(state.molAtoms).reduce((a, b) => a + b, 0);
+      }
+
+      function openMoleculeLab() {
+        state.molAtoms = {};
+        renderMoleculeLab();
+        showScreen("moleculeLabScreen");
+      }
+
+      function molAddAtom(id) {
+        const cur = state.molAtoms[id] || 0;
+        if (cur >= 6) return; // разумный потолок
+        state.molAtoms[id] = cur + 1;
+        renderMoleculeLab();
+      }
+      function molRemoveAtom(id) {
+        if (!state.molAtoms[id]) return;
+        state.molAtoms[id]--;
+        if (state.molAtoms[id] <= 0) delete state.molAtoms[id];
+        renderMoleculeLab();
+      }
+      function molClear() {
+        state.molAtoms = {};
+        renderMoleculeLab();
+      }
+
+      function molSameComp(a, b) {
+        const ka = Object.keys(a),
+          kb = Object.keys(b);
+        return ka.length === kb.length && ka.every((k) => a[k] === b[k]);
+      }
+      function molSameSet(a, b) {
+        const ka = Object.keys(a).sort(),
+          kb = Object.keys(b).sort();
+        return ka.length === kb.length && ka.every((k, i) => k === kb[i]);
+      }
+      function molFind(atoms) {
+        return MOLECULES.find((m) => molSameComp(m.comp, atoms)) || null;
+      }
+
+      function renderMoleculeLab() {
+        const disc = molDiscovered();
+        const rank = molGetRank(disc.length);
+        document.getElementById("mlRank").innerHTML =
+          "<span>" + rank.icon + " " + rank.name + "</span>" +
+          '<span class="pl-rank-count">' + disc.length + " / " + MOL_TOTAL + " molecules discovered</span>";
+
+        const tray = document.getElementById("mlTray");
+        const ids = Object.keys(state.molAtoms);
+        if (!ids.length) {
+          tray.innerHTML = '<span class="mol-tray-empty">Tap elements below to add atoms…</span>';
+        } else {
+          tray.innerHTML = ids
+            .map(
+              (id) =>
+                '<button class="mol-chip" onclick="molRemoveAtom(\'' + id + '\')">' +
+                MOL_BY_ID[id].sym +
+                ' <span class="mol-chip-x">×' + state.molAtoms[id] + "</span></button>",
+            )
+            .join("");
+        }
+        const total = molTotalAtoms();
+        document.getElementById("mlReactBtn").disabled = total < 2;
+        document.getElementById("mlClearBtn").disabled = total === 0;
+
+        const shelf = document.getElementById("mlShelf");
+        shelf.innerHTML = "";
+        for (const el of MOL_ELEMENTS) {
+          const btn = document.createElement("button");
+          btn.className = "pl-ingredient";
+          btn.onclick = () => molAddAtom(el.id);
+          btn.innerHTML =
+            '<span class="mol-tile-z">' + el.z + "</span>" +
+            '<span class="pl-ing-emoji">' + el.sym + "</span>" +
+            '<span class="pl-ing-name">' + escapeHtml(el.name) + "</span>";
+          shelf.appendChild(btn);
+        }
+
+        const book = document.getElementById("mlBook");
+        book.innerHTML = "";
+        for (const m of MOLECULES) {
+          const got = disc.includes(m.id);
+          const el = document.createElement("div");
+          el.className = "pl-potion " + (got ? "revealed" : "locked");
+          el.innerHTML = got
+            ? '<div class="pl-potion-name">' + escapeHtml(m.formula) + "</div>" +
+              '<div class="pl-potion-hint">' + escapeHtml(m.name) + "</div>"
+            : '<div class="pl-potion-name">🔒 ???</div><div class="pl-potion-hint">Undiscovered</div>';
+          book.appendChild(el);
+        }
+      }
+
+      function molReact() {
+        if (molTotalAtoms() < 2) return;
+        const atoms = state.molAtoms;
+        const match = molFind(atoms);
+        if (match) {
+          const disc = molDiscovered();
+          const isNew = !disc.includes(match.id);
+          if (isNew) {
+            disc.push(match.id);
+            const p = progress();
+            p.moleculeLab.discovered = disc;
+            saveProgress(state.profile, p);
+            addXP(20);
+          }
+          showMolResult(match, isNew);
+          state.molAtoms = {};
+          return;
+        }
+        // нет точного совпадения → обучающий фидбэк
+        const present = Object.keys(atoms);
+        const hasNoble = present.some((id) => (MOL_BY_ID[id] || {}).noble);
+        let title, msg;
+        if (hasNoble) {
+          title = "Noble gases stay aloof";
+          msg = "Helium and neon have full electron shells — they don't bond with anything. Try reactive elements instead.";
+        } else {
+          const sameSet = MOLECULES.find((m) => molSameSet(m.comp, atoms));
+          if (sameSet) {
+            title = "So close!";
+            msg = "Right atoms, wrong amounts. " + sameSet.name + " is " + sameSet.formula + " — check how many of each you need.";
+          } else {
+            title = "No reaction";
+            msg = "These atoms don't form a stable molecule here. Try another combination!";
+          }
+        }
+        showMolFeedback(title, msg);
+        // атомы не очищаем — пусть поправит количество
+      }
+
+      function showMolResult(m, isNew) {
+        document.getElementById("mlResultCard").innerHTML =
+          '<div class="pl-effect glow">⚛️</div>' +
+          '<div class="pl-result-tag ' + (isNew ? "new" : "") + '">' +
+            (isNew ? "New Molecule! +20 XP" : "Already discovered") + "</div>" +
+          '<div class="pl-result-name">' + escapeHtml(m.formula) + " · " + escapeHtml(m.name) + "</div>" +
+          '<div class="pl-result-flavor">' + escapeHtml(m.fact) + "</div>" +
+          '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
+            '<button class="btn primary" onclick="closeMolResult()">Keep building ⚛️</button>' +
+          "</div>";
+        document.getElementById("mlOverlay").classList.add("show");
+        spawnConfetti("mlResultCard", 16, isNew);
+      }
+
+      function showMolFeedback(title, msg) {
+        document.getElementById("mlResultCard").innerHTML =
+          '<div class="pl-effect">🧪</div>' +
+          '<div class="pl-result-tag dud">Hmm…</div>' +
+          '<div class="pl-result-name">' + escapeHtml(title) + "</div>" +
+          '<div class="pl-result-flavor">' + escapeHtml(msg) + "</div>" +
+          '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
+            '<button class="btn primary" onclick="closeMolResult()">Got it</button>' +
+          "</div>";
+        document.getElementById("mlOverlay").classList.add("show");
+      }
+
+      function closeMolResult() {
+        document.getElementById("mlOverlay").classList.remove("show");
+        renderMoleculeLab();
+      }
+
+      /* ============================================================
    SUBJECTS — школьные предметы (Mathe, Deutsch, Erdkunde, NaWi)
    Универсальный движок упражнений: numeric / choice / info.
    Контент берётся из window.LANGO_SUBJECTS.
@@ -9913,6 +10197,7 @@
           html += '<span class="obs-row-label">' + cat.label + '</span>';
           html += '<span class="obs-row-count">' + (isComplete ? '★ Complete' : revealedCount + ' / ' + cards.length) + '</span>';
           if (cat.id === "alchemy") html += '<button class="obs-lab-btn" onclick="openPotionLab()">🧪 Potions Lab</button>';
+          if (cat.id === "chemistry") html += '<button class="obs-lab-btn" onclick="openMoleculeLab()">⚛️ Molecule Lab</button>';
           html += '</div>';
           // Category progress bar
           html += '<div class="obs-row-progress"><div style="width:' + catPct + '%;background:' + cat.color + '"></div></div>';

@@ -11,7 +11,9 @@ async function openLab(page) {
     window.pickProfile("alex");
     window.openObservatory();
   });
-  await page.locator(".obs-lab-btn").click(); // real entry from the Alchemy row
+  await page
+    .locator(".obs-lab-btn", { hasText: "Potions Lab" })
+    .click(); // real entry from the Alchemy row
   await expect(page.locator("#potionLabScreen")).toBeVisible();
 }
 
