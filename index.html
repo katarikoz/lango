@@ -8532,12 +8532,13 @@
           '<div class="pl-effect">🔬</div>' +
           '<div class="pl-result-name">How molecules form</div>' +
           '<div class="ml-intro-rule">' +
-            "Atoms join using <b>bonding arms</b> — the little dots on each tile. " +
-            "The golden rule: <b>every arm must be held</b>.<br><br>" +
+            "Every atom has a number of <b>bonding arms</b> — the blue dots on its tile. " +
+            "The golden rule: <b>every arm must be held</b> by another atom.<br><br>" +
             "• Hydrogen has <b>1</b> arm <span class=\"ml-intro-dot\"></span>, Oxygen <b>2</b>, Nitrogen <b>3</b>, Carbon <b>4</b>.<br>" +
             "• <b>Water:</b> Oxygen has 2 arms, so it grabs <b>2</b> Hydrogens → <b>H₂O</b>.<br>" +
             "• <b>Carbon dioxide:</b> Carbon has 4 arms; two Oxygens (2 each) fill them → <b>CO₂</b>.<br>" +
-            "• Noble gases (He, Ne) have <b>0</b> arms — that's why they never react.<br><br>" +
+            "• Helium and Neon have <b>0</b> arms, so they never join with anything. " +
+            "Atoms like that are called <b>inert</b> — it means they don't react.<br><br>" +
             "Count the arms, hold them all, and you'll know how many of each atom to take." +
           "</div>" +
           '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
@@ -8613,9 +8614,8 @@
               ? '<span class="mol-tile-arms" title="' + el.arms + ' bonding arms">' +
                 '<span class="mol-arm-dot"></span>'.repeat(el.arms) +
                 "</span>"
-              : '<span class="mol-tile-arms"><span class="mol-arm-zero">INERT</span></span>';
+              : '<span class="mol-tile-arms"><span class="mol-arm-zero">no arms</span></span>';
           btn.innerHTML =
-            '<span class="mol-tile-z">' + el.z + "</span>" +
             armsHtml +
             '<span class="pl-ing-emoji">' + el.sym + "</span>" +
             '<span class="pl-ing-name">' + escapeHtml(el.name) + "</span>";
@@ -8659,8 +8659,8 @@
         const hasNoble = present.some((id) => (MOL_BY_ID[id] || {}).noble);
         let title, msg;
         if (hasNoble) {
-          title = "Noble gases stay aloof";
-          msg = "Helium and neon have full electron shells — they don't bond with anything. Try reactive elements instead.";
+          title = "These atoms won't join";
+          msg = "Helium and Neon have no bonding arms, so they never join with anything (atoms like that are called inert). Try elements that have arms!";
         } else {
           const sameSet = MOLECULES.find((m) => molSameSet(m.comp, atoms));
           if (sameSet) {

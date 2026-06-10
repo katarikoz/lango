@@ -75,9 +75,8 @@ test.describe("Molecule Lab — atoms into molecules", () => {
     await element(page, "Helium").click();
     await element(page, "Helium").click();
     await page.locator("#mlReactBtn").click();
-    await expect(page.locator("#mlResultCard")).toContainText(
-      "Noble gases stay aloof",
-    );
+    await expect(page.locator("#mlResultCard")).toContainText("inert");
+    await expect(page.locator("#mlResultCard")).toContainText("no bonding arms");
   });
 
   test("the intro teaches the bonding-arms rule (basics, not guesswork)", async ({
