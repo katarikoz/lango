@@ -10,13 +10,30 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "screenshots": "node scripts/screenshots.mjs",
-    "lint": "eslint . && stylelint \"**/*.html\"",
+    "lint": "eslint . && node scripts/check-handlers.mjs && stylelint \"**/*.html\"",
     "lint:js": "eslint .",
-    "lint:css": "stylelint \"**/*.html\""
+    "lint:html": "node scripts/check-handlers.mjs",
+    "lint:css": "stylelint \"**/*.html\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,mjs}": "eslint",
+    "index.html": [
+      "node scripts/check-handlers.mjs",
+      "stylelint"
+    ]
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
     "http-server": "^14.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "postcss-html": "^1.8.1",
+    "stylelint": "^17.13.0",
+    "stylelint-config-recommended": "^18.0.0",
     "vitest": "^4.1.8"
   }
 }

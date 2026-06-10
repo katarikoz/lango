@@ -1,0 +1,15 @@
+{
+  "extends": "stylelint-config-recommended",
+  "overrides": [
+    {
+      "files": ["**/*.html"],
+      "customSyntax": "postcss-html"
+    }
+  ],
+  "rules": {
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "keyframes-name-pattern": null
+  }
+}

@@ -1,0 +1,5 @@
+# Защитный гейт перед деплоем (push → GitHub Pages): полный линт + юнит + E2E.
+# Если E2E мешает в рабочем процессе — строку с test:e2e можно убрать.
+npm run lint
+npm test --silent
+npm run test:e2e
