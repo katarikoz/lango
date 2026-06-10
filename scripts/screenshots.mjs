@@ -26,6 +26,7 @@ const DEVICES = [
 const SCREENS = [
   { name: "01-profiles", go: () => {} },
   { name: "02-home", go: () => { window.pickProfile("max"); } },
+  { name: "02b-home-ash", go: () => { window.pickProfile("max"); const p = window.progress(); p.rebirthPending = true; p.lastVisit = new Date().toISOString().slice(0, 10); window.saveProgress("max", p); window.refreshHomeStats(); } },
   { name: "03-math-fractions", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-grundlagen"); } },
   { name: "04-observatory", go: () => { window.pickProfile("alex"); window.openObservatory(); } },
   { name: "05-potion-lab", go: () => { window.pickProfile("alex"); window.openPotionLab(); } },

@@ -278,9 +278,9 @@
       .hero-phoenix {
         position: absolute;
         left: calc(50% + 3.125rem);
-        top: -10.625rem;
+        top: -2.5rem;
         transform: translateX(-50%);
-        height: 45rem;
+        height: clamp(17rem, 40vh, 28rem);
         pointer-events: none;
         object-fit: contain;
         z-index: 0;
@@ -725,6 +725,9 @@
         background: var(--qc-color);
         transition: width 0.3s ease;
       }
+      /* Fix card shows word HEALTH (% not-weak) — green, not the danger red,
+         so a 96%-healthy bar doesn't read as an alarm. Icon/count stay the card accent. */
+      #qcFix .qc-progress-fill { background: var(--good); }
       .qc-progress-text {
         font-size: 0.9375rem;
         font-weight: 700;
@@ -3772,7 +3775,7 @@
         </div>
 
         <div class="rebirth-banner" id="rebirthBanner" style="display:none">
-          <div class="rebirth-text">The flame went out. Rise from the ashes!</div>
+          <div class="rebirth-text">Welcome back! Relight your phoenix and rise from the ashes. 🔥</div>
           <button class="btn primary rebirth-btn" onclick="startRebirthQuest()">Start Rebirth Quest</button>
         </div>
 
@@ -6601,7 +6604,9 @@
       function refreshPhoenix() {
         const p = progress();
         const stage = getPhoenixStage(p);
-        const pState = getPhoenixState(p);
+        // Единый источник правды: пока ждёт перерождения — феникс в пепле,
+        // что бы ни говорил сегодняшний визит. Энергия, баннер, арт и CTA — все отсюда.
+        const pState = p.rebirthPending ? "ash" : getPhoenixState(p);
         const streak = p.streak || 0;
 
         // Hero subtitle
@@ -6630,7 +6635,9 @@
 
         const evo = getNextEvolutionRequirements(p);
         if (levelHint) {
-          if (!evo) {
+          if (pState === "ash") {
+            levelHint.textContent = "Relight your phoenix to rise again";
+          } else if (!evo) {
             levelHint.textContent = stage.name;
           } else {
             const nextLevel = evo.nextStage.level;
@@ -6658,16 +6665,16 @@
         if (levelFill) levelFill.style.width = li.pct + "%";
         if (levelXP) levelXP.textContent = li.xpCurrent + " / " + li.xpNext + " XP";
 
-        // Rebirth banner
+        // Rebirth banner — driven by the canonical state (ash), not a separate flag
         const rebirthBanner = document.getElementById("rebirthBanner");
         if (rebirthBanner) {
-          rebirthBanner.style.display = p.rebirthPending ? "" : "none";
+          rebirthBanner.style.display = pState === "ash" ? "" : "none";
         }
 
-        // Quest CTA
+        // Quest CTA — one primary action: never compete with the rebirth banner
         const questCTA = document.getElementById("questCTA");
         if (questCTA) {
-          const unlocked = isEvolutionQuestUnlocked(p);
+          const unlocked = pState !== "ash" && isEvolutionQuestUnlocked(p);
           questCTA.style.display = unlocked ? "" : "none";
           if (unlocked) {
             const cur = p.phoenixStage || 1;
