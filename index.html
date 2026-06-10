@@ -4172,7 +4172,7 @@
       <section class="screen" id="potionLabScreen">
         <div class="mode-head">
           <button class="back-btn" onclick="showScreen('observatoryScreen'); renderObservatory()">←</button>
-          <h2>🧪 Potions Workshop</h2>
+          <h2>🧪 Potions Lab</h2>
         </div>
         <div class="pl-rank" id="plRank"></div>
         <div class="pl-cauldron-zone">
@@ -5237,48 +5237,76 @@
         { id: "body", icon: "🧠", label: "Human Body", color: "#14b8a6" },
       ];
 
-      // POTION LAB — волшебные имена впереди, настоящая химия спрятана как "the secret"
-      const POTION_INGREDIENTS = [
-        { id: "dragon", emoji: "🐉", name: "Dragon Powder" },
-        { id: "serpent", emoji: "🧪", name: "Serpent's Sting" },
-        { id: "moonwater", emoji: "💧", name: "Moonwell Water" },
-        { id: "basilisk", emoji: "🪔", name: "Basilisk Oil" },
-        { id: "pixiesoap", emoji: "🫧", name: "Pixie Soap" },
-        { id: "sunfruit", emoji: "🍋", name: "Sunfruit" },
-        { id: "chameleon", emoji: "🟣", name: "Chameleon Brew" },
-        { id: "golemdust", emoji: "🌫️", name: "Golem Dust" },
-        { id: "fairysugar", emoji: "✨", name: "Fairy Sugar" },
+      // POTION LAB — crafting tree (Little Alchemy style). Magic on the surface,
+      // every combo grounded in a REAL reaction (shown as "the secret"). Expand by
+      // adding another real reaction. kind: base (always on shelf) / item (crafted,
+      // re-combinable) / potion (terminal payoff, lives in the Spellbook).
+      const POTION_ELEMENTS = [
+        // base ingredients (real substance ↔ magical name)
+        { id: "water", emoji: "💧", name: "Moonwell Water", kind: "base", real: "water" },
+        { id: "fire", emoji: "🔥", name: "Dragonfire", kind: "base", real: "heat" },
+        { id: "soda", emoji: "🐉", name: "Dragon Powder", kind: "base", real: "baking soda (a base)" },
+        { id: "lemon", emoji: "🍋", name: "Sunfruit", kind: "base", real: "lemon juice (an acid)" },
+        { id: "cabbage", emoji: "🟣", name: "Chameleon Sap", kind: "base", real: "red-cabbage juice" },
+        { id: "starch", emoji: "🌫️", name: "Golem Dust", kind: "base", real: "cornflour" },
+        { id: "sugar", emoji: "✨", name: "Fairy Sugar", kind: "base", real: "sugar" },
+        { id: "salt", emoji: "🧂", name: "Witch's Salt", kind: "base", real: "salt" },
+        { id: "oil", emoji: "🪔", name: "Basilisk Oil", kind: "base", real: "cooking oil" },
+        { id: "sand", emoji: "⛰️", name: "Quartz Sand", kind: "base", real: "sand" },
+        { id: "ice", emoji: "❄️", name: "Frost Shard", kind: "base", real: "ice" },
+        { id: "soap", emoji: "🫧", name: "Pixie Soap", kind: "base", real: "soap" },
+        // intermediates (crafted, then combine further)
+        { id: "glass", emoji: "🔮", name: "Enchanted Glass", kind: "item",
+          secret: "Quartz Sand is mostly silica. Fierce heat melts it into clear glass." },
+        { id: "syrup", emoji: "🍯", name: "Golden Syrup", kind: "item",
+          secret: "Fairy Sugar dissolves into Moonwell Water, making a thick sweet syrup." },
+        // potions (the payoff) — each grounded in a real reaction
+        { id: "flight", emoji: "🪶", name: "Potion of Flight", kind: "potion", effect: "fizz", card: "al1",
+          flavor: "The brew erupts upward — you feel light enough to drift off the floor!",
+          secret: "Dragon Powder (a base) + Sunfruit (an acid) make carbon-dioxide gas that rushes upward. Gas is lighter than liquid — that's your 'lift'." },
+        { id: "swift", emoji: "⚡", name: "Potion of Swift Feet", kind: "potion", effect: "fizz",
+          flavor: "A jolt of fizzing energy shoots through your legs — zoom!",
+          secret: "Dragon Powder keeps fizzing slowly inside the sweet syrup, releasing a steady stream of carbon-dioxide bubbles." },
+        { id: "invis", emoji: "👻", name: "Potion of Invisibility", kind: "potion", effect: "glow",
+          flavor: "The glass shard vanishes before your eyes — now you see it, now you don't!",
+          secret: "Glass and Basilisk Oil bend light by almost the same amount, so light passes straight through and the glass seems to vanish. It's a real experiment!" },
+        { id: "golem", emoji: "🗿", name: "Potion of Golem Skin", kind: "potion", effect: "shake", card: "al8",
+          flavor: "Strike it and your skin is stone; relax and it flows like water.",
+          secret: "Golem Dust + water is a non-Newtonian fluid: sudden force jams it solid, gentle pressure lets it flow." },
+        { id: "diamond", emoji: "💎", name: "Potion of Diamond Heart", kind: "potion", effect: "glow", card: "al12",
+          flavor: "Glittering crystals bloom across the surface — your heart turns to diamond.",
+          secret: "The cooling syrup can't hold all its sugar, so the extra rebuilds into crystals — just like rock candy and gemstones." },
+        { id: "frost", emoji: "🥶", name: "Potion of Frost Feet", kind: "potion", effect: "shake",
+          flavor: "An icy chill races down to your toes — the cauldron frosts over!",
+          secret: "Witch's Salt lowers the melting point of ice, so the mix pulls in heat and turns bitterly cold." },
+        { id: "pink", emoji: "🌸", name: "Blushing Disguise", kind: "potion", effect: "glow", card: "al5",
+          flavor: "The purple sap blushes a deep pink — a rosy new face!",
+          secret: "Sunfruit is acidic, and Chameleon Sap (red cabbage) is a natural pH detector — acids turn it pink." },
+        { id: "green", emoji: "💚", name: "Witch's Green Hex", kind: "potion", effect: "glow", card: "al5",
+          flavor: "The sap curdles into a wicked witch-green.",
+          secret: "Dragon Powder is a base, and the red-cabbage detector turns green or blue in bases." },
+        { id: "cleanse", emoji: "🧼", name: "Cleansing Charm", kind: "potion", effect: "fizz",
+          flavor: "Every speck of grime melts away in a shimmer of bubbles.",
+          secret: "Soap has one end that grabs oil and one that grabs water, linking them so grease rinses away." },
+        { id: "unmix", emoji: "🌀", name: "The Unmixable Curse", kind: "potion", effect: "shake", card: "al6",
+          flavor: "Stir as you might, the two layers refuse to ever join.",
+          secret: "Basilisk Oil is non-polar; water is polar and clings to itself, pushing the oil away. Like won't mix with unlike." },
       ];
 
-      const POTION_RECIPES = [
-        { id: "p1", a: "dragon", b: "serpent", name: "Potion of Roaring Fury", effect: "fizz", icon: "🌋",
-          flavor: "The cauldron ROARS — a tower of furious foam erupts toward the ceiling!",
-          secret: "An acid (Serpent's Sting = vinegar) met a base (Dragon Powder = baking soda) and set free carbon dioxide gas — the same fizz as in a fizzy drink.",
-          card: "al1" },
-        { id: "p2", a: "chameleon", b: "sunfruit", name: "Blushing Heart Elixir", effect: "glow", icon: "🌸",
-          flavor: "The purple brew flushes a deep, bashful PINK, as if it had fallen in love.",
-          secret: "Sunfruit (lemon) is acidic. Chameleon Brew (red-cabbage juice) is a natural pH detector — acids turn it pink.",
-          card: "al5" },
-        { id: "p3", a: "chameleon", b: "dragon", name: "Witch's Green Draught", effect: "glow", icon: "🧙",
-          flavor: "The brew curdles into a wicked, swampy GREEN — a true witch's colour.",
-          secret: "Dragon Powder (baking soda) is a base. The red-cabbage indicator turns green or blue in bases.",
-          card: "al5" },
-        { id: "p4", a: "golemdust", b: "moonwater", name: "Golem's Flesh", effect: "shake", icon: "🗿",
-          flavor: "Strike it and it's hard as stone; rest your hand and it oozes through your fingers.",
-          secret: "Golem Dust (cornflour) + water makes a non-Newtonian fluid: sudden force jams the grains solid, slow pressure lets them flow.",
-          card: "al8" },
-        { id: "p5", a: "basilisk", b: "moonwater", name: "The Unmixable Curse", effect: "shake", icon: "🌀",
-          flavor: "No matter how you stir, the two refuse to join — split forever into two layers.",
-          secret: "Basilisk Oil is non-polar; water is polar and clings to itself, pushing the oil away. Like refuses to mix with unlike.",
-          card: "al6" },
-        { id: "p6", a: "pixiesoap", b: "basilisk", name: "Cleansing Charm", effect: "fizz", icon: "🫧",
-          flavor: "The greasy oil melts away into nothing at the soap's touch.",
-          secret: "Soap has one end that grabs oil and one that grabs water, linking them so grease rinses away — the magic behind washing your hands.",
-          card: null },
-        { id: "p7", a: "fairysugar", b: "moonwater", name: "Crystal-Seed Syrup", effect: "glow", icon: "💎",
-          flavor: "A thick, glittering syrup — the secret base for growing enchanted crystals.",
-          secret: "Dissolve lots of Fairy Sugar in warm water and let it cool slowly: the extra sugar rebuilds into crystals. That's how rock candy and gemstones grow.",
-          card: "al12" },
+      // Скрещивания (порядок не важен). r — id результата (item или potion).
+      const POTION_COMBOS = [
+        { a: "sand", b: "fire", r: "glass" },
+        { a: "sugar", b: "water", r: "syrup" },
+        { a: "soda", b: "lemon", r: "flight" },
+        { a: "soda", b: "syrup", r: "swift" },
+        { a: "glass", b: "oil", r: "invis" },
+        { a: "starch", b: "water", r: "golem" },
+        { a: "syrup", b: "ice", r: "diamond" },
+        { a: "salt", b: "ice", r: "frost" },
+        { a: "cabbage", b: "lemon", r: "pink" },
+        { a: "cabbage", b: "soda", r: "green" },
+        { a: "oil", b: "soap", r: "cleanse" },
+        { a: "oil", b: "water", r: "unmix" },
       ];
 
       const OBSERVATORY_DISCOVERIES = [
@@ -8130,11 +8158,17 @@
    ============================================================ */
       state.potionSlots = [];
 
+      const POTION_BY_ID = Object.fromEntries(
+        POTION_ELEMENTS.map((e) => [e.id, e]),
+      );
+      const POTION_LIST = POTION_ELEMENTS.filter((e) => e.kind === "potion");
+      const POTION_TOTAL = POTION_LIST.length;
+
       const POTION_RANKS = [
         { threshold: 0, name: "Apprentice", icon: "🧹" },
-        { threshold: 2, name: "Cauldron Cook", icon: "🍯" },
-        { threshold: 4, name: "Spell-Brewer", icon: "⚗️" },
-        { threshold: 6, name: "Potions Master", icon: "🧙" },
+        { threshold: 3, name: "Brewer", icon: "🍯" },
+        { threshold: 6, name: "Alchemist", icon: "⚗️" },
+        { threshold: 9, name: "Potioneer", icon: "🧙" },
       ];
       function potionGetRank(count) {
         let r = POTION_RANKS[0];
@@ -8144,24 +8178,34 @@
 
       function potionProgress() {
         const p = progress();
-        if (!p.potionLab) p.potionLab = { brewed: [] };
-        if (!Array.isArray(p.potionLab.brewed)) p.potionLab.brewed = [];
+        if (!p.potionLab) p.potionLab = { discovered: [] };
+        if (!Array.isArray(p.potionLab.discovered)) p.potionLab.discovered = [];
         return p.potionLab;
       }
-
-      function potionFindRecipe(ids) {
-        const [x, y] = ids;
-        return (
-          POTION_RECIPES.find(
-            (r) => (r.a === x && r.b === y) || (r.a === y && r.b === x),
-          ) || null
+      function potionDiscovered() {
+        return potionProgress().discovered;
+      }
+      function potionBrewedPotions() {
+        return potionDiscovered().filter(
+          (id) => (POTION_BY_ID[id] || {}).kind === "potion",
         );
       }
 
-      function potionIngredientNames(r) {
-        const get = (id) =>
-          (POTION_INGREDIENTS.find((i) => i.id === id) || {}).name || "?";
-        return get(r.a) + " + " + get(r.b);
+      // на полке: базовые ингредиенты + открытые промежуточные (всё, что можно скрещивать)
+      function potionShelfElements() {
+        const disc = potionDiscovered();
+        return POTION_ELEMENTS.filter(
+          (e) => e.kind === "base" || (e.kind === "item" && disc.includes(e.id)),
+        );
+      }
+
+      function potionFindCombo(ids) {
+        const [x, y] = ids;
+        return (
+          POTION_COMBOS.find(
+            (c) => (c.a === x && c.b === y) || (c.a === y && c.b === x),
+          ) || null
+        );
       }
 
       function openPotionLab() {
@@ -8190,50 +8234,46 @@
       }
 
       function renderPotionLab() {
-        const lab = potionProgress();
-        const brewed = lab.brewed || [];
-        const total = POTION_RECIPES.length;
-
-        const rank = potionGetRank(brewed.length);
+        const brewed = potionBrewedPotions().length;
+        const rank = potionGetRank(brewed);
         document.getElementById("plRank").innerHTML =
           "<span>" + rank.icon + " " + rank.name + "</span>" +
-          '<span class="pl-rank-count">' + brewed.length + " / " + total + " potions brewed</span>";
+          '<span class="pl-rank-count">' + brewed + " / " + POTION_TOTAL + " potions brewed</span>";
 
         for (let i = 0; i < 2; i++) {
           const slot = document.getElementById("plSlot" + i);
-          const id = state.potionSlots[i];
-          const ing = id ? POTION_INGREDIENTS.find((x) => x.id === id) : null;
-          slot.className = "pl-slot" + (ing ? " filled" : "");
-          slot.textContent = ing ? ing.emoji : "?";
-          slot.onclick = ing ? () => potionRemoveSlot(i) : null;
+          const el = state.potionSlots[i] ? POTION_BY_ID[state.potionSlots[i]] : null;
+          slot.className = "pl-slot" + (el ? " filled" : "");
+          slot.textContent = el ? el.emoji : "?";
+          slot.onclick = el ? () => potionRemoveSlot(i) : null;
         }
         document.getElementById("plBrewBtn").disabled = state.potionSlots.length !== 2;
         document.getElementById("plClearBtn").disabled = state.potionSlots.length === 0;
 
         const shelf = document.getElementById("plShelf");
         shelf.innerHTML = "";
-        for (const ing of POTION_INGREDIENTS) {
-          const inCauldron = state.potionSlots.includes(ing.id);
+        for (const el of potionShelfElements()) {
+          const inCauldron = state.potionSlots.includes(el.id);
           const full = state.potionSlots.length >= 2 && !inCauldron;
           const btn = document.createElement("button");
           btn.className = "pl-ingredient" + (inCauldron ? " in-cauldron" : "");
           btn.disabled = full;
-          btn.onclick = () => potionPick(ing.id);
+          btn.onclick = () => potionPick(el.id);
           btn.innerHTML =
-            '<span class="pl-ing-emoji">' + ing.emoji + "</span>" +
-            '<span class="pl-ing-name">' + escapeHtml(ing.name) + "</span>";
+            '<span class="pl-ing-emoji">' + el.emoji + "</span>" +
+            '<span class="pl-ing-name">' + escapeHtml(el.name) + "</span>";
           shelf.appendChild(btn);
         }
 
         const book = document.getElementById("plSpellbook");
         book.innerHTML = "";
-        for (const r of POTION_RECIPES) {
-          const got = brewed.includes(r.id);
+        const disc = potionDiscovered();
+        for (const r of POTION_LIST) {
+          const got = disc.includes(r.id);
           const el = document.createElement("div");
           el.className = "pl-potion " + (got ? "revealed" : "locked");
           el.innerHTML = got
-            ? '<div class="pl-potion-name">' + r.icon + " " + escapeHtml(r.name) + "</div>" +
-              '<div class="pl-potion-hint">' + escapeHtml(potionIngredientNames(r)) + "</div>"
+            ? '<div class="pl-potion-name">' + r.emoji + " " + escapeHtml(r.name) + "</div>"
             : '<div class="pl-potion-name">🔒 ???</div><div class="pl-potion-hint">Undiscovered</div>';
           book.appendChild(el);
         }
@@ -8241,45 +8281,59 @@
 
       function potionBrew() {
         if (state.potionSlots.length !== 2) return;
-        const recipe = potionFindRecipe(state.potionSlots);
-        if (recipe) {
-          const lab = potionProgress();
-          const isNew = !lab.brewed.includes(recipe.id);
-          if (isNew) {
-            lab.brewed.push(recipe.id);
-            const p = progress();
-            p.potionLab = lab;
-            saveProgress(state.profile, p);
-            addXP(15);
-          }
-          showPotionResult(recipe, isNew);
-        } else {
+        const combo = potionFindCombo(state.potionSlots);
+        if (!combo) {
           showPotionDud();
+          state.potionSlots = [];
+          return;
         }
+        const result = POTION_BY_ID[combo.r];
+        const disc = potionDiscovered();
+        const isNew = !disc.includes(result.id);
+        if (isNew) {
+          disc.push(result.id);
+          const p = progress();
+          p.potionLab.discovered = disc;
+          saveProgress(state.profile, p);
+          addXP(result.kind === "potion" ? 20 : 10);
+        }
+        showPotionResult(result, isNew);
         state.potionSlots = [];
       }
 
-      function showPotionResult(recipe, isNew) {
-        const linked = recipe.card ? obsFindCard(recipe.card) : null;
+      function showPotionResult(el, isNew) {
+        const isPotion = el.kind === "potion";
+        const linked = el.card ? obsFindCard(el.card) : null;
+        const tag = isNew
+          ? isPotion
+            ? "New Potion! +20 XP"
+            : "New Ingredient! +10 XP"
+          : "Already discovered";
+        const flavor =
+          el.flavor ||
+          "You crafted " + el.name + " — it's now on your shelf to brew with.";
         document.getElementById("plResultCard").innerHTML =
-          '<div class="pl-effect ' + recipe.effect + '">' + recipe.icon + "</div>" +
-          '<div class="pl-result-tag ' + (isNew ? "new" : "") + '">' +
-            (isNew ? "New Recipe! +15 XP" : "Already in your Spellbook") + "</div>" +
-          '<div class="pl-result-name">' + escapeHtml(recipe.name) + "</div>" +
-          '<div class="pl-result-flavor">' + escapeHtml(recipe.flavor) + "</div>" +
-          '<div class="pl-secret" id="plSecret">' +
-            '<div class="pl-secret-title">🔬 The Secret</div>' +
-            '<div class="pl-secret-body">' + escapeHtml(recipe.secret) + "</div>" +
-            (linked
-              ? '<div class="pl-secret-card">📖 Discovery card: “' + escapeHtml(linked.title) + "” in the Observatory.</div>"
-              : "") +
-          "</div>" +
+          '<div class="pl-effect ' + (el.effect || "") + '">' + el.emoji + "</div>" +
+          '<div class="pl-result-tag ' + (isNew ? "new" : "") + '">' + tag + "</div>" +
+          '<div class="pl-result-name">' + escapeHtml(el.name) + "</div>" +
+          '<div class="pl-result-flavor">' + escapeHtml(flavor) + "</div>" +
+          (el.secret
+            ? '<div class="pl-secret" id="plSecret">' +
+                '<div class="pl-secret-title">🔬 The Secret</div>' +
+                '<div class="pl-secret-body">' + escapeHtml(el.secret) + "</div>" +
+                (linked
+                  ? '<div class="pl-secret-card">📖 Discovery card: “' + escapeHtml(linked.title) + "” in the Observatory.</div>"
+                  : "") +
+              "</div>"
+            : "") +
           '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
-            '<button class="btn ghost" id="plSecretBtn" onclick="potionRevealSecret()">Reveal the Secret 🔬</button>' +
-            '<button class="btn primary" onclick="closePotionResult()">Brew again ✨</button>' +
+            (el.secret
+              ? '<button class="btn ghost" id="plSecretBtn" onclick="potionRevealSecret()">Reveal the Secret 🔬</button>'
+              : "") +
+            '<button class="btn primary" onclick="closePotionResult()">Keep brewing ✨</button>' +
           "</div>";
         document.getElementById("plOverlay").classList.add("show");
-        spawnConfetti("plResultCard", 16, isNew);
+        spawnConfetti("plResultCard", isPotion ? 18 : 10, isNew && isPotion);
       }
 
       function showPotionDud() {
@@ -8287,7 +8341,7 @@
           '<div class="pl-effect">💨</div>' +
           '<div class="pl-result-tag dud">Hmm…</div>' +
           '<div class="pl-result-name">The cauldron sputters</div>' +
-          '<div class="pl-result-flavor">Nothing magical happens with this mix. Try other ingredients!</div>' +
+          '<div class="pl-result-flavor">Nothing happens with this mix. Try combining other things — some ingredients must be crafted first!</div>' +
           '<div class="row-actions" style="margin-top:18px;justify-content:center">' +
             '<button class="btn primary" onclick="closePotionResult()">Try again</button>' +
           "</div>";
@@ -9858,7 +9912,7 @@
           html += '<span class="obs-row-icon">' + cat.icon + '</span>';
           html += '<span class="obs-row-label">' + cat.label + '</span>';
           html += '<span class="obs-row-count">' + (isComplete ? '★ Complete' : revealedCount + ' / ' + cards.length) + '</span>';
-          if (cat.id === "alchemy") html += '<button class="obs-lab-btn" onclick="openPotionLab()">🧪 Workshop</button>';
+          if (cat.id === "alchemy") html += '<button class="obs-lab-btn" onclick="openPotionLab()">🧪 Potions Lab</button>';
           html += '</div>';
           // Category progress bar
           html += '<div class="obs-row-progress"><div style="width:' + catPct + '%;background:' + cat.color + '"></div></div>';

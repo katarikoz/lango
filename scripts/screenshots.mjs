@@ -29,7 +29,7 @@ const SCREENS = [
   { name: "03-math-fractions", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-grundlagen"); } },
   { name: "04-observatory", go: () => { window.pickProfile("alex"); window.openObservatory(); } },
   { name: "05-potion-lab", go: () => { window.pickProfile("alex"); window.openPotionLab(); } },
-  { name: "06-potion-result", go: () => { window.pickProfile("alex"); window.openPotionLab(); window.potionPick("dragon"); window.potionPick("serpent"); window.potionBrew(); window.potionRevealSecret(); } },
+  { name: "06-potion-result", go: () => { window.pickProfile("alex"); window.openPotionLab(); window.potionPick("soda"); window.potionPick("lemon"); window.potionBrew(); window.potionRevealSecret(); } },
 ];
 
 async function serverUp() {
