@@ -5426,6 +5426,222 @@
                 },
               ],
             },
+            {
+              id: "math-brueche-verstehen",
+              title: "Brüche verstehen — die Idee dahinter",
+              short: "Brüche verstehen",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "bv-01",
+                  type: "info",
+                  title: "Ein Bruch ist eine Zahl",
+                  figure: "frac:bar:3,4",
+                  text: "Ein Bruch ist nicht nur ein Stück Pizza — er ist eine <b>echte Zahl</b>. Sie wohnt <b>zwischen</b> den ganzen Zahlen.<br><br>Stell dir den Streifen als <b>Lineal von 0 bis 1</b> vor. <b>3/4</b> liegt 3 von 4 Schritten weit — zwischen 0 und 1, schon ganz nah an der 1.<br><br>Deshalb kannst du mit Brüchen <b>messen</b>: 3/4 Liter, 1/2 Meter.",
+                },
+                {
+                  id: "bv-02",
+                  type: "info",
+                  title: "Der Bruchstrich heißt „geteilt durch“",
+                  text: "Der Bruchstrich ist in Wahrheit ein <b>Geteiltzeichen</b>. <b>3/4 bedeutet 3 : 4</b>.<br><br>Teile 3 Pizzen gerecht unter 4 Freunden auf — jeder bekommt <b>3/4</b> Pizza.<br><br>Und genau <b>darum</b> rechnest du Zähler : Nenner, wenn du die Dezimalzahl willst: 3 : 4 = <b>0,75</b>.",
+                },
+                {
+                  id: "bv-03",
+                  type: "choice",
+                  prompt: "Was bedeutet der Bruch 3/5 als Rechnung?",
+                  options: ["3 : 5", "5 : 3", "3 · 5", "5 − 3"],
+                  correctIndex: 0,
+                  explanation:
+                    "Der Bruchstrich ist ein Geteiltzeichen: 3/5 heißt 3 : 5.",
+                },
+                {
+                  id: "bv-04",
+                  type: "numeric",
+                  prompt:
+                    "4 Freunde teilen sich 3 Pizzen gerecht. Wie viel Pizza bekommt einer? (als Bruch, z. B. 3/4)",
+                  answer: "3/4",
+                  explanation: "Bruchstrich = geteilt: 3 : 4 = 3/4 Pizza pro Person.",
+                },
+                {
+                  id: "bv-05",
+                  type: "info",
+                  title: "Gleichwertig: dieselbe Zahl, andere Verkleidung",
+                  figure: "frac:bar:1,2;2,4",
+                  text: "Schau: <b>1/2</b> und <b>2/4</b> färben genau gleich viel. Auf dem Lineal treffen sie <b>denselben Punkt</b>.<br><br>Es ist <b>dieselbe Zahl</b> — nur einmal in großen, einmal in kleinen Stücken. Wie dieselbe Person in zwei Outfits.<br><br>Darum darfst du den einen jederzeit gegen den anderen tauschen.",
+                },
+                {
+                  id: "bv-06",
+                  type: "info",
+                  title: "💡 Warum Erweitern erlaubt ist: mal 1",
+                  text: "Beim <b>Erweitern</b> nimmst du Zähler und Nenner mit <b>derselben</b> Zahl mal — z. B. mit 2/2.<br><br>Aber Achtung: <b>2/2 ist 1</b>. Und <b>mal 1 ändert keine Zahl</b>, nur ihr Aussehen.<br><br>Deshalb ist 1/2 = 2/4 = 4/8 — immer dieselbe Zahl, nur neu verkleidet. Das ist der ganze Trick hinter Erweitern und Kürzen.",
+                },
+                {
+                  id: "bv-07",
+                  type: "choice",
+                  prompt:
+                    "Warum darf man 1/2 zu 2/4 erweitern, ohne dass sich der Wert ändert?",
+                  options: [
+                    "Weil man mit 2/2 = 1 malnimmt",
+                    "Weil 2 größer als 1 ist",
+                    "Weil sich der Bruch verdoppelt",
+                    "Gar nicht — das ändert den Wert",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Mit 2/2 malnehmen heißt mal 1. Mal 1 lässt jede Zahl gleich — nur die Schreibweise wird anders.",
+                },
+                {
+                  id: "bv-08",
+                  type: "info",
+                  title: "💡 Die häufigste Falle: nur Zähler addieren",
+                  text: "Zusammenzählen geht nur, wenn die <b>Stücke gleich groß</b> sind — also bei <b>gleichem Nenner</b>. Dann zählst du die Stücke (die Zähler), die <b>Stückgröße (Nenner) bleibt</b>.<br><br>1/4 + 1/4 = <b>2/4</b>: zwei Viertel-Stücke.<br><br>⚠️ Fast alle tappen hier rein: <b>1/2 + 1/2 ist NICHT 2/4!</b> Zwei Hälften sind <b>2/2 = 1 Ganzes</b>. Den Nenner addierst du <b>nie</b>.",
+                },
+                {
+                  id: "bv-09",
+                  type: "choice",
+                  prompt: "Vorsicht, Falle: 1/2 + 1/2 = ?",
+                  options: [
+                    "1 (ein Ganzes)",
+                    "2/4",
+                    "1/4",
+                    "2/2 — und das ist 1/2",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Gleiche Stücke zählen: 1 Halbes + 1 Halbes = 2 Halbe = 2/2 = 1. Der Nenner bleibt 2, er wird nicht addiert.",
+                },
+                {
+                  id: "bv-10",
+                  type: "choice",
+                  prompt: "Liegt 5/4 auf dem Zahlenstrahl vor oder hinter der 1?",
+                  options: [
+                    "Hinter der 1 — größer als 1",
+                    "Vor der 1 — kleiner als 1",
+                    "Genau auf der 1",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "4/4 ist genau 1. 5/4 ist ein Viertel mehr → es liegt hinter der 1 (5/4 = 1 1/4).",
+                },
+                {
+                  id: "bv-11",
+                  type: "info",
+                  title: "Drei Sätze, die alles tragen",
+                  text: "<b>Bruchstrich = geteilt durch.</b> (3/4 = 3 : 4)<br><b>Erweitern & Kürzen = mal/geteilt durch 1.</b> (Wert bleibt, Aussehen ändert sich)<br><b>Addieren = gleiche Stücke zählen.</b> (Nenner gleich machen, nie addieren)<br><br>Wenn du diese drei verstehst, verstehst du Brüche.",
+                },
+              ],
+            },
+            {
+              id: "math-brueche-profi",
+              title: "Profi-Tricks & knifflige Fälle",
+              short: "Profi-Tricks",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "bp-01",
+                  type: "info",
+                  title: "„von“ heißt mal — und macht kleiner",
+                  text: "<b>„von“ bedeutet mal.</b> „Die Hälfte <b>von</b> einer Hälfte“ heißt 1/2 · 1/2.<br><br>So multiplizierst du Brüche: <b>Zähler · Zähler</b> und <b>Nenner · Nenner</b>. 1/2 · 1/2 = <b>1/4</b>.<br><br>Plot-Twist: Mal-nehmen macht hier <b>kleiner</b>! Logisch — die Hälfte von einer Hälfte ist eben nur ein Viertel. Bei Brüchen unter 1 schrumpft das Ergebnis.",
+                },
+                {
+                  id: "bp-02",
+                  type: "choice",
+                  prompt: "1/2 · 1/3 = ?",
+                  options: ["1/6", "2/5", "1/5", "3/2"],
+                  correctIndex: 0,
+                  explanation:
+                    "Zähler · Zähler = 1 · 1 = 1. Nenner · Nenner = 2 · 3 = 6 → 1/6. (Ein Drittel von einer Hälfte.)",
+                },
+                {
+                  id: "bp-03",
+                  type: "numeric",
+                  prompt: "Wie viel sind 3/4 von 8 Gummibärchen?",
+                  answer: 6,
+                  explanation:
+                    "„von“ heißt mal: 3/4 · 8 = 24 : 4 = 6 Gummibärchen.",
+                },
+                {
+                  id: "bp-04",
+                  type: "info",
+                  title: "💡 Teilen durch einen Bruch: mit dem Kehrwert mal",
+                  text: "Frag dich: <b>Wie oft passt 1/2 in 3 Ganze?</b> → 6-mal. Also ist 3 : 1/2 = <b>6</b>.<br><br>Der Trick: durch einen Bruch teilen = mit seinem <b>Kehrwert</b> malnehmen (Kehrwert = umgedreht, oben und unten getauscht).<br><br>3 : 1/2 = 3 · 2/1 = 6. <b>Warum?</b> Teilen fragt „wie oft passt es rein“ — und das Umdrehen zählt genau das.",
+                },
+                {
+                  id: "bp-05",
+                  type: "choice",
+                  prompt: "Wie viele Hälften (1/2) passen in 3 ganze Pizzen?",
+                  options: ["6", "3", "1,5", "2"],
+                  correctIndex: 0,
+                  explanation:
+                    "Jede Pizza gibt 2 Hälften, 3 Pizzen → 6 Hälften. Also 3 : 1/2 = 3 · 2 = 6.",
+                },
+                {
+                  id: "bp-06",
+                  type: "choice",
+                  prompt: "1/2 : 1/4 = ?",
+                  options: ["2", "1/8", "1/2", "8"],
+                  correctIndex: 0,
+                  explanation:
+                    "Mit dem Kehrwert mal: 1/2 · 4/1 = 4/2 = 2. (Wie oft passt ein Viertel in eine Hälfte? Zweimal.)",
+                },
+                {
+                  id: "bp-07",
+                  type: "info",
+                  title: "💡 Lifehack: erst zur 1/2 schätzen",
+                  text: "Bevor du rechnest, <b>fühl die Größe</b>: Liegt der Bruch nahe bei <b>0</b>, bei <b>1/2</b> oder bei <b>1</b>?<br><br>• Nahe 1/2, wenn der Zähler etwa <b>halb so groß</b> wie der Nenner ist (z. B. 5/9).<br>• Nahe 1, wenn Zähler ≈ Nenner (8/9).<br>• Nahe 0, wenn der Zähler winzig ist (1/9).<br><br>So merkst du sofort, wenn ein Ergebnis <b>unmöglich</b> ist.",
+                },
+                {
+                  id: "bp-08",
+                  type: "choice",
+                  prompt: "Welcher Bruch liegt am nächsten bei 1/2?",
+                  options: ["5/9", "1/9", "8/9", "9/9"],
+                  correctIndex: 0,
+                  explanation:
+                    "Bei 5/9 ist der Zähler fast die Hälfte des Nenners → ≈ 1/2. (1/9 ist nahe 0, 8/9 nahe 1, 9/9 = 1.)",
+                },
+                {
+                  id: "bp-09",
+                  type: "info",
+                  title: "💡 Profi-Trick: über Kreuz vergleichen",
+                  text: "Welcher Bruch ist größer, ganz ohne gleichnamig zu machen? <b>Über Kreuz multiplizieren.</b><br><br>2/3 und 3/5: rechne 2 · 5 = 10 und 3 · 3 = 9. Das <b>größere Produkt</b> gehört zum größeren Bruch → 10 > 9, also <b>2/3 > 3/5</b>.<br><br>Warum es klappt: Es ist dasselbe wie gleichnamig machen — nur blitzschnell.",
+                },
+                {
+                  id: "bp-10",
+                  type: "choice",
+                  prompt: "Über Kreuz: Was ist größer, 3/4 oder 5/7?",
+                  options: ["3/4", "5/7", "gleich groß"],
+                  correctIndex: 0,
+                  explanation:
+                    "Über Kreuz: 3 · 7 = 21 und 5 · 4 = 20. 21 > 20 → 3/4 ist größer.",
+                },
+                {
+                  id: "bp-11",
+                  type: "info",
+                  title: "Bruch = Dezimalzahl = Prozent",
+                  text: "Ein und dieselbe Zahl in drei Verkleidungen:<br><br><b>1/2 = 0,5 = 50 %</b><br><b>1/4 = 0,25 = 25 %</b><br><b>3/4 = 0,75 = 75 %</b><br><br>Vom Bruch zur Dezimalzahl: Zähler : Nenner. Von der Dezimalzahl zu Prozent: <b>· 100</b>.<br><br>Profi-Move: Nimm immer die Verkleidung, mit der sich am leichtesten rechnen lässt.",
+                },
+                {
+                  id: "bp-12",
+                  type: "choice",
+                  prompt: "1/4 ist dasselbe wie …?",
+                  options: ["25 %", "4 %", "14 %", "40 %"],
+                  correctIndex: 0,
+                  explanation: "1/4 = 0,25 = 25 % (0,25 · 100).",
+                },
+                {
+                  id: "bp-13",
+                  type: "numeric",
+                  prompt: "Wie viel Prozent sind 3/4? (nur die Zahl)",
+                  answer: 75,
+                  unit: "%",
+                  explanation: "3/4 = 0,75, und 0,75 · 100 = 75 %.",
+                },
+              ],
+            },
           ],
         },
         {
