@@ -3126,6 +3126,27 @@
       .ex-info-text b {
         color: var(--accent);
       }
+      /* Revealed key idea on an info card — appears only after a tap, so the
+         child engages before "Weiter" shows. */
+      .ex-info-reveal {
+        font-size: 1.0625rem;
+        line-height: 1.55;
+        color: var(--ink);
+        text-align: left;
+        margin-top: 0.75rem;
+        padding: 0.75rem 0.875rem;
+        border-radius: 0.75rem;
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+        animation: exRevealIn 0.25s ease-out;
+      }
+      .ex-info-reveal b {
+        color: var(--accent);
+      }
+      @keyframes exRevealIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
 
       @media (max-width: 520px) {
         .subject-grid {
@@ -5436,16 +5457,27 @@
               exercises: [
                 {
                   id: "bv-01",
-                  type: "info",
-                  title: "Ein Bruch ist eine Zahl",
+                  type: "choice",
                   figure: "frac:bar:3,4",
-                  text: "Ein Bruch ist nicht nur ein Stück Pizza — er ist eine <b>echte Zahl</b>. Sie wohnt <b>zwischen</b> den ganzen Zahlen.<br><br>Stell dir den Streifen als <b>Lineal von 0 bis 1</b> vor. <b>3/4</b> liegt 3 von 4 Schritten weit — zwischen 0 und 1, schon ganz nah an der 1.<br><br>Deshalb kannst du mit Brüchen <b>messen</b>: 3/4 Liter, 1/2 Meter.",
+                  prompt: "Der Streifen ist ein Lineal von 0 bis 1. Wo liegt 3/4?",
+                  options: [
+                    "Ganz nah an der 1",
+                    "Genau bei 0",
+                    "In der Mitte, bei 1/2",
+                    "Hinter der 1",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Ein Bruch ist eine echte Zahl auf dem Lineal: 3/4 = 3 von 4 Schritten, nah an der 1. Darum kann man mit Brüchen messen — 3/4 Liter, 1/2 Meter.",
                 },
                 {
                   id: "bv-02",
-                  type: "info",
-                  title: "Der Bruchstrich heißt „geteilt durch“",
-                  text: "Der Bruchstrich ist in Wahrheit ein <b>Geteiltzeichen</b>. <b>3/4 bedeutet 3 : 4</b>.<br><br>Teile 3 Pizzen gerecht unter 4 Freunden auf — jeder bekommt <b>3/4</b> Pizza.<br><br>Und genau <b>darum</b> rechnest du Zähler : Nenner, wenn du die Dezimalzahl willst: 3 : 4 = <b>0,75</b>.",
+                  type: "choice",
+                  prompt: "3 Pizzen, gerecht auf 4 Kinder — was rechnest du?",
+                  options: ["3 : 4", "3 · 4", "3 + 4", "4 : 3"],
+                  correctIndex: 0,
+                  explanation:
+                    "Der Bruchstrich IST ein Geteiltzeichen: 3 : 4 = 3/4 pro Kind. Genau darum ist 3 : 4 = 0,75 — so wird ein Bruch zur Dezimalzahl.",
                 },
                 {
                   id: "bv-03",
@@ -5466,22 +5498,24 @@
                 },
                 {
                   id: "bv-05",
-                  type: "info",
-                  title: "Gleichwertig: dieselbe Zahl, andere Verkleidung",
+                  type: "choice",
                   figure: "frac:bar:1,2;2,4",
-                  text: "Schau: <b>1/2</b> und <b>2/4</b> färben genau gleich viel. Auf dem Lineal treffen sie <b>denselben Punkt</b>.<br><br>Es ist <b>dieselbe Zahl</b> — nur einmal in großen, einmal in kleinen Stücken. Wie dieselbe Person in zwei Outfits.<br><br>Darum darfst du den einen jederzeit gegen den anderen tauschen.",
+                  prompt: "1/2 und 2/4 — wie viel färben sie?",
+                  options: [
+                    "Genau gleich viel",
+                    "2/4 färbt mehr",
+                    "1/2 färbt mehr",
+                    "Kann man nicht vergleichen",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Gleich viel! Auf dem Lineal derselbe Punkt — dieselbe Zahl, nur andere Stückgröße. Wie eine Person in zwei Outfits. Darum darf man sie tauschen.",
                 },
                 {
                   id: "bv-06",
-                  type: "info",
-                  title: "💡 Warum Erweitern erlaubt ist: mal 1",
-                  text: "Beim <b>Erweitern</b> nimmst du Zähler und Nenner mit <b>derselben</b> Zahl mal — z. B. mit 2/2.<br><br>Aber Achtung: <b>2/2 ist 1</b>. Und <b>mal 1 ändert keine Zahl</b>, nur ihr Aussehen.<br><br>Deshalb ist 1/2 = 2/4 = 4/8 — immer dieselbe Zahl, nur neu verkleidet. Das ist der ganze Trick hinter Erweitern und Kürzen.",
-                },
-                {
-                  id: "bv-07",
                   type: "choice",
                   prompt:
-                    "Warum darf man 1/2 zu 2/4 erweitern, ohne dass sich der Wert ändert?",
+                    "Warum darf man 1/2 zu 2/4 erweitern, ohne den Wert zu ändern?",
                   options: [
                     "Weil man mit 2/2 = 1 malnimmt",
                     "Weil 2 größer als 1 ist",
@@ -5490,30 +5524,19 @@
                   ],
                   correctIndex: 0,
                   explanation:
-                    "Mit 2/2 malnehmen heißt mal 1. Mal 1 lässt jede Zahl gleich — nur die Schreibweise wird anders.",
+                    "Erweitern = mal 2/2. Aber 2/2 = 1, und mal 1 ändert keine Zahl — nur das Aussehen. Darum 1/2 = 2/4 = 4/8.",
+                },
+                {
+                  id: "bv-07",
+                  type: "choice",
+                  prompt: "Achtung, Falle: 1/2 + 1/2 = ?",
+                  options: ["1 (ein Ganzes)", "2/4", "1/4", "2"],
+                  correctIndex: 0,
+                  explanation:
+                    "Gleich große Stücke zählen: 1 Halbes + 1 Halbes = 2/2 = 1 Ganzes. Den Nenner addiert man NIE — sonst käme 2/4 raus, und das wäre kleiner als eine Hälfte!",
                 },
                 {
                   id: "bv-08",
-                  type: "info",
-                  title: "💡 Die häufigste Falle: nur Zähler addieren",
-                  text: "Zusammenzählen geht nur, wenn die <b>Stücke gleich groß</b> sind — also bei <b>gleichem Nenner</b>. Dann zählst du die Stücke (die Zähler), die <b>Stückgröße (Nenner) bleibt</b>.<br><br>1/4 + 1/4 = <b>2/4</b>: zwei Viertel-Stücke.<br><br>⚠️ Fast alle tappen hier rein: <b>1/2 + 1/2 ist NICHT 2/4!</b> Zwei Hälften sind <b>2/2 = 1 Ganzes</b>. Den Nenner addierst du <b>nie</b>.",
-                },
-                {
-                  id: "bv-09",
-                  type: "choice",
-                  prompt: "Vorsicht, Falle: 1/2 + 1/2 = ?",
-                  options: [
-                    "1 (ein Ganzes)",
-                    "2/4",
-                    "1/4",
-                    "2/2 — und das ist 1/2",
-                  ],
-                  correctIndex: 0,
-                  explanation:
-                    "Gleiche Stücke zählen: 1 Halbes + 1 Halbes = 2 Halbe = 2/2 = 1. Der Nenner bleibt 2, er wird nicht addiert.",
-                },
-                {
-                  id: "bv-10",
                   type: "choice",
                   prompt: "Liegt 5/4 auf dem Zahlenstrahl vor oder hinter der 1?",
                   options: [
@@ -5526,10 +5549,13 @@
                     "4/4 ist genau 1. 5/4 ist ein Viertel mehr → es liegt hinter der 1 (5/4 = 1 1/4).",
                 },
                 {
-                  id: "bv-11",
+                  id: "bv-09",
                   type: "info",
                   title: "Drei Sätze, die alles tragen",
-                  text: "<b>Bruchstrich = geteilt durch.</b> (3/4 = 3 : 4)<br><b>Erweitern & Kürzen = mal/geteilt durch 1.</b> (Wert bleibt, Aussehen ändert sich)<br><b>Addieren = gleiche Stücke zählen.</b> (Nenner gleich machen, nie addieren)<br><br>Wenn du diese drei verstehst, verstehst du Brüche.",
+                  text: "Satz 1: <b>Bruchstrich = geteilt durch.</b> (3/4 = 3 : 4)<br><br>Kennst du die anderen zwei noch?",
+                  reveal:
+                    "<b>Erweitern & Kürzen = mal/geteilt durch 1</b> — der Wert bleibt.<br><b>Addieren = gleiche Stücke zählen</b> — den Nenner nie addieren.",
+                  revealLabel: "👀 Die anderen zwei",
                 },
               ],
             },
@@ -5543,9 +5569,12 @@
               exercises: [
                 {
                   id: "bp-01",
-                  type: "info",
-                  title: "„von“ heißt mal — und macht kleiner",
-                  text: "<b>„von“ bedeutet mal.</b> „Die Hälfte <b>von</b> einer Hälfte“ heißt 1/2 · 1/2.<br><br>So multiplizierst du Brüche: <b>Zähler · Zähler</b> und <b>Nenner · Nenner</b>. 1/2 · 1/2 = <b>1/4</b>.<br><br>Plot-Twist: Mal-nehmen macht hier <b>kleiner</b>! Logisch — die Hälfte von einer Hälfte ist eben nur ein Viertel. Bei Brüchen unter 1 schrumpft das Ergebnis.",
+                  type: "choice",
+                  prompt: "Was ist „die Hälfte von einer Hälfte“? (also 1/2 · 1/2)",
+                  options: ["1/4", "1", "2/4", "1/2"],
+                  correctIndex: 0,
+                  explanation:
+                    "„von“ heißt mal: Zähler · Zähler, Nenner · Nenner → 1/2 · 1/2 = 1/4. Plot-Twist: Mal-nehmen macht hier KLEINER — die Hälfte von einer Hälfte ist nur ein Viertel.",
                 },
                 {
                   id: "bp-02",
@@ -5567,8 +5596,11 @@
                 {
                   id: "bp-04",
                   type: "info",
-                  title: "💡 Teilen durch einen Bruch: mit dem Kehrwert mal",
-                  text: "Frag dich: <b>Wie oft passt 1/2 in 3 Ganze?</b> → 6-mal. Also ist 3 : 1/2 = <b>6</b>.<br><br>Der Trick: durch einen Bruch teilen = mit seinem <b>Kehrwert</b> malnehmen (Kehrwert = umgedreht, oben und unten getauscht).<br><br>3 : 1/2 = 3 · 2/1 = 6. <b>Warum?</b> Teilen fragt „wie oft passt es rein“ — und das Umdrehen zählt genau das.",
+                  title: "💡 Teilen durch einen Bruch",
+                  text: "Teilen fragt: „wie oft passt es rein?“ Also — wie oft passt 1/4 in 1 ganze Pizza?",
+                  reveal:
+                    "4-mal! Trick: durch einen Bruch teilen = mit seinem <b>Kehrwert</b> (umgedreht) malnehmen. 1 : 1/4 = 1 · 4 = 4.",
+                  revealLabel: "👀 Antwort & Trick",
                 },
                 {
                   id: "bp-05",
@@ -5592,7 +5624,10 @@
                   id: "bp-07",
                   type: "info",
                   title: "💡 Lifehack: erst zur 1/2 schätzen",
-                  text: "Bevor du rechnest, <b>fühl die Größe</b>: Liegt der Bruch nahe bei <b>0</b>, bei <b>1/2</b> oder bei <b>1</b>?<br><br>• Nahe 1/2, wenn der Zähler etwa <b>halb so groß</b> wie der Nenner ist (z. B. 5/9).<br>• Nahe 1, wenn Zähler ≈ Nenner (8/9).<br>• Nahe 0, wenn der Zähler winzig ist (1/9).<br><br>So merkst du sofort, wenn ein Ergebnis <b>unmöglich</b> ist.",
+                  text: "Profi-Move: <b>erst schätzen</b>. Liegt der Bruch nahe bei 0, bei 1/2 oder bei 1? Wann ist er wohl ungefähr 1/2?",
+                  reveal:
+                    "≈ 1/2, wenn der Zähler etwa <b>halb so groß</b> wie der Nenner ist (z. B. 5/9). Nahe 1: Zähler ≈ Nenner (8/9). Nahe 0: winziger Zähler (1/9).",
+                  revealLabel: "👀 Die Faustregel",
                 },
                 {
                   id: "bp-08",
@@ -5607,7 +5642,10 @@
                   id: "bp-09",
                   type: "info",
                   title: "💡 Profi-Trick: über Kreuz vergleichen",
-                  text: "Welcher Bruch ist größer, ganz ohne gleichnamig zu machen? <b>Über Kreuz multiplizieren.</b><br><br>2/3 und 3/5: rechne 2 · 5 = 10 und 3 · 3 = 9. Das <b>größere Produkt</b> gehört zum größeren Bruch → 10 > 9, also <b>2/3 > 3/5</b>.<br><br>Warum es klappt: Es ist dasselbe wie gleichnamig machen — nur blitzschnell.",
+                  text: "Welcher Bruch ist größer — ohne gleichnamig zu machen? Es gibt einen Blitz-Trick: <b>über Kreuz multiplizieren</b>.",
+                  reveal:
+                    "2/3 und 3/5: 2 · 5 = 10 und 3 · 3 = 9. Das größere Produkt gehört zum größeren Bruch → 10 > 9, also 2/3 > 3/5. (Dasselbe wie gleichnamig machen, nur schneller.)",
+                  revealLabel: "👀 So geht's",
                 },
                 {
                   id: "bp-10",
@@ -5622,7 +5660,10 @@
                   id: "bp-11",
                   type: "info",
                   title: "Bruch = Dezimalzahl = Prozent",
-                  text: "Ein und dieselbe Zahl in drei Verkleidungen:<br><br><b>1/2 = 0,5 = 50 %</b><br><b>1/4 = 0,25 = 25 %</b><br><b>3/4 = 0,75 = 75 %</b><br><br>Vom Bruch zur Dezimalzahl: Zähler : Nenner. Von der Dezimalzahl zu Prozent: <b>· 100</b>.<br><br>Profi-Move: Nimm immer die Verkleidung, mit der sich am leichtesten rechnen lässt.",
+                  text: "Eine Zahl, drei Verkleidungen: Bruch, Dezimalzahl, Prozent. Was ist 1/2 als Dezimalzahl und als Prozent?",
+                  reveal:
+                    "<b>1/2 = 0,5 = 50 %</b> · <b>1/4 = 0,25 = 25 %</b> · <b>3/4 = 0,75 = 75 %</b>.<br>Bruch → Dezimal: Zähler : Nenner. Dezimal → Prozent: · 100.",
+                  revealLabel: "👀 Alle drei",
                 },
                 {
                   id: "bp-12",
@@ -5654,13 +5695,24 @@
                   id: "cp-01",
                   type: "info",
                   title: "Prozent heißt „von hundert“",
-                  text: "<b>Prozent</b> kommt aus dem Italienischen: „per cento“ = <b>von hundert</b>. Das Zeichen ist <b>%</b>.<br><br><b>1 % = 1/100 = 0,01</b> — ein Stück von 100 gleichen Stücken.<br><br>Denk an ein Feld aus 100 Kästchen: 1 Kästchen = 1 %, alle 100 zusammen = das Ganze (100 %).",
+                  text: "<b>Prozent</b> kommt von italienisch „per cento“ = <b>von hundert</b> (Zeichen %). Was ist dann wohl 1 %?",
+                  reveal:
+                    "<b>1 % = 1/100 = 0,01</b> — 1 Stück von 100. In einem Feld aus 100 Kästchen ist 1 Kästchen = 1 %, alle 100 zusammen = das Ganze.",
+                  revealLabel: "👀 Was ist 1 %?",
                 },
                 {
                   id: "cp-02",
-                  type: "info",
-                  title: "Vom Bruch zur Prozentzahl",
-                  text: "Ein <b>Hundertstelbruch</b> ist direkt eine Prozentzahl: 25/100 = <b>25 %</b>.<br><br>Der Trick: <b>erweitere den Bruch auf den Nenner 100</b> — dann ist der Zähler die Prozentzahl.<br><br>1/4 = 25/100 = <b>25 %</b>. &nbsp; 1/2 = 50/100 = <b>50 %</b>.",
+                  type: "choice",
+                  prompt: "Wie machst du aus 1/4 eine Prozentzahl?",
+                  options: [
+                    "Auf Nenner 100 erweitern: 25/100 = 25 %",
+                    "Zähler mal 4",
+                    "Nenner minus Zähler",
+                    "Das geht nicht",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Erweitere auf den Nenner 100 — dann ist der Zähler die Prozentzahl. 1/4 = 25/100 = 25 %.",
                 },
                 {
                   id: "cp-03",
@@ -5675,7 +5727,10 @@
                   type: "info",
                   title: "💡 Das Hunderterfeld",
                   figure: "frac:grid:37,100",
-                  text: "Ein <b>Hunderterfeld</b> hat 100 Kästchen — wie ein 10×10-Raster. Färbst du welche, liest du den Anteil direkt als Prozent ab.<br><br>Hier sind <b>37 von 100</b> gefärbt → <b>37 % = 37/100 = 0,37</b>.",
+                  text: "Ein <b>Hunderterfeld</b> hat 100 Kästchen (10×10). Hier sind 37 gefärbt. Wie viel Prozent ist das?",
+                  reveal:
+                    "<b>37 % = 37/100 = 0,37.</b> Im Hunderterfeld liest du Prozent direkt ab: gefärbte Kästchen = Prozent.",
+                  revealLabel: "👀 Antwort",
                 },
                 {
                   id: "cp-05",
@@ -5715,7 +5770,10 @@
                   id: "cp-09",
                   type: "info",
                   title: "Prozent im echten Leben",
-                  text: "Auf Saftpackungen steht der <b>Fruchtanteil</b> in Prozent:<br><br>• <b>Fruchtsaft</b>: 100 % — ganz aus Frucht.<br>• <b>Fruchtnektar</b>: ca. 50 % — etwa die Hälfte.<br>• <b>Fruchtsaftgetränk</b>: nur ca. 15 %.<br><br>Prozent verrät dir blitzschnell, <b>wie viel von einem Ganzen</b> drinsteckt.",
+                  text: "Auf Saftpackungen steht der <b>Fruchtanteil</b> in Prozent. Was glaubst du — wie viel Frucht ist in Fruchtsaft, Nektar und Fruchtsaftgetränk?",
+                  reveal:
+                    "<b>Fruchtsaft 100 %</b> (ganz Frucht) · <b>Nektar ca. 50 %</b> (halb) · <b>Fruchtsaftgetränk ca. 15 %</b>. Prozent zeigt sofort, wie viel vom Ganzen drinsteckt.",
+                  revealLabel: "👀 Die Etiketten",
                 },
                 {
                   id: "cp-10",
@@ -5738,7 +5796,10 @@
                   id: "cp-12",
                   type: "info",
                   title: "💡 Bruch = Dezimalzahl = Prozent",
-                  text: "Dieselbe Zahl, dritte Verkleidung:<br><br><b>1/4 = 0,25 = 25 %</b><br><b>3/4 = 0,75 = 75 %</b><br><b>1/10 = 0,1 = 10 %</b><br><br>Von Dezimal zu Prozent: <b>· 100</b> (Komma 2 Stellen nach rechts). Zurück: <b>: 100</b>.",
+                  text: "Dieselbe Zahl, dritte Verkleidung. Was sind 1/4, 3/4 und 1/10 als Dezimalzahl und als Prozent?",
+                  reveal:
+                    "<b>1/4 = 0,25 = 25 %</b> · <b>3/4 = 0,75 = 75 %</b> · <b>1/10 = 0,1 = 10 %</b>.<br>Dezimal → Prozent: · 100. Zurück: : 100.",
+                  revealLabel: "👀 Aufdecken",
                 },
                 {
                   id: "cp-13",
@@ -5760,9 +5821,18 @@
               exercises: [
                 {
                   id: "ca-01",
-                  type: "info",
-                  title: "Anteil = Teil von einer Gruppe",
-                  text: "Ein <b>Anteil</b> sagt, welcher Bruchteil einer ganzen Gruppe etwas ist.<br><br>In der Klasse sind <b>20 Kinder</b>, <b>5</b> tragen eine Brille → Anteil = <b>5/20 = 1/4</b>.<br><br>Rezept: <b>Teil : Ganzes</b> — und danach kürzen.",
+                  type: "choice",
+                  prompt:
+                    "Wie findest du den Anteil einer Gruppe — z. B. die Brillenträger in der Klasse?",
+                  options: [
+                    "Teil : Ganzes, dann kürzen",
+                    "Ganzes : Teil",
+                    "Teil + Ganzes",
+                    "Teil · Ganzes",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Anteil = Teil : Ganzes, danach kürzen. 5 Brillen von 20 Kindern = 5/20 = 1/4.",
                 },
                 {
                   id: "ca-02",
@@ -5794,7 +5864,10 @@
                   id: "ca-05",
                   type: "info",
                   title: "Ergänzen zum Ganzen: der Rest zu 1",
-                  text: "Das Ganze ist immer <b>1</b> (oder 100 %). Kennst du einen Teil, ist der <b>Rest = Ganzes − Teil</b>.<br><br>Sind 3/8 der Pizza gegessen, bleibt 8/8 − 3/8 = <b>5/8</b> übrig.<br><br>Bei Prozent genauso: 100 % − 30 % = <b>70 %</b>.",
+                  text: "Das Ganze ist immer <b>1</b> (oder 100 %). Wenn 3/8 der Pizza gegessen sind — wie viel bleibt übrig?",
+                  reveal:
+                    "Rest = Ganzes − Teil: 8/8 − 3/8 = <b>5/8</b>. Bei Prozent genauso: 100 % − 30 % = 70 %.",
+                  revealLabel: "👀 Wie viel bleibt?",
                 },
                 {
                   id: "ca-06",
@@ -5824,8 +5897,11 @@
                 {
                   id: "ca-09",
                   type: "info",
-                  title: "💡 Fehler finden: sind die Teile gleich groß?",
-                  text: "Ein Bild zeigt einen Bruch nur dann richtig, wenn <b>alle Teile gleich groß</b> sind.<br><br>Häufiger Fehler: Eine Figur wird in <b>ungleiche</b> Stücke geteilt und trotzdem „1/4“ genannt. Das stimmt nicht — 1/4 heißt <b>vier gleich große</b> Teile.<br><br>Prüfe zuerst immer: Sind die Teile gleich groß?",
+                  title: "💡 Fehler finden im Bild",
+                  text: "Ein Bild zeigt einen Bruch nur dann richtig, wenn … — was ist die Bedingung?",
+                  reveal:
+                    "… <b>alle Teile gleich groß</b> sind! Häufiger Fehler: ungleiche Stücke trotzdem „1/4“ nennen. 1/4 heißt vier <b>gleich große</b> Teile. Immer zuerst prüfen: gleich groß?",
+                  revealLabel: "👀 Die Bedingung",
                 },
                 {
                   id: "ca-10",
@@ -5856,7 +5932,10 @@
                   id: "ca-12",
                   type: "info",
                   title: "Anteil-Rezept zum Mitnehmen",
-                  text: "<b>Anteil = Teil : Ganzes</b>, dann kürzen.<br><b>Rest zum Ganzen = 1 − Teil</b> (oder 100 % − Teil).<br><b>Bild prüfen:</b> nur gleich große Teile sind ein echter Bruch.<br><br>Damit knackst du fast jede Bruch-Textaufgabe.",
+                  text: "Rezept Teil 1: <b>Anteil = Teil : Ganzes</b> (dann kürzen). Kennst du die anderen zwei?",
+                  reveal:
+                    "<b>Rest zum Ganzen = 1 − Teil</b> (oder 100 % − Teil).<br><b>Bild prüfen:</b> nur gleich große Teile sind ein echter Bruch.",
+                  revealLabel: "👀 Die anderen zwei",
                 },
               ],
             },
@@ -10470,6 +10549,24 @@
         const figureHtml = ex.figure
           ? `<div class="ex-figure">${renderFigure(ex.figure)}</div>`
           : "";
+        // reveal-gate: the key idea is hidden until the child taps, and only then
+        // does "Weiter" appear — so info can't be skipped blindly.
+        if (ex.reveal) {
+          card.insertAdjacentHTML(
+            "beforeend",
+            `
+    ${titleHtml}
+    ${figureHtml}
+    <div class="ex-info-text">${ex.text || ""}</div>
+    <div class="ex-info-reveal" id="exInfoReveal" style="display:none">${ex.reveal}</div>
+    <div class="row-actions" style="margin-top:18px">
+      <button class="btn primary" id="exRevealBtn" onclick="exRevealInfo()">${escapeHtml(ex.revealLabel || "👀 Aufdecken")}</button>
+      <button class="btn primary" id="exInfoNext" onclick="exAcknowledgeInfo()" style="display:none">Verstanden — weiter</button>
+    </div>
+  `,
+          );
+          return;
+        }
         card.insertAdjacentHTML(
           "beforeend",
           `
@@ -10481,6 +10578,15 @@
     </div>
   `,
         );
+      }
+
+      function exRevealInfo() {
+        const r = document.getElementById("exInfoReveal");
+        if (r) r.style.display = "";
+        const rb = document.getElementById("exRevealBtn");
+        if (rb) rb.style.display = "none";
+        const nx = document.getElementById("exInfoNext");
+        if (nx) nx.style.display = "";
       }
 
       function renderExerciseNumeric(card, ex) {
