@@ -634,6 +634,10 @@
         background: #302a14;
         color: #e0b040;
       }
+      .mode.m-testprep .icon {
+        background: #15302a;
+        color: #45c89a;
+      }
       .mode .ttl {
         font-size: 1.0625rem;
         font-weight: 600;
@@ -1108,6 +1112,12 @@
       .stage-pill.mastered {
         color: var(--stage-mastered);
         background: color-mix(in srgb, var(--stage-mastered), black 80%);
+      }
+      /* Test Prep: the live "this word" counter — accent-tinted so it
+         reads as the active tally, distinct from the grey overall pill. */
+      .stage-pill.drill-word {
+        color: var(--accent);
+        background: var(--accent-soft);
       }
 
       /* TOPIC SUMMARY (theme card) */
@@ -3887,6 +3897,13 @@
               <div class="desc">Tricky words and your own mistakes.</div>
             </div>
           </div>
+          <div class="mode m-testprep" onclick="openDrill()">
+            <div>
+              <div class="icon">📝</div>
+              <div class="ttl">Test Prep</div>
+              <div class="desc">Write each tricky word 5× before the test.</div>
+            </div>
+          </div>
           <div class="mode m-better locked">
             <div>
               <div class="icon">✎</div>
@@ -4048,6 +4065,44 @@
             Skip
           </button>
           <button class="btn primary" id="spCheckBtn" onclick="checkSpelling()">
+            Check
+          </button>
+        </div>
+      </section>
+
+      <!-- TEST PREP — SPELLING 5× DRILL -->
+      <section class="screen" id="drillScreen">
+        <div class="mode-head">
+          <button class="back-btn" onclick="showScreen('englishWorldScreen')">←</button>
+          <h2>Test Prep</h2>
+        </div>
+        <p class="sub" style="max-width: 34rem">
+          Write each word 5× from memory. Get it wrong? You'll copy the right
+          spelling and see the word again later.
+        </p>
+        <div class="progress-bar">
+          <div id="drillProgress" style="width: 0"></div>
+        </div>
+
+        <div class="sp-card" id="drCard">
+          <div class="confetti-container" id="drConfetti"></div>
+          <div class="streak-counter" id="drStreak"></div>
+          <div class="tp-status-row">
+            <span class="stage-pill" id="drCountPill">0 / 26 done</span>
+            <span class="stage-pill drill-word" id="drWordPill">this word 0 / 5</span>
+          </div>
+          <div class="sp-label" id="drLabel">How to write in English</div>
+          <div class="sp-de" id="drDe">—</div>
+          <div class="wd-container" id="drDotsContainer"></div>
+          <div class="sp-feedback" id="drFeedback"></div>
+          <div class="sp-ex" id="drEx"></div>
+        </div>
+
+        <div class="row-actions">
+          <button class="btn ghost" id="drSkipBtn" onclick="skipDrill()">
+            Skip
+          </button>
+          <button class="btn primary" id="drCheckBtn" onclick="checkDrill()">
             Check
           </button>
         </div>
@@ -6093,6 +6148,8 @@
         spellingQueue: [],
         spellingIndex: 0,
         spellingChecked: false,
+        drill: null, // Test Prep 5× drill session (see openDrill)
+        dotsDR: null,
         sessionAnswered: 0,
         sessionLimit: 20,
         answerStreak: 0,
@@ -7049,6 +7106,7 @@
         state.profile = id;
         _progressCache = null;
         _subjectsCache = null;
+        state.drill = null; // don't carry a drill session between kids
         document.body.dataset.profile = id;
         // Detect ash state BEFORE updateStreak resets lastVisit
         const pre = progress();
@@ -8206,6 +8264,278 @@
         if (state.spellingChecked) nextSpelling();
         else if (state.dotsSP && state.dotsSP.getValue().trim())
           checkSpelling();
+      });
+
+      /* ============================================================
+   TEST PREP — Spelling 5× drill
+   Reuses the Spelling Trainer flow (German prompt → type English),
+   but scoped to the "schwierige Wörter" of Theme 5 (book p.164–169).
+   Each word must be typed correctly 5× from memory. A wrong try is
+   NOT punished and does NOT count: the child sees the correct
+   spelling, copies it once, and the word returns later in the queue.
+   ============================================================ */
+      const DRILL_TESTPREP_KEYS = [
+        "date", "last", "to finish", "to look for", "sure", "cheap",
+        "like", "expensive", "thanks a lot", "message", "garland",
+        "clothes", "for example", "shoe", "to make a wish", "rice",
+        "until", "the next day", "recipe", "cherry", "pineapple",
+        "lemon", "sugar", "to mix", "to cut", "straw",
+      ];
+      const DRILL_TARGET = 5;
+
+      function drillWordList() {
+        const theme = THEMES_BY_ID["theme05"];
+        if (!theme) return [];
+        const byEn = Object.fromEntries(theme.words.map((w) => [w.en, w]));
+        return DRILL_TESTPREP_KEYS
+          .map((en) => byEn[en])
+          .filter(Boolean)
+          .map((w) => ({ ...w, themeId: "theme05" }));
+      }
+
+      function openDrill() {
+        // Resume an unfinished drill, otherwise start a fresh pass.
+        if (!state.drill || state.drill.queue.length === 0) {
+          const words = drillWordList();
+          const counts = {};
+          words.forEach((w) => (counts[w.en] = 0));
+          state.drill = {
+            words,
+            counts,
+            total: words.length,
+            queue: shuffle(words.map((w) => w.en)),
+            current: null,
+            phase: "recall", // 'recall' | 'rewrite'
+            checked: false,
+            bonusGiven: false,
+          };
+        }
+        state.answerStreak = 0;
+        state.bestStreak = 0;
+        document.getElementById("drSkipBtn").style.display = "";
+        document.getElementById("drWordPill").style.display = "";
+        showScreen("drillScreen");
+        advanceDrill();
+        setTimeout(() => { if (state.dotsDR) state.dotsDR.focus(); }, 250);
+      }
+
+      function ensureDrillDots() {
+        if (state.dotsDR) return;
+        state.dotsDR = createWordDots("drDotsContainer", {
+          onChange: (val) => {
+            if (state.drill && !state.drill.checked) {
+              document.getElementById("drCheckBtn").disabled = !val.trim();
+            }
+          },
+        });
+      }
+
+      function drillDoneCount() {
+        const d = state.drill;
+        return d.words.filter((w) => d.counts[w.en] >= DRILL_TARGET).length;
+      }
+
+      function currentDrillWord() {
+        const d = state.drill;
+        return d.words.find((w) => w.en === d.current);
+      }
+
+      function drillRepsDone() {
+        const d = state.drill;
+        return d.words.reduce(
+          (sum, w) => sum + Math.min(d.counts[w.en], DRILL_TARGET), 0);
+      }
+
+      function updateDrillProgress() {
+        const d = state.drill;
+        const pct = (drillRepsDone() / (d.total * DRILL_TARGET)) * 100;
+        document.getElementById("drillProgress").style.width = pct + "%";
+      }
+
+      function advanceDrill() {
+        const d = state.drill;
+        d.current = d.queue.shift() || null;
+        if (!d.current) { renderDrillDone(); return; }
+        d.phase = "recall";
+        d.checked = false;
+        renderDrill();
+      }
+
+      function renderDrill() {
+        const d = state.drill;
+        const w = currentDrillWord();
+        if (!w) { renderDrillDone(); return; }
+        ensureDrillDots();
+
+        document.getElementById("drDotsContainer").style.display = "";
+        document.getElementById("drWordPill").style.display = "";
+        document.getElementById("drSkipBtn").style.display = "";
+
+        document.getElementById("drCountPill").textContent =
+          drillDoneCount() + " / " + d.total + " done";
+        const wordPill = document.getElementById("drWordPill");
+        wordPill.className = "stage-pill drill-word";
+        wordPill.textContent = "this word " + d.counts[w.en] + " / " + DRILL_TARGET;
+
+        document.getElementById("drCard").classList.toggle("tricky-flag", !!w.tricky);
+        document.getElementById("drLabel").textContent = "How to write in English";
+        document.getElementById("drDe").textContent = w.de;
+        document.getElementById("drFeedback").textContent = "";
+        document.getElementById("drFeedback").className = "sp-feedback";
+        document.getElementById("drEx").textContent = "";
+
+        state.dotsDR.reset(w.en);
+        const btn = document.getElementById("drCheckBtn");
+        btn.textContent = "Check";
+        btn.onclick = checkDrill;
+        btn.disabled = true;
+        d.checked = false;
+
+        updateDrillProgress();
+        state.dotsDR.focus();
+      }
+
+      function enterDrillRewrite(w) {
+        // Show the correct spelling and let the child copy it (no credit).
+        const d = state.drill;
+        d.phase = "rewrite";
+        d.checked = false;
+        d.revealing = false;
+        state.dotsDR.reset(w.en);
+        document.getElementById("drLabel").textContent = "Copy it correctly";
+        document.getElementById("drFeedback").className = "sp-feedback";
+        document.getElementById("drFeedback").innerHTML =
+          'Copy: <span class="correct">' + escapeHtml(w.en) + "</span>";
+        document.getElementById("drCheckBtn").disabled = true;
+        state.dotsDR.focus();
+      }
+
+      function finishDrillStep() {
+        const d = state.drill;
+        state.dotsDR.disable();
+        d.checked = true;
+        const btn = document.getElementById("drCheckBtn");
+        btn.textContent = d.queue.length ? "Next" : "Finish";
+        btn.onclick = advanceDrill;
+        btn.disabled = false;
+        updateDrillProgress();
+        refreshHomeStats();
+      }
+
+      function checkDrill() {
+        const d = state.drill;
+        if (!d || d.revealing) return;
+        if (d.checked) { advanceDrill(); return; }
+        const w = currentDrillWord();
+        if (!w || !state.dotsDR.getValue().trim()) return;
+        const guess = normaliseAnswer(state.dotsDR.getValue());
+        const truth = normaliseAnswer(w.en);
+        const fb = document.getElementById("drFeedback");
+
+        if (d.phase === "rewrite") {
+          if (fuzzyMatch(guess, truth)) {
+            state.dotsDR.setRight();
+            fb.className = "sp-feedback right";
+            fb.innerHTML = "✓ Good — you'll see it again.";
+            if (!d.queue.includes(w.en)) d.queue.push(w.en); // back in, no credit
+            finishDrillStep();
+          } else {
+            state.dotsDR.setWrong();
+            fb.className = "sp-feedback wrong";
+            fb.innerHTML =
+              'Not quite — copy it exactly: <span class="correct">' +
+              escapeHtml(w.en) + "</span>";
+            setTimeout(() => {
+              state.dotsDR.reset(w.en);
+              document.getElementById("drCheckBtn").disabled = true;
+              state.dotsDR.focus();
+            }, 700);
+          }
+          return;
+        }
+
+        // recall phase
+        if (guess === truth) {
+          state.answerStreak++;
+          state.dotsDR.setRight();
+          fb.className = "sp-feedback right";
+          d.counts[w.en] = Math.min(d.counts[w.en] + 1, DRILL_TARGET);
+          bumpCorrect(w.en, w.themeId);
+          updateStreakDisplay("drStreak");
+          showXP("drCard", 10);
+          addXP(10);
+          if (d.counts[w.en] >= DRILL_TARGET) {
+            fb.innerHTML = "🎉 " + escapeHtml(w.en) + " — done 5×!";
+            spawnConfetti("drConfetti", 16, true);
+          } else {
+            fb.innerHTML = "✓ Right! " + d.counts[w.en] + " / " + DRILL_TARGET;
+            spawnConfetti("drConfetti", 8 + state.answerStreak * 2);
+            d.queue.push(w.en); // needs more reps → back of the queue
+          }
+          document.getElementById("drWordPill").textContent =
+            "this word " + d.counts[w.en] + " / " + DRILL_TARGET;
+          document.getElementById("drCountPill").textContent =
+            drillDoneCount() + " / " + d.total + " done";
+          finishDrillStep();
+        } else {
+          // wrong: no penalty — show the spelling and ask to copy it
+          state.dotsDR.setWrong();
+          fb.className = "sp-feedback wrong";
+          fb.innerHTML =
+            'Almost. It’s written <span class="correct">' +
+            escapeHtml(w.en) + "</span> — now copy it.";
+          showStreakLost("drStreak");
+          state.dotsDR.disable();
+          d.revealing = true;
+          document.getElementById("drCheckBtn").disabled = true;
+          setTimeout(() => enterDrillRewrite(w), 900);
+        }
+      }
+
+      function skipDrill() {
+        const d = state.drill;
+        if (!d || !d.current) return;
+        if (!d.checked && d.counts[d.current] < DRILL_TARGET) {
+          if (!d.queue.includes(d.current)) d.queue.push(d.current);
+        }
+        advanceDrill();
+      }
+
+      function renderDrillDone() {
+        const d = state.drill;
+        document.getElementById("drLabel").textContent = "Test Prep complete";
+        document.getElementById("drDe").textContent = "All done! 🎉";
+        document.getElementById("drDotsContainer").style.display = "none";
+        document.getElementById("drWordPill").style.display = "none";
+        document.getElementById("drSkipBtn").style.display = "none";
+        document.getElementById("drFeedback").className = "sp-feedback right";
+        document.getElementById("drFeedback").innerHTML =
+          "You wrote every word 5× — you're ready for the test. 🔥";
+        document.getElementById("drEx").textContent = "";
+        document.getElementById("drCountPill").textContent =
+          d.total + " / " + d.total + " done";
+        document.getElementById("drillProgress").style.width = "100%";
+        const btn = document.getElementById("drCheckBtn");
+        btn.textContent = "Home";
+        btn.disabled = false;
+        btn.onclick = () => { state.drill = null; goHome(); };
+        if (!d.bonusGiven) {
+          d.bonusGiven = true;
+          showXP("drCard", 50, "gold");
+          addXP(50);
+          spawnConfetti("drConfetti", 24, true);
+          const evolved = checkPhoenixEvolution(progress());
+          if (evolved) showPhoenixEvolution(evolved);
+        }
+      }
+
+      /* Test Prep Enter key */
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter") return;
+        if (!document.getElementById("drillScreen").classList.contains("active")) return;
+        e.preventDefault();
+        if (state.drill && state.drill.checked) advanceDrill();
+        else if (state.dotsDR && state.dotsDR.getValue().trim()) checkDrill();
       });
 
       /* Quest Enter key */

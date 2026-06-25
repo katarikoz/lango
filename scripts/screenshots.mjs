@@ -38,6 +38,8 @@ const SCREENS = [
   { name: "11-atom-sodium", go: () => { window.pickProfile("max"); window.openAtomExplorer(); window.atomSelect("Na"); } },
   { name: "12-workshop", go: () => { window.pickProfile("alex"); window.openWorkshop(); window.inventPick("beam"); window.inventPick("block"); } },
   { name: "13-workshop-result", go: () => { window.pickProfile("alex"); window.openWorkshop(); window.inventPick("beam"); window.inventPick("block"); window.inventBuild(); window.inventRevealSecret(); } },
+  { name: "14-testprep", go: () => { window.pickProfile("max"); window.openDrill(); } },
+  { name: "15-testprep-copy", go: () => { window.pickProfile("max"); window.openDrill(); window.enterDrillRewrite(window.currentDrillWord()); } },
 ];
 
 async function serverUp() {
