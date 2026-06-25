@@ -42,6 +42,8 @@ const SCREENS = [
   { name: "15-testprep-copy", go: () => { window.pickProfile("max"); window.openDrill(); window.enterDrillRewrite(window.currentDrillWord()); } },
   { name: "16-brueche-verstehen", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-verstehen"); } },
   { name: "17-brueche-profi", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-profi"); } },
+  { name: "18-brueche-prozent", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-prozent"); window.advanceSubject(); window.advanceSubject(); window.advanceSubject(); } },
+  { name: "19-brueche-anteile", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-anteile"); } },
 ];
 
 async function serverUp() {

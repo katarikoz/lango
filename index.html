@@ -5642,6 +5642,224 @@
                 },
               ],
             },
+            {
+              id: "math-brueche-prozent",
+              title: "Brüche & Prozent",
+              short: "Brüche & Prozent",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "cp-01",
+                  type: "info",
+                  title: "Prozent heißt „von hundert“",
+                  text: "<b>Prozent</b> kommt aus dem Italienischen: „per cento“ = <b>von hundert</b>. Das Zeichen ist <b>%</b>.<br><br><b>1 % = 1/100 = 0,01</b> — ein Stück von 100 gleichen Stücken.<br><br>Denk an ein Feld aus 100 Kästchen: 1 Kästchen = 1 %, alle 100 zusammen = das Ganze (100 %).",
+                },
+                {
+                  id: "cp-02",
+                  type: "info",
+                  title: "Vom Bruch zur Prozentzahl",
+                  text: "Ein <b>Hundertstelbruch</b> ist direkt eine Prozentzahl: 25/100 = <b>25 %</b>.<br><br>Der Trick: <b>erweitere den Bruch auf den Nenner 100</b> — dann ist der Zähler die Prozentzahl.<br><br>1/4 = 25/100 = <b>25 %</b>. &nbsp; 1/2 = 50/100 = <b>50 %</b>.",
+                },
+                {
+                  id: "cp-03",
+                  type: "choice",
+                  prompt: "Wie viel Prozent sind 1/100?",
+                  options: ["1 %", "10 %", "100 %", "0,1 %"],
+                  correctIndex: 0,
+                  explanation: "1/100 ist genau 1 von 100 → 1 %.",
+                },
+                {
+                  id: "cp-04",
+                  type: "info",
+                  title: "💡 Das Hunderterfeld",
+                  figure: "frac:grid:37,100",
+                  text: "Ein <b>Hunderterfeld</b> hat 100 Kästchen — wie ein 10×10-Raster. Färbst du welche, liest du den Anteil direkt als Prozent ab.<br><br>Hier sind <b>37 von 100</b> gefärbt → <b>37 % = 37/100 = 0,37</b>.",
+                },
+                {
+                  id: "cp-05",
+                  type: "numeric",
+                  figure: "frac:grid:40,100",
+                  prompt:
+                    "Im Hunderterfeld sind 40 von 100 Kästchen gefärbt. Wie viel Prozent ist das? (nur die Zahl)",
+                  answer: 40,
+                  unit: "%",
+                  explanation: "40 von 100 = 40/100 = 40 %.",
+                },
+                {
+                  id: "cp-06",
+                  type: "choice",
+                  prompt: "1/2 als Prozent?",
+                  options: ["50 %", "2 %", "12 %", "20 %"],
+                  correctIndex: 0,
+                  explanation: "1/2 = 50/100 = 50 %. Die Hälfte des Ganzen.",
+                },
+                {
+                  id: "cp-07",
+                  type: "choice",
+                  prompt: "1/5 als Prozent?",
+                  options: ["20 %", "5 %", "15 %", "50 %"],
+                  correctIndex: 0,
+                  explanation: "Erweitere auf 100: 1/5 = 20/100 (mal 20) = 20 %.",
+                },
+                {
+                  id: "cp-08",
+                  type: "numeric",
+                  prompt: "Schreibe 7/10 als Prozent. (nur die Zahl)",
+                  answer: 70,
+                  unit: "%",
+                  explanation: "7/10 = 70/100 (mal 10) = 70 %.",
+                },
+                {
+                  id: "cp-09",
+                  type: "info",
+                  title: "Prozent im echten Leben",
+                  text: "Auf Saftpackungen steht der <b>Fruchtanteil</b> in Prozent:<br><br>• <b>Fruchtsaft</b>: 100 % — ganz aus Frucht.<br>• <b>Fruchtnektar</b>: ca. 50 % — etwa die Hälfte.<br>• <b>Fruchtsaftgetränk</b>: nur ca. 15 %.<br><br>Prozent verrät dir blitzschnell, <b>wie viel von einem Ganzen</b> drinsteckt.",
+                },
+                {
+                  id: "cp-10",
+                  type: "choice",
+                  prompt: "Ein Nektar hat 50 % Fruchtanteil. Welcher Bruch ist das?",
+                  options: ["1/2", "1/4", "1/5", "1/50"],
+                  correctIndex: 0,
+                  explanation: "50 % = 50/100 = 1/2. Die Hälfte ist Frucht.",
+                },
+                {
+                  id: "cp-11",
+                  type: "choice",
+                  prompt: "Was ist mehr Zucker: 12 % oder 1/4?",
+                  options: ["1/4", "12 %", "gleich viel"],
+                  correctIndex: 0,
+                  explanation:
+                    "1/4 = 25 %. Und 25 % > 12 % → 1/4 ist mehr. Darum macht Prozent das Vergleichen leicht.",
+                },
+                {
+                  id: "cp-12",
+                  type: "info",
+                  title: "💡 Bruch = Dezimalzahl = Prozent",
+                  text: "Dieselbe Zahl, dritte Verkleidung:<br><br><b>1/4 = 0,25 = 25 %</b><br><b>3/4 = 0,75 = 75 %</b><br><b>1/10 = 0,1 = 10 %</b><br><br>Von Dezimal zu Prozent: <b>· 100</b> (Komma 2 Stellen nach rechts). Zurück: <b>: 100</b>.",
+                },
+                {
+                  id: "cp-13",
+                  type: "numeric",
+                  prompt: "Wie viel Prozent sind 0,25? (nur die Zahl)",
+                  answer: 25,
+                  unit: "%",
+                  explanation: "0,25 · 100 = 25 %. (Das ist 1/4.)",
+                },
+              ],
+            },
+            {
+              id: "math-brueche-anteile",
+              title: "Anteile & knifflige Aufgaben",
+              short: "Anteile & Aufgaben",
+              grade: 6,
+              status: "current",
+              ordered: true,
+              exercises: [
+                {
+                  id: "ca-01",
+                  type: "info",
+                  title: "Anteil = Teil von einer Gruppe",
+                  text: "Ein <b>Anteil</b> sagt, welcher Bruchteil einer ganzen Gruppe etwas ist.<br><br>In der Klasse sind <b>20 Kinder</b>, <b>5</b> tragen eine Brille → Anteil = <b>5/20 = 1/4</b>.<br><br>Rezept: <b>Teil : Ganzes</b> — und danach kürzen.",
+                },
+                {
+                  id: "ca-02",
+                  type: "numeric",
+                  prompt:
+                    "In einer Klasse sind 20 Kinder, 5 tragen eine Brille. Welcher Anteil trägt Brille? (gekürzt, z. B. 1/4)",
+                  answer: "1/4",
+                  explanation: "5 von 20 = 5/20. Durch 5 kürzen → 1/4.",
+                },
+                {
+                  id: "ca-03",
+                  type: "choice",
+                  prompt:
+                    "25 Schüler, 5 sind Nichtschwimmer. Welcher Anteil ist Nichtschwimmer?",
+                  options: ["1/5", "1/25", "5/100", "1/4"],
+                  correctIndex: 0,
+                  explanation: "5 von 25 = 5/25 = 1/5 (durch 5 gekürzt).",
+                },
+                {
+                  id: "ca-04",
+                  type: "numeric",
+                  prompt:
+                    "65 von 100 Radfahrern tragen einen Helm. Welcher Anteil ist das in Prozent? (nur die Zahl)",
+                  answer: 65,
+                  unit: "%",
+                  explanation: "65 von 100 = 65/100 = 65 %.",
+                },
+                {
+                  id: "ca-05",
+                  type: "info",
+                  title: "Ergänzen zum Ganzen: der Rest zu 1",
+                  text: "Das Ganze ist immer <b>1</b> (oder 100 %). Kennst du einen Teil, ist der <b>Rest = Ganzes − Teil</b>.<br><br>Sind 3/8 der Pizza gegessen, bleibt 8/8 − 3/8 = <b>5/8</b> übrig.<br><br>Bei Prozent genauso: 100 % − 30 % = <b>70 %</b>.",
+                },
+                {
+                  id: "ca-06",
+                  type: "choice",
+                  prompt: "3/8 sind gefärbt. Welcher Anteil fehlt noch zum Ganzen?",
+                  options: ["5/8", "3/8", "8/8", "5/3"],
+                  correctIndex: 0,
+                  explanation: "Das Ganze ist 8/8. 8/8 − 3/8 = 5/8 fehlen.",
+                },
+                {
+                  id: "ca-07",
+                  type: "numeric",
+                  prompt:
+                    "40 % der Klasse waren krank. Wie viel Prozent waren gesund? (nur die Zahl)",
+                  answer: 60,
+                  unit: "%",
+                  explanation: "Das Ganze ist 100 %. 100 % − 40 % = 60 %.",
+                },
+                {
+                  id: "ca-08",
+                  type: "numeric",
+                  prompt:
+                    "Ein Bruch und sein Rest ergeben zusammen 1 Ganzes. Wie groß ist der Rest von 2/7? Gib den Zähler an (Rest = ?/7).",
+                  answer: 5,
+                  explanation: "7/7 − 2/7 = 5/7. Der Zähler ist 5.",
+                },
+                {
+                  id: "ca-09",
+                  type: "info",
+                  title: "💡 Fehler finden: sind die Teile gleich groß?",
+                  text: "Ein Bild zeigt einen Bruch nur dann richtig, wenn <b>alle Teile gleich groß</b> sind.<br><br>Häufiger Fehler: Eine Figur wird in <b>ungleiche</b> Stücke geteilt und trotzdem „1/4“ genannt. Das stimmt nicht — 1/4 heißt <b>vier gleich große</b> Teile.<br><br>Prüfe zuerst immer: Sind die Teile gleich groß?",
+                },
+                {
+                  id: "ca-10",
+                  type: "choice",
+                  prompt:
+                    "Eine Pizza ist in 4 verschieden große Stücke geschnitten. Warum ist ein Stück NICHT automatisch 1/4?",
+                  options: [
+                    "Weil die Teile nicht gleich groß sind",
+                    "Weil es 4 Stücke sind",
+                    "Weil Pizza rund ist",
+                    "Es ist doch 1/4",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "1/4 bedeutet vier gleich große Teile. Sind die Stücke verschieden groß, ist ein Stück kein echtes Viertel.",
+                },
+                {
+                  id: "ca-11",
+                  type: "choice",
+                  prompt:
+                    "Was ist größer: 1/4 der Klasse 5a (20 Kinder) oder 1/4 der Klasse 5b (24 Kinder)?",
+                  options: ["Beide Anteile sind gleich (1/4)", "5a", "5b"],
+                  correctIndex: 0,
+                  explanation:
+                    "Der Anteil ist beide Male 1/4 — gleich groß. Nur die Anzahl der Kinder ist verschieden (5 und 6). Anteil ist nicht dasselbe wie Anzahl!",
+                },
+                {
+                  id: "ca-12",
+                  type: "info",
+                  title: "Anteil-Rezept zum Mitnehmen",
+                  text: "<b>Anteil = Teil : Ganzes</b>, dann kürzen.<br><b>Rest zum Ganzen = 1 − Teil</b> (oder 100 % − Teil).<br><b>Bild prüfen:</b> nur gleich große Teile sind ein echter Bruch.<br><br>Damit knackst du fast jede Bruch-Textaufgabe.",
+                },
+              ],
+            },
           ],
         },
         {
@@ -10026,7 +10244,33 @@
             (g) => g.length >= 2 && !isNaN(g[0]) && !isNaN(g[1]) && g[1] > 0,
           );
         if (!groups.length) return "";
-        return sub === "pie" ? svgFracPie(groups) : svgFracBar(groups);
+        if (sub === "pie") return svgFracPie(groups);
+        if (sub === "grid") return svgFracGrid(groups);
+        return svgFracBar(groups);
+      }
+
+      /* Hunderterfeld: 10×10-Raster, k von 100 gefärbt. Spec: frac:grid:37,100 */
+      function svgFracGrid(groups) {
+        const g = groups[0];
+        const total = g[1] || 100;
+        const filled = Math.max(0, Math.min(g[0], total));
+        const cols = 10;
+        const rows = Math.ceil(total / cols);
+        const cell = 22,
+          pad = 2,
+          x0 = 3,
+          y0 = 3;
+        const boxW = x0 * 2 + cols * cell;
+        const boxH = y0 * 2 + rows * cell;
+        let out = "";
+        for (let i = 0; i < total; i++) {
+          const r = Math.floor(i / cols);
+          const c = i % cols;
+          const x = x0 + c * cell;
+          const y = y0 + r * cell;
+          out += `<rect x="${x}" y="${y}" width="${cell - pad}" height="${cell - pad}" rx="2" fill="${i < filled ? FRAC_FILL : FRAC_EMPTY}" stroke="${FRAC_DIV}" stroke-width="1"/>`;
+        }
+        return `<svg viewBox="0 0 ${boxW} ${boxH}" xmlns="http://www.w3.org/2000/svg" style="width:230px;max-width:100%">${out}</svg>`;
       }
 
       function svgFracBar(groups) {
