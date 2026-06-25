@@ -6654,6 +6654,7 @@
         profile: null, // 'max' | 'alex'
         schoolTopic: null, // выбранная тема
         schoolStep: 0, // global step counter for spaced repetition
+        schoolRetry: false, // one free retry on a single-letter typo (School Words)
         schoolCurrentWord: null, // { en, de, ex, tricky, themeId }
         cardPhase: "input", // 'input' | 'dontKnow' | 'answered'
         powerIndex: 0,
@@ -6790,6 +6791,7 @@
         s.totalHits = (s.totalHits || 0) + 1;
         s.themeId = themeId || s.themeId;
         s.history = ((s.history || "") + "1").slice(-20);
+        s.lastSeen = new Date().toISOString().slice(0, 10); // calendar date, for day-based review
         if (globalStep != null) {
           const intervals = getIntervals(s.difficulty);
           const idx = Math.min(s.streak - 1, intervals.length - 1);
@@ -6817,6 +6819,7 @@
         s.totalMisses = (s.totalMisses || 0) + 1;
         s.themeId = themeId || s.themeId;
         s.history = ((s.history || "") + "0").slice(-20);
+        s.lastSeen = new Date().toISOString().slice(0, 10); // calendar date, for day-based review
         if (globalStep != null) {
           s.lastShownStep = globalStep;
           s.nextShowStep = globalStep + 5;
@@ -8006,6 +8009,7 @@
         checkBtn.disabled = true;
         document.getElementById("tpDontKnowBtn").disabled = false;
         state.cardPhase = "input";
+        state.schoolRetry = false; // one free retry per word for a single-letter typo
         updateSchoolUI();
         updateMiniPhoenix();
         state.dotsTP.focus();
@@ -8032,6 +8036,24 @@
         const fb = document.getElementById("tpFeedback");
         const ex = document.getElementById("tpEx");
         const card = document.getElementById("tpCard");
+
+        // Growth-mindset: a single-letter typo on a real (single, ≥4-letter) word
+        // earns ONE free retry — "Fast! Schau nochmal", not a red mark. This is daily
+        // recall, not the dictation; Spelling Trainer & Test Prep stay strict on spelling.
+        if (
+          guess !== truth &&
+          !state.schoolRetry &&
+          !truth.includes(" ") &&
+          truth.length >= 4 &&
+          guess.length > 0 &&
+          levenshtein(guess, truth) === 1
+        ) {
+          state.schoolRetry = true;
+          fb.className = "tp-feedback";
+          fb.innerHTML = "Fast! Ein Buchstabe stimmt nicht — schau nochmal. 👀";
+          state.dotsTP.focus();
+          return; // no step counted, no penalty — just a second look
+        }
 
         state.schoolStep++;
         state.sessionAnswered++;
@@ -8565,12 +8587,22 @@
         const reds = [];
         const trickyCurrent = [];
         const trickyOther = [];
+        const staleMastered = []; // mastered long ago → due for a refresh (honest retention)
+        const today = new Date().toISOString().slice(0, 10);
+        const daysSince = (iso) =>
+          iso ? Math.floor((Date.parse(today) - Date.parse(iso)) / 86400000) : null;
         const currentTheme =
           THEMES.find((t) => t.status === "current") || THEMES[0];
         for (const t of THEMES) {
           for (const w of t.words) {
             const s = getStatus(w.en);
-            if (statusStage(s) === "mastered") continue;
+            if (statusStage(s) === "mastered") {
+              // "mastered" isn't forever — bring it back after ~3 weeks unseen.
+              const d = daysSince(s.lastSeen);
+              if (d != null && d >= 21)
+                staleMastered.push({ ...w, themeId: t.id, review: true });
+              continue;
+            }
             const item = { ...w, themeId: t.id };
             if (s.red) {
               reds.push(item);
@@ -8584,6 +8616,7 @@
           ...shuffle(reds),
           ...shuffle(trickyCurrent),
           ...shuffle(trickyOther),
+          ...shuffle(staleMastered).slice(0, 5),
         ];
         if (queue.length) return queue.slice(0, 20);
         // fallback: первые 12 слов текущей темы
