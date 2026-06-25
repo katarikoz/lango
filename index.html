@@ -8727,22 +8727,91 @@
           .map((w) => ({ ...w, themeId: "theme05" }));
       }
 
+      // Persist the drill per profile so a reload, sleep or profile switch
+      // never wipes a half-finished Test Prep session.
+      const DRILL_STORAGE_KEY = (p) => `lango.drill.${p}`;
+
+      function saveDrill() {
+        const d = state.drill;
+        if (!state.profile || !d) return;
+        // Make sure the word in flight (pulled off the queue, not yet finished)
+        // is preserved so it isn't lost on resume.
+        const queue = d.queue.slice();
+        if (
+          d.current &&
+          (d.counts[d.current] || 0) < DRILL_TARGET &&
+          !queue.includes(d.current)
+        )
+          queue.unshift(d.current);
+        try {
+          localStorage.setItem(
+            DRILL_STORAGE_KEY(state.profile),
+            JSON.stringify({ counts: d.counts, queue, bonusGiven: d.bonusGiven }),
+          );
+        } catch (e) {
+          /* private mode — degrade silently */
+        }
+      }
+
+      function clearDrill() {
+        if (!state.profile) return;
+        try {
+          localStorage.removeItem(DRILL_STORAGE_KEY(state.profile));
+        } catch (e) {
+          /* ignore */
+        }
+      }
+
+      function loadDrill() {
+        if (!state.profile) return null;
+        let saved;
+        try {
+          const raw = localStorage.getItem(DRILL_STORAGE_KEY(state.profile));
+          if (!raw) return null;
+          saved = JSON.parse(raw);
+        } catch (e) {
+          return null;
+        }
+        if (!saved || !saved.counts) return null;
+        const words = drillWordList();
+        const counts = {};
+        words.forEach((w) => (counts[w.en] = saved.counts[w.en] || 0));
+        const queue = (Array.isArray(saved.queue) ? saved.queue : []).filter(
+          (en) => counts[en] !== undefined,
+        );
+        if (!queue.length) return null; // nothing left to resume
+        return {
+          words,
+          counts,
+          total: words.length,
+          queue,
+          current: null,
+          phase: "recall",
+          checked: false,
+          bonusGiven: !!saved.bonusGiven,
+        };
+      }
+
+      function newDrill() {
+        const words = drillWordList();
+        const counts = {};
+        words.forEach((w) => (counts[w.en] = 0));
+        return {
+          words,
+          counts,
+          total: words.length,
+          queue: shuffle(words.map((w) => w.en)),
+          current: null,
+          phase: "recall", // 'recall' | 'rewrite'
+          checked: false,
+          bonusGiven: false,
+        };
+      }
+
       function openDrill() {
-        // Resume an unfinished drill, otherwise start a fresh pass.
+        // Resume an unfinished drill (memory → storage), else start fresh.
         if (!state.drill || state.drill.queue.length === 0) {
-          const words = drillWordList();
-          const counts = {};
-          words.forEach((w) => (counts[w.en] = 0));
-          state.drill = {
-            words,
-            counts,
-            total: words.length,
-            queue: shuffle(words.map((w) => w.en)),
-            current: null,
-            phase: "recall", // 'recall' | 'rewrite'
-            checked: false,
-            bonusGiven: false,
-          };
+          state.drill = loadDrill() || newDrill();
         }
         state.answerStreak = 0;
         state.bestStreak = 0;
@@ -8792,6 +8861,7 @@
         if (!d.current) { renderDrillDone(); return; }
         d.phase = "recall";
         d.checked = false;
+        saveDrill();
         renderDrill();
       }
 
@@ -8853,6 +8923,7 @@
         btn.onclick = advanceDrill;
         btn.disabled = false;
         updateDrillProgress();
+        saveDrill();
         refreshHomeStats();
       }
 
@@ -8949,6 +9020,7 @@
         document.getElementById("drCountPill").textContent =
           d.total + " / " + d.total + " done";
         document.getElementById("drillProgress").style.width = "100%";
+        clearDrill(); // session finished — start fresh next time
         const btn = document.getElementById("drCheckBtn");
         btn.textContent = "Home";
         btn.disabled = false;
