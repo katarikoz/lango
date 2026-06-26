@@ -2726,6 +2726,19 @@
       }
 
       /* Rebirth banner */
+      /* Ashes Remember: the same phoenix.png ramped ash→fire by --ash-mix (0→1). */
+      .quest-phoenix {
+        display: block;
+        width: 120px;
+        height: auto;
+        margin: 0 auto 12px;
+        --ash-mix: 0;
+        filter: brightness(calc(0.32 + 0.85 * var(--ash-mix)))
+          sepia(calc(0.55 - 0.55 * var(--ash-mix)))
+          saturate(var(--ash-mix));
+        transition: filter 0.7s ease;
+      }
+
       .daily-flame {
         display: flex;
         align-items: center;
@@ -3500,6 +3513,7 @@
         .react-correct { animation: none !important; }
         .card-creature { animation: none; }
         .daily-flame-fill { transition: none; }
+        .quest-phoenix { transition: none; }
       }
       /* Reduced-motion fallback for celebrations: one static gold glow, no movement */
       .rm-pulse {
@@ -4639,6 +4653,7 @@
         </div>
         <div class="tp-card" id="questCard">
           <div class="confetti-container" id="questConfetti"></div>
+          <img class="quest-phoenix" id="questPhoenix" src="assets/phoenix.png" alt="" style="display: none" />
           <div class="tp-label">How to write in English</div>
           <div class="tp-de" id="questDe">—</div>
           <div class="wd-container" id="questDotsContainer"></div>
@@ -6822,6 +6837,7 @@
             if (d.connectorStatus === undefined) d.connectorStatus = {};
             if (d.observatory === undefined) d.observatory = { revealed: [] };
             if (d.daily === undefined) d.daily = { date: null, count: 0, goal: 15 };
+            if (d.rebornCount === undefined) d.rebornCount = 0;
             // Migration: add adaptive difficulty fields to old word records
             for (const en in d.wordStatus) {
               const s = d.wordStatus[en];
@@ -7089,14 +7105,18 @@
    QUEST MODE
    ============================================================ */
 
-      function collectQuestWords(count) {
+      function collectQuestWords(count, preferMastered) {
         const words = [];
         const p = progress();
         for (const t of THEMES) {
           for (const w of t.words) {
             const s = p.wordStatus[w.en];
             if (s && statusStage(s) !== "new") {
-              words.push({ en: w.en, de: w.de, ex: w.ex, themeId: t.id });
+              words.push({
+                en: w.en, de: w.de, ex: w.ex, themeId: t.id,
+                _strength: (s.hits || 0) + (s.streak || 0),
+                _mastered: statusStage(s) === "mastered" ? 1 : 0,
+              });
             }
           }
         }
@@ -7104,6 +7124,10 @@
         for (let i = words.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [words[i], words[j]] = [words[j], words[i]];
+        }
+        // Rebirth: the ash bed is built from the words you know BEST.
+        if (preferMastered) {
+          words.sort((a, b) => b._mastered - a._mastered || b._strength - a._strength);
         }
         return words.slice(0, count);
       }
@@ -7126,6 +7150,8 @@
         state.questChecked = false;
         document.getElementById("questTitle").textContent = quest.title;
         document.getElementById("questSub").textContent = quest.sub;
+        const qpE = document.getElementById("questPhoenix");
+        if (qpE) qpE.style.display = "none"; // ash phoenix is rebirth-only
         showScreen("questScreen");
         renderQuestCard();
       }
@@ -7133,7 +7159,8 @@
       function startRebirthQuest() {
         state.questMode = "rebirth";
         state.questId = null;
-        state.questWords = collectQuestWords(REBIRTH_QUEST.count);
+        // The 10 relight words are drawn from the words you already mastered.
+        state.questWords = collectQuestWords(REBIRTH_QUEST.count, true);
         state.questIndex = 0;
         state.questCorrect = 0;
         state.questTotal = REBIRTH_QUEST.count;
@@ -7141,6 +7168,12 @@
         state.questChecked = false;
         document.getElementById("questTitle").textContent = REBIRTH_QUEST.title;
         document.getElementById("questSub").textContent = REBIRTH_QUEST.sub;
+        // Ashes Remember: show the ashen phoenix; each correct answer relights it.
+        const qp = document.getElementById("questPhoenix");
+        if (qp) {
+          qp.style.display = "block";
+          qp.style.setProperty("--ash-mix", "0");
+        }
         showScreen("questScreen");
         renderQuestCard();
       }
@@ -7199,6 +7232,15 @@
           fb.className = "tp-feedback right";
           fb.innerHTML = "✓ Correct!";
           spawnConfetti("questConfetti", 8);
+          if (state.questMode === "rebirth") {
+            // Relight the phoenix wing by wing — ash → fire across the 10 words.
+            const qp = document.getElementById("questPhoenix");
+            if (qp)
+              qp.style.setProperty(
+                "--ash-mix",
+                String(Math.min(1, state.questCorrect / state.questTotal)),
+              );
+          }
         } else {
           state.dotsQuest.setWrong();
           fb.className = "tp-feedback wrong";
@@ -7229,12 +7271,17 @@
             const p = progress();
             p.rebirthPending = false;
             p.streak = 1;
-            p.lastVisit = new Date().toISOString().slice(0, 10);
+            p.lastVisit = localDate();
+            p.rebornCount = (p.rebornCount || 0) + 1;
             saveProgress(state.profile, p);
             _progressCache = null;
+            const qp = document.getElementById("questPhoenix");
+            if (qp) qp.style.setProperty("--ash-mix", "1"); // fully alight
             resultEmoji.textContent = "🔥";
-            resultTitle.textContent = "Risen from the ashes!";
-            resultSub.textContent = "The flame burns again. Welcome back!";
+            resultTitle.textContent =
+              p.rebornCount > 1 ? "Risen ×" + p.rebornCount : "Risen.";
+            resultSub.textContent =
+              "Nothing you learned was lost. You rose from it.";
             resultBtn.textContent = "Continue";
             resultBtn.onclick = exitQuest;
           } else {

@@ -45,6 +45,7 @@ const SCREENS = [
   { name: "18-brueche-prozent", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-prozent"); window.advanceSubject(); window.advanceSubject(); window.advanceSubject(); } },
   { name: "19-brueche-anteile", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-anteile"); } },
   { name: "20-school-card", go: () => { window.pickProfile("max"); window.openTopic("theme05"); } },
+  { name: "21-rebirth-quest", go: () => { window.pickProfile("max"); const p = window.progress(); p.rebirthPending = true; p.wordStatus = p.wordStatus || {}; const th = window.LANGO_THEMES.find(t => t.id === "theme05"); th.words.slice(0, 12).forEach(w => { p.wordStatus[w.en] = { streak: 5, red: false, hits: 5, misses: 0, difficulty: 0, themeId: "theme05", history: "11111" }; }); window.saveProgress("max", p); window.startRebirthQuest(); } },
 ];
 
 async function serverUp() {
