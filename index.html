@@ -3442,6 +3442,23 @@
         #homeScreen.streak-glow::before { animation: none; }
         #homeScreen.streak-glow .hero-phoenix { animation: none; }
         #homeScreen.streak-glow .creature-emoji { animation: none; }
+        .xp-float { animation: none; }
+        .mastery-flash { animation: none; }
+        #pillAvaRing.levelup { animation: none; }
+        .react-correct { animation: none !important; }
+      }
+      /* Reduced-motion fallback for celebrations: one static gold glow, no movement */
+      .rm-pulse {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 120px;
+        height: 120px;
+        margin: -60px 0 0 -60px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 5;
+        background: radial-gradient(circle, rgba(240, 198, 68, 0.55), transparent 70%);
       }
       /* ===== POTION LAB ===== */
       #potionLabScreen { --pl-magic: #a855f7; --pl-magic-soft: rgba(168,85,247,0.14); }
@@ -4578,6 +4595,7 @@
         onclick="this.classList.remove('show')"
       >
         <div class="creature-evolve-card levelup-card" id="levelUpCard" onclick="event.stopPropagation()">
+          <div class="confetti-container" id="levelUpConfetti"></div>
           <div class="evolve-emoji">⚡</div>
           <div class="levelup-title" id="levelUpNum">Level 2</div>
           <div class="levelup-rank" id="levelUpRank">Rookie</div>
@@ -6873,10 +6891,19 @@
         return PHOENIX_STAGES[idx];
       }
 
+      // One LOCAL-time calendar-day source so streak + phoenix-state never disagree near midnight.
+      function localDate(d) {
+        return (d || new Date()).toLocaleDateString("en-CA"); // yyyy-mm-dd, local time
+      }
+      function daysBetween(isoA, isoB) {
+        return Math.round(
+          (Date.parse(isoB + "T00:00:00") - Date.parse(isoA + "T00:00:00")) / 86400000,
+        );
+      }
+
       function getPhoenixState(p) {
         if (!p.lastVisit) return "active";
-        const last = new Date(p.lastVisit + "T00:00:00");
-        const missed = Math.floor((Date.now() - last.getTime()) / 86400000);
+        const missed = daysBetween(p.lastVisit, localDate());
         if (missed <= 0) return "active";
         if (missed === 1) return "cooling";
         if (missed <= 3) return "dormant";
@@ -7410,11 +7437,9 @@
 
       function updateStreak() {
         const p = progress();
-        const today = new Date().toISOString().slice(0, 10);
+        const today = localDate();
         if (p.lastVisit === today) return p;
-        const yesterday = new Date(Date.now() - 86400000)
-          .toISOString()
-          .slice(0, 10);
+        const yesterday = localDate(new Date(Date.now() - 86400000));
         p.streak = p.lastVisit === yesterday ? p.streak + 1 : 1;
         p.bestStreak = Math.max(p.bestStreak || 0, p.streak);
         p.lastVisit = today;
@@ -7429,6 +7454,17 @@
       function spawnConfetti(containerId, count, isGold) {
         const container = document.getElementById(containerId);
         if (!container) return;
+        // Reduced-motion: a single static gold glow instead of flying particles.
+        if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          const pulse = document.createElement("div");
+          pulse.className = "rm-pulse";
+          container.appendChild(pulse);
+          setTimeout(() => pulse.remove(), 420);
+          return;
+        }
         const colors =
           (isGold
             ? ["#d4a017", "#f0c644", "#e8b82e", "#c49512"]
@@ -7598,7 +7634,7 @@
         document.getElementById("levelUpRank").textContent = getUserTitle(li.level);
         document.getElementById("levelUpNum").textContent = "Level " + li.level;
         overlay.classList.add("show");
-        spawnConfetti("levelUpCard", 20, true);
+        spawnConfetti("levelUpConfetti", 20, true);
         const dismiss = () => overlay.classList.remove("show");
         overlay.onclick = dismiss;
         setTimeout(dismiss, 3000);
@@ -7627,7 +7663,7 @@
         // Detect ash state BEFORE updateStreak resets lastVisit
         const pre = progress();
         if (pre.lastVisit) {
-          const missed = Math.floor((Date.now() - new Date(pre.lastVisit + 'T00:00:00').getTime()) / 86400000);
+          const missed = daysBetween(pre.lastVisit, localDate());
           if (missed >= 4 && !pre.rebirthPending) {
             pre.rebirthPending = true;
             saveProgress(id, pre);
