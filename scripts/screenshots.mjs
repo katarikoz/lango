@@ -44,6 +44,7 @@ const SCREENS = [
   { name: "17-brueche-profi", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-profi"); } },
   { name: "18-brueche-prozent", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-prozent"); window.advanceSubject(); window.advanceSubject(); window.advanceSubject(); } },
   { name: "19-brueche-anteile", go: () => { window.pickProfile("max"); window.openSubjects(); window.openSubject("math"); window.openSubjectTopic("math-brueche-anteile"); } },
+  { name: "20-school-card", go: () => { window.pickProfile("max"); window.openTopic("theme05"); } },
 ];
 
 async function serverUp() {
