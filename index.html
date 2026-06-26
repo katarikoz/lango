@@ -2743,41 +2743,14 @@
         transition: filter 0.7s ease;
       }
 
-      .daily-flame {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        background: linear-gradient(135deg, rgba(240, 104, 16, 0.12), rgba(240, 104, 16, 0.04));
-        border: 1px solid rgba(240, 104, 16, 0.35);
-        border-radius: 0.875rem;
-        padding: 0.75rem 0.875rem;
-        margin-bottom: 1rem;
+      /* Daily goal, folded into the level identity — one quiet line, not a 5th meter. */
+      .level-today {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--ink-dim);
+        margin-top: 0.25rem;
       }
-      .daily-flame-icon { font-size: 1.5rem; line-height: 1; }
-      .daily-flame-body { flex: 1; min-width: 0; }
-      .daily-flame-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 0.375rem;
-      }
-      .daily-flame-label { font-size: 0.8125rem; font-weight: 600; color: var(--ink); }
-      .daily-flame-count { font-size: 0.8125rem; font-weight: 700; color: var(--accent); }
-      .daily-flame-bar {
-        height: 7px;
-        border-radius: 999px;
-        background: var(--surface);
-        overflow: hidden;
-      }
-      .daily-flame-fill {
-        height: 100%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #f0680f, #f0c644);
-        transition: width 0.5s ease;
-      }
-      .daily-flame.done { border-color: var(--good); }
-      .daily-flame.done .daily-flame-count { color: var(--good); }
-      .daily-flame.done .daily-flame-fill { background: linear-gradient(90deg, var(--good), #f0c644); }
+      .level-today.done { color: var(--good); font-weight: 600; }
 
       .rebirth-banner {
         background: linear-gradient(135deg, #3a1520, #2a1018);
@@ -3516,7 +3489,6 @@
         #pillAvaRing.levelup { animation: none; }
         .react-correct { animation: none !important; }
         .card-creature { animation: none; }
-        .daily-flame-fill { transition: none; }
         .quest-phoenix { transition: none; }
       }
       /* Reduced-motion fallback for celebrations: one static gold glow, no movement */
@@ -3900,25 +3872,12 @@
                   </div>
                   <div class="level-xp" id="levelXP">0 / 50 XP</div>
                   <div class="level-hint" id="levelHint"></div>
+                  <div class="level-today" id="levelToday"></div>
                 </div>
               </div>
             </div>
           </div>
 
-        </div>
-
-        <!-- Daily flame — the closeable daily goal (feed it by mastering words today). -->
-        <div class="daily-flame" id="dailyFlame">
-          <div class="daily-flame-icon">🔥</div>
-          <div class="daily-flame-body">
-            <div class="daily-flame-top">
-              <span class="daily-flame-label" id="dailyFlameLabel">Feed the flame</span>
-              <span class="daily-flame-count" id="dailyFlameCount">0 / 15</span>
-            </div>
-            <div class="daily-flame-bar">
-              <div class="daily-flame-fill" id="dailyFlameFill" style="width: 0"></div>
-            </div>
-          </div>
         </div>
 
         <!-- Phoenix action slot — mutually exclusive; refreshPhoenix() reveals one. -->
@@ -7870,20 +7829,16 @@
    ============================================================ */
 
       function renderDailyFlame() {
-        const el = document.getElementById("dailyFlame");
+        // Daily goal said ONCE, folded into the level identity (no separate meter).
+        const el = document.getElementById("levelToday");
         if (!el) return;
         const p = progress();
         const goal = (p.daily && p.daily.goal) || 15;
         const count = p.daily && p.daily.date === localDate() ? p.daily.count : 0;
         const done = count >= goal;
-        const pct = Math.min(100, Math.round((count / goal) * 100));
-        document.getElementById("dailyFlameFill").style.width = pct + "%";
-        document.getElementById("dailyFlameCount").textContent = done
-          ? "Done 🔥"
-          : count + " / " + goal;
-        document.getElementById("dailyFlameLabel").textContent = done
-          ? "Flame fed for today"
-          : "Feed the flame";
+        el.textContent = done
+          ? "🔥 Flame fed for today"
+          : "🔥 " + count + " / " + goal + " words today";
         el.classList.toggle("done", done);
       }
 

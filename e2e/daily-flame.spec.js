@@ -24,8 +24,7 @@ test("correct answers feed today's flame; home shows the count", async ({ page }
     window.bumpCorrect("flametest3", "theme05");
     window.refreshHomeStats();
   });
-  await expect(page.locator("#dailyFlameCount")).toHaveText("3 / 15");
-  await expect(page.locator("#dailyFlameLabel")).toHaveText("Feed the flame");
+  await expect(page.locator("#levelToday")).toHaveText("🔥 3 / 15 words today");
 });
 
 test("reaching the goal shows the 'done' state", async ({ page }) => {
@@ -37,6 +36,6 @@ test("reaching the goal shows the 'done' state", async ({ page }) => {
     window.saveProgress("max", p);
     window.refreshHomeStats();
   });
-  await expect(page.locator("#dailyFlame")).toHaveClass(/done/);
-  await expect(page.locator("#dailyFlameLabel")).toHaveText("Flame fed for today");
+  await expect(page.locator("#levelToday")).toHaveClass(/done/);
+  await expect(page.locator("#levelToday")).toHaveText("🔥 Flame fed for today");
 });
