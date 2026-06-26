@@ -5675,12 +5675,12 @@
                 },
                 {
                   id: "bv-09",
-                  type: "info",
-                  title: "Drei Sätze, die alles tragen",
-                  text: "Satz 1: <b>Bruchstrich = geteilt durch.</b> (3/4 = 3 : 4)<br><br>Kennst du die anderen zwei noch?",
-                  reveal:
-                    "<b>Erweitern & Kürzen = mal/geteilt durch 1</b> — der Wert bleibt.<br><b>Addieren = gleiche Stücke zählen</b> — den Nenner nie addieren.",
-                  revealLabel: "👀 Die anderen zwei",
+                  type: "choice",
+                  prompt: "Stimmt das? „Beim Addieren von Brüchen addiert man auch die Nenner.“",
+                  options: ["Stimmt", "Stimmt nicht"],
+                  correctIndex: 1,
+                  explanation:
+                    "<b>Stimmt nicht!</b> Den Nenner addiert man nie — man zählt nur gleich große Stücke (die Zähler). Merke: Bruchstrich = geteilt; erweitern/kürzen = mal/geteilt durch 1.",
                 },
               ],
             },
@@ -5720,12 +5720,12 @@
                 },
                 {
                   id: "bp-04",
-                  type: "info",
-                  title: "💡 Teilen durch einen Bruch",
-                  text: "Teilen fragt: „wie oft passt es rein?“ Also — wie oft passt 1/4 in 1 ganze Pizza?",
-                  reveal:
-                    "4-mal! Trick: durch einen Bruch teilen = mit seinem <b>Kehrwert</b> (umgedreht) malnehmen. 1 : 1/4 = 1 · 4 = 4.",
-                  revealLabel: "👀 Antwort & Trick",
+                  type: "choice",
+                  prompt: "Wie oft passt 1/4 in 1 ganze Pizza?",
+                  options: ["4-mal", "1/4-mal", "2-mal"],
+                  correctIndex: 0,
+                  explanation:
+                    "4-mal! Teilen durch einen Bruch = mit dem <b>Kehrwert</b> (umgedreht) malnehmen: 1 : 1/4 = 1 · 4 = 4.",
                 },
                 {
                   id: "bp-05",
@@ -5747,12 +5747,16 @@
                 },
                 {
                   id: "bp-07",
-                  type: "info",
-                  title: "💡 Lifehack: erst zur 1/2 schätzen",
-                  text: "Profi-Move: <b>erst schätzen</b>. Liegt der Bruch nahe bei 0, bei 1/2 oder bei 1? Wann ist er wohl ungefähr 1/2?",
-                  reveal:
-                    "≈ 1/2, wenn der Zähler etwa <b>halb so groß</b> wie der Nenner ist (z. B. 5/9). Nahe 1: Zähler ≈ Nenner (8/9). Nahe 0: winziger Zähler (1/9).",
-                  revealLabel: "👀 Die Faustregel",
+                  type: "choice",
+                  prompt: "Wann ist ein Bruch ungefähr 1/2?",
+                  options: [
+                    "Wenn der Zähler etwa halb so groß wie der Nenner ist",
+                    "Wenn Zähler = Nenner",
+                    "Wenn der Zähler winzig ist",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Genau — bei <b>5/9</b> ist 5 fast die Hälfte von 9, also ≈ 1/2. (Zähler ≈ Nenner → nahe 1; winziger Zähler → nahe 0.) Erst schätzen fängt unmögliche Ergebnisse ab.",
                 },
                 {
                   id: "bp-08",
@@ -5765,12 +5769,16 @@
                 },
                 {
                   id: "bp-09",
-                  type: "info",
-                  title: "💡 Profi-Trick: über Kreuz vergleichen",
-                  text: "Welcher Bruch ist größer — ohne gleichnamig zu machen? Es gibt einen Blitz-Trick: <b>über Kreuz multiplizieren</b>.",
-                  reveal:
-                    "2/3 und 3/5: 2 · 5 = 10 und 3 · 3 = 9. Das größere Produkt gehört zum größeren Bruch → 10 > 9, also 2/3 > 3/5. (Dasselbe wie gleichnamig machen, nur schneller.)",
-                  revealLabel: "👀 So geht's",
+                  type: "choice",
+                  prompt: "Wie vergleichst du 2/3 und 3/5 am schnellsten?",
+                  options: [
+                    "Über Kreuz multiplizieren",
+                    "Den größeren Nenner nehmen",
+                    "Den größeren Zähler nehmen",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "<b>Über Kreuz:</b> 2 · 5 = 10 und 3 · 3 = 9. Das größere Produkt gehört zum größeren Bruch → 10 > 9, also 2/3 > 3/5. (Dasselbe wie gleichnamig machen, nur blitzschnell.)",
                 },
                 {
                   id: "bp-10",
@@ -5783,12 +5791,15 @@
                 },
                 {
                   id: "bp-11",
-                  type: "info",
-                  title: "Bruch = Dezimalzahl = Prozent",
-                  text: "Eine Zahl, drei Verkleidungen: Bruch, Dezimalzahl, Prozent. Was ist 1/2 als Dezimalzahl und als Prozent?",
-                  reveal:
-                    "<b>1/2 = 0,5 = 50 %</b> · <b>1/4 = 0,25 = 25 %</b> · <b>3/4 = 0,75 = 75 %</b>.<br>Bruch → Dezimal: Zähler : Nenner. Dezimal → Prozent: · 100.",
-                  revealLabel: "👀 Alle drei",
+                  type: "match",
+                  prompt: "Bruch → Dezimalzahl: finde die Paare:",
+                  pairs: [
+                    ["1/2", "0,5"],
+                    ["1/4", "0,25"],
+                    ["3/4", "0,75"],
+                  ],
+                  explanation:
+                    "Bruch → Dezimalzahl: <b>Zähler : Nenner</b> rechnen (1 : 4 = 0,25). Und Dezimal → Prozent: · 100.",
                 },
                 {
                   id: "bp-12",
@@ -5818,12 +5829,12 @@
               exercises: [
                 {
                   id: "cp-01",
-                  type: "info",
-                  title: "Prozent heißt „von hundert“",
-                  text: "<b>Prozent</b> kommt von italienisch „per cento“ = <b>von hundert</b> (Zeichen %). Was ist dann wohl 1 %?",
-                  reveal:
-                    "<b>1 % = 1/100 = 0,01</b> — 1 Stück von 100. In einem Feld aus 100 Kästchen ist 1 Kästchen = 1 %, alle 100 zusammen = das Ganze.",
-                  revealLabel: "👀 Was ist 1 %?",
+                  type: "choice",
+                  prompt: "„Prozent“ = per cento = von hundert. Also ist 1 % = ___",
+                  options: ["1/100", "1/10", "1/1000"],
+                  correctIndex: 0,
+                  explanation:
+                    "<b>per cento = von hundert.</b> Darum ist 1 % = 1/100 = 0,01 — ein Kästchen von hundert.",
                 },
                 {
                   id: "cp-02",
@@ -5849,13 +5860,13 @@
                 },
                 {
                   id: "cp-04",
-                  type: "info",
-                  title: "💡 Das Hunderterfeld",
+                  type: "choice",
                   figure: "frac:grid:37,100",
-                  text: "Ein <b>Hunderterfeld</b> hat 100 Kästchen (10×10). Hier sind 37 gefärbt. Wie viel Prozent ist das?",
-                  reveal:
-                    "<b>37 % = 37/100 = 0,37.</b> Im Hunderterfeld liest du Prozent direkt ab: gefärbte Kästchen = Prozent.",
-                  revealLabel: "👀 Antwort",
+                  prompt: "Hunderterfeld (10×10): 37 von 100 sind gefärbt. Wie viel Prozent?",
+                  options: ["37 %", "3,7 %", "73 %"],
+                  correctIndex: 0,
+                  explanation:
+                    "<b>37 von 100 = 37/100 = 37 %.</b> Im Hunderterfeld liest du Prozent direkt ab: gefärbte Kästchen = Prozent.",
                 },
                 {
                   id: "cp-05",
@@ -5893,12 +5904,15 @@
                 },
                 {
                   id: "cp-09",
-                  type: "info",
-                  title: "Prozent im echten Leben",
-                  text: "Auf Saftpackungen steht der <b>Fruchtanteil</b> in Prozent. Was glaubst du — wie viel Frucht ist in Fruchtsaft, Nektar und Fruchtsaftgetränk?",
-                  reveal:
-                    "<b>Fruchtsaft 100 %</b> (ganz Frucht) · <b>Nektar ca. 50 %</b> (halb) · <b>Fruchtsaftgetränk ca. 15 %</b>. Prozent zeigt sofort, wie viel vom Ganzen drinsteckt.",
-                  revealLabel: "👀 Die Etiketten",
+                  type: "match",
+                  prompt: "Fruchtanteil auf der Saftpackung — finde die Paare:",
+                  pairs: [
+                    ["Fruchtsaft", "100 %"],
+                    ["Nektar", "ca. 50 %"],
+                    ["Getränk", "ca. 15 %"],
+                  ],
+                  explanation:
+                    "Prozent zeigt sofort, <b>wie viel Frucht vom Ganzen</b> drinsteckt: Saft ganz, Nektar halb, Getränk wenig.",
                 },
                 {
                   id: "cp-10",
@@ -5990,12 +6004,12 @@
                 },
                 {
                   id: "ca-05",
-                  type: "info",
-                  title: "Ergänzen zum Ganzen: der Rest zu 1",
-                  text: "Das Ganze ist immer <b>1</b> (oder 100 %). Wenn 3/8 der Pizza gegessen sind — wie viel bleibt übrig?",
-                  reveal:
-                    "Rest = Ganzes − Teil: 8/8 − 3/8 = <b>5/8</b>. Bei Prozent genauso: 100 % − 30 % = 70 %.",
-                  revealLabel: "👀 Wie viel bleibt?",
+                  type: "choice",
+                  prompt: "30 % der Klasse fehlen. Wie viel Prozent sind da?",
+                  options: ["70 %", "30 %", "130 %"],
+                  correctIndex: 0,
+                  explanation:
+                    "Das Ganze ist 100 %. <b>Rest = Ganzes − Teil</b>: 100 % − 30 % = 70 %. Bei Brüchen genauso: 8/8 − 3/8 = 5/8.",
                 },
                 {
                   id: "ca-06",
@@ -6024,12 +6038,16 @@
                 },
                 {
                   id: "ca-09",
-                  type: "info",
-                  title: "💡 Fehler finden im Bild",
-                  text: "Ein Bild zeigt einen Bruch nur dann richtig, wenn … — was ist die Bedingung?",
-                  reveal:
-                    "… <b>alle Teile gleich groß</b> sind! Häufiger Fehler: ungleiche Stücke trotzdem „1/4“ nennen. 1/4 heißt vier <b>gleich große</b> Teile. Immer zuerst prüfen: gleich groß?",
-                  revealLabel: "👀 Die Bedingung",
+                  type: "choice",
+                  prompt: "Ein Bild zeigt einen Bruch nur richtig, wenn …",
+                  options: [
+                    "alle Teile gleich groß sind",
+                    "es genau 4 Teile sind",
+                    "das Bild bunt ist",
+                  ],
+                  correctIndex: 0,
+                  explanation:
+                    "Genau: <b>1/4 heißt vier gleich große Teile.</b> Häufiger Fehler — ungleiche Stücke trotzdem „1/4“ nennen. Erst prüfen: gleich groß?",
                 },
                 {
                   id: "ca-10",
@@ -6058,12 +6076,12 @@
                 },
                 {
                   id: "ca-12",
-                  type: "info",
-                  title: "Anteil-Rezept zum Mitnehmen",
-                  text: "Rezept Teil 1: <b>Anteil = Teil : Ganzes</b> (dann kürzen). Kennst du die anderen zwei?",
-                  reveal:
-                    "<b>Rest zum Ganzen = 1 − Teil</b> (oder 100 % − Teil).<br><b>Bild prüfen:</b> nur gleich große Teile sind ein echter Bruch.",
-                  revealLabel: "👀 Die anderen zwei",
+                  type: "choice",
+                  prompt: "Stimmt das? „Anteil = Teil geteilt durch Ganzes (dann kürzen).“",
+                  options: ["Stimmt", "Stimmt nicht"],
+                  correctIndex: 0,
+                  explanation:
+                    "<b>Stimmt!</b> Anteil = Teil : Ganzes, dann kürzen. (Rest zum Ganzen = 1 − Teil; im Bild zählen nur gleich große Teile.)",
                 },
               ],
             },

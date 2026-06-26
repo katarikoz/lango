@@ -7,8 +7,29 @@ const { startTopic } = require("./helpers");
 test("reveal-гейт: «Weiter» появляется только после тапа на «Aufdecken»", async ({
   page,
 }) => {
-  // Первая карточка темы «Brüche & Prozent» (cp-01) — info с reveal.
-  await startTopic(page, { topic: "math-brueche-prozent" });
+  // Тестируем сам МЕХАНИЗМ reveal-gate, не привязываясь к конкретной карточке урока
+  // (контент-карточки могут конвертироваться в «ставки»). Сеем временную info+reveal.
+  await page.goto("/");
+  await page.waitForFunction(
+    () =>
+      typeof window.openSubjectTopic === "function" &&
+      typeof window.LANGO_SUBJECTS !== "undefined",
+  );
+  await page.evaluate(() => {
+    const math = window.LANGO_SUBJECTS.find((s) => s.id === "math");
+    math.topics.push({
+      id: "temp-reveal-test", title: "Reveal-Test", short: "Reveal",
+      grade: 6, status: "current", ordered: true,
+      exercises: [
+        { id: "tr-1", type: "info", title: "Test", text: "Was ist 1 %?",
+          reveal: "1 % = 1/100.", revealLabel: "👀 Aufdecken" },
+      ],
+    });
+    window.pickProfile("max");
+    window.openSubjects();
+    window.openSubject("math");
+    window.openSubjectTopic("temp-reveal-test");
+  });
 
   // До тапа: есть кнопка раскрытия, скрытый reveal-текст, «Weiter» спрятан.
   await expect(page.locator("#exRevealBtn")).toBeVisible();
