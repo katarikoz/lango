@@ -2751,6 +2751,11 @@
         margin-top: 0.25rem;
       }
       .level-today.done { color: var(--good); font-weight: 600; }
+      /* A finished quest steps aside: dimmed, no progress bar, quiet green badge. */
+      .quest-card.done { opacity: 0.6; }
+      .quest-card.done .qc-progress { display: none; }
+      .quest-card.done .qc-sub { color: var(--good); }
+      .quest-card.done .qc-badge { background: var(--good-soft); color: var(--good); }
 
       .rebirth-banner {
         background: linear-gradient(135deg, #3a1520, #2a1018);
@@ -7956,6 +7961,8 @@
         const fixPct = totalWords > 0 ? ((totalWords - weakCount) / totalWords * 100) : 0;
         document.getElementById("qcFixBar").style.width = fixPct + "%";
         document.getElementById("qcFixFrac").textContent = (totalWords - weakCount) + "/" + totalWords;
+        // Finished work steps aside — a done Fix card stops occupying a primary slot.
+        document.getElementById("qcFix").classList.toggle("done", weakCount === 0);
         // USE card — connectors
         const cs = p.connectorStatus || {};
         let connMastered = 0;
