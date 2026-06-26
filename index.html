@@ -33,6 +33,7 @@
         --bg: #040713;
         --ink: #eef0f6;
         --ink-soft: #8b90a5;
+        --ink-dim: #5b6075; /* third tier: demote supporting text by colour, not weight */
         --line: #252840;
         --card: #181b2e;
         --accent: #f06810;
@@ -309,19 +310,19 @@
         margin-bottom: 1rem;
       }
       .hero-title {
-        font-size: 2.125rem; /* matched to .level-hex-num so headline & level balance */
+        font-size: 2.625rem; /* the one display line — leads, level numeral steps below it */
         font-weight: 700;
-        line-height: 1.15;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
         margin: 0 0 0.625rem;
       }
       .hero-accent { color: var(--accent); }
+      /* Static warm fill — ignition is the motion signature, not a shimmering headline. */
       .rise-glow {
-        background: linear-gradient(90deg, #f06810, #ff4020, #f0a030, #f06810);
-        background-size: 200% 100%;
+        background: linear-gradient(90deg, #f06810, #ff7a30, #f0a030);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: riseShimmer 6s ease-in-out infinite;
       }
       @keyframes riseShimmer {
         0%, 100% { background-position: 0% 50%; }
@@ -424,10 +425,9 @@
         justify-content: center;
       }
       .level-hex-num {
-        font-size: 2.125rem;
+        font-size: 1.75rem; /* structure, not action — steps below the display headline */
         font-weight: 700;
-        color: var(--accent);
-        text-shadow: 0 0 12px rgba(240, 104, 16, 0.5);
+        color: var(--ink);
       }
       .level-hex-label {
         position: absolute;
@@ -438,8 +438,7 @@
         font-size: 0.625rem;
         font-weight: 600;
         letter-spacing: 0.12em;
-        color: var(--accent);
-        text-shadow: 0 0 8px rgba(240, 104, 16, 0.4);
+        color: var(--ink-soft);
       }
 
       /* Level card info */
@@ -1812,7 +1811,12 @@
         box-shadow: 0 0 12px rgba(63, 196, 127, 0.3);
       }
       .btn:disabled {
-        opacity: 0.35;
+        /* honest "not yet" — calm slate, not muddy fire; ignites to --accent on input */
+        background: #2a2d42;
+        color: var(--ink-dim);
+        border-color: transparent;
+        box-shadow: none;
+        cursor: not-allowed;
         pointer-events: none;
       }
       .btn.ghost {
@@ -3884,10 +3888,10 @@
                 <div class="level-hex-wrap">
                   <div class="level-hex">
                     <div class="level-hex-inner">
-                      <span class="level-hex-num rise-glow" id="levelNum">1</span>
+                      <span class="level-hex-num" id="levelNum">1</span>
                     </div>
                   </div>
-                  <span class="level-hex-label rise-glow">LEVEL</span>
+                  <span class="level-hex-label">LEVEL</span>
                 </div>
                 <div class="hero-level-info">
                   <div class="level-title" id="levelTitle">Rookie</div>
@@ -3947,7 +3951,7 @@
               <div class="qc-progress-text" id="qcLearnFrac">—</div>
             </div>
           </div>
-          <div class="quest-card" style="--qc-color:#e55b6a" id="qcFix" onclick="openSpelling()">
+          <div class="quest-card" style="--qc-color:#e88a55" id="qcFix" onclick="openSpelling()">
             <div class="qc-badge"><i data-lucide="crosshair" stroke-width="2"></i></div>
             <div class="qc-title">Fix</div>
             <div class="qc-sub" id="qcFixSub">—</div>
