@@ -50,9 +50,55 @@ never raw values. **Review with the `/board` skill** (design panel) and **`/kid-
 Every φ use must be documented and defensible.
 
 ## Tokens — current state
-- **Colours:** tokenised in `:root` (`--bg`, `--ink`, `--ink-soft`, `--accent`, `--good`, …).
+- **Colours:** tokenised in `:root` (`--bg`, `--ink`, `--ink-soft`, **`--ink-dim`**, `--accent`,
+  `--warn`, `--good`, `--red`, …).
 - **Spacing & type:** still mostly one-off `rem` values. **Tokenise incrementally** — prefer
   tokens in anything you touch; don't big-bang refactor the 10k-line file.
+
+## Super-design system — "One fire, tended" (Ive panel, 2026-06-26)
+
+**POV:** PhoenGo is ONE fire, tended — not an app full of fire. Each screen must *choose
+what is loudest.* Premium = the confidence to leave one thing lit and let the rest be quiet
+ground. Honest, warm, reductive, alive.
+
+**Signature — Ignition, not glow.** The ash→fire phoenix (`phoenix.webp` ramped by `--ash-mix`
+0→1) is the identity gesture. Glow is everywhere and means nothing; ignition happens once and
+you *feel* it. Palette signature `--accent #f06810` on `--bg #040713`; motion signature = the
+relight.
+
+### Principles
+1. **One flame:** exactly ONE full-strength accent moment per screen (hero flames / the CTA).
+   If orange feels like ≥30% of the screen, pull the rest to structural ink/grey.
+2. **Say each thing once:** no progress system / identity label / daily goal appears twice in
+   two sizes. Home = one long-arc meter (level/XP) + one daily line folded into it.
+3. **Hierarchy by colour + size, not bold.** Three ink tones let you DROP weight to
+   de-emphasize instead of adding 700. Bold is not the default "this matters" lever.
+4. **Honest states only:** disabled = calm slate "not yet" (never muddy/broken); a finished
+   task steps aside (dim + done line), never holds a primary slot. `--red` = error only;
+   categories use `--warn` (amber).
+5. **Ignition over glow:** motion is spent on the one signature moment (relight, hero breathe),
+   not scattered infinite glow-loops. One hero motion per screen; all no-op under reduced-motion.
+6. **Single file, no new weight:** inline CSS/SVG; animate the one `phoenix.webp` via CSS vars,
+   never new raster.
+
+### Target tokens
+**Type** (modular ~1.25, ONE display leap): `--t-display` 2.625rem/700/-0.02em/lh1.05 (hero,
+one per screen) · `--t-num` 1.75rem/700 (level numeral, steps *below* the headline) · `--t-h2`
+1.5/600 · `--t-body` 1/500/lh1.5 · `--t-label` 0.875/600 · `--t-eyebrow` 0.75/600/upper/+0.12em
+· `--t-caption` 0.8125/500.
+**Colour roles — THREE ink tones (keystone):** `--ink #eef0f6` · `--ink-soft #8b90a5` ·
+`--ink-dim #5b6075` (caption/meta — drop weight by colour). Accent = the 10%, full-strength
+only TWICE per screen. Disabled: `#2a2d42` bg / `--ink-dim` ink. `--red` alarm-only; `--warn`
+categories.
+**Spacing** (4-level proximity, `gap` owns spacing, zero child margins): `--gap-tight .5rem` ·
+`--gap-related 1rem` · `--gap-block 2rem` · `--gap-section 3rem`. Tap targets ≥48px (kids).
+
+### Shipped this pass (2026-06-26)
+`--ink-dim` added; level hex de-orange'd; honest disabled button; static headline + display
+tier; Fix→amber; daily goal folded into the level card; phoenix → 79KB WebP; completed Fix
+steps aside; rebirth ignite spark; answer tiles made responsive.
+**Remaining:** full type/spacing tokenization · full three-drill meta unification · centre the
+hero (#9) · Ember Shield + celebrate() ladder · AI-generated per-stage art (post-validation).
 
 ## Review routine
 1. Build/iterate the screen; run `npm run screenshots`; **look at the PNGs** (phone + desktop).
