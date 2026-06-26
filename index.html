@@ -2732,6 +2732,13 @@
         font-weight: 600;
       }
       .rebirth-btn { font-size: 0.875rem; }
+      .hero-creature-name {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--ink-soft);
+        letter-spacing: 0.02em;
+        margin-top: 0.25rem;
+      }
 
       /* Quest CTA */
       .quest-cta {
@@ -3809,7 +3816,8 @@
           <div class="hero-left">
             <div class="hero-text">
               <h2 class="hero-title rise-glow">Rise every day.</h2>
-                </div>
+              <div class="hero-creature-name" id="heroCreatureName"></div>
+            </div>
             <div class="hero-row">
               <div class="hero-level" id="levelBar">
                 <div class="level-hex-wrap">
@@ -3832,6 +3840,25 @@
             </div>
           </div>
 
+        </div>
+
+        <!-- Phoenix action slot — mutually exclusive; refreshPhoenix() reveals one. -->
+        <div class="rebirth-banner" id="rebirthBanner" style="display: none">
+          <div class="rebirth-text">
+            Your phoenix rests in the ashes — its fire lives in 10 words you
+            already know. Relight it.
+          </div>
+          <button class="btn primary rebirth-btn" onclick="startRebirthQuest()">
+            Relight your phoenix →
+          </button>
+        </div>
+        <div class="quest-cta" id="questCTA" style="display: none">
+          <button
+            class="btn primary quest-cta-btn"
+            onclick="startEvolutionQuest()"
+          >
+            🔥 Quest
+          </button>
         </div>
 
         <div class="section-title">Today's Quests</div>
