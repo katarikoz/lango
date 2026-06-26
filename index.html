@@ -2742,6 +2742,14 @@
           saturate(var(--ash-mix));
         transition: filter 0.7s ease;
       }
+      .quest-phoenix.ignite {
+        animation: rebirthIgnite 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes rebirthIgnite {
+        0% { transform: scale(1); filter: brightness(1) saturate(1); }
+        35% { transform: scale(1.14); filter: brightness(1.7) saturate(1.35) drop-shadow(0 0 18px rgba(240, 104, 16, 0.7)); }
+        100% { transform: scale(1); filter: brightness(1) saturate(1); }
+      }
 
       /* Daily goal, folded into the level identity — one quiet line, not a 5th meter. */
       .level-today {
@@ -3495,6 +3503,7 @@
         .react-correct { animation: none !important; }
         .card-creature { animation: none; }
         .quest-phoenix { transition: none; }
+        .quest-phoenix.ignite { animation: none; }
       }
       /* Reduced-motion fallback for celebrations: one static gold glow, no movement */
       .rm-pulse {
@@ -7275,8 +7284,26 @@
             resultBtn.textContent = "Awesome!";
             resultBtn.onclick = exitQuest;
           }
-          showScreen("questResultScreen");
-          setTimeout(() => spawnConfetti("questResultConfetti", 24, true), 200);
+          // Rebirth: let the kid SEE the phoenix flare fully alight before the result.
+          const reduceMo =
+            window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          const ignite = state.questMode === "rebirth" && !reduceMo;
+          if (ignite) {
+            const qpi = document.getElementById("questPhoenix");
+            if (qpi) {
+              qpi.classList.remove("ignite");
+              void qpi.offsetWidth; // restart the animation
+              qpi.classList.add("ignite");
+            }
+          }
+          setTimeout(
+            () => {
+              showScreen("questResultScreen");
+              setTimeout(() => spawnConfetti("questResultConfetti", 24, true), 200);
+            },
+            ignite ? 750 : 0,
+          );
         } else {
           resultEmoji.textContent = "💪";
           resultTitle.textContent = "Not quite yet...";
