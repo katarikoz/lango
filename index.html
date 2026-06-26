@@ -3139,6 +3139,22 @@
         color: var(--red);
         border-color: var(--red);
       }
+      .ex-option.selected {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+      .ex-option.matched { opacity: 0.5; }
+      .ex-match-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.625rem;
+        margin-bottom: 0.5rem;
+      }
+      .ex-match-col {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+      }
       .ex-feedback {
         margin-top: 0.875rem;
         min-height: 1.625rem;
@@ -5901,12 +5917,15 @@
                 },
                 {
                   id: "cp-12",
-                  type: "info",
-                  title: "💡 Bruch = Dezimalzahl = Prozent",
-                  text: "Dieselbe Zahl, dritte Verkleidung. Was sind 1/4, 3/4 und 1/10 als Dezimalzahl und als Prozent?",
-                  reveal:
-                    "<b>1/4 = 0,25 = 25 %</b> · <b>3/4 = 0,75 = 75 %</b> · <b>1/10 = 0,1 = 10 %</b>.<br>Dezimal → Prozent: · 100. Zurück: : 100.",
-                  revealLabel: "👀 Aufdecken",
+                  type: "match",
+                  prompt: "Eine Zahl, drei Verkleidungen — finde die Paare:",
+                  pairs: [
+                    ["1/2", "50 %"],
+                    ["1/4", "25 %"],
+                    ["3/4", "75 %"],
+                  ],
+                  explanation:
+                    "Bruch → Prozent: auf Nenner 100 erweitern, dann ist der Zähler die Prozentzahl.",
                 },
                 {
                   id: "cp-13",
@@ -10803,6 +10822,7 @@
         if (ex.type === "info") renderExerciseInfo(card, ex);
         else if (ex.type === "numeric") renderExerciseNumeric(card, ex);
         else if (ex.type === "choice") renderExerciseChoice(card, ex);
+        else if (ex.type === "match") renderExerciseMatch(card, ex);
         else renderExerciseUnknown(card, ex);
 
         container.appendChild(card);
@@ -10922,6 +10942,116 @@
     </div>
   `,
         );
+      }
+
+      // MATCH — tap a left chip, then its partner on the right. The pairing IS the
+      // answer (no reveal to mash). Builds bidirectional binding (e.g. 1/4 ↔ 25 %).
+      function renderExerciseMatch(card, ex) {
+        const pairs = ex.pairs || [];
+        state.matchPending = null;
+        state.matchRemaining = pairs.length;
+        state.matchWrongCounted = false;
+        const lefts = pairs.map((p, i) => ({ key: i, text: p[0] }));
+        const rights = pairs.map((p, i) => ({ key: i, text: p[1] }));
+        for (let i = rights.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [rights[i], rights[j]] = [rights[j], rights[i]];
+        }
+        const chip = (side, it) =>
+          `<button class="ex-option ex-match" data-side="${side}" data-key="${it.key}" aria-label="${escapeHtml(it.text)}" onclick="exMatchTap(this)">${escapeHtml(it.text)}</button>`;
+        card.insertAdjacentHTML(
+          "beforeend",
+          `
+    <div class="ex-prompt">${escapeHtml(ex.prompt || "")}</div>
+    <div class="ex-match-cols">
+      <div class="ex-match-col">${lefts.map((it) => chip("L", it)).join("")}</div>
+      <div class="ex-match-col">${rights.map((it) => chip("R", it)).join("")}</div>
+    </div>
+    <div class="ex-feedback" id="exFeedback"></div>
+    <div class="ex-explanation" id="exExplanation" style="display:none"></div>
+    <div class="row-actions" style="margin-top:18px">
+      <button class="btn primary" id="exNextBtn" onclick="advanceSubject()" style="display:none">Weiter</button>
+    </div>
+  `,
+        );
+      }
+
+      function exMatchTap(btn) {
+        if (!btn || state.exPhase === "answered") return;
+        if (btn.classList.contains("matched")) return;
+        const pend = state.matchPending;
+        if (!pend) {
+          btn.classList.add("selected");
+          state.matchPending = btn;
+          return;
+        }
+        if (pend === btn) {
+          btn.classList.remove("selected");
+          state.matchPending = null;
+          return;
+        }
+        if (pend.dataset.side === btn.dataset.side) {
+          pend.classList.remove("selected");
+          btn.classList.add("selected");
+          state.matchPending = btn;
+          return;
+        }
+        pend.classList.remove("selected");
+        state.matchPending = null;
+        if (pend.dataset.key === btn.dataset.key) {
+          [pend, btn].forEach((el) => {
+            el.classList.add("right", "matched");
+            el.disabled = true;
+          });
+          addXP(5);
+          showXP("exConfetti", 5);
+          state.matchRemaining--;
+          if (state.matchRemaining <= 0) exMatchComplete();
+        } else {
+          // gentle wobble, never a lock-out — "Fast!", try again
+          state.matchWrongCounted = true;
+          const a = pend,
+            b = btn;
+          a.classList.add("wrong");
+          b.classList.add("wrong");
+          setTimeout(() => {
+            a.classList.remove("wrong");
+            b.classList.remove("wrong");
+          }, 500);
+        }
+      }
+
+      function exMatchComplete() {
+        const ex = currentExercise();
+        if (!ex) return;
+        state.exPhase = "answered";
+        if (state.matchWrongCounted) {
+          state.subjectWrong++;
+          showStreakLost("subjectStreak");
+          exBumpWrong(ex.id);
+          if (!state.subjectQueue.includes(ex.id)) {
+            state.subjectQueue.push(ex.id);
+            state.subjectSessionLimit = Math.min(
+              state.subjectQueue.length,
+              state.subjectSessionLimit + 1,
+            );
+          }
+        } else {
+          state.subjectCorrect++;
+          state.answerStreak++;
+          exBumpCorrect(ex.id);
+          addXP(10);
+          spawnConfetti("exConfetti", 8 + state.answerStreak * 2);
+          reactPhoenix(true);
+          updateStreakDisplay("subjectStreak");
+        }
+        if (ex.explanation) {
+          const expl = document.getElementById("exExplanation");
+          expl.style.display = "block";
+          expl.innerHTML = ex.explanation;
+        }
+        const nx = document.getElementById("exNextBtn");
+        if (nx) nx.style.display = "";
       }
 
       function renderExerciseUnknown(card, ex) {
