@@ -10790,6 +10790,16 @@
           state.subjectSessionLimit;
         card.appendChild(meta);
 
+        // Reward surfaces (the engine owned these but never fired them in subjects).
+        const conf = document.createElement("div");
+        conf.className = "confetti-container";
+        conf.id = "exConfetti";
+        card.appendChild(conf);
+        const stk = document.createElement("div");
+        stk.className = "streak-counter";
+        stk.id = "subjectStreak";
+        card.appendChild(stk);
+
         if (ex.type === "info") renderExerciseInfo(card, ex);
         else if (ex.type === "numeric") renderExerciseNumeric(card, ex);
         else if (ex.type === "choice") renderExerciseChoice(card, ex);
@@ -10931,6 +10941,7 @@
         const ex = currentExercise();
         if (!ex) return;
         exBumpCorrect(ex.id); // просмотр = +1 hit
+        addXP(2); // a committed reveal-tap pays a little, so no tap is dead
         advanceSubject();
       }
 
@@ -10970,9 +10981,14 @@
           fb.className = "ex-feedback right";
           fb.innerHTML = "✓ Richtig!";
           exBumpCorrect(ex.id);
+          addXP(10);
+          showXP("exConfetti", 10);
+          spawnConfetti("exConfetti", 8 + state.answerStreak * 2);
+          reactPhoenix(true);
+          updateStreakDisplay("subjectStreak");
         } else {
           state.subjectWrong++;
-          state.answerStreak = 0;
+          showStreakLost("subjectStreak");
           inp.classList.add("wrong");
           fb.className = "ex-feedback wrong";
           const correctText = ex.answer + (ex.unit ? " " + ex.unit : "");
@@ -11020,7 +11036,7 @@
         }
         exBumpWrong(ex.id);
         state.subjectWrong++;
-        state.answerStreak = 0;
+        showStreakLost("subjectStreak");
         state.subjectQueue.push(ex.id);
         state.subjectSessionLimit = Math.min(
           state.subjectQueue.length,
@@ -11049,6 +11065,11 @@
           state.subjectCorrect++;
           state.answerStreak++;
           exBumpCorrect(ex.id);
+          addXP(10);
+          showXP("exConfetti", 10);
+          spawnConfetti("exConfetti", 8 + state.answerStreak * 2);
+          reactPhoenix(true);
+          updateStreakDisplay("subjectStreak");
         } else {
           chosen.classList.add("wrong");
           if (opts[ex.correctIndex])
@@ -11056,7 +11077,7 @@
           fb.className = "ex-feedback wrong";
           fb.innerHTML = "Nicht ganz. Die richtige Antwort ist grün markiert.";
           state.subjectWrong++;
-          state.answerStreak = 0;
+          showStreakLost("subjectStreak");
           exBumpWrong(ex.id);
           state.subjectQueue.push(ex.id);
           state.subjectSessionLimit = Math.min(
