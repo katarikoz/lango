@@ -3528,6 +3528,7 @@
         .card-creature { animation: none; }
         .quest-phoenix { transition: none; }
         .quest-phoenix.ignite { animation: none; }
+        .ex-info-reveal { animation: none; }
       }
       /* Reduced-motion fallback for celebrations: one static gold glow, no movement */
       .rm-pulse {
@@ -4606,7 +4607,8 @@
           <button class="back-btn" onclick="goHome()">←</button>
           <h2>Geschafft</h2>
         </div>
-        <div class="summary">
+        <div class="summary" style="position: relative">
+          <div class="confetti-container" id="subSumConfetti"></div>
           <h3 id="subSumTitle">Gut gemacht!</h3>
           <div class="sub-line" id="subSumSub">—</div>
           <div class="summary-row">
@@ -11262,6 +11264,10 @@
         document.getElementById("subSumMastered").textContent = tp.mastered;
         document.getElementById("subSumTotal").textContent = tp.total;
         showScreen("subjectSummaryScreen");
+        // Reward finishing a session (the runner never celebrated the end before).
+        if (state.subjectCorrect >= state.subjectWrong) {
+          setTimeout(() => spawnConfetti("subSumConfetti", 24, true), 200);
+        }
       }
 
       /* Enter в numeric: Prüfen → Weiter */
